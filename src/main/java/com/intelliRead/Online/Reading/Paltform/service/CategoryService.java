@@ -26,7 +26,7 @@ public class CategoryService {
 
     public Category findCategoryById(int id){
         Optional<Category> categoryOptional=categoryRepository.findById(id);
-        if(categoryOptional!=null){
+        if(categoryOptional.isPresent()){
             return categoryOptional.get();
         }
         else{
