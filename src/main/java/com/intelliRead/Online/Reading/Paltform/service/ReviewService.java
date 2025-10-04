@@ -40,10 +40,14 @@ public class ReviewService {
 
     public String updateReview(int id, ReviewRequestDTO reviewRequestDTO){
         Review review=findReviewById(id);
-        review.setRating(reviewRequestDTO.getRating());
-        review.setReviewText(reviewRequestDTO.getReviewText());
-        reviewRepository.save(review);
-        return "Review Updated Successfully";
+        if(review!=null){
+            review.setRating(reviewRequestDTO.getRating());
+            review.setReviewText(reviewRequestDTO.getReviewText());
+            reviewRepository.save(review);
+            return "Review Updated Successfully";
+        }else{
+            return "Review not found";
+        }
     }
 
     public String deleteReview(int id){

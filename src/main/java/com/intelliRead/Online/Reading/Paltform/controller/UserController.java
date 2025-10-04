@@ -20,8 +20,7 @@ public class UserController {
 
     @PostMapping("/save")
     public String saveUser(@RequestBody UserRequestDTO userRequestDTO){
-        String responce= userService.addUser(userRequestDTO);
-        return "index";
+        return userService.addUser(userRequestDTO);
     }
 
     @GetMapping("/get/{id}")

@@ -25,6 +25,7 @@ public class Suggestion {
 
     private String author; //Optional
 
+
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Status status;

@@ -40,9 +40,13 @@ public class CategoryService {
 
     public String updateCategory(int id, CategoryRequestDTO categoryRequestDTO){
         Category category=findCategoryById(id);
-        category.setCategoryName(categoryRequestDTO.getCategoryName());
-        categoryRepository.save(category);
-        return "Category Updated Successfully";
+        if(category!=null){
+            category.setCategoryName(categoryRequestDTO.getCategoryName());
+            categoryRepository.save(category);
+            return "Category Updated Successfully";
+        }else{
+            return "Category not found";
+        }
     }
 
     public String deleteCategory(int id){

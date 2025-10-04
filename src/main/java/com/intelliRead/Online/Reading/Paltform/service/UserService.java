@@ -1,7 +1,6 @@
 package com.intelliRead.Online.Reading.Paltform.service;
 
 import com.intelliRead.Online.Reading.Paltform.converter.UserConverter;
-import com.intelliRead.Online.Reading.Paltform.enums.Role;
 import com.intelliRead.Online.Reading.Paltform.model.User;
 import com.intelliRead.Online.Reading.Paltform.repository.UserRepository;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.UserRequestDTO;
@@ -53,14 +52,18 @@ public class UserService {
 
 
     public String updateUser(int id, UserRequestDTO userRequestDTO){
-        User user=new User();
-        user.setName(userRequestDTO.getName());
-        user.setEmail(userRequestDTO.getEmail());
-        user.setPasswordHash(userRequestDTO.getPasswordHash());
-        user.setRole(userRequestDTO.getRole());
-        user.setPreferredLanguage(userRequestDTO.getPreferredLanguage());
-        userRepository.save(user);
-        return "User Updated Successfully";
+        User user=getUserById(id);
+        if(user!=null){
+            user.setName(userRequestDTO.getName());
+            user.setEmail(userRequestDTO.getEmail());
+            user.setPasswordHash(userRequestDTO.getPasswordHash());
+            user.setRole(userRequestDTO.getRole());
+            user.setPreferredLanguage(userRequestDTO.getPreferredLanguage());
+            userRepository.save(user);
+            return "User Updated Successfully";
+        }else{
+            return "User not found";
+        }
     }
 }
 

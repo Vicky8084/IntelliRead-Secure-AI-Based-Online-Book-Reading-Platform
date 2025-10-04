@@ -41,12 +41,17 @@ public class BookService {
 
     public String updateBook(int id, BookRequestDTO bookRequestDTO){
         Book book=findBookById(id);
-        book.setTitle(bookRequestDTO.getTitle());
-        book.setAuthor(bookRequestDTO.getAuthor());
-        book.setDescription(bookRequestDTO.getDescription());
-        book.setLanguage(bookRequestDTO.getLanguage());
-        bookRepository.save(book);
-        return "Book Updated Successfully";
+        if(book!=null){
+            book.setTitle(bookRequestDTO.getTitle());
+            book.setAuthor(bookRequestDTO.getAuthor());
+            book.setDescription(bookRequestDTO.getDescription());
+            book.setLanguage(bookRequestDTO.getLanguage());
+            bookRepository.save(book);
+            return "Book Updated Successfully";
+        }
+        else{
+            return "book not found";
+        }
     }
 
     public String deleteBook(int id){
