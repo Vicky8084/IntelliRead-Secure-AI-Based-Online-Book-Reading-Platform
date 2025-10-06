@@ -36,4 +36,9 @@ public class SuggestionController {
     public String updateSuggestion(@PathVariable int id, SuggestionRequestDTO suggestionRequestDTO){
         return suggestionService.updateSuggestion(id,suggestionRequestDTO);
     }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteSuggestion(@PathVariable int id){
+        return suggestionService.deleteSuggestion(id);
+    }
 }

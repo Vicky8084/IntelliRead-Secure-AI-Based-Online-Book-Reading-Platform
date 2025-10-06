@@ -32,4 +32,8 @@ public class Review {
     @JsonBackReference
     @ManyToOne
     private User user;
+
+    @JsonBackReference
+    @ManyToOne()
+    private Book book;
 }

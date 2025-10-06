@@ -2,7 +2,9 @@ package com.intelliRead.Online.Reading.Paltform.service;
 
 import com.intelliRead.Online.Reading.Paltform.converter.SuggestionConverter;
 import com.intelliRead.Online.Reading.Paltform.model.Suggestion;
+import com.intelliRead.Online.Reading.Paltform.model.User;
 import com.intelliRead.Online.Reading.Paltform.repository.SuggestionRepository;
+import com.intelliRead.Online.Reading.Paltform.repository.UserRepository;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.SuggestionRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,13 +15,18 @@ import java.util.Optional;
 @Service
 public class SuggestionService {
     SuggestionRepository suggestionRepository;
+    UserRepository userRepository;
     @Autowired
-    public SuggestionService(SuggestionRepository suggestionRepository){
+    public SuggestionService(SuggestionRepository suggestionRepository,
+                             UserRepository userRepository){
         this.suggestionRepository=suggestionRepository;
+        this.userRepository=userRepository;
     }
 
     public String saveSuggestion(SuggestionRequestDTO suggestionRequestDTO){
         Suggestion suggestion= SuggestionConverter.convertSuggestionRequestDtoIntoSuggestion(suggestionRequestDTO);
+        User user=userRepository.findById(suggestionRequestDTO.getUserId()).get();
+        suggestion.setUser(user);
         suggestionRepository.save(suggestion);
         return "Suggestion Saved Successfully";
     }

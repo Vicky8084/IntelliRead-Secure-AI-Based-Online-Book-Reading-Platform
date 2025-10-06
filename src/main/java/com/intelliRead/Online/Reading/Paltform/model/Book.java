@@ -1,6 +1,7 @@
 package com.intelliRead.Online.Reading.Paltform.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Table(name = "book")
@@ -40,4 +42,10 @@ public class Book {
     @JsonBackReference
     @ManyToOne
     private User user;
+
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "book")
+    private List<Review> reviewList;
+
 }

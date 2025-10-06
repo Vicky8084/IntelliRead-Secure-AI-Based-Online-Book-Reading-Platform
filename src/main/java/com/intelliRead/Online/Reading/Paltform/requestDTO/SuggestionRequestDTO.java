@@ -13,4 +13,5 @@ public class SuggestionRequestDTO {
     private String suggestedTitle;
     private String author; //Optional
     private Status status;
+    private int userId;
 }

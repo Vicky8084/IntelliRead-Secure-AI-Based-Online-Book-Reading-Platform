@@ -2,25 +2,35 @@ package com.intelliRead.Online.Reading.Paltform.service;
 
 import com.intelliRead.Online.Reading.Paltform.converter.BookConverter;
 import com.intelliRead.Online.Reading.Paltform.model.Book;
+import com.intelliRead.Online.Reading.Paltform.model.Review;
+import com.intelliRead.Online.Reading.Paltform.model.User;
 import com.intelliRead.Online.Reading.Paltform.repository.BookRepository;
+import com.intelliRead.Online.Reading.Paltform.repository.ReviewRepository;
+import com.intelliRead.Online.Reading.Paltform.repository.UserRepository;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.BookRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class BookService {
 
     BookRepository bookRepository;
+    UserRepository userRepository;
     @Autowired
-    public BookService(BookRepository bookRepository){
+    public BookService(BookRepository bookRepository,
+                       UserRepository userRepository){
         this.bookRepository=bookRepository;
+        this.userRepository=userRepository;
+
     }
 
     public String addBook(BookRequestDTO bookRequestDTO){
+
         Book book= BookConverter.convertBookRequestDtoIntoBook(bookRequestDTO);
+        User user=userRepository.findById(bookRequestDTO.getUserId()).get();
+        book.setUser(user);
         bookRepository.save(book);
         return "Book saved Successfully";
     }
