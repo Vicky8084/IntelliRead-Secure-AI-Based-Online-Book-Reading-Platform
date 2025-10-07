@@ -1,11 +1,11 @@
 package com.intelliRead.Online.Reading.Paltform.service;
 
 import com.intelliRead.Online.Reading.Paltform.converter.BookConverter;
+import com.intelliRead.Online.Reading.Paltform.exception.BookAlreadyExistException;
+import com.intelliRead.Online.Reading.Paltform.exception.UserNotFoundException;
 import com.intelliRead.Online.Reading.Paltform.model.Book;
-import com.intelliRead.Online.Reading.Paltform.model.Review;
 import com.intelliRead.Online.Reading.Paltform.model.User;
 import com.intelliRead.Online.Reading.Paltform.repository.BookRepository;
-import com.intelliRead.Online.Reading.Paltform.repository.ReviewRepository;
 import com.intelliRead.Online.Reading.Paltform.repository.UserRepository;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.BookRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +28,17 @@ public class BookService {
 
     public String addBook(BookRequestDTO bookRequestDTO){
 
+        Optional<Book> bookOptional= bookRepository.findBookByTitle(bookRequestDTO.getTitle());
+        if(bookOptional.isPresent()){
+            throw new BookAlreadyExistException("Book"+bookRequestDTO.getTitle()+" already exist!!");
+        }
+
+        User user = userRepository.findById(bookRequestDTO.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+
         Book book= BookConverter.convertBookRequestDtoIntoBook(bookRequestDTO);
-        User user=userRepository.findById(bookRequestDTO.getUserId()).get();
+        //User user=userRepository.findById(bookRequestDTO.getUserId()).get();
         book.setUser(user);
         bookRepository.save(book);
         return "Book saved Successfully";
@@ -37,12 +46,7 @@ public class BookService {
 
     public Book findBookById(int id){
         Optional<Book> bookOptional=bookRepository.findById(id);
-        if(bookOptional.isPresent()){
-            return bookOptional.get();
-        }
-        else {
-            return null;
-        }
+        return bookOptional.orElse(null);
     }
 
     public List<Book> findAllBook(){

@@ -1,6 +1,7 @@
 package com.intelliRead.Online.Reading.Paltform.service;
 
 import com.intelliRead.Online.Reading.Paltform.converter.UserConverter;
+import com.intelliRead.Online.Reading.Paltform.exception.UserAlreadyExistException;
 import com.intelliRead.Online.Reading.Paltform.model.User;
 import com.intelliRead.Online.Reading.Paltform.repository.UserRepository;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.UserRequestDTO;
@@ -21,18 +22,18 @@ public class UserService {
 
     public String addUser(UserRequestDTO userRequestDTO){
         User user= UserConverter.convertUserRequestDtoIntoUser(userRequestDTO);
+        Optional<User> userOptional= userRepository.findUserByEmail(userRequestDTO.getEmail());
+        if(userOptional.isPresent()){
+            throw new UserAlreadyExistException("User Already exist!");
+        }
+
         userRepository.save(user);
         return "User Saved Successfully";
     }
 
     public User getUserById(int id){
         Optional<User> userOptional=userRepository.findById(id);
-        if(userOptional.isPresent()){
-            return userOptional.get();
-        }
-        else{
-            return null;
-        }
+        return userOptional.orElse(null);
     }
 
     public List<User> getAllUser(){

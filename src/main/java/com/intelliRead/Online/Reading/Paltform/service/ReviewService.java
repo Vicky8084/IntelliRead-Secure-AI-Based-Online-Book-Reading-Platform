@@ -1,6 +1,8 @@
 package com.intelliRead.Online.Reading.Paltform.service;
 
 import com.intelliRead.Online.Reading.Paltform.converter.ReviewConverter;
+import com.intelliRead.Online.Reading.Paltform.exception.BookNotFoundException;
+import com.intelliRead.Online.Reading.Paltform.exception.UserNotFoundException;
 import com.intelliRead.Online.Reading.Paltform.model.Book;
 import com.intelliRead.Online.Reading.Paltform.model.Review;
 import com.intelliRead.Online.Reading.Paltform.model.User;
@@ -31,8 +33,15 @@ public class ReviewService {
 
     public String saveReview(ReviewRequestDTO reviewRequestDTO){
         Review review= ReviewConverter.convertReviewRequestDtoIntoReview(reviewRequestDTO);
-        User user=userRepository.findById(reviewRequestDTO.getUserId()).get();
-        Book book=bookRepository.findById(reviewRequestDTO.getBookId()).get();
+
+        User user=userRepository.findById(reviewRequestDTO.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        //User user=userRepository.findById(reviewRequestDTO.getUserId()).get();
+
+        Book book=bookRepository.findById(reviewRequestDTO.getBookId()).
+                orElseThrow(() -> new BookNotFoundException("Book not found"));
+       // Book book=bookRepository.findById(reviewRequestDTO.getBookId()).get();
         review.setBook(book);
         review.setUser(user);
         reviewRepository.save(review);
@@ -41,12 +50,7 @@ public class ReviewService {
 
     public Review findReviewById(int id){
         Optional<Review> reviewOptional=reviewRepository.findById(id);
-        if(reviewOptional.isPresent()){
-            return reviewOptional.get();
-        }
-        else {
-            return null;
-        }
+        return reviewOptional.orElse(null);
     }
 
     public List<Review> findAllReview(){

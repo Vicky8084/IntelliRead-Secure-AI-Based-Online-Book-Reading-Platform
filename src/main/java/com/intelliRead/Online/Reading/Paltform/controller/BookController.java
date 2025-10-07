@@ -4,6 +4,8 @@ import com.intelliRead.Online.Reading.Paltform.model.Book;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.BookRequestDTO;
 import com.intelliRead.Online.Reading.Paltform.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +20,9 @@ public class BookController {
     }
 
     @PostMapping("/save")
-    public String saveBook(@RequestBody BookRequestDTO bookRequestDTO){
-        return bookService.addBook(bookRequestDTO);
+    public ResponseEntity<String> saveBook(@RequestBody BookRequestDTO bookRequestDTO){
+        String response=bookService.addBook(bookRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/findById/{id}")
