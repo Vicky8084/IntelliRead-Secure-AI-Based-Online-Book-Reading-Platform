@@ -2,6 +2,7 @@ package com.intelliRead.Online.Reading.Paltform.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.intelliRead.Online.Reading.Paltform.enums.Role;
+import com.intelliRead.Online.Reading.Paltform.enums.Status;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,7 +33,11 @@ public class User {
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private Role role;
+    private Role role;  //ADMIN / USER
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status status; // ACTIVE / INACTIVE
 
     @Column(nullable = false)
     private String preferredLanguage;

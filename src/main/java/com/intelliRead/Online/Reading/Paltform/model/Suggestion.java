@@ -1,7 +1,7 @@
 package com.intelliRead.Online.Reading.Paltform.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.intelliRead.Online.Reading.Paltform.enums.Status;
+import com.intelliRead.Online.Reading.Paltform.enums.SuggestionStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,9 +26,10 @@ public class Suggestion {
     private String author; //Optional
 
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private Status status;
+    private SuggestionStatus suggestionStatus = SuggestionStatus.PENDING;
+
 
     @Column(nullable = false)
     @CreationTimestamp

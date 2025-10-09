@@ -48,7 +48,7 @@ public class SuggestionService {
         if(suggestion!=null){
             suggestion.setSuggestedTitle(suggestionRequestDTO.getSuggestedTitle());
             suggestion.setAuthor(suggestionRequestDTO.getAuthor());
-            suggestion.setStatus(suggestionRequestDTO.getStatus());
+            suggestion.setSuggestionStatus(suggestionRequestDTO.getSuggestionStatus());
             suggestionRepository.save(suggestion);
             return "Suggestion Updated Successfully";
         }

@@ -1,6 +1,6 @@
 package com.intelliRead.Online.Reading.Paltform.requestDTO;
 
-import com.intelliRead.Online.Reading.Paltform.enums.Status;
+import com.intelliRead.Online.Reading.Paltform.enums.SuggestionStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +12,6 @@ public class SuggestionRequestDTO {
 
     private String suggestedTitle;
     private String author; //Optional
-    private Status status;
+    private SuggestionStatus suggestionStatus;
     private int userId;
 }

@@ -1,11 +1,16 @@
 package com.intelliRead.Online.Reading.Paltform.service;
 
 import com.intelliRead.Online.Reading.Paltform.converter.UserConverter;
+import com.intelliRead.Online.Reading.Paltform.enums.Role;
+import com.intelliRead.Online.Reading.Paltform.enums.Status;
 import com.intelliRead.Online.Reading.Paltform.exception.UserAlreadyExistException;
 import com.intelliRead.Online.Reading.Paltform.model.User;
 import com.intelliRead.Online.Reading.Paltform.repository.UserRepository;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.UserRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.userdetails.UserDetailsService;
+//import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,21 +20,38 @@ import java.util.Optional;
 public class UserService {
 
     UserRepository userRepository;
+    EmailService emailService;
     @Autowired
-    public UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository,
+                       EmailService emailService){
         this.userRepository=userRepository;
+        this.emailService=emailService;
     }
 
-    public String addUser(UserRequestDTO userRequestDTO){
-        User user= UserConverter.convertUserRequestDtoIntoUser(userRequestDTO);
-        Optional<User> userOptional= userRepository.findUserByEmail(userRequestDTO.getEmail());
-        if(userOptional.isPresent()){
-            throw new UserAlreadyExistException("User Already exist!");
+    public String addUser(UserRequestDTO dto) {
+        if (userRepository.existsByEmail(dto.getEmail())) {
+            throw new UserAlreadyExistException("User already exists!");
         }
 
+        User user = UserConverter.convertUserRequestDtoIntoUser(dto);
+
+        // If ADMIN, make them INACTIVE and send approval email
+        if (dto.getRole() == Role.ADMIN) {
+            user.setStatus(Status.INACTIVE);
+            userRepository.save(user); // Save as inactive
+
+            // Send email to original ADMINs
+            emailService.sendAdminApprovalRequest(user);
+            return "✅ Admin registration pending approval!";
+        }
+
+        // Normal USER → ACTIVE
+        user.setStatus(Status.ACTIVE);
         userRepository.save(user);
-        return "User Saved Successfully";
+        return "✅ User registered successfully!";
     }
+
+
 
     public User getUserById(int id){
         Optional<User> userOptional=userRepository.findById(id);

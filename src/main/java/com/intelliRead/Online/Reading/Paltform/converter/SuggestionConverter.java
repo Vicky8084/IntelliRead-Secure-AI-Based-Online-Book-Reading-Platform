@@ -5,10 +5,15 @@ import com.intelliRead.Online.Reading.Paltform.requestDTO.SuggestionRequestDTO;
 
 public class SuggestionConverter {
     public static Suggestion convertSuggestionRequestDtoIntoSuggestion(SuggestionRequestDTO suggestionRequestDTO){
-        Suggestion suggestion=new Suggestion();
+        Suggestion suggestion = new Suggestion();
         suggestion.setSuggestedTitle(suggestionRequestDTO.getSuggestedTitle());
         suggestion.setAuthor(suggestionRequestDTO.getAuthor());
-        suggestion.setStatus(suggestionRequestDTO.getStatus());
+
+        // ✅ Only set status if provided, otherwise keep default
+        if (suggestionRequestDTO.getSuggestionStatus() != null) {
+            suggestion.setSuggestionStatus(suggestionRequestDTO.getSuggestionStatus());
+        }
+
         return suggestion;
     }
 }
