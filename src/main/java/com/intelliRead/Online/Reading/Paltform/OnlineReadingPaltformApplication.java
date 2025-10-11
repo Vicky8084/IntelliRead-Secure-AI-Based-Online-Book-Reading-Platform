@@ -24,7 +24,7 @@ public class OnlineReadingPaltformApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // Default admin details
-        String defaultEmail = "mrvg4545@gmail.com";
+        String defaultEmail = "noreply.intelliread@gmail.com";
         if (userRepository.findUserByEmail(defaultEmail).isEmpty()) {
 
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(); // password encoder
