@@ -20,20 +20,22 @@ public class Review {
     private int id;
 
     @Column(nullable = false)
-    private int rating; // Integer rating Values (1-5)
+    private int rating; // Integer rating (1-5)
 
     @Column(nullable = false)
-    private String reviewText; //Review Text Content
+    private String reviewText; // Review Text Content
 
     @Column(nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @JsonBackReference
+    // Unique back reference for user
+    @JsonBackReference("user-reviews")
     @ManyToOne
     private User user;
 
-    @JsonBackReference
-    @ManyToOne()
+    // Unique back reference for book
+    @JsonBackReference("book-reviews")
+    @ManyToOne
     private Book book;
 }

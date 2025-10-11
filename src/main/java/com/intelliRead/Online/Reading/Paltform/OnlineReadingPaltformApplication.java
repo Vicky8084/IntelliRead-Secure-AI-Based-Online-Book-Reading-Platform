@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class OnlineReadingPaltformApplication implements CommandLineRunner {
@@ -16,6 +16,8 @@ public class OnlineReadingPaltformApplication implements CommandLineRunner {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder; // ✅ Injected from SecurityConfig
 
     public static void main(String[] args) {
         SpringApplication.run(OnlineReadingPaltformApplication.class, args);
@@ -23,16 +25,15 @@ public class OnlineReadingPaltformApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // Default admin details
+
+        // 1️⃣ Default admin creation
         String defaultEmail = "noreply.intelliread@gmail.com";
         if (userRepository.findUserByEmail(defaultEmail).isEmpty()) {
-
-            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(); // password encoder
 
             User admin = new User();
             admin.setName("Original Admin");
             admin.setEmail(defaultEmail);
-            admin.setPasswordHash(encoder.encode("vicky")); // secure hashed password
+            admin.setPasswordHash(passwordEncoder.encode("vicky")); // Securely encoded password
             admin.setRole(Role.ADMIN);
             admin.setStatus(Status.ACTIVE); // Admin is ACTIVE by default
             admin.setPreferredLanguage("English");
@@ -42,5 +43,17 @@ public class OnlineReadingPaltformApplication implements CommandLineRunner {
         } else {
             System.out.println("✅ Default admin already exists.");
         }
+
+        // 2️⃣ Auto-encode all existing users whose passwords are still plain text
+        userRepository.findAll().forEach(user -> {
+            String password = user.getPasswordHash();
+            if (password != null && !password.startsWith("$2a$")) {
+                user.setPasswordHash(passwordEncoder.encode(password));
+                userRepository.save(user);
+                //System.out.println("🔒 Password encoded for user: " + user.getEmail());
+            }
+        });
+
+        //System.out.println("🚀 Password check and encoding completed.");
     }
 }

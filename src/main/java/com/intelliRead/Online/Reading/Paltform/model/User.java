@@ -25,15 +25,15 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false,unique = true)
-    private  String email;
+    @Column(nullable = false, unique = true)
+    private String email;
 
     @Column(nullable = false)
-    private  String passwordHash;
+    private String passwordHash;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private Role role;  //ADMIN / USER
+    private Role role;  // ADMIN / USER
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -46,23 +46,16 @@ public class User {
     @CreationTimestamp
     private LocalDateTime createdDate;
 
-    @JsonManagedReference
+    // Unique reference names for each relationship
+    @JsonManagedReference("user-books")
     @OneToMany(mappedBy = "user")
     private List<Book> bookList;
 
-    @JsonManagedReference
+    @JsonManagedReference("user-reviews")
     @OneToMany(mappedBy = "user")
     private List<Review> reviewList;
 
-    @JsonManagedReference
+    @JsonManagedReference("user-suggestions")
     @OneToMany(mappedBy = "user")
     private List<Suggestion> suggestionList;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "user")
-    private List<Notification> notificationList;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "user")
-    private List<SearchHistory> searchHistoryList;
 }

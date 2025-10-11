@@ -11,7 +11,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
 @Table(name = "book")
 @Entity
 @Data
@@ -34,18 +33,17 @@ public class Book {
     @Column(nullable = false)
     private String language;
 
-
     @Column(nullable = false)
     @CreationTimestamp
     private LocalDateTime uploadedAt;
 
-    @JsonBackReference
+    // Unique back reference name for user
+    @JsonBackReference("user-books")
     @ManyToOne
     private User user;
 
-
-    @JsonManagedReference
+    // Book has reviews
+    @JsonManagedReference("book-reviews")
     @OneToMany(mappedBy = "book")
     private List<Review> reviewList;
-
 }

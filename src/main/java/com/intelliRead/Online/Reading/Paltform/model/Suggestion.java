@@ -23,19 +23,18 @@ public class Suggestion {
     @Column(nullable = false)
     private String suggestedTitle;
 
-    private String author; //Optional
-
+    private String author; // Optional
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private SuggestionStatus suggestionStatus = SuggestionStatus.PENDING;
 
-
     @Column(nullable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @JsonBackReference
+    // Unique back reference for user
+    @JsonBackReference("user-suggestions")
     @ManyToOne
     private User user;
 }
