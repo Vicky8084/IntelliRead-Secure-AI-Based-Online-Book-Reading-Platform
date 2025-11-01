@@ -1,5 +1,6 @@
 package com.intelliRead.Online.Reading.Paltform.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.intelliRead.Online.Reading.Paltform.enums.Role;
 import com.intelliRead.Online.Reading.Paltform.enums.Status;
@@ -29,6 +30,7 @@ public class User {
     private String email;
 
     @Column(nullable = false)
+    @JsonIgnore // ✅ Password frontend ko nahi bhejenge
     private String passwordHash;
 
     @Column(nullable = false)

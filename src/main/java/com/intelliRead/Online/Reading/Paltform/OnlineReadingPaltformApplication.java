@@ -17,7 +17,7 @@ public class OnlineReadingPaltformApplication implements CommandLineRunner {
     private UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder; // ✅ Injected from SecurityConfig
+    private PasswordEncoder passwordEncoder;
 
     public static void main(String[] args) {
         SpringApplication.run(OnlineReadingPaltformApplication.class, args);
@@ -35,7 +35,7 @@ public class OnlineReadingPaltformApplication implements CommandLineRunner {
             admin.setEmail(defaultEmail);
             admin.setPasswordHash(passwordEncoder.encode("vicky")); // Securely encoded password
             admin.setRole(Role.ADMIN);
-            admin.setStatus(Status.ACTIVE); // Admin is ACTIVE by default
+            admin.setStatus(Status.ACTIVE);
             admin.setPreferredLanguage("English");
 
             userRepository.save(admin);
@@ -50,10 +50,10 @@ public class OnlineReadingPaltformApplication implements CommandLineRunner {
             if (password != null && !password.startsWith("$2a$")) {
                 user.setPasswordHash(passwordEncoder.encode(password));
                 userRepository.save(user);
-                //System.out.println("🔒 Password encoded for user: " + user.getEmail());
+                System.out.println("🔒 Password encoded for user: " + user.getEmail());
             }
         });
 
-        //System.out.println("🚀 Password check and encoding completed.");
+        System.out.println("🚀 Password check and encoding completed.");
     }
 }

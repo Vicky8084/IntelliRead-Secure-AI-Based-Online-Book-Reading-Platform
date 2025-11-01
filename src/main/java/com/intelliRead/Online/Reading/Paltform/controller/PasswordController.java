@@ -67,4 +67,3 @@ public class PasswordController {
         return ResponseEntity.ok(response);
     }
 }
-

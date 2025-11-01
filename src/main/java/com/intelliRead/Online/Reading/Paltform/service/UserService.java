@@ -8,6 +8,7 @@ import com.intelliRead.Online.Reading.Paltform.model.User;
 import com.intelliRead.Online.Reading.Paltform.repository.UserRepository;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.UserRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,11 +19,15 @@ public class UserService {
 
     UserRepository userRepository;
     EmailService emailService;
+    PasswordEncoder passwordEncoder;
+
     @Autowired
     public UserService(UserRepository userRepository,
-                       EmailService emailService){
-        this.userRepository=userRepository;
-        this.emailService=emailService;
+                       EmailService emailService,
+                       PasswordEncoder passwordEncoder){
+        this.userRepository = userRepository;
+        this.emailService = emailService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public String addUser(UserRequestDTO dto) {
@@ -31,6 +36,9 @@ public class UserService {
         }
 
         User user = UserConverter.convertUserRequestDtoIntoUser(dto);
+
+        // ✅ Encrypt password before saving
+        user.setPasswordHash(passwordEncoder.encode(dto.getPasswordHash()));
 
         // If ADMIN, make them INACTIVE and send approval email
         if (dto.getRole() == Role.ADMIN) {
@@ -48,10 +56,8 @@ public class UserService {
         return "✅ User registered successfully!";
     }
 
-
-
     public User getUserById(int id){
-        Optional<User> userOptional=userRepository.findById(id);
+        Optional<User> userOptional = userRepository.findById(id);
         return userOptional.orElse(null);
     }
 
@@ -60,30 +66,32 @@ public class UserService {
     }
 
     public String deleteUserById(int id){
-        User user=getUserById(id);
-        if(user!=null){
+        User user = getUserById(id);
+        if(user != null){
             userRepository.deleteById(id);
             return "User Deleted Successfully";
-        }
-        else {
+        } else {
             return "User not found";
         }
     }
 
-
     public String updateUser(int id, UserRequestDTO userRequestDTO){
-        User user=getUserById(id);
-        if(user!=null){
+        User user = getUserById(id);
+        if(user != null){
             user.setName(userRequestDTO.getName());
             user.setEmail(userRequestDTO.getEmail());
-            user.setPasswordHash(userRequestDTO.getPasswordHash());
+
+            // ✅ Encrypt password if provided
+            if(userRequestDTO.getPasswordHash() != null && !userRequestDTO.getPasswordHash().isEmpty()) {
+                user.setPasswordHash(passwordEncoder.encode(userRequestDTO.getPasswordHash()));
+            }
+
             user.setRole(userRequestDTO.getRole());
             user.setPreferredLanguage(userRequestDTO.getPreferredLanguage());
             userRepository.save(user);
             return "User Updated Successfully";
-        }else{
+        } else {
             return "User not found";
         }
     }
 }
-
