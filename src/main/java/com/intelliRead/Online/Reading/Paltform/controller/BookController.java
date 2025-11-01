@@ -89,6 +89,28 @@ public class BookController {
         }
     }
 
+    // ✅ NEW: Get books by category ID
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<Book>> findBooksByCategoryId(@PathVariable int categoryId){
+        try {
+            List<Book> books = bookService.findBooksByCategoryId(categoryId);
+            return ResponseEntity.ok(books);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // ✅ NEW: Get books by category name
+    @GetMapping("/category/name/{categoryName}")
+    public ResponseEntity<List<Book>> findBooksByCategoryName(@PathVariable String categoryName){
+        try {
+            List<Book> books = bookService.findBooksByCategoryName(categoryName);
+            return ResponseEntity.ok(books);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @PutMapping("Update/{id}")
     public ResponseEntity<String> updateBook(@PathVariable int id, @RequestBody BookRequestDTO bookRequestDTO){
         try {

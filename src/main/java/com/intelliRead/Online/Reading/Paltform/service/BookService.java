@@ -4,8 +4,10 @@ import com.intelliRead.Online.Reading.Paltform.converter.BookConverter;
 import com.intelliRead.Online.Reading.Paltform.exception.BookAlreadyExistException;
 import com.intelliRead.Online.Reading.Paltform.exception.UserNotFoundException;
 import com.intelliRead.Online.Reading.Paltform.model.Book;
+import com.intelliRead.Online.Reading.Paltform.model.Category;
 import com.intelliRead.Online.Reading.Paltform.model.User;
 import com.intelliRead.Online.Reading.Paltform.repository.BookRepository;
+import com.intelliRead.Online.Reading.Paltform.repository.CategoryRepository;
 import com.intelliRead.Online.Reading.Paltform.repository.UserRepository;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.BookRequestDTO;
 import com.intelliRead.Online.Reading.Paltform.util.FileStorageUtil;
@@ -28,14 +30,19 @@ public class BookService {
     BookRepository bookRepository;
     UserRepository userRepository;
 
+    // ✅ ADDED: CategoryRepository
+    CategoryRepository categoryRepository;
+
     private final Path uploadsRoot;
 
     @Autowired
     public BookService(BookRepository bookRepository,
                        UserRepository userRepository,
+                       CategoryRepository categoryRepository, // ✅ ADDED
                        @Value("${file.upload-dir:uploads}") String uploadDir) throws IOException {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
+        this.categoryRepository = categoryRepository; // ✅ ADDED
         this.uploadsRoot = FileStorageUtil.ensureDirectory(uploadDir);
     }
 
@@ -54,6 +61,13 @@ public class BookService {
 
         Book book = BookConverter.convertBookRequestDtoIntoBook(bookRequestDTO);
         book.setUser(user);
+
+        // ✅ ADDED: Handle category assignment
+        if (bookRequestDTO.getCategoryId() != null) {
+            Category category = categoryRepository.findById(bookRequestDTO.getCategoryId()).orElse(null);
+            book.setCategory(category);
+        }
+
         bookRepository.save(book);
         return "Book saved Successfully";
     }
@@ -86,6 +100,12 @@ public class BookService {
 
         Book book = BookConverter.convertBookRequestDtoIntoBook(bookRequestDTO);
         book.setUser(user);
+
+        // ✅ ADDED: Handle category assignment
+        if (bookRequestDTO.getCategoryId() != null) {
+            Category category = categoryRepository.findById(bookRequestDTO.getCategoryId()).orElse(null);
+            book.setCategory(category);
+        }
 
         // Save book first to get auto-generated ID
         book = bookRepository.save(book);
@@ -144,6 +164,16 @@ public class BookService {
         return bookRepository.findAll();
     }
 
+    // ✅ ADDED: Get books by category
+    public List<Book> findBooksByCategoryId(int categoryId) {
+        return bookRepository.findByCategoryId(categoryId);
+    }
+
+    // ✅ ADDED: Get books by category name
+    public List<Book> findBooksByCategoryName(String categoryName) {
+        return bookRepository.findByCategoryCategoryName(categoryName);
+    }
+
     // ✅ CORRECTED: Backward compatible version (without userId check for now)
     public String updateBook(int id, BookRequestDTO bookRequestDTO) {
         Book book = findBookById(id);
@@ -152,6 +182,13 @@ public class BookService {
             book.setAuthor(bookRequestDTO.getAuthor());
             book.setDescription(bookRequestDTO.getDescription());
             book.setLanguage(bookRequestDTO.getLanguage());
+
+            // ✅ ADDED: Update category if provided
+            if (bookRequestDTO.getCategoryId() != null) {
+                Category category = categoryRepository.findById(bookRequestDTO.getCategoryId()).orElse(null);
+                book.setCategory(category);
+            }
+
             bookRepository.save(book);
             return "Book Updated Successfully";
         } else {

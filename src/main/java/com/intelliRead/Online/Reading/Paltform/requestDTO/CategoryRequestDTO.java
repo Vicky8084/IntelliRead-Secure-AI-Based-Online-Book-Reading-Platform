@@ -9,4 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CategoryRequestDTO {
     private String categoryName;
+    private String description;
+    private Integer parentCategoryId; // ✅ For hierarchical categories
 }

@@ -5,11 +5,12 @@ import com.intelliRead.Online.Reading.Paltform.requestDTO.BookRequestDTO;
 
 public class BookConverter {
     public static Book convertBookRequestDtoIntoBook(BookRequestDTO bookRequestDTO){
-        Book book =new Book();
+        Book book = new Book();
         book.setTitle(bookRequestDTO.getTitle());
         book.setAuthor(bookRequestDTO.getAuthor());
         book.setDescription(bookRequestDTO.getDescription());
         book.setLanguage(bookRequestDTO.getLanguage());
+        // ✅ Category will be set in Service class using categoryId
         return book;
     }
 }

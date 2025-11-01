@@ -13,7 +13,6 @@ public class SuggestionConverter {
         if (suggestionRequestDTO.getSuggestionStatus() != null) {
             suggestion.setSuggestionStatus(suggestionRequestDTO.getSuggestionStatus());
         }
-
         return suggestion;
     }
 }

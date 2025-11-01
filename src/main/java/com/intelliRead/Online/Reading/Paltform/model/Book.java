@@ -38,6 +38,12 @@ public class Book {
     @CreationTimestamp
     private LocalDateTime uploadedAt;
 
+    // ✅ ADDED: Category relationship
+    @JsonBackReference("category-books")
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     // Unique back reference name for user
     @JsonBackReference("user-books")
     @ManyToOne

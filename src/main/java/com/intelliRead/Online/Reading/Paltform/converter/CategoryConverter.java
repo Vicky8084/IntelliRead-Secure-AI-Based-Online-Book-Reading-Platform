@@ -5,8 +5,9 @@ import com.intelliRead.Online.Reading.Paltform.requestDTO.CategoryRequestDTO;
 
 public class CategoryConverter {
     public static Category convertCategoryRequestDtoIntoCategory(CategoryRequestDTO categoryRequestDTO){
-        Category category=new Category();
+        Category category = new Category();
         category.setCategoryName(categoryRequestDTO.getCategoryName());
+        category.setDescription(categoryRequestDTO.getDescription());
         return category;
     }
 }

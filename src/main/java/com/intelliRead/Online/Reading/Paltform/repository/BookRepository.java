@@ -16,4 +16,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     // ✅ CORRECTED: Use proper field name
     List<Book> findByUser_Id(int userId);
+
+    // ✅ ADDED: Category related methods
+    List<Book> findByCategoryId(int categoryId);
+    List<Book> findByCategoryCategoryName(String categoryName);
 }
