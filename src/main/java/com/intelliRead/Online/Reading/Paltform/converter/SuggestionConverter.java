@@ -9,11 +9,9 @@ public class SuggestionConverter {
         suggestion.setSuggestedTitle(suggestionRequestDTO.getSuggestedTitle());
         suggestion.setAuthor(suggestionRequestDTO.getAuthor());
 
-        // ✅ Only set status if provided, otherwise keep default
         if (suggestionRequestDTO.getSuggestionStatus() != null) {
             suggestion.setSuggestionStatus(suggestionRequestDTO.getSuggestionStatus());
         }
         return suggestion;
     }
 }
-

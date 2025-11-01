@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SuggestionRequestDTO {
-
     private String suggestedTitle;
-    private String author; //Optional
+    private String author;
     private SuggestionStatus suggestionStatus;
     private int userId;
 }

@@ -2,6 +2,7 @@ package com.intelliRead.Online.Reading.Paltform.service;
 
 import com.intelliRead.Online.Reading.Paltform.converter.ReviewConverter;
 import com.intelliRead.Online.Reading.Paltform.exception.BookNotFoundException;
+import com.intelliRead.Online.Reading.Paltform.exception.ReviewAlreadyExistException;
 import com.intelliRead.Online.Reading.Paltform.exception.UserNotFoundException;
 import com.intelliRead.Online.Reading.Paltform.model.Book;
 import com.intelliRead.Online.Reading.Paltform.model.Review;
@@ -21,35 +22,46 @@ public class ReviewService {
     ReviewRepository reviewRepository;
     UserRepository userRepository;
     BookRepository bookRepository;
+
     @Autowired
     public ReviewService(ReviewRepository reviewRepository,
                          UserRepository userRepository,
                          BookRepository bookRepository){
-        this.reviewRepository=reviewRepository;
-        this.userRepository=userRepository;
-        this.bookRepository=bookRepository;
-
+        this.reviewRepository = reviewRepository;
+        this.userRepository = userRepository;
+        this.bookRepository = bookRepository;
     }
 
     public String saveReview(ReviewRequestDTO reviewRequestDTO){
-        Review review= ReviewConverter.convertReviewRequestDtoIntoReview(reviewRequestDTO);
+        // ✅ Check if user already reviewed this book
+        Optional<Review> existingReview = reviewRepository.findByUserIdAndBookId(
+                reviewRequestDTO.getUserId(), reviewRequestDTO.getBookId());
+        if (existingReview.isPresent()) {
+            throw new ReviewAlreadyExistException("You have already reviewed this book!");
+        }
 
-        User user=userRepository.findById(reviewRequestDTO.getUserId())
+        // ✅ Validate rating
+        if (reviewRequestDTO.getRating() < 1 || reviewRequestDTO.getRating() > 5) {
+            throw new IllegalArgumentException("Rating must be between 1 and 5");
+        }
+
+        Review review = ReviewConverter.convertReviewRequestDtoIntoReview(reviewRequestDTO);
+
+        User user = userRepository.findById(reviewRequestDTO.getUserId())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
 
-        //User user=userRepository.findById(reviewRequestDTO.getUserId()).get();
+        Book book = bookRepository.findById(reviewRequestDTO.getBookId())
+                .orElseThrow(() -> new BookNotFoundException("Book not found"));
 
-        Book book=bookRepository.findById(reviewRequestDTO.getBookId()).
-                orElseThrow(() -> new BookNotFoundException("Book not found"));
-       // Book book=bookRepository.findById(reviewRequestDTO.getBookId()).get();
         review.setBook(book);
         review.setUser(user);
         reviewRepository.save(review);
+
         return "Review Saved Successfully";
     }
 
     public Review findReviewById(int id){
-        Optional<Review> reviewOptional=reviewRepository.findById(id);
+        Optional<Review> reviewOptional = reviewRepository.findById(id);
         return reviewOptional.orElse(null);
     }
 
@@ -57,26 +69,40 @@ public class ReviewService {
         return reviewRepository.findAll();
     }
 
+    // ✅ Get reviews by book ID
+    public List<Review> findReviewsByBookId(int bookId) {
+        return reviewRepository.findByBookId(bookId);
+    }
+
+    // ✅ Get reviews by user ID
+    public List<Review> findReviewsByUserId(int userId) {
+        return reviewRepository.findByUserId(userId);
+    }
+
     public String updateReview(int id, ReviewRequestDTO reviewRequestDTO){
-        Review review=findReviewById(id);
-        if(review!=null){
+        Review review = findReviewById(id);
+        if (review != null) {
+            // ✅ Validate rating
+            if (reviewRequestDTO.getRating() < 1 || reviewRequestDTO.getRating() > 5) {
+                throw new IllegalArgumentException("Rating must be between 1 and 5");
+            }
+
             review.setRating(reviewRequestDTO.getRating());
             review.setReviewText(reviewRequestDTO.getReviewText());
             reviewRepository.save(review);
             return "Review Updated Successfully";
-        }else{
-            return "Review not found";
+        } else {
+            throw new IllegalArgumentException("Review not found");
         }
     }
 
     public String deleteReview(int id){
-        Review review=findReviewById(id);
-        if(review!=null){
+        Review review = findReviewById(id);
+        if (review != null) {
             reviewRepository.deleteById(id);
             return "Review Deleted Successfully";
-        }
-        else{
-            return "review not found";
+        } else {
+            throw new IllegalArgumentException("Review not found");
         }
     }
 }

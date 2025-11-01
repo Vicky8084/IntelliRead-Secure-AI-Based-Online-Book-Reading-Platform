@@ -20,17 +20,28 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<String> handleUserNotFoundException(UserNotFoundException ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage()); // ✅ CHANGED to NOT_FOUND
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
     @ExceptionHandler(BookNotFoundException.class)
     public ResponseEntity<String> handleBookNotFoundException(BookNotFoundException ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage()); // ✅ CHANGED to NOT_FOUND
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    // ✅ ADDED: Category exception handler
     @ExceptionHandler(CategoryAlreadyExistException.class)
     public ResponseEntity<String> handleCategoryAlreadyExistsException(CategoryAlreadyExistException ex){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+    // ✅ ADDED: Review exceptions
+    @ExceptionHandler(ReviewAlreadyExistException.class)
+    public ResponseEntity<String> handleReviewAlreadyExistsException(ReviewAlreadyExistException ex){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
+    // ✅ ADDED: Suggestion exceptions
+    @ExceptionHandler(SuggestionAlreadyExistException.class)
+    public ResponseEntity<String> handleSuggestionAlreadyExistsException(SuggestionAlreadyExistException ex){
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
@@ -39,7 +50,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
-    // ✅ ADDED: Generic exception handler
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGenericException(Exception ex){
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

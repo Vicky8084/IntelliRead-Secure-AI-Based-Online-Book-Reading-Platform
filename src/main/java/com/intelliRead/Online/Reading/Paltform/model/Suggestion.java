@@ -23,7 +23,7 @@ public class Suggestion {
     @Column(nullable = false)
     private String suggestedTitle;
 
-    private String author; // Optional
+    private String author;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -33,7 +33,7 @@ public class Suggestion {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    // Unique back reference for user
+    // User relationship
     @JsonBackReference("user-suggestions")
     @ManyToOne
     private User user;

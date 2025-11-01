@@ -17,25 +17,30 @@ import java.util.Optional;
 public class SuggestionService {
     SuggestionRepository suggestionRepository;
     UserRepository userRepository;
+
     @Autowired
     public SuggestionService(SuggestionRepository suggestionRepository,
                              UserRepository userRepository){
-        this.suggestionRepository=suggestionRepository;
-        this.userRepository=userRepository;
-   }
+        this.suggestionRepository = suggestionRepository;
+        this.userRepository = userRepository;
+    }
 
     public String saveSuggestion(SuggestionRequestDTO suggestionRequestDTO){
-        Suggestion suggestion= SuggestionConverter.convertSuggestionRequestDtoIntoSuggestion(suggestionRequestDTO);
+        // ✅ Validate title
+        if (suggestionRequestDTO.getSuggestedTitle() == null || suggestionRequestDTO.getSuggestedTitle().trim().isEmpty()) {
+            throw new IllegalArgumentException("Book title is required");
+        }
+
+        Suggestion suggestion = SuggestionConverter.convertSuggestionRequestDtoIntoSuggestion(suggestionRequestDTO);
         User user = userRepository.findById(suggestionRequestDTO.getUserId())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
-        //User user=userRepository.findById(suggestionRequestDTO.getUserId()).get();
         suggestion.setUser(user);
         suggestionRepository.save(suggestion);
         return "Suggestion Saved Successfully";
     }
 
     public Suggestion findSuggestionById(int id){
-        Optional<Suggestion> suggestionOptional= suggestionRepository.findById(id);
+        Optional<Suggestion> suggestionOptional = suggestionRepository.findById(id);
         return suggestionOptional.orElse(null);
     }
 
@@ -44,26 +49,30 @@ public class SuggestionService {
     }
 
     public String updateSuggestion(int id, SuggestionRequestDTO suggestionRequestDTO){
-        Suggestion suggestion=findSuggestionById(id);
-        if(suggestion!=null){
+        Suggestion suggestion = findSuggestionById(id);
+        if (suggestion != null) {
+            // ✅ Validate title
+            if (suggestionRequestDTO.getSuggestedTitle() == null || suggestionRequestDTO.getSuggestedTitle().trim().isEmpty()) {
+                throw new IllegalArgumentException("Book title is required");
+            }
+
             suggestion.setSuggestedTitle(suggestionRequestDTO.getSuggestedTitle());
             suggestion.setAuthor(suggestionRequestDTO.getAuthor());
             suggestion.setSuggestionStatus(suggestionRequestDTO.getSuggestionStatus());
             suggestionRepository.save(suggestion);
             return "Suggestion Updated Successfully";
-        }
-        else{
-            return "Suggestion not found";
+        } else {
+            throw new IllegalArgumentException("Suggestion not found");
         }
     }
 
     public String deleteSuggestion(int id){
-        Suggestion suggestion=findSuggestionById(id);
-        if(suggestion!=null){
+        Suggestion suggestion = findSuggestionById(id);
+        if (suggestion != null) {
             suggestionRepository.deleteById(id);
             return "Suggestion deleted Successfully";
-        }else{
-            return "suggestion not found";
+        } else {
+            throw new IllegalArgumentException("Suggestion not found");
         }
     }
 }
