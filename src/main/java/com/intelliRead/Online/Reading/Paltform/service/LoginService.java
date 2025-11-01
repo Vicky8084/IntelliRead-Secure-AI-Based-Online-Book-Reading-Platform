@@ -25,6 +25,7 @@ public class LoginService {
         Optional<User> optionalUser = userRepository.findUserByEmail(loginRequestDTO.getEmail());
         if (optionalUser.isEmpty()) {
             return "❌ No user found with this email!";
+
         }
 
         User user = optionalUser.get();
