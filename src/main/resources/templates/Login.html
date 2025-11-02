@@ -42,11 +42,6 @@
                         <i class='bx bx-book-alt role-icon'></i>
                         <span>PUBLISHER</span>
                     </div>
-                    <!--                    <div class="role-option" data-role="admin">-->
-                    <!--                        <input type="radio" id="role-admin" name="role" value="ADMIN" required>-->
-                    <!--                        <i class='bx bx-cog role-icon'></i>-->
-                    <!--                        <span>ADMIN</span>-->
-                    <!--                    </div>-->
                 </div>
             </div>
 
@@ -96,6 +91,8 @@
 <!-- ===== JS ===== -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+      console.log('🔐 Login Page Loaded');
+
       // ===== Role Selection =====
       const roleOptions = document.querySelectorAll('.role-option');
 
@@ -142,7 +139,7 @@
         loginBtn.disabled = true;
 
         try {
-          // ✅ FIXED: Correct endpoint with full URL
+          console.log('📤 Sending login request to backend...');
           const response = await fetch('http://localhost:8035/auth/login', {
             method: 'POST',
             headers: {
@@ -151,10 +148,12 @@
             body: JSON.stringify({ email, password })
           });
 
+          console.log('✅ Response status:', response.status);
           const data = await response.json();
+          console.log('📥 Login response data:', data);
 
           if (data.success) {
-            // ✅ FIXED: Role check with uppercase
+            // ✅ Role check
             if (data.role !== selectedRole) {
               alert(`❌ Please login as ${selectedRole} using the correct credentials.`);
               loginBtn.textContent = originalText;
@@ -162,15 +161,21 @@
               return;
             }
 
-            // Store user data
-            localStorage.setItem('user', JSON.stringify({
+            // ✅ Store user data in localStorage
+            const userData = {
               email: data.email,
               name: data.name,
               role: data.role,
               userId: data.userId
-            }));
+            };
+
+            localStorage.setItem('user', JSON.stringify(userData));
             localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('jwtToken', data.token); // ✅ Store JWT token
+            localStorage.setItem('jwtToken', data.token);
+            localStorage.setItem('loginTime', new Date().toISOString()); // Add login timestamp
+
+            console.log('💾 User data stored in localStorage:', userData);
+            console.log('🔑 Token stored:', !!data.token);
 
             // Role-based redirect
             let redirectUrl = '';
@@ -187,19 +192,28 @@
                 break;
               case 'USER':
               default:
-                redirectUrl = '/BookScreen';
-                successMessage = 'Login successful!';
+                redirectUrl = '/bookscreen';
+                successMessage = 'Login successful! Redirecting to books...';
                 break;
             }
 
+            console.log('🔄 Redirecting to:', redirectUrl);
+
+            // Show success message and redirect
             alert(successMessage);
-            window.location.href = redirectUrl;
+
+            // Use setTimeout to ensure alert is shown before redirect
+            setTimeout(() => {
+              // Clear any existing redirect loops
+              localStorage.setItem('lastRedirect', redirectUrl);
+              window.location.href = redirectUrl;
+            }, 100);
 
           } else {
             alert(data.message || 'Login failed. Please try again.');
           }
         } catch (error) {
-          console.error('Login error:', error);
+          console.error('❌ Login error:', error);
           alert('Network error. Please try again.');
         } finally {
           loginBtn.textContent = originalText;
@@ -207,26 +221,26 @@
         }
       });
 
-      // Check if user is already logged in
+      // ✅ Check if already logged in (but don't auto-redirect from login page)
       const isLoggedIn = localStorage.getItem('isLoggedIn');
       const userData = localStorage.getItem('user');
 
       if (isLoggedIn && userData) {
         const user = JSON.parse(userData);
-        // Auto-redirect based on role
-        switch(user.role) {
-          case 'ADMIN':
-            window.location.href = '/admin-dashboard';
-            break;
-          case 'PUBLISHER':
-            window.location.href = '/publisher-dashboard';
-            break;
-          case 'USER':
-            window.location.href = '/books';
-            break;
-        }
+        console.log('👤 User already logged in:', user.email);
+        console.log('ℹ️  Auto-redirect disabled on login page to prevent loops');
       }
     });
+
+    // ✅ Debug Helper Functions
+    function debugAuth() {
+      console.log('=== AUTH DEBUG INFO ===');
+      console.log('isLoggedIn:', localStorage.getItem('isLoggedIn'));
+      console.log('user:', localStorage.getItem('user'));
+      console.log('jwtToken:', localStorage.getItem('jwtToken') ? 'Present' : 'Missing');
+      console.log('loginTime:', localStorage.getItem('loginTime'));
+      console.log('currentTime:', new Date().toISOString());
+    }
 
     // ✅ ADDED: Test Connection Button
     const testBtn = document.createElement('button');
@@ -242,6 +256,24 @@
         }
     };
     document.body.appendChild(testBtn);
+
+    // ✅ ADDED: Debug Auth Button
+    const debugBtn = document.createElement('button');
+    debugBtn.textContent = 'Debug Auth';
+    debugBtn.style.cssText = 'position: fixed; bottom: 20px; right: 150px; padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; z-index: 1000;';
+    debugBtn.onclick = debugAuth;
+    document.body.appendChild(debugBtn);
+
+    // ✅ ADDED: Clear Storage Button (for testing)
+    const clearBtn = document.createElement('button');
+    clearBtn.textContent = 'Clear Storage';
+    clearBtn.style.cssText = 'position: fixed; bottom: 20px; right: 260px; padding: 10px; background: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer; z-index: 1000;';
+    clearBtn.onclick = function() {
+        localStorage.clear();
+        alert('🗑️ Storage cleared!');
+        location.reload();
+    };
+    document.body.appendChild(clearBtn);
 </script>
 </body>
 </html>

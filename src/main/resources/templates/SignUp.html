@@ -40,7 +40,7 @@
                     <div class="role-option" data-role="admin">
                         <input type="radio" id="role-admin" name="role" value="ADMIN" required>
                         <i class='bx bx-book-alt role-icon'></i>
-                        <span>ADMIN</span>
+                        <span>PUBLISHER</span>
                     </div>
                 </div>
             </div>
@@ -232,7 +232,7 @@
 
         if (response.ok && result.success) {
           if (selectedRole === 'ADMIN') {
-            alert('✅ Admin account created successfully! Please wait for super admin approval.');
+            alert('✅ Publisher account created successfully! Please wait for  Admin approval.');
           } else {
             alert('✅ User account created successfully! Redirecting to login...');
             setTimeout(() => {
