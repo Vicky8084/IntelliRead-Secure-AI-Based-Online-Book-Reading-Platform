@@ -40,7 +40,7 @@ public class AdminService {
         admin.setName(dto.getName());
         admin.setEmail(dto.getEmail());
         admin.setPasswordHash(passwordEncoder.encode(dto.getPasswordHash()));
-        admin.setRole(Role.ADMIN);
+        admin.setRole(Role.ROLE);
         admin.setStatus(Status.ACTIVE);
         admin.setPreferredLanguage(dto.getPreferredLanguage());
 

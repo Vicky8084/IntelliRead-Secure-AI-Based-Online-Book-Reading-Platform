@@ -37,11 +37,21 @@
                         <i class='bx bx-user-circle role-icon'></i>
                         <span>USER</span>
                     </div>
+
+
+
+                    //------------------------------------------------//
+                    //                 ADMIN-PUBLISHER
+                    //------------------------------------------------//
                     <div class="role-option" data-role="admin">
                         <input type="radio" id="role-admin" name="role" value="ADMIN" required>
                         <i class='bx bx-book-alt role-icon'></i>
-                        <span>PUBLISHER</span>
+                        <span>PUBLISHER</span> //ye ADMIN hi h isko PUBLISHER hi rhne do
                     </div>
+
+
+
+
                 </div>
             </div>
             <!-- Full Name -->
@@ -205,18 +215,16 @@
       try {
         const selectedRole = document.querySelector('input[name="role"]:checked').value;
 
-        // ✅ FIXED: Backend compatible data
         const userData = {
           name: fullName.value.trim(),
           email: email.value.trim(),
-          passwordHash: password.value,  // ✅ passwordHash field
-          role: selectedRole,  // ✅ USER or ADMIN (exact enum values)
-          preferredLanguage: "English"  // ✅ Required field
+          passwordHash: password.value,
+          role: selectedRole,
+          preferredLanguage: "English"
         };
 
         console.log('🔄 Sending signup request...', userData);
 
-        // ✅ FIXED: Correct endpoint
         const response = await fetch('/auth/register', {
           method: 'POST',
           headers: {

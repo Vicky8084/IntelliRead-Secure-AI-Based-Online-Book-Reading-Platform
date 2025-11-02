@@ -1139,3 +1139,1591 @@
         users u1_0 
     where
         u1_0.email=?
+2025-11-03 00:47:34 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 00:47:34 - Graceful shutdown complete
+2025-11-03 00:47:34 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 00:47:35 - HikariPool-1 - Shutdown initiated...
+2025-11-03 00:47:35 - HikariPool-1 - Shutdown completed.
+2025-11-03 00:48:05 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 34046 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 00:48:05 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 00:48:05 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 00:48:05 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 00:48:05 - Finished Spring Data repository scanning in 30 ms. Found 6 JPA repository interfaces.
+2025-11-03 00:48:06 - Tomcat initialized with port 8035 (http)
+2025-11-03 00:48:06 - Starting service [Tomcat]
+2025-11-03 00:48:06 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 00:48:06 - Initializing Spring embedded WebApplicationContext
+2025-11-03 00:48:06 - Root WebApplicationContext: initialization completed in 756 ms
+2025-11-03 00:48:06 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 00:48:06 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 00:48:06 - HHH000026: Second-level cache disabled
+2025-11-03 00:48:06 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 00:48:06 - HikariPool-1 - Starting...
+2025-11-03 00:48:06 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7a3643e3
+2025-11-03 00:48:06 - HikariPool-1 - Start completed.
+2025-11-03 00:48:06 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 00:48:06 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 00:48:06 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 00:48:07 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 00:48:07 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 00:48:07 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 00:48:07 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 00:48:08 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 00:48:11 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 00:48:11 - Started OnlineReadingPaltformApplication in 5.829 seconds (process running for 6.086)
+2025-11-03 00:48:11 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 00:48:11 - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-11-03 00:48:11 - Application run failed
+org.springframework.dao.InvalidDataAccessApiUsageException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.ADMIN
+	at org.springframework.orm.jpa.EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(EntityManagerFactoryUtils.java:371)
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:246)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:560)
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61)
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:343)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:160)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:136)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at jdk.proxy2/jdk.proxy2.$Proxy134.findUserByEmail(Unknown Source)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.run(OnlineReadingPaltformApplication.java:31)
+	at org.springframework.boot.SpringApplication.lambda$callRunner$5(SpringApplication.java:788)
+	at org.springframework.util.function.ThrowingConsumer$1.acceptWithException(ThrowingConsumer.java:82)
+	at org.springframework.util.function.ThrowingConsumer.accept(ThrowingConsumer.java:60)
+	at org.springframework.util.function.ThrowingConsumer$1.accept(ThrowingConsumer.java:86)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:796)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:787)
+	at org.springframework.boot.SpringApplication.lambda$callRunners$3(SpringApplication.java:772)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:357)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:510)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:772)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:325)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.main(OnlineReadingPaltformApplication.java:23)
+Caused by: java.lang.IllegalArgumentException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.ADMIN
+	at java.base/java.lang.Enum.valueOf(Enum.java:293)
+	at org.hibernate.type.descriptor.java.EnumJavaType.fromName(EnumJavaType.java:259)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:127)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:36)
+	at org.hibernate.type.descriptor.jdbc.EnumJdbcType$2.doExtract(EnumJdbcType.java:81)
+	at org.hibernate.type.descriptor.jdbc.BasicExtractor.extract(BasicExtractor.java:44)
+	at org.hibernate.sql.results.jdbc.internal.JdbcValuesResultSetImpl.getCurrentRowValue(JdbcValuesResultSetImpl.java:387)
+	at org.hibernate.sql.results.internal.RowProcessingStateStandardImpl.getJdbcValue(RowProcessingStateStandardImpl.java:152)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.extractRawValue(BasicResultAssembler.java:54)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.assemble(BasicResultAssembler.java:60)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.extractConcreteTypeStateValues(EntityInitializerImpl.java:1611)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeEntityInstance(EntityInitializerImpl.java:1337)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:1316)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:97)
+	at org.hibernate.sql.results.internal.StandardRowReader.coordinateInitializers(StandardRowReader.java:244)
+	at org.hibernate.sql.results.internal.StandardRowReader.readRow(StandardRowReader.java:141)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.read(ListResultsConsumer.java:249)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:201)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:35)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:224)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:102)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.executeQuery(JdbcSelectExecutor.java:91)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.list(JdbcSelectExecutor.java:165)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:149)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:439)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:359)
+	at org.hibernate.query.sqm.internal.QuerySqmImpl.doList(QuerySqmImpl.java:380)
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:143)
+	at org.hibernate.query.spi.AbstractSelectionQuery.getSingleResult(AbstractSelectionQuery.java:275)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$DeferredQueryInvocationHandler.invoke(SharedEntityManagerCreator.java:419)
+	at jdk.proxy2/jdk.proxy2.$Proxy151.getSingleResult(Unknown Source)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:226)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:95)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:160)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:148)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:170)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	... 26 common frames omitted
+2025-11-03 00:48:11 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 00:48:11 - Graceful shutdown complete
+2025-11-03 00:48:11 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 00:48:11 - HikariPool-1 - Shutdown initiated...
+2025-11-03 00:48:11 - HikariPool-1 - Shutdown completed.
+2025-11-03 00:50:40 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 34090 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 00:50:40 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 00:50:40 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 00:50:40 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 00:50:40 - Finished Spring Data repository scanning in 33 ms. Found 6 JPA repository interfaces.
+2025-11-03 00:50:40 - Tomcat initialized with port 8035 (http)
+2025-11-03 00:50:40 - Starting service [Tomcat]
+2025-11-03 00:50:40 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 00:50:40 - Initializing Spring embedded WebApplicationContext
+2025-11-03 00:50:40 - Root WebApplicationContext: initialization completed in 790 ms
+2025-11-03 00:50:40 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 00:50:40 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 00:50:40 - HHH000026: Second-level cache disabled
+2025-11-03 00:50:41 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 00:50:41 - HikariPool-1 - Starting...
+2025-11-03 00:50:41 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@58b8f9e3
+2025-11-03 00:50:41 - HikariPool-1 - Start completed.
+2025-11-03 00:50:41 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 00:50:41 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 00:50:41 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 00:50:41 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 00:50:41 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 00:50:42 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 00:50:42 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 00:50:42 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 00:50:45 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 00:50:45 - Started OnlineReadingPaltformApplication in 5.39 seconds (process running for 5.741)
+2025-11-03 00:50:45 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 00:50:45 - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-11-03 00:50:45 - Application run failed
+org.springframework.dao.InvalidDataAccessApiUsageException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.ADMIN
+	at org.springframework.orm.jpa.EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(EntityManagerFactoryUtils.java:371)
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:246)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:560)
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61)
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:343)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:160)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:136)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at jdk.proxy2/jdk.proxy2.$Proxy134.findUserByEmail(Unknown Source)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.run(OnlineReadingPaltformApplication.java:31)
+	at org.springframework.boot.SpringApplication.lambda$callRunner$5(SpringApplication.java:788)
+	at org.springframework.util.function.ThrowingConsumer$1.acceptWithException(ThrowingConsumer.java:82)
+	at org.springframework.util.function.ThrowingConsumer.accept(ThrowingConsumer.java:60)
+	at org.springframework.util.function.ThrowingConsumer$1.accept(ThrowingConsumer.java:86)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:796)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:787)
+	at org.springframework.boot.SpringApplication.lambda$callRunners$3(SpringApplication.java:772)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:357)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:510)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:772)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:325)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.main(OnlineReadingPaltformApplication.java:23)
+Caused by: java.lang.IllegalArgumentException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.ADMIN
+	at java.base/java.lang.Enum.valueOf(Enum.java:293)
+	at org.hibernate.type.descriptor.java.EnumJavaType.fromName(EnumJavaType.java:259)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:127)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:36)
+	at org.hibernate.type.descriptor.jdbc.EnumJdbcType$2.doExtract(EnumJdbcType.java:81)
+	at org.hibernate.type.descriptor.jdbc.BasicExtractor.extract(BasicExtractor.java:44)
+	at org.hibernate.sql.results.jdbc.internal.JdbcValuesResultSetImpl.getCurrentRowValue(JdbcValuesResultSetImpl.java:387)
+	at org.hibernate.sql.results.internal.RowProcessingStateStandardImpl.getJdbcValue(RowProcessingStateStandardImpl.java:152)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.extractRawValue(BasicResultAssembler.java:54)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.assemble(BasicResultAssembler.java:60)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.extractConcreteTypeStateValues(EntityInitializerImpl.java:1611)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeEntityInstance(EntityInitializerImpl.java:1337)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:1316)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:97)
+	at org.hibernate.sql.results.internal.StandardRowReader.coordinateInitializers(StandardRowReader.java:244)
+	at org.hibernate.sql.results.internal.StandardRowReader.readRow(StandardRowReader.java:141)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.read(ListResultsConsumer.java:249)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:201)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:35)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:224)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:102)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.executeQuery(JdbcSelectExecutor.java:91)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.list(JdbcSelectExecutor.java:165)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:149)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:439)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:359)
+	at org.hibernate.query.sqm.internal.QuerySqmImpl.doList(QuerySqmImpl.java:380)
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:143)
+	at org.hibernate.query.spi.AbstractSelectionQuery.getSingleResult(AbstractSelectionQuery.java:275)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$DeferredQueryInvocationHandler.invoke(SharedEntityManagerCreator.java:419)
+	at jdk.proxy2/jdk.proxy2.$Proxy151.getSingleResult(Unknown Source)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:226)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:95)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:160)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:148)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:170)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	... 26 common frames omitted
+2025-11-03 00:50:45 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 00:50:45 - Graceful shutdown complete
+2025-11-03 00:50:45 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 00:50:45 - HikariPool-1 - Shutdown initiated...
+2025-11-03 00:50:45 - HikariPool-1 - Shutdown completed.
+2025-11-03 00:53:55 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 34290 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 00:53:55 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 00:53:55 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 00:53:56 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 00:53:56 - Finished Spring Data repository scanning in 29 ms. Found 6 JPA repository interfaces.
+2025-11-03 00:53:56 - Tomcat initialized with port 8035 (http)
+2025-11-03 00:53:56 - Starting service [Tomcat]
+2025-11-03 00:53:56 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 00:53:56 - Initializing Spring embedded WebApplicationContext
+2025-11-03 00:53:56 - Root WebApplicationContext: initialization completed in 779 ms
+2025-11-03 00:53:56 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 00:53:56 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 00:53:56 - HHH000026: Second-level cache disabled
+2025-11-03 00:53:57 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 00:53:57 - HikariPool-1 - Starting...
+2025-11-03 00:53:57 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@14292d71
+2025-11-03 00:53:57 - HikariPool-1 - Start completed.
+2025-11-03 00:53:57 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 00:53:57 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 00:53:57 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 00:53:57 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 00:53:57 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 00:53:57 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 00:53:57 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 00:53:58 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 00:54:01 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 00:54:01 - Started OnlineReadingPaltformApplication in 5.619 seconds (process running for 5.845)
+2025-11-03 00:54:01 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 00:54:01 - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-11-03 00:54:01 - Application run failed
+org.springframework.dao.InvalidDataAccessApiUsageException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.ADMIN
+	at org.springframework.orm.jpa.EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(EntityManagerFactoryUtils.java:371)
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:246)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:560)
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61)
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:343)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:160)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:136)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at jdk.proxy2/jdk.proxy2.$Proxy134.findUserByEmail(Unknown Source)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.run(OnlineReadingPaltformApplication.java:31)
+	at org.springframework.boot.SpringApplication.lambda$callRunner$5(SpringApplication.java:788)
+	at org.springframework.util.function.ThrowingConsumer$1.acceptWithException(ThrowingConsumer.java:82)
+	at org.springframework.util.function.ThrowingConsumer.accept(ThrowingConsumer.java:60)
+	at org.springframework.util.function.ThrowingConsumer$1.accept(ThrowingConsumer.java:86)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:796)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:787)
+	at org.springframework.boot.SpringApplication.lambda$callRunners$3(SpringApplication.java:772)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:357)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:510)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:772)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:325)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.main(OnlineReadingPaltformApplication.java:23)
+Caused by: java.lang.IllegalArgumentException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.ADMIN
+	at java.base/java.lang.Enum.valueOf(Enum.java:293)
+	at org.hibernate.type.descriptor.java.EnumJavaType.fromName(EnumJavaType.java:259)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:127)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:36)
+	at org.hibernate.type.descriptor.jdbc.EnumJdbcType$2.doExtract(EnumJdbcType.java:81)
+	at org.hibernate.type.descriptor.jdbc.BasicExtractor.extract(BasicExtractor.java:44)
+	at org.hibernate.sql.results.jdbc.internal.JdbcValuesResultSetImpl.getCurrentRowValue(JdbcValuesResultSetImpl.java:387)
+	at org.hibernate.sql.results.internal.RowProcessingStateStandardImpl.getJdbcValue(RowProcessingStateStandardImpl.java:152)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.extractRawValue(BasicResultAssembler.java:54)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.assemble(BasicResultAssembler.java:60)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.extractConcreteTypeStateValues(EntityInitializerImpl.java:1611)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeEntityInstance(EntityInitializerImpl.java:1337)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:1316)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:97)
+	at org.hibernate.sql.results.internal.StandardRowReader.coordinateInitializers(StandardRowReader.java:244)
+	at org.hibernate.sql.results.internal.StandardRowReader.readRow(StandardRowReader.java:141)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.read(ListResultsConsumer.java:249)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:201)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:35)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:224)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:102)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.executeQuery(JdbcSelectExecutor.java:91)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.list(JdbcSelectExecutor.java:165)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:149)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:439)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:359)
+	at org.hibernate.query.sqm.internal.QuerySqmImpl.doList(QuerySqmImpl.java:380)
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:143)
+	at org.hibernate.query.spi.AbstractSelectionQuery.getSingleResult(AbstractSelectionQuery.java:275)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$DeferredQueryInvocationHandler.invoke(SharedEntityManagerCreator.java:419)
+	at jdk.proxy2/jdk.proxy2.$Proxy151.getSingleResult(Unknown Source)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:226)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:95)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:160)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:148)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:170)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	... 26 common frames omitted
+2025-11-03 00:54:01 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 00:54:01 - Graceful shutdown complete
+2025-11-03 00:54:01 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 00:54:01 - HikariPool-1 - Shutdown initiated...
+2025-11-03 00:54:01 - HikariPool-1 - Shutdown completed.
+2025-11-03 01:22:12 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 35009 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 01:22:12 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 01:22:12 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 01:22:12 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 01:22:12 - Finished Spring Data repository scanning in 39 ms. Found 6 JPA repository interfaces.
+2025-11-03 01:22:13 - Tomcat initialized with port 8035 (http)
+2025-11-03 01:22:13 - Starting service [Tomcat]
+2025-11-03 01:22:13 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 01:22:13 - Initializing Spring embedded WebApplicationContext
+2025-11-03 01:22:13 - Root WebApplicationContext: initialization completed in 892 ms
+2025-11-03 01:22:13 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 01:22:13 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 01:22:13 - HHH000026: Second-level cache disabled
+2025-11-03 01:22:13 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 01:22:13 - HikariPool-1 - Starting...
+2025-11-03 01:22:13 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4d8056bf
+2025-11-03 01:22:13 - HikariPool-1 - Start completed.
+2025-11-03 01:22:13 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 01:22:13 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 01:22:13 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 01:22:14 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 01:22:14 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 01:22:14 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 01:22:14 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 01:22:14 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 01:22:19 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 01:22:19 - Started OnlineReadingPaltformApplication in 7.424 seconds (process running for 7.684)
+2025-11-03 01:22:19 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 01:22:19 - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-11-03 01:22:19 - Application run failed
+org.springframework.dao.InvalidDataAccessApiUsageException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.ADMIN
+	at org.springframework.orm.jpa.EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(EntityManagerFactoryUtils.java:371)
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:246)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:560)
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61)
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:343)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:160)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:136)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at jdk.proxy2/jdk.proxy2.$Proxy134.findUserByEmail(Unknown Source)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.run(OnlineReadingPaltformApplication.java:31)
+	at org.springframework.boot.SpringApplication.lambda$callRunner$5(SpringApplication.java:788)
+	at org.springframework.util.function.ThrowingConsumer$1.acceptWithException(ThrowingConsumer.java:82)
+	at org.springframework.util.function.ThrowingConsumer.accept(ThrowingConsumer.java:60)
+	at org.springframework.util.function.ThrowingConsumer$1.accept(ThrowingConsumer.java:86)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:796)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:787)
+	at org.springframework.boot.SpringApplication.lambda$callRunners$3(SpringApplication.java:772)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:357)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:510)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:772)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:325)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.main(OnlineReadingPaltformApplication.java:23)
+Caused by: java.lang.IllegalArgumentException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.ADMIN
+	at java.base/java.lang.Enum.valueOf(Enum.java:293)
+	at org.hibernate.type.descriptor.java.EnumJavaType.fromName(EnumJavaType.java:259)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:127)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:36)
+	at org.hibernate.type.descriptor.jdbc.EnumJdbcType$2.doExtract(EnumJdbcType.java:81)
+	at org.hibernate.type.descriptor.jdbc.BasicExtractor.extract(BasicExtractor.java:44)
+	at org.hibernate.sql.results.jdbc.internal.JdbcValuesResultSetImpl.getCurrentRowValue(JdbcValuesResultSetImpl.java:387)
+	at org.hibernate.sql.results.internal.RowProcessingStateStandardImpl.getJdbcValue(RowProcessingStateStandardImpl.java:152)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.extractRawValue(BasicResultAssembler.java:54)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.assemble(BasicResultAssembler.java:60)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.extractConcreteTypeStateValues(EntityInitializerImpl.java:1611)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeEntityInstance(EntityInitializerImpl.java:1337)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:1316)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:97)
+	at org.hibernate.sql.results.internal.StandardRowReader.coordinateInitializers(StandardRowReader.java:244)
+	at org.hibernate.sql.results.internal.StandardRowReader.readRow(StandardRowReader.java:141)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.read(ListResultsConsumer.java:249)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:201)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:35)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:224)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:102)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.executeQuery(JdbcSelectExecutor.java:91)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.list(JdbcSelectExecutor.java:165)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:149)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:439)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:359)
+	at org.hibernate.query.sqm.internal.QuerySqmImpl.doList(QuerySqmImpl.java:380)
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:143)
+	at org.hibernate.query.spi.AbstractSelectionQuery.getSingleResult(AbstractSelectionQuery.java:275)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$DeferredQueryInvocationHandler.invoke(SharedEntityManagerCreator.java:419)
+	at jdk.proxy2/jdk.proxy2.$Proxy151.getSingleResult(Unknown Source)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:226)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:95)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:160)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:148)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:170)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	... 26 common frames omitted
+2025-11-03 01:22:19 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 01:22:19 - Graceful shutdown complete
+2025-11-03 01:22:19 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 01:22:19 - HikariPool-1 - Shutdown initiated...
+2025-11-03 01:22:19 - HikariPool-1 - Shutdown completed.
+2025-11-03 01:24:05 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 35086 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 01:24:05 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 01:24:05 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 01:24:05 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 01:24:05 - Finished Spring Data repository scanning in 31 ms. Found 6 JPA repository interfaces.
+2025-11-03 01:24:05 - Tomcat initialized with port 8035 (http)
+2025-11-03 01:24:05 - Starting service [Tomcat]
+2025-11-03 01:24:05 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 01:24:05 - Initializing Spring embedded WebApplicationContext
+2025-11-03 01:24:05 - Root WebApplicationContext: initialization completed in 833 ms
+2025-11-03 01:24:06 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 01:24:06 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 01:24:06 - HHH000026: Second-level cache disabled
+2025-11-03 01:24:06 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 01:24:06 - HikariPool-1 - Starting...
+2025-11-03 01:24:06 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5a51336a
+2025-11-03 01:24:06 - HikariPool-1 - Start completed.
+2025-11-03 01:24:06 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 01:24:06 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 01:24:06 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 01:24:06 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 01:24:07 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 01:24:07 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 01:24:07 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 01:24:07 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 01:24:11 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 01:24:11 - Started OnlineReadingPaltformApplication in 6.345 seconds (process running for 6.661)
+2025-11-03 01:24:11 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 01:24:11 - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-11-03 01:24:11 - Application run failed
+org.springframework.dao.InvalidDataAccessApiUsageException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.ADMIN
+	at org.springframework.orm.jpa.EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(EntityManagerFactoryUtils.java:371)
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:246)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:560)
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61)
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:343)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:160)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:136)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at jdk.proxy2/jdk.proxy2.$Proxy134.findUserByEmail(Unknown Source)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.run(OnlineReadingPaltformApplication.java:31)
+	at org.springframework.boot.SpringApplication.lambda$callRunner$5(SpringApplication.java:788)
+	at org.springframework.util.function.ThrowingConsumer$1.acceptWithException(ThrowingConsumer.java:82)
+	at org.springframework.util.function.ThrowingConsumer.accept(ThrowingConsumer.java:60)
+	at org.springframework.util.function.ThrowingConsumer$1.accept(ThrowingConsumer.java:86)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:796)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:787)
+	at org.springframework.boot.SpringApplication.lambda$callRunners$3(SpringApplication.java:772)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:357)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:510)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:772)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:325)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.main(OnlineReadingPaltformApplication.java:23)
+Caused by: java.lang.IllegalArgumentException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.ADMIN
+	at java.base/java.lang.Enum.valueOf(Enum.java:293)
+	at org.hibernate.type.descriptor.java.EnumJavaType.fromName(EnumJavaType.java:259)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:127)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:36)
+	at org.hibernate.type.descriptor.jdbc.EnumJdbcType$2.doExtract(EnumJdbcType.java:81)
+	at org.hibernate.type.descriptor.jdbc.BasicExtractor.extract(BasicExtractor.java:44)
+	at org.hibernate.sql.results.jdbc.internal.JdbcValuesResultSetImpl.getCurrentRowValue(JdbcValuesResultSetImpl.java:387)
+	at org.hibernate.sql.results.internal.RowProcessingStateStandardImpl.getJdbcValue(RowProcessingStateStandardImpl.java:152)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.extractRawValue(BasicResultAssembler.java:54)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.assemble(BasicResultAssembler.java:60)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.extractConcreteTypeStateValues(EntityInitializerImpl.java:1611)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeEntityInstance(EntityInitializerImpl.java:1337)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:1316)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:97)
+	at org.hibernate.sql.results.internal.StandardRowReader.coordinateInitializers(StandardRowReader.java:244)
+	at org.hibernate.sql.results.internal.StandardRowReader.readRow(StandardRowReader.java:141)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.read(ListResultsConsumer.java:249)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:201)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:35)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:224)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:102)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.executeQuery(JdbcSelectExecutor.java:91)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.list(JdbcSelectExecutor.java:165)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:149)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:439)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:359)
+	at org.hibernate.query.sqm.internal.QuerySqmImpl.doList(QuerySqmImpl.java:380)
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:143)
+	at org.hibernate.query.spi.AbstractSelectionQuery.getSingleResult(AbstractSelectionQuery.java:275)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$DeferredQueryInvocationHandler.invoke(SharedEntityManagerCreator.java:419)
+	at jdk.proxy2/jdk.proxy2.$Proxy151.getSingleResult(Unknown Source)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:226)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:95)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:160)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:148)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:170)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	... 26 common frames omitted
+2025-11-03 01:24:11 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 01:24:11 - Graceful shutdown complete
+2025-11-03 01:24:11 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 01:24:11 - HikariPool-1 - Shutdown initiated...
+2025-11-03 01:24:11 - HikariPool-1 - Shutdown completed.
+2025-11-03 01:25:49 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 35142 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 01:25:49 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 01:25:49 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 01:25:49 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 01:25:49 - Finished Spring Data repository scanning in 29 ms. Found 6 JPA repository interfaces.
+2025-11-03 01:25:49 - Tomcat initialized with port 8035 (http)
+2025-11-03 01:25:49 - Starting service [Tomcat]
+2025-11-03 01:25:49 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 01:25:49 - Initializing Spring embedded WebApplicationContext
+2025-11-03 01:25:49 - Root WebApplicationContext: initialization completed in 718 ms
+2025-11-03 01:25:49 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 01:25:50 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 01:25:50 - HHH000026: Second-level cache disabled
+2025-11-03 01:25:50 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 01:25:50 - HikariPool-1 - Starting...
+2025-11-03 01:25:50 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2729bb71
+2025-11-03 01:25:50 - HikariPool-1 - Start completed.
+2025-11-03 01:25:50 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 01:25:50 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 01:25:50 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 01:25:50 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 01:25:50 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 01:25:51 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 01:25:51 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 01:25:51 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 01:25:55 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 01:25:55 - Started OnlineReadingPaltformApplication in 6.153 seconds (process running for 6.443)
+2025-11-03 01:25:55 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 01:25:55 - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-11-03 01:25:55 - Application run failed
+org.springframework.dao.InvalidDataAccessApiUsageException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.ADMIN
+	at org.springframework.orm.jpa.EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(EntityManagerFactoryUtils.java:371)
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:246)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:560)
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61)
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:343)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:160)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:136)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at jdk.proxy2/jdk.proxy2.$Proxy134.findUserByEmail(Unknown Source)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.run(OnlineReadingPaltformApplication.java:31)
+	at org.springframework.boot.SpringApplication.lambda$callRunner$5(SpringApplication.java:788)
+	at org.springframework.util.function.ThrowingConsumer$1.acceptWithException(ThrowingConsumer.java:82)
+	at org.springframework.util.function.ThrowingConsumer.accept(ThrowingConsumer.java:60)
+	at org.springframework.util.function.ThrowingConsumer$1.accept(ThrowingConsumer.java:86)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:796)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:787)
+	at org.springframework.boot.SpringApplication.lambda$callRunners$3(SpringApplication.java:772)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:357)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:510)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:772)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:325)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.main(OnlineReadingPaltformApplication.java:23)
+Caused by: java.lang.IllegalArgumentException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.ADMIN
+	at java.base/java.lang.Enum.valueOf(Enum.java:293)
+	at org.hibernate.type.descriptor.java.EnumJavaType.fromName(EnumJavaType.java:259)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:127)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:36)
+	at org.hibernate.type.descriptor.jdbc.EnumJdbcType$2.doExtract(EnumJdbcType.java:81)
+	at org.hibernate.type.descriptor.jdbc.BasicExtractor.extract(BasicExtractor.java:44)
+	at org.hibernate.sql.results.jdbc.internal.JdbcValuesResultSetImpl.getCurrentRowValue(JdbcValuesResultSetImpl.java:387)
+	at org.hibernate.sql.results.internal.RowProcessingStateStandardImpl.getJdbcValue(RowProcessingStateStandardImpl.java:152)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.extractRawValue(BasicResultAssembler.java:54)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.assemble(BasicResultAssembler.java:60)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.extractConcreteTypeStateValues(EntityInitializerImpl.java:1611)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeEntityInstance(EntityInitializerImpl.java:1337)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:1316)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:97)
+	at org.hibernate.sql.results.internal.StandardRowReader.coordinateInitializers(StandardRowReader.java:244)
+	at org.hibernate.sql.results.internal.StandardRowReader.readRow(StandardRowReader.java:141)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.read(ListResultsConsumer.java:249)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:201)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:35)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:224)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:102)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.executeQuery(JdbcSelectExecutor.java:91)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.list(JdbcSelectExecutor.java:165)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:149)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:439)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:359)
+	at org.hibernate.query.sqm.internal.QuerySqmImpl.doList(QuerySqmImpl.java:380)
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:143)
+	at org.hibernate.query.spi.AbstractSelectionQuery.getSingleResult(AbstractSelectionQuery.java:275)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$DeferredQueryInvocationHandler.invoke(SharedEntityManagerCreator.java:419)
+	at jdk.proxy2/jdk.proxy2.$Proxy151.getSingleResult(Unknown Source)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:226)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:95)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:160)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:148)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:170)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	... 26 common frames omitted
+2025-11-03 01:25:55 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 01:25:55 - Graceful shutdown complete
+2025-11-03 01:25:55 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 01:25:55 - HikariPool-1 - Shutdown initiated...
+2025-11-03 01:25:55 - HikariPool-1 - Shutdown completed.
+2025-11-03 01:27:01 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 35159 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 01:27:01 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 01:27:01 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 01:27:02 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 01:27:02 - Finished Spring Data repository scanning in 29 ms. Found 6 JPA repository interfaces.
+2025-11-03 01:27:02 - Tomcat initialized with port 8035 (http)
+2025-11-03 01:27:02 - Starting service [Tomcat]
+2025-11-03 01:27:02 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 01:27:02 - Initializing Spring embedded WebApplicationContext
+2025-11-03 01:27:02 - Root WebApplicationContext: initialization completed in 734 ms
+2025-11-03 01:27:02 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 01:27:02 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 01:27:02 - HHH000026: Second-level cache disabled
+2025-11-03 01:27:02 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 01:27:02 - HikariPool-1 - Starting...
+2025-11-03 01:27:02 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1cc9bd9b
+2025-11-03 01:27:02 - HikariPool-1 - Start completed.
+2025-11-03 01:27:02 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 01:27:02 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 01:27:02 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 01:27:03 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 01:27:03 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 01:27:03 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 01:27:03 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 01:27:04 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 01:27:06 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 01:27:06 - Started OnlineReadingPaltformApplication in 5.352 seconds (process running for 5.664)
+2025-11-03 01:27:06 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 01:27:06 - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-11-03 01:27:06 - Application run failed
+org.springframework.dao.InvalidDataAccessApiUsageException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.ADMIN
+	at org.springframework.orm.jpa.EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(EntityManagerFactoryUtils.java:371)
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:246)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:560)
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61)
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:343)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:160)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:136)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at jdk.proxy2/jdk.proxy2.$Proxy134.findUserByEmail(Unknown Source)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.run(OnlineReadingPaltformApplication.java:31)
+	at org.springframework.boot.SpringApplication.lambda$callRunner$5(SpringApplication.java:788)
+	at org.springframework.util.function.ThrowingConsumer$1.acceptWithException(ThrowingConsumer.java:82)
+	at org.springframework.util.function.ThrowingConsumer.accept(ThrowingConsumer.java:60)
+	at org.springframework.util.function.ThrowingConsumer$1.accept(ThrowingConsumer.java:86)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:796)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:787)
+	at org.springframework.boot.SpringApplication.lambda$callRunners$3(SpringApplication.java:772)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:357)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:510)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:772)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:325)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.main(OnlineReadingPaltformApplication.java:23)
+Caused by: java.lang.IllegalArgumentException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.ADMIN
+	at java.base/java.lang.Enum.valueOf(Enum.java:293)
+	at org.hibernate.type.descriptor.java.EnumJavaType.fromName(EnumJavaType.java:259)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:127)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:36)
+	at org.hibernate.type.descriptor.jdbc.EnumJdbcType$2.doExtract(EnumJdbcType.java:81)
+	at org.hibernate.type.descriptor.jdbc.BasicExtractor.extract(BasicExtractor.java:44)
+	at org.hibernate.sql.results.jdbc.internal.JdbcValuesResultSetImpl.getCurrentRowValue(JdbcValuesResultSetImpl.java:387)
+	at org.hibernate.sql.results.internal.RowProcessingStateStandardImpl.getJdbcValue(RowProcessingStateStandardImpl.java:152)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.extractRawValue(BasicResultAssembler.java:54)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.assemble(BasicResultAssembler.java:60)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.extractConcreteTypeStateValues(EntityInitializerImpl.java:1611)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeEntityInstance(EntityInitializerImpl.java:1337)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:1316)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:97)
+	at org.hibernate.sql.results.internal.StandardRowReader.coordinateInitializers(StandardRowReader.java:244)
+	at org.hibernate.sql.results.internal.StandardRowReader.readRow(StandardRowReader.java:141)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.read(ListResultsConsumer.java:249)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:201)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:35)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:224)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:102)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.executeQuery(JdbcSelectExecutor.java:91)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.list(JdbcSelectExecutor.java:165)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:149)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:439)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:359)
+	at org.hibernate.query.sqm.internal.QuerySqmImpl.doList(QuerySqmImpl.java:380)
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:143)
+	at org.hibernate.query.spi.AbstractSelectionQuery.getSingleResult(AbstractSelectionQuery.java:275)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$DeferredQueryInvocationHandler.invoke(SharedEntityManagerCreator.java:419)
+	at jdk.proxy2/jdk.proxy2.$Proxy151.getSingleResult(Unknown Source)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:226)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:95)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:160)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:148)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:170)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	... 26 common frames omitted
+2025-11-03 01:27:06 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 01:27:06 - Graceful shutdown complete
+2025-11-03 01:27:06 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 01:27:06 - HikariPool-1 - Shutdown initiated...
+2025-11-03 01:27:06 - HikariPool-1 - Shutdown completed.
+2025-11-03 01:28:04 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 35186 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 01:28:04 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 01:28:04 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 01:28:05 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 01:28:05 - Finished Spring Data repository scanning in 31 ms. Found 6 JPA repository interfaces.
+2025-11-03 01:28:05 - Tomcat initialized with port 8035 (http)
+2025-11-03 01:28:05 - Starting service [Tomcat]
+2025-11-03 01:28:05 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 01:28:05 - Initializing Spring embedded WebApplicationContext
+2025-11-03 01:28:05 - Root WebApplicationContext: initialization completed in 741 ms
+2025-11-03 01:28:05 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 01:28:05 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 01:28:05 - HHH000026: Second-level cache disabled
+2025-11-03 01:28:05 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 01:28:05 - HikariPool-1 - Starting...
+2025-11-03 01:28:05 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@416b1265
+2025-11-03 01:28:05 - HikariPool-1 - Start completed.
+2025-11-03 01:28:05 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 01:28:05 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 01:28:05 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 01:28:06 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 01:28:06 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 01:28:06 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 01:28:06 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 01:28:07 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 01:28:10 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 01:28:10 - Started OnlineReadingPaltformApplication in 5.901 seconds (process running for 6.306)
+2025-11-03 01:28:10 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 01:28:10 - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-11-03 01:28:10 - Application run failed
+org.springframework.dao.InvalidDataAccessApiUsageException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.ADMIN
+	at org.springframework.orm.jpa.EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(EntityManagerFactoryUtils.java:371)
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:246)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:560)
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61)
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:343)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:160)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:136)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at jdk.proxy2/jdk.proxy2.$Proxy134.findUserByEmail(Unknown Source)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.run(OnlineReadingPaltformApplication.java:31)
+	at org.springframework.boot.SpringApplication.lambda$callRunner$5(SpringApplication.java:788)
+	at org.springframework.util.function.ThrowingConsumer$1.acceptWithException(ThrowingConsumer.java:82)
+	at org.springframework.util.function.ThrowingConsumer.accept(ThrowingConsumer.java:60)
+	at org.springframework.util.function.ThrowingConsumer$1.accept(ThrowingConsumer.java:86)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:796)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:787)
+	at org.springframework.boot.SpringApplication.lambda$callRunners$3(SpringApplication.java:772)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:357)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:510)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:772)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:325)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.main(OnlineReadingPaltformApplication.java:23)
+Caused by: java.lang.IllegalArgumentException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.ADMIN
+	at java.base/java.lang.Enum.valueOf(Enum.java:293)
+	at org.hibernate.type.descriptor.java.EnumJavaType.fromName(EnumJavaType.java:259)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:127)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:36)
+	at org.hibernate.type.descriptor.jdbc.EnumJdbcType$2.doExtract(EnumJdbcType.java:81)
+	at org.hibernate.type.descriptor.jdbc.BasicExtractor.extract(BasicExtractor.java:44)
+	at org.hibernate.sql.results.jdbc.internal.JdbcValuesResultSetImpl.getCurrentRowValue(JdbcValuesResultSetImpl.java:387)
+	at org.hibernate.sql.results.internal.RowProcessingStateStandardImpl.getJdbcValue(RowProcessingStateStandardImpl.java:152)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.extractRawValue(BasicResultAssembler.java:54)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.assemble(BasicResultAssembler.java:60)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.extractConcreteTypeStateValues(EntityInitializerImpl.java:1611)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeEntityInstance(EntityInitializerImpl.java:1337)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:1316)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:97)
+	at org.hibernate.sql.results.internal.StandardRowReader.coordinateInitializers(StandardRowReader.java:244)
+	at org.hibernate.sql.results.internal.StandardRowReader.readRow(StandardRowReader.java:141)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.read(ListResultsConsumer.java:249)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:201)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:35)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:224)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:102)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.executeQuery(JdbcSelectExecutor.java:91)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.list(JdbcSelectExecutor.java:165)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:149)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:439)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:359)
+	at org.hibernate.query.sqm.internal.QuerySqmImpl.doList(QuerySqmImpl.java:380)
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:143)
+	at org.hibernate.query.spi.AbstractSelectionQuery.getSingleResult(AbstractSelectionQuery.java:275)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$DeferredQueryInvocationHandler.invoke(SharedEntityManagerCreator.java:419)
+	at jdk.proxy2/jdk.proxy2.$Proxy151.getSingleResult(Unknown Source)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:226)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:95)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:160)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:148)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:170)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	... 26 common frames omitted
+2025-11-03 01:28:10 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 01:28:10 - Graceful shutdown complete
+2025-11-03 01:28:10 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 01:28:10 - HikariPool-1 - Shutdown initiated...
+2025-11-03 01:28:10 - HikariPool-1 - Shutdown completed.
+2025-11-03 01:29:06 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 35224 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 01:29:06 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 01:29:06 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 01:29:07 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 01:29:07 - Finished Spring Data repository scanning in 35 ms. Found 6 JPA repository interfaces.
+2025-11-03 01:29:07 - Tomcat initialized with port 8035 (http)
+2025-11-03 01:29:07 - Starting service [Tomcat]
+2025-11-03 01:29:07 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 01:29:07 - Initializing Spring embedded WebApplicationContext
+2025-11-03 01:29:07 - Root WebApplicationContext: initialization completed in 897 ms
+2025-11-03 01:29:07 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 01:29:07 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 01:29:07 - HHH000026: Second-level cache disabled
+2025-11-03 01:29:08 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 01:29:08 - HikariPool-1 - Starting...
+2025-11-03 01:29:08 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7e50eeb9
+2025-11-03 01:29:08 - HikariPool-1 - Start completed.
+2025-11-03 01:29:08 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 01:29:08 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 01:29:08 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 01:29:08 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 01:29:08 - 
+    create table book (
+        id integer not null auto_increment,
+        author varchar(255) not null,
+        cover_image_path varchar(255),
+        description TEXT not null,
+        extracted_text LONGTEXT,
+        file_name varchar(255),
+        file_path varchar(255),
+        file_size bigint,
+        file_type varchar(255),
+        language varchar(255) not null,
+        title varchar(255) not null,
+        uploaded_at datetime(6) not null,
+        category_id integer,
+        user_id integer,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-03 01:29:08 - 
+    create table category (
+        id integer not null auto_increment,
+        category_name varchar(255) not null,
+        description varchar(255),
+        parent_category_id integer,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-03 01:29:08 - 
+    create table password_reset_tokens (
+        id integer not null auto_increment,
+        expiry_date datetime(6) not null,
+        token varchar(255) not null,
+        used bit not null,
+        user_id integer not null,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-03 01:29:08 - 
+    create table review (
+        id integer not null auto_increment,
+        created_at datetime(6) not null,
+        rating integer not null,
+        review_text TEXT not null,
+        book_id integer,
+        user_id integer,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-03 01:29:08 - 
+    create table suggestion (
+        id integer not null auto_increment,
+        author varchar(255),
+        created_at datetime(6) not null,
+        suggested_title varchar(255) not null,
+        suggestion_status enum ('APPROVED','PENDING','REJECTED') not null,
+        user_id integer,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-03 01:29:08 - 
+    create table users (
+        id integer not null auto_increment,
+        created_date datetime(6) not null,
+        email varchar(255) not null,
+        name varchar(255) not null,
+        password_hash varchar(255) not null,
+        preferred_language varchar(255) not null,
+        role enum ('ROLE','USER') not null,
+        status enum ('ACTIVE','INACTIVE') not null,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-03 01:29:08 - 
+    alter table category 
+       drop index UKlroeo5fvfdeg4hpicn4lw7x9b
+2025-11-03 01:29:09 - 
+    alter table category 
+       add constraint UKlroeo5fvfdeg4hpicn4lw7x9b unique (category_name)
+2025-11-03 01:29:09 - 
+    alter table password_reset_tokens 
+       drop index UK71lqwbwtklmljk3qlsugr1mig
+2025-11-03 01:29:09 - 
+    alter table password_reset_tokens 
+       add constraint UK71lqwbwtklmljk3qlsugr1mig unique (token)
+2025-11-03 01:29:09 - 
+    alter table users 
+       drop index UK6dotkott2kjsp8vw4d0m25fb7
+2025-11-03 01:29:09 - 
+    alter table users 
+       add constraint UK6dotkott2kjsp8vw4d0m25fb7 unique (email)
+2025-11-03 01:29:09 - 
+    alter table book 
+       add constraint FKam9riv8y6rjwkua1gapdfew4j 
+       foreign key (category_id) 
+       references category (id)
+2025-11-03 01:29:09 - 
+    alter table book 
+       add constraint FK9cv1tt952k857xoia51k1vj12 
+       foreign key (user_id) 
+       references users (id)
+2025-11-03 01:29:09 - 
+    alter table category 
+       add constraint FKs2ride9gvilxy2tcuv7witnxc 
+       foreign key (parent_category_id) 
+       references category (id)
+2025-11-03 01:29:09 - 
+    alter table password_reset_tokens 
+       add constraint FKk3ndxg5xp6v7wd4gjyusp15gq 
+       foreign key (user_id) 
+       references users (id)
+2025-11-03 01:29:09 - 
+    alter table review 
+       add constraint FK70yrt09r4r54tcgkrwbeqenbs 
+       foreign key (book_id) 
+       references book (id)
+2025-11-03 01:29:09 - 
+    alter table review 
+       add constraint FK6cpw2nlklblpvc7hyt7ko6v3e 
+       foreign key (user_id) 
+       references users (id)
+2025-11-03 01:29:09 - 
+    alter table suggestion 
+       add constraint FKlwyt2aya9jw90lwo4wt6edstj 
+       foreign key (user_id) 
+       references users (id)
+2025-11-03 01:29:09 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 01:29:09 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 01:29:09 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 01:29:10 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 01:29:16 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 01:29:16 - Started OnlineReadingPaltformApplication in 9.988 seconds (process running for 10.4)
+2025-11-03 01:29:16 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 01:29:16 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-03 01:29:16 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-03 01:29:26 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 01:29:26 - Graceful shutdown complete
+2025-11-03 01:29:26 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 01:29:26 - HikariPool-1 - Shutdown initiated...
+2025-11-03 01:29:26 - HikariPool-1 - Shutdown completed.
+2025-11-03 01:29:27 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 35235 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 01:29:27 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 01:29:27 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 01:29:28 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 01:29:28 - Finished Spring Data repository scanning in 29 ms. Found 6 JPA repository interfaces.
+2025-11-03 01:29:28 - Tomcat initialized with port 8035 (http)
+2025-11-03 01:29:28 - Starting service [Tomcat]
+2025-11-03 01:29:28 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 01:29:28 - Initializing Spring embedded WebApplicationContext
+2025-11-03 01:29:28 - Root WebApplicationContext: initialization completed in 680 ms
+2025-11-03 01:29:28 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 01:29:28 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 01:29:28 - HHH000026: Second-level cache disabled
+2025-11-03 01:29:28 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 01:29:28 - HikariPool-1 - Starting...
+2025-11-03 01:29:28 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7a3643e3
+2025-11-03 01:29:28 - HikariPool-1 - Start completed.
+2025-11-03 01:29:28 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 01:29:28 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 01:29:28 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 01:29:29 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 01:29:29 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 01:29:29 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 01:29:29 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 01:29:30 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 01:29:37 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 01:29:37 - Started OnlineReadingPaltformApplication in 10.212 seconds (process running for 10.48)
+2025-11-03 01:29:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 01:29:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-03 01:29:50 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 01:29:50 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 01:29:50 - Completed initialization in 2 ms
+2025-11-03 01:32:37 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 01:32:37 - Graceful shutdown complete
+2025-11-03 01:32:37 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 01:32:37 - HikariPool-1 - Shutdown initiated...
+2025-11-03 01:32:37 - HikariPool-1 - Shutdown completed.
+2025-11-03 01:32:39 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 35302 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 01:32:39 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 01:32:39 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 01:32:39 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 01:32:39 - Finished Spring Data repository scanning in 35 ms. Found 6 JPA repository interfaces.
+2025-11-03 01:32:40 - Tomcat initialized with port 8035 (http)
+2025-11-03 01:32:40 - Starting service [Tomcat]
+2025-11-03 01:32:40 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 01:32:40 - Initializing Spring embedded WebApplicationContext
+2025-11-03 01:32:40 - Root WebApplicationContext: initialization completed in 808 ms
+2025-11-03 01:32:40 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 01:32:40 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 01:32:40 - HHH000026: Second-level cache disabled
+2025-11-03 01:32:40 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 01:32:40 - HikariPool-1 - Starting...
+2025-11-03 01:32:40 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2729bb71
+2025-11-03 01:32:40 - HikariPool-1 - Start completed.
+2025-11-03 01:32:40 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 01:32:40 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 01:32:40 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 01:32:41 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 01:32:41 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 01:32:41 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 01:32:41 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 01:32:41 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 01:32:46 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 01:32:46 - Started OnlineReadingPaltformApplication in 7.129 seconds (process running for 7.419)
+2025-11-03 01:32:46 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 01:32:46 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-03 01:32:57 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 01:32:57 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 01:32:57 - Completed initialization in 6 ms
+2025-11-03 01:34:00 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 01:34:22 - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    limit
+        ?
+2025-11-03 01:34:22 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-03 01:35:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 01:35:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 01:35:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 01:36:18 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 01:36:18 - Graceful shutdown complete
+2025-11-03 01:36:18 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 01:36:18 - HikariPool-1 - Shutdown initiated...
+2025-11-03 01:36:18 - HikariPool-1 - Shutdown completed.
+2025-11-03 01:36:20 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 35352 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 01:36:20 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 01:36:20 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 01:36:21 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 01:36:21 - Finished Spring Data repository scanning in 31 ms. Found 6 JPA repository interfaces.
+2025-11-03 01:36:21 - Tomcat initialized with port 8035 (http)
+2025-11-03 01:36:21 - Starting service [Tomcat]
+2025-11-03 01:36:21 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 01:36:21 - Initializing Spring embedded WebApplicationContext
+2025-11-03 01:36:21 - Root WebApplicationContext: initialization completed in 756 ms
+2025-11-03 01:36:21 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 01:36:21 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 01:36:21 - HHH000026: Second-level cache disabled
+2025-11-03 01:36:21 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 01:36:21 - HikariPool-1 - Starting...
+2025-11-03 01:36:22 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2729bb71
+2025-11-03 01:36:22 - HikariPool-1 - Start completed.
+2025-11-03 01:36:22 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 01:36:22 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 01:36:22 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 01:36:22 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 01:36:22 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 01:36:22 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 01:36:22 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 01:36:23 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 01:36:26 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 01:36:26 - Started OnlineReadingPaltformApplication in 6.078 seconds (process running for 6.379)
+2025-11-03 01:36:26 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 01:36:26 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-03 01:36:31 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 01:36:31 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 01:36:31 - Completed initialization in 2 ms

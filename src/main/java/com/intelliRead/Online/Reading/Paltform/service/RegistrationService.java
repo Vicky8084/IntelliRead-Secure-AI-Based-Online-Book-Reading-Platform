@@ -22,8 +22,8 @@ public class RegistrationService {
         User savedUser = userService.addUser(userDTO);
 
         String message;
-        if (savedUser.getRole() == Role.ADMIN && savedUser.getStatus() == Status.INACTIVE) {
-            message = "Admin registration pending approval! Please wait for admin approval.";
+        if (savedUser.getRole() == Role.ROLE && savedUser.getStatus() == Status.INACTIVE) {
+            message = "Publisher registration pending approval! Please wait for admin approval.";
         } else {
             message = "Registration successful! Please login to continue.";
         }

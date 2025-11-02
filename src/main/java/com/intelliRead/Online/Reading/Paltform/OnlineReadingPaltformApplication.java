@@ -34,7 +34,7 @@ public class OnlineReadingPaltformApplication implements CommandLineRunner {
             admin.setName("Original Admin");
             admin.setEmail(defaultEmail);
             admin.setPasswordHash(passwordEncoder.encode("vicky")); // Securely encoded password
-            admin.setRole(Role.ADMIN);
+            admin.setRole(Role.ROLE);
             admin.setStatus(Status.ACTIVE);
             admin.setPreferredLanguage("English");
 

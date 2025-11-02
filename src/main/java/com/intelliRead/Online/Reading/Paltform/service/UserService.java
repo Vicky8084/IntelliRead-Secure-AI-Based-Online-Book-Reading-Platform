@@ -41,7 +41,7 @@ public class UserService {
 
         User savedUser;
 
-        if (dto.getRole() == Role.ADMIN) {
+        if (dto.getRole() == Role.ROLE) {
             user.setStatus(Status.INACTIVE);
             savedUser = userRepository.save(user);
             emailService.sendAdminApprovalRequest(savedUser);
@@ -58,7 +58,8 @@ public class UserService {
     public String registerUserWithMessage(UserRequestDTO dto) {
         User user = addUser(dto);
 
-        if (user.getRole() == Role.ADMIN && user.getStatus() == Status.INACTIVE) {
+        if (user.getRole() == Role.ROLE
+                && user.getStatus() == Status.INACTIVE) {
             return "✅ Admin registration pending approval!";
         } else {
             return "✅ User registered successfully!";
@@ -68,7 +69,7 @@ public class UserService {
     // ... rest of the methods same as before
     public String approveAdmin(int userId) {
         User user = getUserById(userId);
-        if (user != null && user.getRole() == Role.ADMIN) {
+        if (user != null && user.getRole() == Role.ROLE) {
             user.setStatus(Status.ACTIVE);
             userRepository.save(user);
             emailService.sendAdminApproved(user);
@@ -79,7 +80,7 @@ public class UserService {
 
     public String rejectAdmin(int userId) {
         User user = getUserById(userId);
-        if (user != null && user.getRole() == Role.ADMIN) {
+        if (user != null && user.getRole() == Role.ROLE) {
             emailService.sendAdminRejected(user);
             userRepository.delete(user);
             return "✅ Admin registration rejected!";

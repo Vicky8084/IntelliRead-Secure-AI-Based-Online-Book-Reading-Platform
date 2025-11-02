@@ -35,7 +35,7 @@ public class User {
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private Role role;  // ADMIN / USER
+    private Role role;  // PUBLISHER / USER
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
