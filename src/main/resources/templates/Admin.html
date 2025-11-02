@@ -1,160 +1,56 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel | Intelli-Read</title>
+    <title>Admin Login - Intelli-Read</title>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/Admin.css}">
-    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
+    <link rel="stylesheet" href="/css/admin-login.css">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 </head>
 <body>
+<div class="admin-login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <div class="logo">
+                <i class='bx bx-book-reader'></i>
+                <h1>Intelli-Read</h1>
+            </div>
+            <h2>Admin Login</h2>
+            <p>Access the admin dashboard</p>
+        </div>
 
-<!-- ===== HEADER ===== -->
-<header>
-    <a th:href="@{/Home}"><img th:src="@{/images/logo.png}" alt="IntelliRead Logo" style="height:80px; width:auto;"></a>
-</header>
-
-<!-- ===== ADMIN PANEL ===== -->
-<div class="admin-container">
-    <div class="admin-card">
-        <h2>Welcome Admin 🙎‍♂️</h2>
-        <p class="admin-subtext">Manage users, monitor activity, and keep Intelli-Read running smoothly.</p>
-
-        <form class="admin-form" id="adminForm">
-            <div class="form-group icon-input">
-                <i class='bx bx-envelope'></i>
-                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        <form id="adminLoginForm" class="login-form">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-group">
+                    <i class='bx bx-envelope'></i>
+                    <input type="email" id="email" name="email" placeholder="admin@intelliread.com" required>
+                </div>
             </div>
 
-            <div class="form-group icon-input">
-                <i class='bx bx-lock-alt'></i>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                <i class='bx bx-hide toggle-eye' id="togglePassword"></i>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-group">
+                    <i class='bx bx-lock-alt'></i>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
             </div>
 
-            <button type="button" class="submit-btn" onclick="validateAndLogin()" id="loginBtn">
-                Login
+            <button type="submit" class="login-btn">
+                <i class='bx bx-log-in'></i> Login to Dashboard
             </button>
-
-            <!-- Error message display -->
-            <div id="errorMessage" style="color: red; text-align: center; margin-top: 10px; display: none;"></div>
-
-            <p class="login-link">Back to User login - <a href="#" onclick="window.location.href='/login'">Click Here</a></p>
         </form>
+
+        <div class="login-footer">
+            <p><a href="/forgotpassword">Forgot Password?</a></p>
+            <p><a href="/">Back to Home</a></p>
+        </div>
     </div>
 </div>
 
-<!-- ===== FOOTER ===== -->
-<footer class="main-footer" style="font-family: chakra petch;">
-    <div class="footer-section">
-        <h4>About</h4>
-        <p>Designed and Developed by Team <b style="color: rgb(206, 232, 10); font-size: large;">Rv</b></p>
-    </div>
-    <div class="footer-section">
-        <p>&copy; <span>2025</span> Intelli-Read. All Rights Reserved.</p>
-        <p><a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a></p>
-    </div>
-    <div class="footer-section">
-        <h4>License</h4>
-        <p>Standard License</p>
-    </div>
-</footer>
-
-<script>
-    // Password show/hide toggle
-    const togglePassword = document.querySelector('#togglePassword');
-    const passwordInput = document.querySelector('#password');
-    togglePassword.addEventListener('click', () => {
-      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-      passwordInput.setAttribute('type', type);
-      togglePassword.classList.toggle('bx-show');
-    });
-
-    // Form validation and login
-    async function validateAndLogin() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const loginBtn = document.getElementById('loginBtn');
-      const errorMessage = document.getElementById('errorMessage');
-
-      errorMessage.style.display = 'none';
-
-      if (!email || !password) {
-        showError('Please fill in all fields');
-        return;
-      }
-
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        showError('Please enter a valid email address');
-        return;
-      }
-
-      try {
-        loginBtn.innerHTML = 'Logging in...';
-        loginBtn.disabled = true;
-
-        console.log('🔐 Attempting admin login for:', email);
-
-        // ✅ FIXED: Use same login endpoint but check for ADMIN role
-        const response = await fetch('/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: email.toLowerCase().trim(),
-            password: password
-          })
-        });
-
-        const data = await response.json();
-        console.log('📨 Login response:', data);
-
-        if (data.success && data.user.role === 'ADMIN') {
-          console.log('✅ Admin login successful');
-          localStorage.setItem('admin', JSON.stringify(data.user));
-          localStorage.setItem('isAdmin', 'true');
-          localStorage.setItem('jwtToken', data.token);
-
-          window.location.href = '/admin-dashboard';
-        } else {
-          console.log('❌ Login failed:', data.message);
-          showError('Invalid admin credentials or access denied');
-        }
-
-      } catch (error) {
-        console.error('❌ Login error:', error);
-        showError('Network error. Please check your connection and try again.');
-      } finally {
-        loginBtn.innerHTML = 'Login';
-        loginBtn.disabled = false;
-      }
-    }
-
-    function showError(message) {
-      const errorMessage = document.getElementById('errorMessage');
-      errorMessage.textContent = message;
-      errorMessage.style.display = 'block';
-    }
-
-    document.getElementById('adminForm').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        validateAndLogin();
-      }
-    });
-
-    window.addEventListener('load', function() {
-      const isAdmin = localStorage.getItem('isAdmin');
-      if (isAdmin) {
-        console.log('ℹ️ Admin already logged in, redirecting...');
-        window.location.href = '/admin-dashboard';
-      }
-    });
-</script>
-
+<script src="/js/admin-login.js"></script>
+<script src="/js/common.js"></script>
 </body>
 </html>

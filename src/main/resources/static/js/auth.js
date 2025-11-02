@@ -1,56 +1,83 @@
-// auth.js - Authentication related functions
-document.addEventListener('DOMContentLoaded', function() {
-    // Login Form
-    const loginForm = document.getElementById('loginForm');
-    if (loginForm) {
-        loginForm.addEventListener('submit', handleLogin);
-    }
+// Auth functionality for registration and login
 
-    // SignUp Form
-    const signupForm = document.getElementById('signupForm');
-    if (signupForm) {
-        signupForm.addEventListener('submit', handleSignup);
-    }
-
-    // Forgot Password Form
-    const forgotPassForm = document.getElementById('forgotPassForm');
-    if (forgotPassForm) {
-        forgotPassForm.addEventListener('submit', handleForgotPassword);
-    }
-});
-
-async function handleLogin(e) {
-    e.preventDefault();
-    const formData = {
-        email: document.getElementById('email').value,
-        password: document.getElementById('password').value
-    };
-
+// Registration function
+async function handleRegistration(userData) {
     try {
-        const response = await fetch('/auth/login', {
+        const response = await fetch('/auth/register', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userData)
         });
 
         const data = await response.json();
+
         if (data.success) {
-            localStorage.setItem('token', data.token);
-            window.location.href = '/dashboard';
+            return { success: true, message: data.message };
         } else {
-            alert('Login failed: ' + data.message);
+            return { success: false, message: data.message };
         }
     } catch (error) {
-        alert('Login error: ' + error.message);
+        console.error('Registration error:', error);
+        return { success: false, message: 'Registration failed. Please try again.' };
     }
 }
 
-async function handleSignup(e) {
-    e.preventDefault();
-    // Signup logic here
+// Password reset request
+async function handleForgotPassword(email) {
+    try {
+        const response = await fetch('/auth/password/forgot', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Password reset error:', error);
+        return { success: false, message: 'Password reset request failed.' };
+    }
 }
 
-async function handleForgotPassword(e) {
-    e.preventDefault();
-    // Forgot password logic here
+// Password reset confirmation
+async function handlePasswordReset(token, newPassword) {
+    try {
+        const response = await fetch('/auth/password/reset', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token, newPassword })
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Password reset error:', error);
+        return { success: false, message: 'Password reset failed.' };
+    }
+}
+
+// Logout function
+async function handleLogout() {
+    try {
+        await fetch('/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+    } catch (error) {
+        console.error('Logout error:', error);
+    } finally {
+        // Always clear local storage
+        localStorage.removeItem('jwtToken');
+        localStorage.removeItem('user');
+        localStorage.removeItem('isLoggedIn');
+        window.location.href = '/login';
+    }
 }

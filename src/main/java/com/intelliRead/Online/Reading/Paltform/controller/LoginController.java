@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:8080", "http://127.0.0.1:8080"})
 public class LoginController {
 
     @Autowired
@@ -33,5 +34,17 @@ public class LoginController {
         } else {
             return ResponseEntity.badRequest().body(response);
         }
+    }
+
+    @PostMapping("/create-test-user")
+    public ResponseEntity<String> createTestUser() {
+        String result = loginService.createTestUser();
+        return ResponseEntity.ok(result);
+    }
+
+    // ✅ ADD THIS TEST ENDPOINT
+    @GetMapping("/test-connection")
+    public ResponseEntity<String> testConnection() {
+        return ResponseEntity.ok("✅ Backend is running! Connection successful at: " + new java.util.Date());
     }
 }

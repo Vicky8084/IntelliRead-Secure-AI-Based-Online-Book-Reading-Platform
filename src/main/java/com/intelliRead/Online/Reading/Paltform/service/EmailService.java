@@ -17,6 +17,143 @@ public class EmailService {
 
     private static final String FROM_EMAIL = "noreply.intelliread@gmail.com";
 
+    // 🔹 6. NEW: Password Reset Email
+    public void sendPasswordResetEmail(User user, String resetToken) {
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+
+            helper.setFrom(FROM_EMAIL);
+            helper.setTo(user.getEmail());
+            helper.setSubject("🔐 Password Reset Request - IntelliRead");
+
+            String resetLink = "http://localhost:8035/reset-password?token=" + resetToken;
+
+            String content = "<html>" +
+                    "<body style='font-family: Arial, sans-serif; color: #333; line-height: 1.6;'>" +
+                    "<div style='max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;'>" +
+                    "<div style='text-align: center; margin-bottom: 30px;'>" +
+                    "<img src='cid:logoImage' width='150' alt='IntelliRead Logo' style='margin-bottom: 20px;'>" +
+                    "<h1 style='color: #2c5aa0; margin-bottom: 10px;'>Password Reset Request</h1>" +
+                    "<p style='color: #666; font-size: 16px;'>Secure your IntelliRead account</p>" +
+                    "</div>" +
+
+                    "<div style='background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;'>" +
+                    "<h2 style='color: #2c5aa0; margin-bottom: 15px;'>Hello " + user.getName() + ",</h2>" +
+                    "<p style='margin-bottom: 15px;'>We received a request to reset your password for your <strong>IntelliRead</strong> account.</p>" +
+                    "<p style='margin-bottom: 15px;'>If you didn't make this request, you can safely ignore this email.</p>" +
+                    "</div>" +
+
+                    "<div style='text-align: center; margin: 30px 0;'>" +
+                    "<a href='" + resetLink + "' " +
+                    "style='display: inline-block; padding: 12px 30px; background: #2c5aa0; color: white; " +
+                    "text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px;'>" +
+                    "Reset Your Password" +
+                    "</a>" +
+                    "</div>" +
+
+                    "<div style='background: #fff3cd; padding: 15px; border-radius: 5px; margin-bottom: 20px; border-left: 4px solid #ffc107;'>" +
+                    "<h4 style='color: #856404; margin-bottom: 10px;'>⚠️ Important Security Notice</h4>" +
+                    "<p style='color: #856404; margin-bottom: 5px; font-size: 14px;'>" +
+                    "• This link will expire in 24 hours<br>" +
+                    "• Do not share this link with anyone<br>" +
+                    "• If you didn't request this, please secure your account" +
+                    "</p>" +
+                    "</div>" +
+
+                    "<div style='border-top: 1px solid #e0e0e0; padding-top: 20px; margin-top: 20px; text-align: center;'>" +
+                    "<p style='color: #666; margin-bottom: 10px;'>Need help? Contact our support team</p>" +
+                    "<p style='color: #666; margin-bottom: 5px;'>📧 Email: <a href='mailto:noreply.intelliread@gmail.com' style='color: #2c5aa0;'>noreply.intelliread@gmail.com</a></p>" +
+                    "</div>" +
+                    "</div>" +
+                    "</body></html>";
+
+            helper.setText(content, true);
+
+            try {
+                helper.addInline("logoImage", new ClassPathResource("static/images/logo.png"));
+            } catch (Exception e) {
+                System.out.println("Logo image not found, sending email without logo");
+            }
+
+            mailSender.send(mimeMessage);
+            System.out.println("✅ Password reset email sent to: " + user.getEmail());
+
+        } catch (MessagingException e) {
+            System.err.println("❌ Failed to send password reset email to: " + user.getEmail());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to send password reset email", e);
+        }
+    }
+
+    // 🔹 7. NEW: Password Reset Success Email
+    public void sendPasswordResetSuccessEmail(User user) {
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+
+            helper.setFrom(FROM_EMAIL);
+            helper.setTo(user.getEmail());
+            helper.setSubject("✅ Password Successfully Reset - IntelliRead");
+
+            String content = "<html>" +
+                    "<body style='font-family: Arial, sans-serif; color: #333; line-height: 1.6;'>" +
+                    "<div style='max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;'>" +
+                    "<div style='text-align: center; margin-bottom: 30px;'>" +
+                    "<img src='cid:logoImage' width='150' alt='IntelliRead Logo' style='margin-bottom: 20px;'>" +
+                    "<h1 style='color: #28a745; margin-bottom: 10px;'>Password Reset Successful</h1>" +
+                    "<p style='color: #666; font-size: 16px;'>Your account is now secure</p>" +
+                    "</div>" +
+
+                    "<div style='background: #d4edda; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #28a745;'>" +
+                    "<h2 style='color: #155724; margin-bottom: 15px;'>Hello " + user.getName() + ",</h2>" +
+                    "<p style='color: #155724; margin-bottom: 15px;'>Your <strong>IntelliRead</strong> account password has been successfully reset.</p>" +
+                    "<p style='color: #155724; margin-bottom: 15px;'>You can now login with your new password.</p>" +
+                    "</div>" +
+
+                    "<div style='text-align: center; margin: 30px 0;'>" +
+                    "<a href='http://localhost:8035/auth/login' " +
+                    "style='display: inline-block; padding: 12px 30px; background: #28a745; color: white; " +
+                    "text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px;'>" +
+                    "Login to Your Account" +
+                    "</a>" +
+                    "</div>" +
+
+                    "<div style='background: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px;'>" +
+                    "<h4 style='color: #495057; margin-bottom: 10px;'>🔒 Security Tips</h4>" +
+                    "<p style='color: #495057; margin-bottom: 5px; font-size: 14px;'>" +
+                    "• Use a strong, unique password<br>" +
+                    "• Enable two-factor authentication if available<br>" +
+                    "• Never share your password with anyone<br>" +
+                    "• Regularly update your password" +
+                    "</p>" +
+                    "</div>" +
+
+                    "<div style='border-top: 1px solid #e0e0e0; padding-top: 20px; margin-top: 20px; text-align: center;'>" +
+                    "<p style='color: #666; margin-bottom: 10px;'>If you didn't make this change, please contact us immediately</p>" +
+                    "<p style='color: #666; margin-bottom: 5px;'>📧 Email: <a href='mailto:noreply.intelliread@gmail.com' style='color: #2c5aa0;'>noreply.intelliread@gmail.com</a></p>" +
+                    "</div>" +
+                    "</div>" +
+                    "</body></html>";
+
+            helper.setText(content, true);
+
+            try {
+                helper.addInline("logoImage", new ClassPathResource("static/images/logo.png"));
+            } catch (Exception e) {
+                System.out.println("Logo image not found, sending email without logo");
+            }
+
+            mailSender.send(mimeMessage);
+            System.out.println("✅ Password reset success email sent to: " + user.getEmail());
+
+        } catch (MessagingException e) {
+            System.err.println("❌ Failed to send password reset success email to: " + user.getEmail());
+            e.printStackTrace();
+        }
+    }
+
+    // ... (Your existing methods remain the same - don't change them)
     // 🔹 1. Welcome Email for Regular Users
     public void sendWelcomeEmail(User user) {
         try {

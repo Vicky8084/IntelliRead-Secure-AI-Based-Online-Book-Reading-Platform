@@ -1,86 +1,90 @@
-// Common utility functions for all pages
+// Common utility functions
 
-// JWT Token management
-function getAuthHeader() {
-    const token = localStorage.getItem('jwtToken');
-    return token ? { 'Authorization': `Bearer ${token}` } : {};
-}
-
-// Check if user is logged in
-function isLoggedIn() {
-    return localStorage.getItem('isLoggedIn') === 'true';
-}
-
-// Get current user
-function getCurrentUser() {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
-}
-
-// Logout function
-function logout() {
-    localStorage.removeItem('user');
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('jwtToken');
-    localStorage.removeItem('isAdmin');
-    localStorage.removeItem('admin');
-    window.location.href = '/login';
-}
-
-// API call with auth
-async function apiCall(url, options = {}) {
-    const defaultOptions = {
-        headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeader()
+// Notification system
+function showNotification(message, type = 'info') {
+    // Remove existing notifications
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notification => {
+        if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
         }
-    };
+    });
 
-    const finalOptions = { ...defaultOptions, ...options };
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class='bx ${getNotificationIcon(type)}'></i>
+            <span>${message}</span>
+        </div>
+    `;
+
+    document.body.appendChild(notification);
+
+    // Add show class after a delay for animation
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, 5000);
+}
+
+function getNotificationIcon(type) {
+    const icons = {
+        'success': 'bx-check-circle',
+        'error': 'bx-error-circle',
+        'warning': 'bx-error',
+        'info': 'bx-info-circle'
+    };
+    return icons[type] || 'bx-info-circle';
+}
+
+// Format date utility
+function formatDate(dateString) {
+    if (!dateString) return 'Unknown';
+    return new Date(dateString).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+}
+
+function formatDateTime(dateString) {
+    if (!dateString) return 'Unknown';
+    return new Date(dateString).toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+// Check authentication status
+async function checkAuthStatus() {
+    const token = localStorage.getItem('jwtToken');
+
+    if (!token) {
+        return { authenticated: false };
+    }
 
     try {
-        const response = await fetch(url, finalOptions);
+        const response = await fetch('/auth/check', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
         return await response.json();
     } catch (error) {
-        console.error('API call error:', error);
-        throw error;
+        return { authenticated: false };
     }
 }
-
-// Redirect based on role
-function redirectBasedOnRole() {
-    const user = getCurrentUser();
-    if (!user) return;
-
-    const currentPath = window.location.pathname;
-
-    switch(user.role) {
-        case 'ADMIN':
-            if (!currentPath.includes('admin')) {
-                window.location.href = '/admin-dashboard';
-            }
-            break;
-        case 'PUBLISHER':
-            if (!currentPath.includes('publisher')) {
-                window.location.href = '/publisher-dashboard';
-            }
-            break;
-        case 'USER':
-            if (!currentPath.includes('books')) {
-                window.location.href = '/books';
-            }
-            break;
-    }
-}
-
-// Check authentication on page load
-document.addEventListener('DOMContentLoaded', function() {
-    if (!isLoggedIn() && !window.location.pathname.includes('/login') &&
-        !window.location.pathname.includes('/signup') &&
-        !window.location.pathname.includes('/forgotpassword') &&
-        !window.location.pathname.includes('/Home')) {
-        window.location.href = '/login';
-    } else {
-        redirectBasedOnRole();
-    }
-});
