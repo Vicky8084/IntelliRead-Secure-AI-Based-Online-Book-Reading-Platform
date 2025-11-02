@@ -14,7 +14,6 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    // ✅ NEW: JWT Login Endpoint
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDto loginRequestDTO) {
         LoginResponseDTO response = loginService.login(loginRequestDTO);
@@ -26,7 +25,6 @@ public class LoginController {
         }
     }
 
-    // ✅ OLD: Simple Login (Backward Compatibility)
     @PostMapping("/simple-login")
     public ResponseEntity<String> simpleLogin(@RequestBody LoginRequestDto loginRequestDTO) {
         String response = loginService.simpleLogin(loginRequestDTO);

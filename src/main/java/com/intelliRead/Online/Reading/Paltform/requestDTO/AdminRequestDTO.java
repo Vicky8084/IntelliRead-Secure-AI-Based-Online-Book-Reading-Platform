@@ -1,6 +1,5 @@
 package com.intelliRead.Online.Reading.Paltform.requestDTO;
 
-import com.intelliRead.Online.Reading.Paltform.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,10 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRequestDTO {
+public class AdminRequestDTO {
     private String name;
     private String email;
     private String passwordHash;
-    private Role role;
     private String preferredLanguage;
+    private String adminSecretKey; // Secret key for admin registration
 }

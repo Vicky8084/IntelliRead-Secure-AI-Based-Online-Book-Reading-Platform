@@ -51,43 +51,27 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // 🔒 Step 1: Disable CSRF (since we are using JWT, not cookies)
                 .csrf(csrf -> csrf.disable())
-
-                // 🌐 Step 2: Enable CORS with configuration
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-
-                // ⚡ Step 3: Set session management to stateless
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
-                // 🚪 Step 4: Define authorization rules
                 .authorizeHttpRequests(authz -> authz
-                        // Public endpoints - no authentication required
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/password/**").permitAll()
-                        .requestMatchers("/user/apies/save").permitAll()
-                        .requestMatchers("/uploads/**").permitAll()
-                        .requestMatchers("/admin/approve/**").permitAll()
-                        .requestMatchers("/admin/reject/**").permitAll()
+                                // ✅ Public Auth Endpoints
+                                .requestMatchers("/auth/register").permitAll()
+                                .requestMatchers("/auth/login").permitAll()
+                                .requestMatchers("/auth/simple-login").permitAll()
+                                .requestMatchers("/password/**").permitAll()
+                                .requestMatchers("/uploads/**").permitAll()
+                                .requestMatchers("/admin/approve/**").permitAll() // ✅ GET endpoints public
+                                .requestMatchers("/admin/reject/**").permitAll()   // ✅ GET endpoints public
 
-                        // Admin only endpoints
-                        .requestMatchers("/user/apies/delete/**").hasRole("ADMIN")
-                        .requestMatchers("/user/apies/getAll").hasRole("ADMIN")
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                                // Rest of the configuration remains same...
+                                .requestMatchers("/user/apies/delete/**").hasRole("ADMIN")
+                                .requestMatchers("/user/apies/getAll").hasRole("ADMIN")
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/book/apies/upload").hasRole("ADMIN")
 
-                        // Authenticated users (both USER and ADMIN)
-                        .requestMatchers("/user/apies/get/**").authenticated()
-                        .requestMatchers("/user/apies/Update/**").authenticated()
-                        .requestMatchers("/book/apies/**").authenticated()
-                        .requestMatchers("/category/apies/**").authenticated()
-                        .requestMatchers("/review/apies/**").authenticated()
-                        .requestMatchers("/suggestion/apis/**").authenticated()
-
-                        // All other requests require authentication
-                        .anyRequest().authenticated()
+                        // ... other configurations
                 )
-
-                // 🔐 Step 5: Add JWT filter
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

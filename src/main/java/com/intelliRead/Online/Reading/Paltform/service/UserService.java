@@ -24,40 +24,76 @@ public class UserService {
     @Autowired
     public UserService(UserRepository userRepository,
                        EmailService emailService,
-                       PasswordEncoder passwordEncoder){
+                       PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.emailService = emailService;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public String addUser(UserRequestDTO dto) {
+    // ✅ CHANGE: Return User object instead of String
+    public User addUser(UserRequestDTO dto) {
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new UserAlreadyExistException("User already exists!");
         }
 
         User user = UserConverter.convertUserRequestDtoIntoUser(dto);
-
-        // ✅ Encrypt password before saving
         user.setPasswordHash(passwordEncoder.encode(dto.getPasswordHash()));
 
-        // If ADMIN, make them INACTIVE and send approval email
+        User savedUser;
+
         if (dto.getRole() == Role.ADMIN) {
             user.setStatus(Status.INACTIVE);
-            userRepository.save(user); // Save as inactive
-
-            // Send email to original ADMINs
-            emailService.sendAdminApprovalRequest(user);
-            return "✅ Admin registration pending approval!";
+            savedUser = userRepository.save(user);
+            emailService.sendAdminApprovalRequest(savedUser);
+        } else {
+            user.setStatus(Status.ACTIVE);
+            savedUser = userRepository.save(user);
+            emailService.sendWelcomeEmail(savedUser);
         }
 
-        // Normal USER → ACTIVE
-        user.setStatus(Status.ACTIVE);
-        userRepository.save(user);
-        return "✅ User registered successfully!";
+        return savedUser; // ✅ Return User object
+    }
+
+    // ✅ ADD: String return wala method for direct use
+    public String registerUserWithMessage(UserRequestDTO dto) {
+        User user = addUser(dto);
+
+        if (user.getRole() == Role.ADMIN && user.getStatus() == Status.INACTIVE) {
+            return "✅ Admin registration pending approval!";
+        } else {
+            return "✅ User registered successfully!";
+        }
+    }
+
+    // ... rest of the methods same as before
+    public String approveAdmin(int userId) {
+        User user = getUserById(userId);
+        if (user != null && user.getRole() == Role.ADMIN) {
+            user.setStatus(Status.ACTIVE);
+            userRepository.save(user);
+            emailService.sendAdminApproved(user);
+            return "✅ Admin approved successfully!";
+        }
+        return "❌ User not found or not an admin!";
+    }
+
+    public String rejectAdmin(int userId) {
+        User user = getUserById(userId);
+        if (user != null && user.getRole() == Role.ADMIN) {
+            emailService.sendAdminRejected(user);
+            userRepository.delete(user);
+            return "✅ Admin registration rejected!";
+        }
+        return "❌ User not found or not an admin!";
     }
 
     public User getUserById(int id){
         Optional<User> userOptional = userRepository.findById(id);
+        return userOptional.orElse(null);
+    }
+
+    public User getUserByEmail(String email){
+        Optional<User> userOptional = userRepository.findUserByEmail(email);
         return userOptional.orElse(null);
     }
 
@@ -81,7 +117,6 @@ public class UserService {
             user.setName(userRequestDTO.getName());
             user.setEmail(userRequestDTO.getEmail());
 
-            // ✅ Encrypt password if provided
             if(userRequestDTO.getPasswordHash() != null && !userRequestDTO.getPasswordHash().isEmpty()) {
                 user.setPasswordHash(passwordEncoder.encode(userRequestDTO.getPasswordHash()));
             }

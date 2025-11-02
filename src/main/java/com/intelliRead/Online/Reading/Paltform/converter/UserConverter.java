@@ -9,10 +9,10 @@ public class UserConverter {
         User user = new User();
         user.setName(userRequestDTO.getName());
         user.setEmail(userRequestDTO.getEmail());
-        user.setPasswordHash(userRequestDTO.getPasswordHash()); // Will be encrypted in service
+        user.setPasswordHash(userRequestDTO.getPasswordHash());
         user.setRole(userRequestDTO.getRole());
         user.setPreferredLanguage(userRequestDTO.getPreferredLanguage());
-        user.setStatus(Status.ACTIVE); // Default status
+        user.setStatus(Status.ACTIVE);
         return user;
     }
 }

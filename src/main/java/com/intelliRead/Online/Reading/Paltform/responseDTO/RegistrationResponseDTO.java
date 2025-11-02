@@ -1,4 +1,4 @@
-package com.intelliRead.Online.Reading.Paltform.requestDTO;
+package com.intelliRead.Online.Reading.Paltform.responseDTO;
 
 import com.intelliRead.Online.Reading.Paltform.enums.Role;
 import lombok.AllArgsConstructor;
@@ -8,10 +8,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRequestDTO {
+public class RegistrationResponseDTO {
+    private int userId;
     private String name;
     private String email;
-    private String passwordHash;
     private Role role;
-    private String preferredLanguage;
+    private String message;
+    private boolean success;
 }

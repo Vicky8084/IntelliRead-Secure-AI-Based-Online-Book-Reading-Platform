@@ -36,10 +36,8 @@ public class LoginService {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
-    // ✅ NEW: JWT Login Method
     public LoginResponseDTO login(LoginRequestDto loginRequestDTO) {
         try {
-            // Authenticate using Spring Security
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginRequestDTO.getEmail(),
@@ -47,16 +45,13 @@ public class LoginService {
                     )
             );
 
-            // If authentication successful, generate token
             final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequestDTO.getEmail());
             final String jwtToken = jwtUtil.generateToken(loginRequestDTO.getEmail());
 
-            // Get user details
             Optional<User> optionalUser = userRepository.findUserByEmail(loginRequestDTO.getEmail());
             if (optionalUser.isPresent()) {
                 User user = optionalUser.get();
 
-                // Check if account is ACTIVE
                 if (user.getStatus() != Status.ACTIVE) {
                     return new LoginResponseDTO(null, null, null, 0, null, "Account is inactive. Please contact admin for activation.", false);
                 }
@@ -81,7 +76,6 @@ public class LoginService {
         }
     }
 
-    // ✅ OLD: Simple Login Method (Backward Compatibility)
     public String simpleLogin(LoginRequestDto loginRequestDTO) {
         Optional<User> optionalUser = userRepository.findUserByEmail(loginRequestDTO.getEmail());
         if (optionalUser.isEmpty()) {
@@ -90,17 +84,14 @@ public class LoginService {
 
         User user = optionalUser.get();
 
-        // Check if account is ACTIVE
         if (user.getStatus() != Status.ACTIVE) {
             return "⚠️ Account is inactive. Please contact admin for activation.";
         }
 
-        // Check password
         if (!passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPasswordHash())) {
             return "❌ Incorrect password! Please try again.";
         }
 
-        // Success response based on role
         if (user.getRole() == Role.ADMIN) {
             return "✅ Admin login successful! Welcome, " + user.getName();
         } else {
