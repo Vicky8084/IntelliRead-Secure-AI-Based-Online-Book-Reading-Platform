@@ -33,14 +33,14 @@
                 <label>Select Role</label>
                 <div class="role-options">
                     <div class="role-option" data-role="user">
-                        <input type="radio" id="role-user" name="role" value="USER" required>
+                        <input type="radio" id="role-user" name="role" value="USER" required checked>
                         <i class='bx bx-user-circle role-icon'></i>
                         <span>USER</span>
                     </div>
-                    <div class="role-option" data-role="publisher">
-                        <input type="radio" id="ADMIN" name="role" value="PUBLISHER" required>
+                    <div class="role-option" data-role="admin">
+                        <input type="radio" id="role-admin" name="role" value="ADMIN" required>
                         <i class='bx bx-book-alt role-icon'></i>
-                        <span>PUBLISHER</span>
+                        <span>ADMIN</span>
                     </div>
                 </div>
             </div>
@@ -121,6 +121,9 @@
       });
     });
 
+    // Default select USER role
+    document.querySelector('.role-option[data-role="user"]').classList.add('selected');
+
     // ===== PASSWORD VISIBILITY TOGGLE =====
     togglePassword.addEventListener('click', () => {
       const type = password.type === 'password' ? 'text' : 'password';
@@ -154,7 +157,7 @@
         errorMessage = 'Email is required.';
         valid = false;
       } else if (!document.querySelector('input[name="role"]:checked')) {
-        errorMessage = 'Please select a role (User or Publisher).';
+        errorMessage = 'Please select a role (User or Admin).';
         valid = false;
       } else if (!password.value.trim()) {
         errorMessage = 'Password is required.';
@@ -202,11 +205,13 @@
       try {
         const selectedRole = document.querySelector('input[name="role"]:checked').value;
 
+        // ✅ FIXED: Backend compatible data
         const userData = {
-          name: fullName.value.trim(),  // ✅ CHANGE: 'name' instead of 'fullName'
+          name: fullName.value.trim(),
           email: email.value.trim(),
-          role: selectedRole,           // ✅ CHANGE: Direct value (USER/PUBLISHER)
-          password: password.value
+          passwordHash: password.value,  // ✅ passwordHash field
+          role: selectedRole,  // ✅ USER or ADMIN (exact enum values)
+          preferredLanguage: "English"  // ✅ Required field
         };
 
         console.log('🔄 Sending signup request...', userData);
@@ -226,20 +231,19 @@
         console.log('📨 Server response:', result);
 
         if (response.ok && result.success) {
-          if (selectedRole === 'PUBLISHER') {
-            alert('✅ Publisher account created successfully! Please wait for admin approval. You will receive an email once your account is approved.');
+          if (selectedRole === 'ADMIN') {
+            alert('✅ Admin account created successfully! Please wait for super admin approval.');
           } else {
             alert('✅ User account created successfully! Redirecting to login...');
-          }
-
-          form.reset();
-          roleOptions.forEach(opt => opt.classList.remove('selected'));
-
-          if (selectedRole === 'USER') {
             setTimeout(() => {
               window.location.href = '/login';
             }, 2000);
           }
+
+          form.reset();
+          roleOptions.forEach(opt => opt.classList.remove('selected'));
+          document.querySelector('.role-option[data-role="user"]').classList.add('selected');
+
         } else {
           alert(`❌ ${result.message || 'Signup failed. Please try again.'}`);
         }

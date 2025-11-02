@@ -11,6 +11,8 @@ import com.intelliRead.Online.Reading.Paltform.repository.CategoryRepository;
 import com.intelliRead.Online.Reading.Paltform.repository.UserRepository;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.BookRequestDTO;
 import com.intelliRead.Online.Reading.Paltform.util.FileStorageUtil;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,8 +31,6 @@ public class BookService {
 
     BookRepository bookRepository;
     UserRepository userRepository;
-
-    // ✅ ADDED: CategoryRepository
     CategoryRepository categoryRepository;
 
     private final Path uploadsRoot;
@@ -38,11 +38,11 @@ public class BookService {
     @Autowired
     public BookService(BookRepository bookRepository,
                        UserRepository userRepository,
-                       CategoryRepository categoryRepository, // ✅ ADDED
+                       CategoryRepository categoryRepository,
                        @Value("${file.upload-dir:uploads}") String uploadDir) throws IOException {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
-        this.categoryRepository = categoryRepository; // ✅ ADDED
+        this.categoryRepository = categoryRepository;
         this.uploadsRoot = FileStorageUtil.ensureDirectory(uploadDir);
     }
 
@@ -72,20 +72,29 @@ public class BookService {
         return "Book saved Successfully";
     }
 
-    /* --- Updated: Add book with uploaded file and optional cover using Book ID folders --- */
+    /* --- UPDATED: Complete file upload with text extraction --- */
     public String addBookWithFiles(BookRequestDTO bookRequestDTO,
                                    MultipartFile file,
                                    MultipartFile cover) throws IOException {
 
-        // Validate that book file is provided
+        // ✅ IMPROVED: Validate that book file is provided
         if (file == null || file.isEmpty()) {
             throw new IllegalArgumentException("Book file is required");
         }
 
-        // Validate book file type
         String originalFileName = file.getOriginalFilename();
+
+        // ✅ IMPROVED: Better file type validation with detailed error message
         if (!FileStorageUtil.isValidBookFile(originalFileName)) {
-            throw new IllegalArgumentException("Only PDF and TXT files are allowed for books");
+            throw new IllegalArgumentException(
+                    "Only PDF and TXT files are allowed. Received: " +
+                            FileStorageUtil.extension(originalFileName)
+            );
+        }
+
+        // ✅ ADDED: File size validation
+        if (file.getSize() > 10 * 1024 * 1024) { // 10MB
+            throw new IllegalArgumentException("File size exceeds 10MB limit");
         }
 
         // ✅ CORRECTED: Use proper method name from repository
@@ -111,7 +120,7 @@ public class BookService {
         book = bookRepository.save(book);
         int bookId = book.getId();
 
-        // handle main file
+        // Handle main file
         if (file != null && !file.isEmpty()) {
             String original = FileStorageUtil.sanitizeFileName(file.getOriginalFilename());
             String ext = FileStorageUtil.extension(original);
@@ -128,15 +137,43 @@ public class BookService {
             book.setFileType(ext);
             book.setFileSize(file.getSize());
 
+            // ✅ ADDED: TEXT EXTRACTION FOR PDF AND TXT FILES
+            if ("pdf".equalsIgnoreCase(book.getFileType())) {
+                try {
+                    String extractedText = extractTextFromPdf(file);
+                    book.setExtractedText(extractedText);
+                    System.out.println("PDF text extraction successful for book: " + book.getTitle());
+                } catch (Exception e) {
+                    System.out.println("PDF text extraction failed, but book saved: " + e.getMessage());
+                    // Continue even if text extraction fails
+                }
+            }
+            // ✅ ADDED: For TXT files
+            else if ("txt".equalsIgnoreCase(book.getFileType())) {
+                try {
+                    String content = new String(file.getBytes());
+                    book.setExtractedText(content);
+                    System.out.println("TXT content extraction successful for book: " + book.getTitle());
+                } catch (Exception e) {
+                    System.out.println("TXT content reading failed: " + e.getMessage());
+                    // Continue even if text reading fails
+                }
+            }
+
             System.out.println("File saved successfully at: " + targetPath);
         }
 
-        // handle cover image
+        // Handle cover image
         if (cover != null && !cover.isEmpty()) {
             // Validate cover image type
             String coverFileName = cover.getOriginalFilename();
             if (!FileStorageUtil.isValidImageFile(coverFileName)) {
                 throw new IllegalArgumentException("Only JPG, JPEG, PNG, and GIF images are allowed for covers");
+            }
+
+            // ✅ ADDED: Cover image size validation
+            if (cover.getSize() > 5 * 1024 * 1024) { // 5MB for images
+                throw new IllegalArgumentException("Cover image size exceeds 5MB limit");
             }
 
             String coverName = FileStorageUtil.sanitizeFileName(cover.getOriginalFilename());
@@ -153,6 +190,20 @@ public class BookService {
 
         bookRepository.save(book);
         return "Book saved Successfully with files";
+    }
+
+    // ✅ ADDED: PDF Text Extraction Method
+    private String extractTextFromPdf(MultipartFile file) {
+        try {
+            PDDocument document = PDDocument.load(file.getInputStream());
+            PDFTextStripper pdfStripper = new PDFTextStripper();
+            String text = pdfStripper.getText(document);
+            document.close();
+            return text;
+        } catch (Exception e) {
+            System.out.println("PDF text extraction failed: " + e.getMessage());
+            return null;
+        }
     }
 
     public Book findBookById(int id) {

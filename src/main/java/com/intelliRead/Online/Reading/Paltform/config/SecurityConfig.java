@@ -88,6 +88,9 @@ public class SecurityConfig {
                         .requestMatchers("/admin/approve/**").permitAll()
                         .requestMatchers("/admin/reject/**").permitAll()
 
+                        // ✅ NEW: READER ACCESS PUBLIC
+                        .requestMatchers("/reader/**").permitAll()
+
                         // ✅ PUBLIC BOOK & CATEGORY ENDPOINTS
                         .requestMatchers("/book/apies/findAll").permitAll()
                         .requestMatchers("/book/apies/findById/**").permitAll()
