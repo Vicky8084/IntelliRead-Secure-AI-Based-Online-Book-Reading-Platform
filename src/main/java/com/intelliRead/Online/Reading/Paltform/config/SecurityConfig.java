@@ -55,22 +55,64 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
-                                // ✅ Public Auth Endpoints
-                                .requestMatchers("/auth/register").permitAll()
-                                .requestMatchers("/auth/login").permitAll()
-                                .requestMatchers("/auth/simple-login").permitAll()
-                                .requestMatchers("/password/**").permitAll()
-                                .requestMatchers("/uploads/**").permitAll()
-                                .requestMatchers("/admin/approve/**").permitAll() // ✅ GET endpoints public
-                                .requestMatchers("/admin/reject/**").permitAll()   // ✅ GET endpoints public
+                        // ✅ SABHI FRONTEND PAGES KO PUBLIC KARO
+                        .requestMatchers(
+                                "/",
+                                "/Home",
+                                "/Home.html",
+                                "/login",
+                                "/Login",
+                                "/Login.html",
+                                "/signup",
+                                "/SignUp",
+                                "/SignUp.html",
+                                "/forgotpassword",
+                                "/ForgotPass",
+                                "/ForgotPass.html",
+                                "/admin",
+                                "/Admin",
+                                "/Admin.html",
+                                "/books",
+                                "/bookscreen",
+                                "/publisher-dashboard",
+                                "/admin-dashboard"
+                        ).permitAll()
 
-                                // Rest of the configuration remains same...
-                                .requestMatchers("/user/apies/delete/**").hasRole("ADMIN")
-                                .requestMatchers("/user/apies/getAll").hasRole("ADMIN")
-                                .requestMatchers("/admin/**").hasRole("ADMIN")
-                                .requestMatchers("/book/apies/upload").hasRole("ADMIN")
+                        // ✅ STATIC RESOURCES - PUBLIC ACCESS
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
+                        .requestMatchers("/uploads/**").permitAll()
 
-                        // ... other configurations
+                        // ✅ SABHI AUTH ENDPOINTS PUBLIC KARO
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/password/**").permitAll()
+                        .requestMatchers("/admin/approve/**").permitAll()
+                        .requestMatchers("/admin/reject/**").permitAll()
+
+                        // ✅ PUBLIC BOOK & CATEGORY ENDPOINTS
+                        .requestMatchers("/book/apies/findAll").permitAll()
+                        .requestMatchers("/book/apies/findById/**").permitAll()
+                        .requestMatchers("/book/apies/category/**").permitAll()
+                        .requestMatchers("/category/apies/findAll").permitAll()
+                        .requestMatchers("/category/apies/main").permitAll()
+                        .requestMatchers("/category/apies/popular").permitAll()
+
+                        // ✅ ADMIN ENDPOINTS
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/user/apies/delete/**").hasRole("ADMIN")
+                        .requestMatchers("/user/apies/getAll").hasRole("ADMIN")
+                        .requestMatchers("/book/apies/upload").hasRole("ADMIN")
+                        .requestMatchers("/book/apies/save").hasRole("ADMIN")
+                        .requestMatchers("/book/apies/Update/**").hasRole("ADMIN")
+                        .requestMatchers("/book/apies/delete/**").hasRole("ADMIN")
+
+                        // ✅ USER ENDPOINTS (Authenticated users)
+                        .requestMatchers("/book/apies/user/**").authenticated()
+                        .requestMatchers("/review/apies/**").authenticated()
+                        .requestMatchers("/suggestion/apis/**").authenticated()
+                        .requestMatchers("/user/apies/Update/**").authenticated()
+
+                        // ✅ DEFAULT - AUTHENTICATED ACCESS
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password | Intelli-Read</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/ForgotPass.css}">
+    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header>
+    <a th:href="@{/Home}"><img th:src="@{/images/logo.png}" alt="IntelliRead Logo" style="height:80px; width:auto;"></a>
+    <div class="nav-buttons">
+        <button class="btn btn-loginoutline" onclick="window.location.href='/login'">
+            <img th:src="@{/images/login.png}" alt="login-icon" style="height: 50px; width: auto;">
+        </button>
+    </div>
+</header>
+
+<!-- main -->
+<div class="login-container">
+    <div class="login-card">
+        <h2>Reset Password</h2>
+        <p class="subtitle">Enter your email to reset password</p>
+        <form class="login-form" id="forgotForm">
+            <!-- Email input -->
+            <div class="input-group">
+                <i class="bx bx-envelope"></i>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+
+            <!-- New Password input -->
+            <div class="input-group">
+                <i class="bx bx-lock-alt"></i>
+                <input type="password" id="newPassword" name="newPassword" placeholder="New Password" required>
+                <i class="bx bx-hide toggle-password" id="toggleNewPassword"></i>
+            </div>
+
+            <!-- Confirm Password input -->
+            <div class="input-group">
+                <i class="bx bx-lock"></i>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                <i class="bx bx-hide toggle-password" id="toggleConfirmPassword"></i>
+            </div>
+
+            <button type="submit" class="login-btn" id="resetBtn">Reset Password</button>
+            <p class="signup-link">Remember your password? <a href="/login">Sign in here</a></p>
+        </form>
+    </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="main-footer" style="font-family: chakra petch;">
+    <div class="footer-section">
+        <h4>About</h4>
+        <p>Designed and Developed by Team <b style="color: rgb(206, 232, 10); font-size: large;">Rv</b></p>
+    </div>
+    <div class="footer-section">
+        <p>&copy; <span>2025</span> Intelli-Read. All Rights Reserved.</p>
+        <p><a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a></p>
+    </div>
+    <div class="footer-section">
+        <h4>License</h4>
+        <p>Standard License</p>
+    </div>
+</footer>
+
+<!-- ===== JS ===== -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // ===== Password Toggle =====
+      const toggleNewPassword = document.getElementById('toggleNewPassword');
+      const newPasswordField = document.getElementById('newPassword');
+      const toggleConfirmPassword = document.getElementById('toggleConfirmPassword');
+      const confirmPasswordField = document.getElementById('confirmPassword');
+
+      toggleNewPassword.addEventListener('click', () => {
+        const type = newPasswordField.type === 'password' ? 'text' : 'password';
+        newPasswordField.type = type;
+        toggleNewPassword.classList.toggle('bx-hide');
+        toggleNewPassword.classList.toggle('bx-show');
+      });
+
+      toggleConfirmPassword.addEventListener('click', () => {
+        const type = confirmPasswordField.type === 'password' ? 'text' : 'password';
+        confirmPasswordField.type = type;
+        toggleConfirmPassword.classList.toggle('bx-hide');
+        toggleConfirmPassword.classList.toggle('bx-show');
+      });
+
+      // ===== Form Submission =====
+      const forgotForm = document.getElementById('forgotForm');
+      const resetBtn = document.getElementById('resetBtn');
+
+      forgotForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById('email').value.trim();
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (!email || !newPassword || !confirmPassword) {
+          alert('Please fill in all fields');
+          return;
+        }
+
+        if (newPassword !== confirmPassword) {
+          alert('Passwords do not match!');
+          return;
+        }
+
+        // Password strength check
+        const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+        if (!strongRegex.test(newPassword)) {
+          alert('Password must contain:\n• At least 8 characters\n• One uppercase letter\n• One lowercase letter\n• One number\n• One special symbol');
+          return;
+        }
+
+        try {
+          resetBtn.textContent = 'Resetting...';
+          resetBtn.disabled = true;
+
+          // ✅ FIXED: Correct endpoint
+          const response = await fetch('/password/reset', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: email,
+              newPassword: newPassword,
+              confirmPassword: confirmPassword
+            })
+          });
+
+          const result = await response.json();
+
+          if (response.ok && result.status === 'success') {
+            alert('✅ Password reset successful! You can now login with your new password.');
+            window.location.href = '/login';
+          } else {
+            alert(`❌ ${result.message || 'Password reset failed. Please try again.'}`);
+          }
+
+        } catch (error) {
+          console.error('Reset password error:', error);
+          alert('Network error. Please try again.');
+        } finally {
+          resetBtn.textContent = 'Reset Password';
+          resetBtn.disabled = false;
+        }
+      });
+
+      // Pre-fill email from URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const emailParam = urlParams.get('email');
+      if (emailParam) {
+        document.getElementById('email').value = decodeURIComponent(emailParam);
+      }
+    });
+</script>
+</body>
+</html>
