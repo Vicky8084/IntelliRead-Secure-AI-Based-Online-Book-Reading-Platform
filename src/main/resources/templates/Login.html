@@ -42,11 +42,11 @@
                         <i class='bx bx-book-alt role-icon'></i>
                         <span>PUBLISHER</span>
                     </div>
-<!--                    <div class="role-option" data-role="admin">-->
-<!--                        <input type="radio" id="role-admin" name="role" value="ADMIN" required>-->
-<!--                        <i class='bx bx-cog role-icon'></i>-->
-<!--                        <span>ADMIN</span>-->
-<!--                    </div>-->
+                    <!--                    <div class="role-option" data-role="admin">-->
+                    <!--                        <input type="radio" id="role-admin" name="role" value="ADMIN" required>-->
+                    <!--                        <i class='bx bx-cog role-icon'></i>-->
+                    <!--                        <span>ADMIN</span>-->
+                    <!--                    </div>-->
                 </div>
             </div>
 
@@ -142,8 +142,8 @@
         loginBtn.disabled = true;
 
         try {
-          // ✅ FIXED: Correct endpoint
-          const response = await fetch('/auth/login', {
+          // ✅ FIXED: Correct endpoint with full URL
+          const response = await fetch('http://localhost:8035/auth/login', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -155,7 +155,7 @@
 
           if (data.success) {
             // ✅ FIXED: Role check with uppercase
-            if (data.user.role !== selectedRole) {
+            if (data.role !== selectedRole) {
               alert(`❌ Please login as ${selectedRole} using the correct credentials.`);
               loginBtn.textContent = originalText;
               loginBtn.disabled = false;
@@ -163,7 +163,12 @@
             }
 
             // Store user data
-            localStorage.setItem('user', JSON.stringify(data.user));
+            localStorage.setItem('user', JSON.stringify({
+              email: data.email,
+              name: data.name,
+              role: data.role,
+              userId: data.userId
+            }));
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('jwtToken', data.token); // ✅ Store JWT token
 
@@ -171,7 +176,7 @@
             let redirectUrl = '';
             let successMessage = '';
 
-            switch(data.user.role) {
+            switch(data.role) {
               case 'ADMIN':
                 redirectUrl = '/admin-dashboard';
                 successMessage = 'Admin login successful!';
@@ -222,6 +227,21 @@
         }
       }
     });
+
+    // ✅ ADDED: Test Connection Button
+    const testBtn = document.createElement('button');
+    testBtn.textContent = 'Test Connection';
+    testBtn.style.cssText = 'position: fixed; bottom: 20px; right: 20px; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; z-index: 1000;';
+    testBtn.onclick = async function() {
+        try {
+            const response = await fetch('http://localhost:8035/auth/test-connection');
+            const result = await response.text();
+            alert('✅ ' + result);
+        } catch (error) {
+            alert('❌ Cannot connect to backend');
+        }
+    };
+    document.body.appendChild(testBtn);
 </script>
 </body>
 </html>

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:8080", "http://127.0.0.1:8080"})
+@CrossOrigin(origins = "*") // ✅ ALLOW ALL ORIGINS
 public class LoginController {
 
     @Autowired
@@ -18,33 +18,11 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDto loginRequestDTO) {
         LoginResponseDTO response = loginService.login(loginRequestDTO);
-
-        if (response.isSuccess()) {
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.badRequest().body(response);
-        }
+        return ResponseEntity.ok(response); // ✅ ALWAYS RETURN 200 OK
     }
 
-    @PostMapping("/simple-login")
-    public ResponseEntity<String> simpleLogin(@RequestBody LoginRequestDto loginRequestDTO) {
-        String response = loginService.simpleLogin(loginRequestDTO);
-        if (response.startsWith("✅")) {
-            return ResponseEntity.ok(response);
-        } else {
-            return ResponseEntity.badRequest().body(response);
-        }
-    }
-
-    @PostMapping("/create-test-user")
-    public ResponseEntity<String> createTestUser() {
-        String result = loginService.createTestUser();
-        return ResponseEntity.ok(result);
-    }
-
-    // ✅ ADD THIS TEST ENDPOINT
     @GetMapping("/test-connection")
     public ResponseEntity<String> testConnection() {
-        return ResponseEntity.ok("✅ Backend is running! Connection successful at: " + new java.util.Date());
+        return ResponseEntity.ok("✅ Backend is running! Connection successful.");
     }
 }

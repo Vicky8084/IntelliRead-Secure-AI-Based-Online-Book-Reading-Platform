@@ -25,81 +25,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ===== AUTHENTICATION =====
-async function checkAdminAuth() {
-    const token = localStorage.getItem('jwtToken');
-    const user = localStorage.getItem('user');
-
-    if (!token || !user) {
+function checkAdminAuth() {
+    const admin = sessionStorage.getItem('admin');
+    if (!admin) {
         console.log('❌ No admin session found, redirecting to login...');
         window.location.href = '/admin';
         return;
     }
-
-    try {
-        const userData = JSON.parse(user);
-
-        // Verify with backend
-        const response = await fetch('/auth/check', {
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-
-        const authCheck = await response.json();
-
-        if (!authCheck.authenticated || userData.role !== 'ADMIN') {
-            console.log('❌ Invalid admin session, redirecting...');
-            localStorage.removeItem('jwtToken');
-            localStorage.removeItem('user');
-            localStorage.removeItem('isLoggedIn');
-            window.location.href = '/admin';
-            return;
-        }
-
-        console.log('✅ Admin authenticated:', userData.email);
-    } catch (error) {
-        console.log('❌ Auth check failed, redirecting to login...');
-        localStorage.removeItem('jwtToken');
-        localStorage.removeItem('user');
-        localStorage.removeItem('isLoggedIn');
-        window.location.href = '/admin';
-    }
-}
-
-// ===== ENHANCED API CALLS WITH JWT =====
-async function makeAuthenticatedRequest(url, options = {}) {
-    const token = localStorage.getItem('jwtToken');
-
-    if (!token) {
-        throw new Error('No authentication token found');
-    }
-
-    const defaultOptions = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
-    };
-
-    const finalOptions = { ...defaultOptions, ...options };
-
-    try {
-        const response = await fetch(url, finalOptions);
-
-        if (response.status === 401) {
-            // Token expired or invalid
-            localStorage.removeItem('jwtToken');
-            localStorage.removeItem('user');
-            localStorage.removeItem('isLoggedIn');
-            window.location.href = '/admin';
-            throw new Error('Authentication failed');
-        }
-
-        return response;
-    } catch (error) {
-        console.error('API request failed:', error);
-        throw error;
-    }
+    console.log('✅ Admin authenticated:', JSON.parse(admin).email);
 }
 
 // ===== NAVIGATION =====
@@ -148,13 +81,7 @@ function showSection(sectionId) {
 // ===== DASHBOARD SUMMARY =====
 async function loadDashboardSummary() {
     try {
-        // ✅ USE AUTHENTICATED REQUEST
-        const response = await makeAuthenticatedRequest('/api/admin/summary');
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
+        const response = await fetch('http://localhost:8035/api/admin/summary');
         const data = await response.json();
 
         if (data.success) {
@@ -186,9 +113,6 @@ async function loadDashboardSummary() {
         showNotification('Network error loading dashboard', 'error');
     }
 }
-
-// ... (Rest of your existing Dashboard.js functions remain SAME)
-// loadUsers(), loadBooks(), etc. - no changes needed
 
 async function loadRecentActivity() {
     try {
@@ -246,17 +170,9 @@ async function loadUsers(page = 1) {
             </tr>
         `;
 
-        // ✅ USE AUTHENTICATED REQUEST
-        const response = await makeAuthenticatedRequest(`/api/admin/users?page=${page}&limit=${usersPerPage}`);
+        const response = await fetch(`http://localhost:8035/api/admin/users?page=${page}&limit=${usersPerPage}`);
 
         if (!response.ok) {
-            if (response.status === 401) {
-                // Token expired or invalid
-                localStorage.removeItem('jwtToken');
-                localStorage.removeItem('user');
-                window.location.href = '/admin';
-                return;
-            }
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -289,9 +205,9 @@ async function loadUsers(page = 1) {
 
                 // Determine status and badge class
                 let statusText, statusClass;
-                if (user.role === 'admin') {
+                if (user.role === 'publisher') {
                     if (user.isApproved) {
-                        statusText = 'Approved Admin';
+                        statusText = 'Approved Publisher';
                         statusClass = 'status-approved';
                     } else {
                         statusText = 'Pending Approval';
@@ -319,11 +235,11 @@ async function loadUsers(page = 1) {
                             <button class="btn-info" onclick="viewUser('${user._id}')" title="View Details">
                                 <i class='bx bx-show'></i> View
                             </button>
-                            ${user.role === 'admin' && !user.isApproved ?
-                                `<button class="btn-success" onclick="approvePublisher('${user._id}')" title="Approve Admin">
+                            ${user.role === 'publisher' && !user.isApproved ?
+                                `<button class="btn-success" onclick="approvePublisher('${user._id}')" title="Approve Publisher">
                                     <i class='bx bx-check'></i> Approve
                                 </button>
-                                 <button class="btn-danger" onclick="rejectPublisher('${user._id}')" title="Reject Admin">
+                                 <button class="btn-danger" onclick="rejectPublisher('${user._id}')" title="Reject Publisher">
                                     <i class='bx bx-x'></i> Reject
                                  </button>` :
                                 `<button class="btn-danger" onclick="deleteUser('${user._id}')" title="Delete User">
@@ -347,6 +263,7 @@ async function loadUsers(page = 1) {
         showNotification('Network error loading users: ' + error.message, 'error');
     }
 }
+
 
 function updateUserPagination(totalPages, currentPage) {
     const pagination = document.getElementById('userPagination');
@@ -375,55 +292,59 @@ function updateUserPagination(totalPages, currentPage) {
 
 // ===== PUBLISHER APPROVAL =====
 async function approvePublisher(userId) {
-    if (confirm('Are you sure you want to approve this admin?')) {
+    if (confirm('Are you sure you want to approve this publisher?')) {
         try {
-            showNotification('Approving admin...', 'info');
+            showNotification('Approving publisher...', 'info');
 
-            // ✅ USE AUTHENTICATED REQUEST
-            const response = await makeAuthenticatedRequest(`/api/admin/publishers/${userId}/approve`, {
+            const response = await fetch(`/api/admin/publishers/${userId}/approve`, {
                 method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify({ approve: true })
             });
 
             const data = await response.json();
 
             if (data.success) {
-                showNotification('Admin approved successfully!', 'success');
+                showNotification('Publisher approved successfully!', 'success');
                 loadUsers(currentUserPage);
                 loadDashboardSummary();
             } else {
                 showNotification('Error: ' + data.message, 'error');
             }
         } catch (error) {
-            console.error('Error approving admin:', error);
-            showNotification('Error approving admin', 'error');
+            console.error('Error approving publisher:', error);
+            showNotification('Error approving publisher', 'error');
         }
     }
 }
 
 async function rejectPublisher(userId) {
-    if (confirm('Are you sure you want to reject this admin? This will delete their account.')) {
+    if (confirm('Are you sure you want to reject this publisher? This will delete their account.')) {
         try {
-            showNotification('Rejecting admin...', 'info');
+            showNotification('Rejecting publisher...', 'info');
 
-            // ✅ USE AUTHENTICATED REQUEST
-            const response = await makeAuthenticatedRequest(`/api/admin/publishers/${userId}/approve`, {
+            const response = await fetch(`/api/admin/publishers/${userId}/approve`, {
                 method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify({ approve: false })
             });
 
             const data = await response.json();
 
             if (data.success) {
-                showNotification('Admin rejected and account removed!', 'success');
+                showNotification('Publisher rejected and account removed!', 'success');
                 loadUsers(currentUserPage);
                 loadDashboardSummary();
             } else {
                 showNotification('Error: ' + data.message, 'error');
             }
         } catch (error) {
-            console.error('Error rejecting admin:', error);
-            showNotification('Error rejecting admin', 'error');
+            console.error('Error rejecting publisher:', error);
+            showNotification('Error rejecting publisher', 'error');
         }
     }
 }
@@ -433,16 +354,10 @@ async function viewUser(userId) {
     try {
         console.log('Fetching user details for:', userId);
 
-        // ✅ USE AUTHENTICATED REQUEST
-        const response = await makeAuthenticatedRequest(`/api/admin/users/${userId}`);
+        // Fetch specific user details
+        const response = await fetch(`/api/admin/users/${userId}`);
 
         if (!response.ok) {
-            if (response.status === 401) {
-                localStorage.removeItem('jwtToken');
-                localStorage.removeItem('user');
-                window.location.href = '/admin';
-                return;
-            }
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -505,17 +420,17 @@ function showUserModal(user) {
                     <label>Last Login:</label>
                     <span>${lastLogin}</span>
                 </div>
-                ${user.role === 'admin' ? `
+                ${user.role === 'publisher' ? `
                 <div class="user-detail">
-                    <label>Admin Status:</label>
+                    <label>Publisher Status:</label>
                     <span class="status-badge ${user.isApproved ? 'status-approved' : 'status-pending'}">
                         ${user.isApproved ? 'Approved' : 'Pending Approval'}
                     </span>
                 </div>
-                ${user.adminSince ? `
+                ${user.publisherSince ? `
                 <div class="user-detail">
-                    <label>Admin Since:</label>
-                    <span>${formatDateTime(user.adminSince)}</span>
+                    <label>Publisher Since:</label>
+                    <span>${formatDateTime(user.publisherSince)}</span>
                 </div>
                 ` : ''}
                 ` : ''}
@@ -527,12 +442,12 @@ function showUserModal(user) {
                 ` : ''}
             </div>
             <div class="modal-actions">
-                ${user.role === 'admin' && !user.isApproved ? `
+                ${user.role === 'publisher' && !user.isApproved ? `
                     <button class="btn-success" onclick="approvePublisher('${user._id}')">
-                        <i class='bx bx-check'></i> Approve Admin
+                        <i class='bx bx-check'></i> Approve Publisher
                     </button>
                     <button class="btn-danger" onclick="rejectPublisher('${user._id}')">
-                        <i class='bx bx-x'></i> Reject Admin
+                        <i class='bx bx-x'></i> Reject Publisher
                     </button>
                 ` : `
                     <button class="btn-primary" onclick="editUser('${user._id}')">
@@ -554,15 +469,15 @@ function showUserModal(user) {
 
 // Helper functions for user status
 function getUserStatusClass(user) {
-    if (user.role === 'admin') {
+    if (user.role === 'publisher') {
         return user.isApproved ? 'status-approved' : 'status-pending';
     }
     return user.isActive !== false ? 'status-active' : 'status-inactive';
 }
 
 function getUserStatusText(user) {
-    if (user.role === 'admin') {
-        return user.isApproved ? 'Approved Admin' : 'Pending Admin';
+    if (user.role === 'publisher') {
+        return user.isApproved ? 'Approved Publisher' : 'Pending Publisher';
     }
     return user.isActive !== false ? 'Active User' : 'Inactive User';
 }
@@ -579,8 +494,7 @@ async function deleteUser(userId) {
         try {
             showNotification('Deleting user...', 'info');
 
-            // ✅ USE AUTHENTICATED REQUEST
-            const response = await makeAuthenticatedRequest(`/api/admin/users/${userId}`, {
+            const response = await fetch(`/api/admin/users/${userId}`, {
                 method: 'DELETE'
             });
 
@@ -618,34 +532,108 @@ async function loadBooks(page = 1) {
             </tr>
         `;
 
-        // For now, we'll use mock data since book endpoints aren't implemented yet
-        // const response = await makeAuthenticatedRequest(`/api/admin/books?page=${page}&limit=${booksPerPage}`);
+        const response = await fetch(`/api/admin/books?page=${page}&limit=${booksPerPage}`);
 
-        // Mock data for books
-        const mockBooksData = {
-            success: true,
-            books: [],
-            totalPages: 1
-        };
-
-        allBooks = mockBooksData.books;
-        bookTableBody.innerHTML = '';
-
-        if (mockBooksData.books.length === 0) {
-            bookTableBody.innerHTML = `
-                <tr>
-                    <td colspan="7" class="no-data">
-                        <i class='bx bx-book-open'></i>
-                        <p>No books found</p>
-                    </td>
-                </tr>
-            `;
-            return;
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        // Update pagination
-        updateBookPagination(mockBooksData.totalPages, page);
+        const data = await response.json();
 
+        if (data.success) {
+            allBooks = data.books;
+            bookTableBody.innerHTML = '';
+
+            if (data.books.length === 0) {
+                bookTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="no-data">
+                            <i class='bx bx-book-open'></i>
+                            <p>No books found</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            data.books.forEach(book => {
+                const row = document.createElement('tr');
+
+                // Ensure book has an _id
+                if (!book._id) {
+                    console.warn('Book missing ID:', book);
+                    return;
+                }
+
+                // Determine status badge class
+                let statusClass = '';
+                let statusText = book.status ? book.status.charAt(0).toUpperCase() + book.status.slice(1) : 'Unknown';
+                switch(book.status) {
+                    case 'approved':
+                        statusClass = 'status-approved';
+                        break;
+                    case 'pending':
+                        statusClass = 'status-pending';
+                        break;
+                    case 'rejected':
+                        statusClass = 'status-rejected';
+                        break;
+                    default:
+                        statusClass = 'status-pending';
+                }
+
+                row.innerHTML = `
+                    <td>
+                        ${book.coverImage ?
+                            `<img src="${book.coverImage}" alt="${book.title}" class="book-cover">` :
+                            '<div class="book-cover-placeholder"><i class="bx bx-book"></i></div>'
+                        }
+                    </td>
+                    <td>
+                        <div class="book-title">
+                            <strong>${book.title || 'Untitled'}</strong>
+                            ${book.isFeatured ? '<span class="featured-badge">Featured</span>' : ''}
+                        </div>
+                    </td>
+                    <td>${book.author || 'Unknown Author'}</td>
+                    <td>
+                        <span class="category-tag">${book.category || 'Uncategorized'}</span>
+                    </td>
+                    <td>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                    </td>
+                    <td>${book.createdAt ? formatDate(book.createdAt) : 'Unknown'}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-info" onclick="viewBook('${book._id}')" title="View Details">
+                                <i class='bx bx-show'></i> View
+                            </button>
+                            ${book.status === 'pending' ?
+                                `<button class="btn-success" onclick="approveBook('${book._id}')" title="Approve Book">
+                                    <i class='bx bx-check'></i> Approve
+                                </button>
+                                 <button class="btn-danger" onclick="rejectBook('${book._id}')" title="Reject Book">
+                                    <i class='bx bx-x'></i> Reject
+                                 </button>` :
+                                `<button class="btn-warning" onclick="editBook('${book._id}')" title="Edit Book">
+                                    <i class='bx bx-edit'></i> Edit
+                                </button>`
+                            }
+                            <button class="btn-danger" onclick="deleteBook('${book._id}')" title="Delete Book">
+                                <i class='bx bx-trash'></i> Delete
+                            </button>
+                        </div>
+                    </td>
+                `;
+                bookTableBody.appendChild(row);
+            });
+
+            // Update pagination
+            updateBookPagination(data.totalPages, page);
+        } else {
+            console.error('Error loading books:', data.message);
+            showNotification('Error loading books: ' + data.message, 'error');
+        }
     } catch (error) {
         console.error('Error loading books:', error);
         showNotification('Network error loading books: ' + error.message, 'error');
@@ -683,9 +671,11 @@ async function approveBook(bookId) {
         try {
             showNotification('Approving book...', 'info');
 
-            // ✅ USE AUTHENTICATED REQUEST
-            const response = await makeAuthenticatedRequest(`/api/admin/books/${bookId}`, {
+            const response = await fetch(`/api/admin/books/${bookId}`, {
                 method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify({ status: 'approved' })
             });
 
@@ -710,9 +700,11 @@ async function rejectBook(bookId) {
         try {
             showNotification('Rejecting book...', 'info');
 
-            // ✅ USE AUTHENTICATED REQUEST
-            const response = await makeAuthenticatedRequest(`/api/admin/books/${bookId}`, {
+            const response = await fetch(`/api/admin/books/${bookId}`, {
                 method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify({ status: 'rejected' })
             });
 
@@ -732,12 +724,122 @@ async function rejectBook(bookId) {
 }
 
 async function viewBook(bookId) {
-    showNotification('Book management coming soon!', 'info');
+    try {
+        console.log('Fetching book details for:', bookId);
+
+        // Fetch specific book details
+        const response = await fetch(`/api/admin/books/${bookId}`);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.success) {
+            showBookModal(data.book);
+        } else {
+            console.error('Error loading book details:', data.message);
+            showNotification('Error loading book details: ' + data.message, 'error');
+        }
+    } catch (error) {
+        console.error('Error viewing book:', error);
+
+        // Fallback: Try to find book in already loaded data
+        const book = allBooks.find(b => b._id === bookId);
+        if (book) {
+            console.log('Using cached book data for:', bookId);
+            showBookModal(book);
+        } else {
+            showNotification('Error loading book details. Please try again.', 'error');
+        }
+    }
 }
 
 function showBookModal(book) {
-    // Implementation for book modal
-    showNotification('Book details functionality coming soon!', 'info');
+    const modal = document.getElementById('bookModal');
+    const bookDetails = document.getElementById('bookDetails');
+
+    if (modal && bookDetails) {
+        const statusText = book.status ? book.status.charAt(0).toUpperCase() + book.status.slice(1) : 'Unknown';
+        const statusClass = book.status ? `status-${book.status}` : 'status-pending';
+
+        bookDetails.innerHTML = `
+            <div class="book-detail-grid">
+                <div class="book-cover-large">
+                    ${book.coverImage ?
+                        `<img src="${book.coverImage}" alt="${book.title}" style="max-width: 200px; border-radius: 8px;">` :
+                        '<div class="book-cover-placeholder" style="width: 200px; height: 300px; background: #f8f9fa; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #6c757d; font-size: 3rem;"><i class="bx bx-book"></i></div>'
+                    }
+                </div>
+                <div class="book-info">
+                    <h3>${book.title || 'Untitled'}</h3>
+                    <p class="book-author">by ${book.author || 'Unknown Author'}</p>
+
+                    <div class="book-meta">
+                        <span class="category-tag">${book.category || 'Uncategorized'}</span>
+                        <span class="status-badge ${statusClass}">
+                            ${statusText}
+                        </span>
+                        ${book.isFeatured ? '<span class="featured-badge">Featured</span>' : ''}
+                    </div>
+
+                    ${book.description ? `
+                    <div class="book-description">
+                        <h4>Description</h4>
+                        <p>${book.description}</p>
+                    </div>
+                    ` : ''}
+
+                    <div class="book-stats">
+                        <div class="stat">
+                            <label>Pages:</label>
+                            <span>${book.pages || 'N/A'}</span>
+                        </div>
+                        <div class="stat">
+                            <label>Language:</label>
+                            <span>${book.language || 'English'}</span>
+                        </div>
+                        <div class="stat">
+                            <label>Added:</label>
+                            <span>${book.createdAt ? formatDateTime(book.createdAt) : 'Unknown'}</span>
+                        </div>
+                        <div class="stat">
+                            <label>Publisher:</label>
+                            <span>${book.publisherName || 'Unknown'}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                ${book.status === 'pending' ? `
+                    <button class="btn-success" onclick="approveBook('${book._id}')">
+                        <i class='bx bx-check'></i> Approve
+                    </button>
+                    <button class="btn-danger" onclick="rejectBook('${book._id}')">
+                        <i class='bx bx-x'></i> Reject
+                    </button>
+                ` : ''}
+                <button class="btn-primary" onclick="editBook('${book._id}')">
+                    <i class='bx bx-edit'></i> Edit
+                </button>
+                ${book.isFeatured ? `
+                    <button class="btn-secondary" onclick="unfeatureBook('${book._id}')">
+                        <i class='bx bx-star'></i> Unfeature
+                    </button>
+                ` : `
+                    <button class="btn-success" onclick="featureBook('${book._id}')">
+                        <i class='bx bx-star'></i> Feature
+                    </button>
+                `}
+                <button class="btn-danger" onclick="deleteBook('${book._id}')">
+                    <i class='bx bx-trash'></i> Delete
+                </button>
+            </div>
+        `;
+
+        modal.style.display = 'block';
+    }
 }
 
 async function editBook(bookId) {
@@ -753,7 +855,34 @@ async function unfeatureBook(bookId) {
 }
 
 async function deleteBook(bookId) {
-    showNotification('Delete book functionality coming soon!', 'info');
+    const book = allBooks.find(b => b._id === bookId);
+    if (!book) return;
+
+    if (confirm(`Are you sure you want to delete "${book.title}"? This action cannot be undone.`)) {
+        try {
+            showNotification('Deleting book...', 'info');
+
+            const response = await fetch(`/api/admin/books/${bookId}`, {
+                method: 'DELETE'
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                showNotification('Book deleted successfully!', 'success');
+                loadBooks(currentBookPage);
+                loadDashboardSummary();
+                // Close modal if open
+                const modal = document.getElementById('bookModal');
+                if (modal) modal.style.display = 'none';
+            } else {
+                showNotification('Error: ' + data.message, 'error');
+            }
+        } catch (error) {
+            console.error('Error deleting book:', error);
+            showNotification('Error deleting book', 'error');
+        }
+    }
 }
 
 // ===== SEARCH AND FILTER =====
@@ -808,8 +937,7 @@ async function exportUsers() {
     try {
         showNotification('Preparing user export...', 'info');
 
-        // ✅ USE AUTHENTICATED REQUEST
-        const response = await makeAuthenticatedRequest('/api/admin/users?limit=1000');
+        const response = await fetch('/api/admin/users?limit=1000');
         const data = await response.json();
 
         if (data.success) {
@@ -835,7 +963,7 @@ function convertToCSV(users) {
         user.fullName,
         user.email,
         user.role,
-        user.role === 'admin' ? (user.isApproved ? 'Approved Admin' : 'Pending Approval') : 'Active User',
+        user.role === 'publisher' ? (user.isApproved ? 'Approved Publisher' : 'Pending Approval') : 'Active User',
         new Date(user.createdAt).toLocaleDateString()
     ]);
 
@@ -868,10 +996,17 @@ async function logout() {
             // Show logging out message
             showNotification('Logging out... Please wait.', 'info');
 
-            // Clear localStorage
-            localStorage.removeItem('jwtToken');
-            localStorage.removeItem('user');
-            localStorage.removeItem('isLoggedIn');
+            // Try to call the logout API endpoint
+            const response = await fetch('/api/admin/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            // Clear session storage regardless of API response
+            sessionStorage.removeItem('admin');
+            sessionStorage.removeItem('isAdmin');
 
             console.log('✅ Admin logged out successfully');
 
@@ -887,9 +1022,8 @@ async function logout() {
             console.error('Logout error:', error);
 
             // Even if there's an error, clear storage and redirect
-            localStorage.removeItem('jwtToken');
-            localStorage.removeItem('user');
-            localStorage.removeItem('isLoggedIn');
+            sessionStorage.removeItem('admin');
+            sessionStorage.removeItem('isAdmin');
             
             showNotification('Logout successful! Redirecting to login page...', 'success');
             
