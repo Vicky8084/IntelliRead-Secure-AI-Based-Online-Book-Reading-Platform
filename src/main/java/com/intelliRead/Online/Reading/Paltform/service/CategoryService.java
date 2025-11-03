@@ -5,8 +5,12 @@ import com.intelliRead.Online.Reading.Paltform.exception.CategoryAlreadyExistExc
 import com.intelliRead.Online.Reading.Paltform.model.Category;
 import com.intelliRead.Online.Reading.Paltform.repository.CategoryRepository;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.CategoryRequestDTO;
+//import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +18,7 @@ import java.util.Optional;
 @Service
 public class CategoryService {
 
-    CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
     public CategoryService(CategoryRepository categoryRepository){
@@ -22,7 +26,6 @@ public class CategoryService {
     }
 
     public String addCategory(CategoryRequestDTO categoryRequestDTO){
-        // ✅ Check if category already exists
         Optional<Category> existingCategory = categoryRepository.findByCategoryName(categoryRequestDTO.getCategoryName());
         if (existingCategory.isPresent()) {
             throw new CategoryAlreadyExistException("Category '" + categoryRequestDTO.getCategoryName() + "' already exists!");
@@ -30,7 +33,7 @@ public class CategoryService {
 
         Category category = CategoryConverter.convertCategoryRequestDtoIntoCategory(categoryRequestDTO);
 
-        // ✅ Handle parent category
+        // Set parent category if present
         if (categoryRequestDTO.getParentCategoryId() != null) {
             Category parentCategory = findCategoryById(categoryRequestDTO.getParentCategoryId());
             if (parentCategory != null) {
@@ -43,62 +46,59 @@ public class CategoryService {
     }
 
     public Category findCategoryById(int id){
-        Optional<Category> categoryOptional = categoryRepository.findById(id);
-        return categoryOptional.orElse(null);
+        return categoryRepository.findById(id).orElse(null);
     }
 
+    @Transactional(readOnly = true)
     public List<Category> findAllCategory(){
         return categoryRepository.findAll();
     }
 
-    // ✅ Get main categories (no parent)
+    @Transactional(readOnly = true)
     public List<Category> findMainCategories() {
         return categoryRepository.findByParentCategoryIsNull();
     }
 
-    // ✅ Get subcategories by parent ID
+    @Transactional(readOnly = true)
     public List<Category> findSubCategories(int parentId) {
         return categoryRepository.findByParentCategoryId(parentId);
     }
 
     public String updateCategory(int id, CategoryRequestDTO categoryRequestDTO){
         Category category = findCategoryById(id);
-        if (category != null) {
-            category.setCategoryName(categoryRequestDTO.getCategoryName());
-            category.setDescription(categoryRequestDTO.getDescription());
-
-            // ✅ Update parent category
-            if (categoryRequestDTO.getParentCategoryId() != null) {
-                Category parentCategory = findCategoryById(categoryRequestDTO.getParentCategoryId());
-                category.setParentCategory(parentCategory);
-            } else {
-                category.setParentCategory(null);
-            }
-
-            categoryRepository.save(category);
-            return "Category Updated Successfully";
-        } else {
+        if (category == null) {
             return "Category not found";
         }
+
+        category.setCategoryName(categoryRequestDTO.getCategoryName());
+        category.setDescription(categoryRequestDTO.getDescription());
+
+        if (categoryRequestDTO.getParentCategoryId() != null) {
+            Category parentCategory = findCategoryById(categoryRequestDTO.getParentCategoryId());
+            category.setParentCategory(parentCategory);
+        } else {
+            category.setParentCategory(null);
+        }
+
+        categoryRepository.save(category);
+        return "Category Updated Successfully";
     }
 
     public String deleteCategory(int id){
         Category category = findCategoryById(id);
-        if (category != null) {
-            // ✅ Check if category has subcategories
-            if (!category.getSubCategories().isEmpty()) {
-                return "Cannot delete category. It has subcategories. Delete subcategories first.";
-            }
-
-            // ✅ Check if category has books
-            if (!category.getBooks().isEmpty()) {
-                return "Cannot delete category. It has books assigned. Reassign books first.";
-            }
-
-            categoryRepository.deleteById(id);
-            return "Category deleted Successfully";
-        } else {
+        if (category == null) {
             return "Category Not found";
         }
+
+        if (!category.getSubCategories().isEmpty()) {
+            return "Cannot delete category. It has subcategories. Delete them first.";
+        }
+
+        if (!category.getBooks().isEmpty()) {
+            return "Cannot delete category. It has books assigned. Reassign books first.";
+        }
+
+        categoryRepository.deleteById(id);
+        return "Category deleted Successfully";
     }
 }

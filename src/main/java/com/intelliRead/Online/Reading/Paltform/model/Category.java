@@ -1,7 +1,7 @@
 package com.intelliRead.Online.Reading.Paltform.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -25,19 +26,19 @@ public class Category {
 
     private String description;
 
-    // ✅ FIXED: Unique JSON reference for parent category
-    @JsonBackReference("category-parent")
-    @ManyToOne
+    // ✅ Parent category reference (many-to-one)
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_category_id")
     private Category parentCategory;
 
-    // ✅ FIXED: Matching JSON reference for subcategories
-    @JsonManagedReference("category-parent")
-    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
+    // ✅ Subcategories - ignore in JSON to prevent lazy load error
+    @JsonIgnore
+    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Category> subCategories = new ArrayList<>();
 
-    // ✅ FIXED: Books relationship with proper JSON reference
-    @JsonManagedReference("category-books")
-    @OneToMany(mappedBy = "category")
+    // ✅ Books - ignore to prevent recursion
+    @JsonIgnore
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Book> books = new ArrayList<>();
 }

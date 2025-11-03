@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <style>
-        /* Base styles */
         * {
           margin: 0;
           padding: 0;
@@ -21,7 +20,6 @@
           line-height: 1.6;
         }
 
-        /* Header styles */
         .admin-header {
           background: linear-gradient(135deg, #4a90e2, #5a6ae4);
           color: white;
@@ -66,7 +64,6 @@
           background: rgba(255,255,255,0.3);
         }
 
-        /* Container layout */
         .admin-container {
           display: flex;
           max-width: 1200px;
@@ -74,7 +71,6 @@
           min-height: calc(100vh - 70px);
         }
 
-        /* Sidebar styles */
         .sidebar {
           width: 250px;
           background: white;
@@ -116,7 +112,6 @@
           color: #4a90e2;
         }
 
-        /* Main content styles */
         .main-content {
           flex: 1;
           padding: 30px;
@@ -151,7 +146,6 @@
           margin-top: 15px;
         }
 
-        /* Stats cards */
         .publisher-stats {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -225,7 +219,6 @@
           font-size: 0.9rem;
         }
 
-        /* Activity section */
         .activity-section {
           background: white;
           border-radius: 10px;
@@ -257,7 +250,6 @@
           font-size: 0.85rem;
         }
 
-        /* Search and filter */
         .search-box {
           position: relative;
           flex: 1;
@@ -287,7 +279,6 @@
           background: white;
         }
 
-        /* Table styles */
         .table-container {
           background: white;
           border-radius: 10px;
@@ -313,7 +304,6 @@
           color: #555;
         }
 
-        /* Publisher-specific styles */
         .upload-area {
           border: 2px dashed #ddd;
           border-radius: 10px;
@@ -420,7 +410,6 @@
           margin-top: 20px;
         }
 
-        /* Button styles */
         .btn-primary {
           background: #4a90e2;
           color: white;
@@ -469,7 +458,6 @@
           background: #c82333;
         }
 
-        /* Modal styles */
         .modal {
           display: none;
           position: fixed;
@@ -512,7 +500,6 @@
           color: #000;
         }
 
-        /* Book detail view */
         .book-detail-view {
           display: flex;
           gap: 30px;
@@ -539,7 +526,6 @@
           margin-bottom: 10px;
         }
 
-        /* Analytics grid */
         .analytics-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -569,7 +555,6 @@
           color: #6c757d;
         }
 
-        /* Settings grid */
         .settings-grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -614,7 +599,6 @@
           resize: vertical;
         }
 
-        /* Pagination */
         .pagination {
           display: flex;
           justify-content: center;
@@ -641,7 +625,6 @@
           background: #f5f5f5;
         }
 
-        /* Loading spinner */
         .loading-spinner {
           display: none;
           width: 20px;
@@ -657,7 +640,6 @@
           100% { transform: rotate(360deg); }
         }
 
-        /* Toast notifications */
         .toast {
           position: fixed;
           top: 20px;
@@ -691,6 +673,41 @@
               transform: translateX(0);
               opacity: 1;
           }
+        }
+
+        /* Category specific styles */
+        .category-badge {
+          padding: 4px 8px;
+          background: #e9ecef;
+          border-radius: 12px;
+          font-size: 0.75rem;
+          color: #495057;
+        }
+
+        .category-filters {
+          display: flex;
+          gap: 10px;
+          margin-bottom: 20px;
+          flex-wrap: wrap;
+        }
+
+        .category-filter-btn {
+          padding: 8px 16px;
+          border: 1px solid #ddd;
+          background: white;
+          border-radius: 20px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .category-filter-btn.active {
+          background: #4a90e2;
+          color: white;
+          border-color: #4a90e2;
+        }
+
+        .category-filter-btn:hover {
+          background: #f8f9fa;
         }
     </style>
 </head>
@@ -791,8 +808,8 @@
                         <i class='bx bx-bar-chart'></i>
                     </div>
                     <div class="stat-info">
-                        <h3 id="totalAuthors">0</h3>
-                        <p>Unique Authors</p>
+                        <h3 id="totalCategories">0</h3>
+                        <p>Categories Used</p>
                     </div>
                 </div>
             </div>
@@ -803,6 +820,16 @@
                     <h3>Recent Books</h3>
                     <div class="activity-list" id="recentBooks">
                         <!-- Recent books will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Distribution -->
+            <div class="activity-section" style="margin-top: 20px;">
+                <div class="activity-card">
+                    <h3>Category Distribution</h3>
+                    <div id="categoryDistribution">
+                        <!-- Category stats will be loaded here -->
                     </div>
                 </div>
             </div>
@@ -822,7 +849,16 @@
                         <option value="published">Published</option>
                         <option value="draft">Draft</option>
                     </select>
+                    <select id="categoryFilter" onchange="filterBooks()">
+                        <option value="">All Categories</option>
+                        <!-- Categories will be loaded dynamically -->
+                    </select>
                 </div>
+            </div>
+
+            <!-- Category Filters -->
+            <div class="category-filters" id="quickCategoryFilters">
+                <!-- Quick category filters will be loaded here -->
             </div>
 
             <div class="table-container">
@@ -866,7 +902,7 @@
             </div>
 
             <form id="addBookForm">
-                <input type="hidden" id="userId" value="1"> <!-- Default user ID -->
+                <input type="hidden" id="userId" value="1">
 
                 <div class="form-row">
                     <div class="form-group">
@@ -881,8 +917,11 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="bookCategory">Category</label>
-                        <input type="text" id="bookCategory" placeholder="e.g., Fiction, Education">
+                        <label for="bookCategory">Category *</label>
+                        <select id="bookCategory" required>
+                            <option value="">Select Category</option>
+                            <!-- Categories will be loaded dynamically -->
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="bookLanguage">Language *</label>
@@ -920,16 +959,16 @@
 
             <div class="analytics-grid">
                 <div class="chart-card">
-                    <h3>Book Performance</h3>
-                    <div class="chart-placeholder" id="bookPerformanceChart">
-                        <p>Book downloads and views chart</p>
+                    <h3>Category Performance</h3>
+                    <div class="chart-placeholder" id="categoryPerformanceChart">
+                        <p>Category-wise book performance</p>
                     </div>
                 </div>
 
                 <div class="chart-card">
-                    <h3>Reader Demographics</h3>
-                    <div class="chart-placeholder" id="readerDemographicsChart">
-                        <p>Reader age and location distribution</p>
+                    <h3>Reader Engagement by Category</h3>
+                    <div class="chart-placeholder" id="readerEngagementChart">
+                        <p>Reader engagement metrics by category</p>
                     </div>
                 </div>
             </div>
@@ -1012,21 +1051,21 @@
     // Global variables
     let currentPublisher = null;
     let books = [];
+    let categories = [];
 
     // Initialize the dashboard
     document.addEventListener('DOMContentLoaded', function() {
       initializeDashboard();
       setupEventListeners();
       loadPublisherData();
+      loadCategories();
       loadBooksFromAPI();
     });
 
     // Initialize dashboard
     function initializeDashboard() {
-      // Set up section navigation
       setupSectionNavigation();
 
-      // Load current publisher info
       const savedPublisher = localStorage.getItem('currentPublisher');
       if (savedPublisher) {
         currentPublisher = JSON.parse(savedPublisher);
@@ -1035,34 +1074,8 @@
       }
     }
 
-    // Debugging ke liye - Console mein books check karein
-function debugBooks() {
-  console.log('Current books array:', books);
-  console.log('Books length:', books.length);
-  console.log('Table body content:', document.getElementById('bookTableBody').innerHTML);
-}
-
-// Page load hone par call karein (temporary)
-setTimeout(() => {
-  const debugBtn = document.createElement('button');
-  debugBtn.textContent = 'Debug Books';
-  debugBtn.style.position = 'fixed';
-  debugBtn.style.bottom = '10px';
-  debugBtn.style.right = '10px';
-  debugBtn.style.zIndex = '10000';
-  debugBtn.style.background = '#ff0000';
-  debugBtn.style.color = 'white';
-  debugBtn.style.padding = '10px';
-  debugBtn.style.border = 'none';
-  debugBtn.style.borderRadius = '5px';
-  debugBtn.onclick = debugBooks;
-  document.body.appendChild(debugBtn);
-}, 2000);
-
-
     // Set up event listeners
     function setupEventListeners() {
-      // Book cover upload
       const uploadArea = document.getElementById('uploadArea');
       const coverUpload = document.getElementById('coverUpload');
 
@@ -1082,13 +1095,11 @@ setTimeout(() => {
         }
       });
 
-      // Add book form submission
       document.getElementById('addBookForm').addEventListener('submit', function(e) {
         e.preventDefault();
         addNewBook();
       });
 
-      // Close modals when clicking outside
       window.addEventListener('click', function(event) {
         const bookModal = document.getElementById('bookModal');
         const editModal = document.getElementById('editBookModal');
@@ -1103,14 +1114,122 @@ setTimeout(() => {
       });
     }
 
+    // Load categories from backend
+    async function loadCategories() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/category/apies/findAll`);
+        if (response.ok) {
+          const categoriesData = await response.json();
+          if (categoriesData.length > 0) {
+            categories = categoriesData;
+          } else {
+            // Agar backend empty array return kare toh default use karo
+            setDefaultCategories();
+          }
+          populateCategoryDropdowns();
+          updateCategoryFilters();
+        } else {
+          setDefaultCategories();
+        }
+      } catch (error) {
+        console.error('Error loading categories:', error);
+        setDefaultCategories();
+      }
+    }
+
+    // Set default categories if backend fails
+    function setDefaultCategories() {
+      categories = [
+        { id: 1, categoryName: "Fiction" },
+        { id: 2, categoryName: "Education" },
+        { id: 3, categoryName: "Technology" },
+        { id: 4, categoryName: "Science" },
+        { id: 5, categoryName: "Business" },
+        { id: 6, categoryName: "Biography" },
+        { id: 7, categoryName: "History" },
+        { id: 8, categoryName: "Children" }
+      ];
+      populateCategoryDropdowns();
+    }
+
+    // Populate category dropdowns in forms
+    function populateCategoryDropdowns() {
+      const addBookCategory = document.getElementById('bookCategory');
+      const filterCategory = document.getElementById('categoryFilter');
+
+      // Clear existing options except first one
+      while (addBookCategory.options.length > 1) {
+        addBookCategory.remove(1);
+      }
+      while (filterCategory.options.length > 1) {
+        filterCategory.remove(1);
+      }
+
+      categories.forEach(category => {
+        const option1 = new Option(category.categoryName, category.id);
+        const option2 = new Option(category.categoryName, category.id);
+
+        addBookCategory.add(option1);
+        filterCategory.add(option2);
+      });
+    }
+
+    // Update category filters in My Books section
+    function updateCategoryFilters() {
+      const quickFilters = document.getElementById('quickCategoryFilters');
+      let html = '<div class="category-filter-btn active" onclick="filterBooksByCategory(\'\')">All</div>';
+
+      // Get top 5 categories used in books
+      const categoryCounts = {};
+      books.forEach(book => {
+        if (book.category && book.category.id) {
+          categoryCounts[book.category.id] = (categoryCounts[book.category.id] || 0) + 1;
+        }
+      });
+
+      // Sort categories by count and take top 5
+      const topCategories = Object.entries(categoryCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 5);
+
+      topCategories.forEach(([categoryId, count]) => {
+        const category = categories.find(c => c.id == categoryId);
+        if (category) {
+          html += `<div class="category-filter-btn" onclick="filterBooksByCategory(${categoryId})">
+                    ${category.categoryName} (${count})
+                   </div>`;
+        }
+      });
+
+      quickFilters.innerHTML = html;
+    }
+
+    // Filter books by category
+    function filterBooksByCategory(categoryId) {
+      // Update active state of filter buttons
+      document.querySelectorAll('.category-filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      event.target.classList.add('active');
+
+      if (!categoryId) {
+        renderBooksTable();
+        return;
+      }
+
+      const filteredBooks = books.filter(book =>
+        book.category && book.category.id == categoryId
+      );
+      renderBooksTable(filteredBooks);
+    }
+
     // Load publisher data
     function loadPublisherData() {
-      // This would fetch from your Java backend
       updateStats({
         totalBooks: 0,
         publishedBooks: 0,
         draftBooks: 0,
-        totalAuthors: 0
+        totalCategories: 0
       });
     }
 
@@ -1119,281 +1238,274 @@ setTimeout(() => {
       document.getElementById('totalBooks').textContent = stats.totalBooks;
       document.getElementById('publishedBooks').textContent = stats.publishedBooks;
       document.getElementById('draftBooks').textContent = stats.draftBooks;
-      document.getElementById('totalAuthors').textContent = stats.totalAuthors;
+      document.getElementById('totalCategories').textContent = stats.totalCategories;
     }
 
- // Load books from API - UPDATED VERSION
-async function loadBooksFromAPI() {
-  try {
-    const userId = document.getElementById('userId').value;
-    console.log('Loading books for user:', userId);
-
-    // DIRECT endpoint use karo
-    const response = await fetch(`${API_BASE_URL}/book/apies/user/${userId}`);
-
-    console.log('Response status:', response.status);
-
-    if (response.ok) {
-      const booksData = await response.json();
-      console.log('Books loaded:', booksData);
-
-      books = booksData;
-      renderBooksTable();
-      updateDashboardStats();
-      loadRecentBooks();
-    } else {
-      // Agar backend error de raha hai, toh manually check karo
-      console.log('Backend returned error, checking database manually...');
-      await checkBooksManually();
-    }
-
-  } catch (error) {
-    console.error('Error loading books:', error);
-    // Manual check karo
-    await checkBooksManually();
-  }
-}
-
-// Manual check function - YE NAYA FUNCTION ADD KARO
-async function checkBooksManually() {
-  try {
-    // Try different endpoints
-    const endpoints = [
-      `${API_BASE_URL}/book/apies/findAll`,
-      `${API_BASE_URL}/book/apies/user/1`,
-      `${API_BASE_URL}/book/apies/all`
-    ];
-
-    for (let endpoint of endpoints) {
+    // Load books from API
+    async function loadBooksFromAPI() {
       try {
-        const response = await fetch(endpoint);
+        const userId = document.getElementById('userId').value;
+        const response = await fetch(`${API_BASE_URL}/book/apies/user/${userId}`);
+
         if (response.ok) {
-          const data = await response.json();
-          console.log(`Success with ${endpoint}:`, data);
-          books = data.filter(book => book.user && book.user.id == document.getElementById('userId').value);
+          const booksData = await response.json();
+          books = booksData;
           renderBooksTable();
           updateDashboardStats();
           loadRecentBooks();
-          showToast('Books loaded successfully!', 'success');
-          return;
+          updateCategoryDistribution();
+          updateCategoryFilters();
         }
-      } catch (e) {
-        console.log(`Failed with ${endpoint}:`, e.message);
+      } catch (error) {
+        console.error('Error loading books:', error);
       }
     }
 
-    // Agar sab fail, toh demo data show karo
-    books = [];
-    renderBooksTable();
-    updateDashboardStats();
-    loadRecentBooks();
-    showToast('Connected to backend but books loading issue', 'warning');
+    // Update dashboard stats from loaded books
+    function updateDashboardStats() {
+      const totalBooks = books.length;
+      const publishedBooks = books.filter(book => book.status === 'published').length;
+      const draftBooks = books.filter(book => book.status === 'draft' || !book.status).length;
+      const uniqueCategories = new Set(books.map(book =>
+        book.category ? book.category.id : null
+      ).filter(id => id !== null)).size;
 
-  } catch (error) {
-    console.error('Manual check failed:', error);
-  }
-}
+      updateStats({
+        totalBooks,
+        publishedBooks,
+        draftBooks,
+        totalCategories: uniqueCategories
+      });
+    }
 
-  // Update dashboard stats from loaded books
-function updateDashboardStats() {
-  const totalBooks = books.length;
-  const publishedBooks = books.filter(book => book.status === 'published').length;
-  const draftBooks = books.filter(book => book.status === 'draft' || !book.status).length; // ✅ YEH LINE CHANGE KARO
-  const authors = new Set(books.map(book => book.author)).size;
+    // Update category distribution
+    function updateCategoryDistribution() {
+      const distributionContainer = document.getElementById('categoryDistribution');
+      const categoryCounts = {};
 
-  console.log('Stats - Total:', totalBooks, 'Published:', publishedBooks, 'Drafts:', draftBooks, 'Authors:', authors);
-  console.log('All books with status:', books.map(b => ({title: b.title, status: b.status})));
-
-  updateStats({
-    totalBooks,
-    publishedBooks,
-    draftBooks,
-    totalAuthors: authors
-  });
-}
-
-
-
-    // Load recent books
-    function loadRecentBooks() {
-      const recentBooksContainer = document.getElementById('recentBooks');
-
-      const recentBooks = books.slice(0, 3); // Get first 3 books
+      books.forEach(book => {
+        if (book.category && book.category.categoryName) {
+          const catName = book.category.categoryName;
+          categoryCounts[catName] = (categoryCounts[catName] || 0) + 1;
+        }
+      });
 
       let html = '';
-      recentBooks.forEach(book => {
-        const statusClass = `status-${book.status}`;
-        const date = new Date(book.uploadedAt).toLocaleDateString();
+      Object.entries(categoryCounts).forEach(([category, count]) => {
+        const percentage = ((count / books.length) * 100).toFixed(1);
         html += `
           <div class="activity-item">
             <div class="activity-info">
-              <h4>${book.title}</h4>
-              <span class="status-badge ${statusClass}">${book.status}</span>
+              <h4>${category}</h4>
+              <span class="category-badge">${count} books</span>
             </div>
-            <span class="activity-time">${date}</span>
+            <span class="activity-time">${percentage}%</span>
           </div>
         `;
       });
 
-      recentBooksContainer.innerHTML = html || '<p>No books found</p>';
+      distributionContainer.innerHTML = html || '<p>No category data available</p>';
     }
 
-    // Render books table - IMPROVED VERSION
-function renderBooksTable(filteredBooks = null) {
-  const booksToRender = filteredBooks || books;
-  const tableBody = document.getElementById('bookTableBody');
+    // Load recent books
+    function loadRecentBooks() {
+      const recentBooksContainer = document.getElementById('recentBooks');
+      const sortedBooks = [...books].sort((a, b) =>
+        new Date(b.uploadedAt || 0) - new Date(a.uploadedAt || 0)
+      );
 
-  console.log('Rendering books:', booksToRender);
+      const recentBooks = sortedBooks.slice(0, 3);
+      let html = '';
 
-  if (!booksToRender || booksToRender.length === 0) {
-    tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">No books found</td></tr>';
-    return;
-  }
+      if (recentBooks.length > 0) {
+        recentBooks.forEach(book => {
+          const statusClass = `status-${book.status || 'draft'}`;
+          const date = book.uploadedAt ?
+            new Date(book.uploadedAt).toLocaleDateString() :
+            'Recent';
 
-  let html = '';
-  booksToRender.forEach(book => {
-    console.log('Processing book:', book);
+          const categoryName = book.category ? book.category.categoryName : 'Uncategorized';
 
-    const statusClass = `status-${book.status || 'draft'}`;
-    const date = book.uploadedAt ?
-      new Date(book.uploadedAt).toLocaleDateString() :
-      new Date().toLocaleDateString();
+          html += `
+            <div class="activity-item">
+              <div class="activity-info">
+                <h4>${book.title || 'Untitled'}</h4>
+                <div>
+                  <span class="status-badge ${statusClass}">${book.status || 'draft'}</span>
+                  <span class="category-badge">${categoryName}</span>
+                </div>
+              </div>
+              <span class="activity-time">${date}</span>
+            </div>
+          `;
+        });
+      } else {
+        html = '<p>No books found. Add your first book!</p>';
+      }
 
-    const coverUrl = book.coverImagePath ?
-      `${API_BASE_URL}/uploads/${book.coverImagePath}` :
-      'https://via.placeholder.com/150x200/6c757d/ffffff?text=No+Cover';
+      recentBooksContainer.innerHTML = html;
+    }
 
-    const categoryName = book.category ?
-      (book.category.categoryName || book.category) :
-      'Uncategorized';
+    // Render books table - IMPROVED with category handling
+    function renderBooksTable(filteredBooks = null) {
+      const booksToRender = filteredBooks || books;
+      const tableBody = document.getElementById('bookTableBody');
 
-    html += `
-      <tr>
-        <td class="book-cover-cell">
-          <img src="${coverUrl}" alt="${book.title}"
-               onerror="this.src='https://via.placeholder.com/150x200/6c757d/ffffff?text=No+Cover'">
-        </td>
-        <td>${book.title || 'Untitled'}</td>
-        <td>${book.author || 'Unknown Author'}</td>
-        <td>${categoryName}</td>
-        <td>${book.language || 'English'}</td>
-        <td><span class="status-badge ${statusClass}">${book.status || 'draft'}</span></td>
-        <td>${date}</td>
-        <td>
-          <div class="book-actions">
-            <button class="btn-primary btn-sm" onclick="viewBook(${book.id})">View</button>
-            <button class="btn-secondary btn-sm" onclick="editBook(${book.id})">Edit</button>
-            <button class="btn-danger btn-sm" onclick="deleteBook(${book.id})">Delete</button>
-          </div>
-        </td>
-      </tr>
-    `;
-  });
+      if (!booksToRender || booksToRender.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">No books found</td></tr>';
+        return;
+      }
 
-  tableBody.innerHTML = html;
-}
+      let html = '';
+      booksToRender.forEach(book => {
+        const statusClass = `status-${book.status || 'draft'}`;
+        const date = book.uploadedAt ?
+          new Date(book.uploadedAt).toLocaleDateString() :
+          new Date().toLocaleDateString();
+
+        // FIXED: Cover image handling
+        const coverUrl = book.coverImagePath ?
+          `${API_BASE_URL}/uploads/${book.coverImagePath}` :
+          generatePlaceholderSvg(book.title);
+
+        const categoryName = book.category ?
+          (book.category.categoryName || book.category) :
+          'Uncategorized';
+
+        html += `
+          <tr>
+            <td class="book-cover-cell">
+              <img src="${coverUrl}" alt="${book.title}"
+                   onerror="this.src='${generatePlaceholderSvg(book.title)}'">
+            </td>
+            <td>${book.title || 'Untitled'}</td>
+            <td>${book.author || 'Unknown Author'}</td>
+            <td><span class="category-badge">${categoryName}</span></td>
+            <td>${book.language || 'English'}</td>
+            <td><span class="status-badge ${statusClass}">${book.status || 'draft'}</span></td>
+            <td>${date}</td>
+            <td>
+              <div class="book-actions">
+                <button class="btn-primary btn-sm" onclick="viewBook(${book.id})">View</button>
+                <button class="btn-secondary btn-sm" onclick="editBook(${book.id})">Edit</button>
+                <button class="btn-danger btn-sm" onclick="deleteBook(${book.id})">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+
+      tableBody.innerHTML = html;
+    }
+
+    // Generate SVG placeholder for book covers
+    function generatePlaceholderSvg(title) {
+      const initials = title ? title.charAt(0).toUpperCase() : 'B';
+      const svg = `
+        <svg width="50" height="65" xmlns="http://www.w3.org/2000/svg">
+          <rect width="100%" height="100%" fill="#4a90e2"/>
+          <text x="50%" y="50%" font-family="Arial" font-size="20" fill="white"
+                text-anchor="middle" dy=".3em">${initials}</text>
+        </svg>
+      `;
+      return 'data:image/svg+xml;base64,' + btoa(svg);
+    }
 
     // Search books
     function searchBooks() {
       const searchTerm = document.getElementById('bookSearch').value.toLowerCase();
       const filteredBooks = books.filter(book =>
-        book.title.toLowerCase().includes(searchTerm) ||
-        book.author.toLowerCase().includes(searchTerm) ||
-        (book.category && book.category.categoryName.toLowerCase().includes(searchTerm))
+        (book.title && book.title.toLowerCase().includes(searchTerm)) ||
+        (book.author && book.author.toLowerCase().includes(searchTerm)) ||
+        (book.category && book.category.categoryName && book.category.categoryName.toLowerCase().includes(searchTerm))
       );
       renderBooksTable(filteredBooks);
     }
 
-    // Filter books by status
+    // Filter books by status and category
     function filterBooks() {
       const status = document.getElementById('statusFilter').value;
-      if (!status) {
-        renderBooksTable();
-        return;
+      const category = document.getElementById('categoryFilter').value;
+
+      let filteredBooks = books;
+
+      if (status) {
+        filteredBooks = filteredBooks.filter(book => book.status === status);
       }
 
-      const filteredBooks = books.filter(book => book.status === status);
+      if (category) {
+        filteredBooks = filteredBooks.filter(book =>
+          book.category && book.category.id == category
+        );
+      }
+
       renderBooksTable(filteredBooks);
     }
 
-// Add new book - CORRECTED VERSION (Remove status field)
-async function addNewBook() {
-  const submitBtn = document.querySelector('#addBookForm button[type="submit"]');
-  const spinner = document.getElementById('submitSpinner');
+    // Add new book - IMPROVED with category handling
+    async function addNewBook() {
+      const submitBtn = document.querySelector('#addBookForm button[type="submit"]');
+      const spinner = document.getElementById('submitSpinner');
 
-  try {
-    // Show loading state
-    submitBtn.disabled = true;
-    spinner.style.display = 'inline-block';
+      try {
+        submitBtn.disabled = true;
+        spinner.style.display = 'inline-block';
 
-    const formData = new FormData();
-// Book data as JSON string - ONLY allowed fields
-const bookData = {
-  title: document.getElementById('bookTitle').value,
-  author: document.getElementById('bookAuthor').value,
-  description: document.getElementById('bookDescription').value,
-  language: document.getElementById('bookLanguage').value,
-  userId: parseInt(document.getElementById('userId').value),
-  categoryId: null
-  // STATUS REMOVE KARO - Backend automatically set karta hai
-};
+        const formData = new FormData();
 
-    console.log('Book data to send:', bookData);
+        const bookData = {
+          title: document.getElementById('bookTitle').value,
+          author: document.getElementById('bookAuthor').value,
+          description: document.getElementById('bookDescription').value,
+          language: document.getElementById('bookLanguage').value,
+          userId: parseInt(document.getElementById('userId').value),
+          categoryId: document.getElementById('bookCategory').value || null
+          // STATUS TEMPORARILY REMOVED - Backend mein nahi hai
+        };
 
-    // Backend ko 'book' parameter chahiye as String
-    formData.append('book', JSON.stringify(bookData));
+        console.log('Book data to send:', bookData);
 
-    // Files add karein
-    const pdfFile = document.getElementById('bookFile').files[0];
-    const coverFile = document.getElementById('coverUpload').files[0];
+        formData.append('book', JSON.stringify(bookData));
 
-    if (pdfFile) {
-      formData.append('file', pdfFile);
+        const pdfFile = document.getElementById('bookFile').files[0];
+        const coverFile = document.getElementById('coverUpload').files[0];
+
+        if (pdfFile) {
+          formData.append('file', pdfFile);
+        }
+        if (coverFile) {
+          formData.append('coverImage', coverFile);
+        }
+
+        const response = await fetch(`${API_BASE_URL}/book/apies/upload`, {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(errorText || `Upload failed with status: ${response.status}`);
+        }
+
+        const result = await response.text();
+        showToast('Book created successfully!', 'success');
+
+        document.getElementById('addBookForm').reset();
+        document.getElementById('coverPreview').style.display = 'none';
+
+        setTimeout(() => {
+          loadBooksFromAPI();
+          showSection('myBooks');
+        }, 1500);
+
+      } catch (error) {
+        console.error('Error creating book:', error);
+        showToast('Failed to create book: ' + error.message, 'error');
+      } finally {
+        submitBtn.disabled = false;
+        spinner.style.display = 'none';
+      }
     }
-    if (coverFile) {
-      formData.append('coverImage', coverFile);
-    }
-
-    // Debug: Check what we're sending
-    console.log('FormData contents:');
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-
-    const response = await fetch(`${API_BASE_URL}/book/apies/upload`, {
-      method: 'POST',
-      body: formData
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(errorText || `Upload failed with status: ${response.status}`);
-    }
-
-    const result = await response.text();
-    showToast('Book created successfully!', 'success');
-
-    // Reset form
-document.getElementById('addBookForm').reset();
-document.getElementById('coverPreview').style.display = 'none';
-
-showToast('Book created successfully!', 'success');
-
-// Sirf ek baar reload karo - blink solve karne ke liye
-setTimeout(() => {
-  loadBooksFromAPI();
-  showSection('myBooks'); // My Books section show karo
-}, 1500);
-
-
-  } catch (error) {
-    console.error('Error creating book:', error);
-    showToast('Failed to create book: ' + error.message, 'error');
-  } finally {
-    submitBtn.disabled = false;
-    spinner.style.display = 'none';
-  }
-}
 
     // View book details
     function viewBook(bookId) {
@@ -1405,21 +1517,23 @@ setTimeout(() => {
 
       const coverUrl = book.coverImagePath ?
         `${API_BASE_URL}/uploads/${book.coverImagePath}` :
-        'https://via.placeholder.com/200x280/6c757d/ffffff?text=No+Cover';
+        generatePlaceholderSvg(book.title);
 
       const date = new Date(book.uploadedAt).toLocaleDateString();
+      const categoryName = book.category ? book.category.categoryName : 'Uncategorized';
 
       bookDetails.innerHTML = `
         <div class="book-detail-view">
           <div class="book-cover-large">
-            <img src="${coverUrl}" alt="${book.title}" onerror="this.src='https://via.placeholder.com/200x280/6c757d/ffffff?text=No+Cover'">
+            <img src="${coverUrl}" alt="${book.title}"
+                 onerror="this.src='${generatePlaceholderSvg(book.title)}'">
           </div>
           <div class="book-info">
             <h3>${book.title}</h3>
             <p><strong>Author:</strong> ${book.author}</p>
-            <p><strong>Category:</strong> ${book.category ? book.category.categoryName : 'Uncategorized'}</p>
+            <p><strong>Category:</strong> <span class="category-badge">${categoryName}</span></p>
             <p><strong>Language:</strong> ${book.language || 'English'}</p>
-            <p><strong>Status:</strong> <span class="status-badge status-${book.status}">${book.status}</span></p>
+            <p><strong>Status:</strong> <span class="status-badge status-${book.status || 'draft'}">${book.status || 'draft'}</span></p>
             <p><strong>Date Added:</strong> ${date}</p>
             <p><strong>Description:</strong> ${book.description || 'No description available.'}</p>
             ${book.fileName ? `<p><strong>File:</strong> ${book.fileName}</p>` : ''}
@@ -1429,20 +1543,25 @@ setTimeout(() => {
       `;
 
       modal.style.display = 'block';
-
-      // Close modal when clicking X
       modal.querySelector('.close').onclick = function() {
         modal.style.display = 'none';
       }
     }
 
-    // Edit book
+    // Edit book - IMPROVED with category
     function editBook(bookId) {
       const book = books.find(b => b.id === bookId);
       if (!book) return;
 
       const modal = document.getElementById('editBookModal');
       const editForm = document.getElementById('editBookForm');
+
+      // Build category options
+      let categoryOptions = '';
+      categories.forEach(category => {
+        const selected = book.category && book.category.id === category.id ? 'selected' : '';
+        categoryOptions += `<option value="${category.id}" ${selected}>${category.categoryName}</option>`;
+      });
 
       editForm.innerHTML = `
         <input type="hidden" id="editBookId" value="${book.id}">
@@ -1459,13 +1578,21 @@ setTimeout(() => {
 
         <div class="form-row">
           <div class="form-group">
+            <label for="editBookCategory">Category</label>
+            <select id="editBookCategory">
+              <option value="">Select Category</option>
+              ${categoryOptions}
+            </select>
+          </div>
+          <div class="form-group">
             <label for="editBookLanguage">Language *</label>
             <input type="text" id="editBookLanguage" value="${book.language || 'English'}" required>
           </div>
-          <div class="form-group">
-            <label for="editBookDescription">Description</label>
-            <textarea id="editBookDescription">${book.description || ''}</textarea>
-          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="editBookDescription">Description</label>
+          <textarea id="editBookDescription">${book.description || ''}</textarea>
         </div>
 
         <div class="action-buttons">
@@ -1476,19 +1603,17 @@ setTimeout(() => {
 
       modal.style.display = 'block';
 
-      // Handle form submission
       editForm.onsubmit = function(e) {
         e.preventDefault();
         updateBook(bookId);
       };
 
-      // Close modal when clicking X
       modal.querySelector('.close').onclick = function() {
         modal.style.display = 'none';
       }
     }
 
-    // Update book
+    // Update book - IMPROVED with category
     async function updateBook(bookId) {
       try {
         const bookData = {
@@ -1497,7 +1622,8 @@ setTimeout(() => {
           description: document.getElementById('editBookDescription').value,
           language: document.getElementById('editBookLanguage').value,
           userId: parseInt(document.getElementById('userId').value),
-          categoryId: null
+          categoryId: document.getElementById('editBookCategory').value || null
+          // STATUS TEMPORARILY REMOVED - Backend mein nahi hai
         };
 
         const response = await fetch(`${API_BASE_URL}/book/apies/Update/${bookId}`, {
@@ -1516,7 +1642,6 @@ setTimeout(() => {
         const result = await response.text();
         showToast('Book updated successfully!', 'success');
 
-        // Reload books
         await loadBooksFromAPI();
         closeEditModal();
 
@@ -1547,7 +1672,6 @@ setTimeout(() => {
           const result = await response.text();
           showToast('Book deleted successfully!', 'success');
 
-          // Reload books
           await loadBooksFromAPI();
 
         } catch (error) {
@@ -1559,11 +1683,9 @@ setTimeout(() => {
 
     // Update profile
     function updateProfile() {
-      // In a real app, this would send to an API
       const name = document.getElementById('publisherNameInput').value;
       document.getElementById('publisherName').textContent = `Welcome, ${name}`;
 
-      // Save to localStorage
       if (currentPublisher) {
         currentPublisher.name = name;
         localStorage.setItem('currentPublisher', JSON.stringify(currentPublisher));
@@ -1574,26 +1696,21 @@ setTimeout(() => {
 
     // Show section
     function showSection(sectionId) {
-      // Hide all sections
       document.querySelectorAll('.section').forEach(section => {
         section.classList.remove('active');
       });
 
-      // Remove active class from all menu items
       document.querySelectorAll('.menu-item').forEach(item => {
         item.classList.remove('active');
       });
 
-      // Show selected section
       document.getElementById(sectionId).classList.add('active');
-
-      // Activate corresponding menu item
       document.querySelector(`.menu-item[onclick="showSection('${sectionId}')"]`).classList.add('active');
     }
 
     // Setup section navigation
     function setupSectionNavigation() {
-      // This is handled by the onclick attributes in the HTML
+      // Handled by onclick attributes
     }
 
     // Show toast notification
@@ -1611,10 +1728,7 @@ setTimeout(() => {
     // Logout function
     function logout() {
       if (confirm('Are you sure you want to logout?')) {
-        // Clear local storage
         localStorage.removeItem('currentPublisher');
-
-        // Redirect to login page (you can change this to your actual login page)
         window.location.href = '/login';
       }
     }

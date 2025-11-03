@@ -14,4 +14,5 @@ public class BookRequestDTO {
     private String language;
     private int userId;
     private Integer categoryId; // ✅ ADDED: For category assignment
+    private String status = "draft";
 }

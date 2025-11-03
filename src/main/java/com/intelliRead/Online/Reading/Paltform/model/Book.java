@@ -2,6 +2,7 @@ package com.intelliRead.Online.Reading.Paltform.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -41,18 +42,18 @@ public class Book {
 
     // Category relationship - EAGER banao
     @JsonBackReference("category-books")
-    @ManyToOne(fetch = FetchType.EAGER)  // <-- EAGER ADD KARO
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
 
     // User relationship - EAGER banao
     @JsonBackReference("user-books")
-    @ManyToOne(fetch = FetchType.EAGER)  // <-- EAGER ADD KARO
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
-    // Book has reviews - EAGER banao
-    @JsonManagedReference("book-reviews")
-    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)  // <-- EAGER
+    // Book has reviews - TINO ANNOTATIONS USE KARO
+    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JsonIgnore
     private List<Review> reviewList;
 
@@ -61,6 +62,8 @@ public class Book {
     // original filename
     @Column
     private String fileName;
+
+    private String status = "draft";
 
     // physical path (relative) to stored file (pdf or text)
     @Column

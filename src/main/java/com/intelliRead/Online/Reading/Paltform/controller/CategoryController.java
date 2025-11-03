@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/category/apies")
 public class CategoryController {
 
-    CategoryService categoryService;
+    private final CategoryService categoryService;
 
     @Autowired
     public CategoryController(CategoryService categoryService){
@@ -33,78 +33,43 @@ public class CategoryController {
 
     @GetMapping("/findById/{id}")
     public ResponseEntity<?> findCategoryById(@PathVariable int id){
-        try {
-            Category category = categoryService.findCategoryById(id);
-            if (category != null) {
-                return ResponseEntity.ok(category);
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category not found");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
+        Category category = categoryService.findCategoryById(id);
+        if (category != null) {
+            return ResponseEntity.ok(category);
         }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category not found");
     }
 
     @GetMapping("/findAll")
     public ResponseEntity<List<Category>> findAllCategory(){
-        try {
-            List<Category> categories = categoryService.findAllCategory();
-            return ResponseEntity.ok(categories);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        List<Category> categories = categoryService.findAllCategory();
+        return ResponseEntity.ok(categories);
     }
 
-    // ✅ NEW: Get main categories
     @GetMapping("/main")
     public ResponseEntity<List<Category>> getMainCategories(){
-        try {
-            List<Category> categories = categoryService.findMainCategories();
-            return ResponseEntity.ok(categories);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        return ResponseEntity.ok(categoryService.findMainCategories());
     }
 
-    // ✅ NEW: Get subcategories
     @GetMapping("/subcategories/{parentId}")
     public ResponseEntity<List<Category>> getSubCategories(@PathVariable int parentId){
-        try {
-            List<Category> categories = categoryService.findSubCategories(parentId);
-            return ResponseEntity.ok(categories);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        return ResponseEntity.ok(categoryService.findSubCategories(parentId));
     }
 
-    // ✅ NEW: Get popular categories
     @GetMapping("/popular")
     public ResponseEntity<List<Category>> getPopularCategories(){
-        try {
-            List<Category> categories = categoryService.findAllCategory(); // Will enhance later
-            return ResponseEntity.ok(categories);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        return ResponseEntity.ok(categoryService.findAllCategory()); // Placeholder
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateCategory(@PathVariable int id, @RequestBody CategoryRequestDTO categoryRequestDTO){
-        try {
-            String response = categoryService.updateCategory(id, categoryRequestDTO);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
-        }
+        String response = categoryService.updateCategory(id, categoryRequestDTO);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteCategory(@PathVariable int id){
-        try {
-            String response = categoryService.deleteCategory(id);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
-        }
+        String response = categoryService.deleteCategory(id);
+        return ResponseEntity.ok(response);
     }
 }

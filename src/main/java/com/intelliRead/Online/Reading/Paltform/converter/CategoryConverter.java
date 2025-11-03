@@ -4,10 +4,11 @@ import com.intelliRead.Online.Reading.Paltform.model.Category;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.CategoryRequestDTO;
 
 public class CategoryConverter {
-    public static Category convertCategoryRequestDtoIntoCategory(CategoryRequestDTO categoryRequestDTO){
+
+    public static Category convertCategoryRequestDtoIntoCategory(CategoryRequestDTO dto) {
         Category category = new Category();
-        category.setCategoryName(categoryRequestDTO.getCategoryName());
-        category.setDescription(categoryRequestDTO.getDescription());
+        category.setCategoryName(dto.getCategoryName());
+        category.setDescription(dto.getDescription());
         return category;
     }
 }
