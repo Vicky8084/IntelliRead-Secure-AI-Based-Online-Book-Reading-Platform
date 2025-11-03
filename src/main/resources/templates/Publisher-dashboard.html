@@ -1193,20 +1193,26 @@ async function checkBooksManually() {
     console.error('Manual check failed:', error);
   }
 }
-    // Update dashboard stats from loaded books
-    function updateDashboardStats() {
-      const totalBooks = books.length;
-      const publishedBooks = books.filter(book => book.status === 'published').length;
-      const draftBooks = books.filter(book => book.status === 'draft').length;
-      const authors = new Set(books.map(book => book.author)).size;
 
-      updateStats({
-        totalBooks,
-        publishedBooks,
-        draftBooks,
-        totalAuthors: authors
-      });
-    }
+  // Update dashboard stats from loaded books
+function updateDashboardStats() {
+  const totalBooks = books.length;
+  const publishedBooks = books.filter(book => book.status === 'published').length;
+  const draftBooks = books.filter(book => book.status === 'draft' || !book.status).length; // ✅ YEH LINE CHANGE KARO
+  const authors = new Set(books.map(book => book.author)).size;
+
+  console.log('Stats - Total:', totalBooks, 'Published:', publishedBooks, 'Drafts:', draftBooks, 'Authors:', authors);
+  console.log('All books with status:', books.map(b => ({title: b.title, status: b.status})));
+
+  updateStats({
+    totalBooks,
+    publishedBooks,
+    draftBooks,
+    totalAuthors: authors
+  });
+}
+
+
 
     // Load recent books
     function loadRecentBooks() {
@@ -1321,16 +1327,16 @@ async function addNewBook() {
     spinner.style.display = 'inline-block';
 
     const formData = new FormData();
-
-    // Book data as JSON string - ONLY allowed fields
-    const bookData = {
-      title: document.getElementById('bookTitle').value,
-      author: document.getElementById('bookAuthor').value,
-      description: document.getElementById('bookDescription').value,
-      language: document.getElementById('bookLanguage').value,
-      userId: parseInt(document.getElementById('userId').value),
-      categoryId: null  // Add this as it's in allowed fields
-    };
+// Book data as JSON string - ONLY allowed fields
+const bookData = {
+  title: document.getElementById('bookTitle').value,
+  author: document.getElementById('bookAuthor').value,
+  description: document.getElementById('bookDescription').value,
+  language: document.getElementById('bookLanguage').value,
+  userId: parseInt(document.getElementById('userId').value),
+  categoryId: null
+  // STATUS REMOVE KARO - Backend automatically set karta hai
+};
 
     console.log('Book data to send:', bookData);
 
@@ -1367,13 +1373,18 @@ async function addNewBook() {
     const result = await response.text();
     showToast('Book created successfully!', 'success');
 
-    // Reset and reload
-    document.getElementById('addBookForm').reset();
-    document.getElementById('coverPreview').style.display = 'none';
+    // Reset form
+document.getElementById('addBookForm').reset();
+document.getElementById('coverPreview').style.display = 'none';
 
-    setTimeout(() => {
-      loadBooksFromAPI();
-    }, 1000);
+showToast('Book created successfully!', 'success');
+
+// Sirf ek baar reload karo - blink solve karne ke liye
+setTimeout(() => {
+  loadBooksFromAPI();
+  showSection('myBooks'); // My Books section show karo
+}, 1500);
+
 
   } catch (error) {
     console.error('Error creating book:', error);
