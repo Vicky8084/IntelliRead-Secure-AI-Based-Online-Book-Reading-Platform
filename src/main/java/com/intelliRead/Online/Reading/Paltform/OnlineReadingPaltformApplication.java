@@ -50,11 +50,11 @@ public class OnlineReadingPaltformApplication implements CommandLineRunner {
         System.out.println("🛠️ Creating default admin accounts...");
 
         List<User> defaultAdmins = Arrays.asList(
-                createAdminUser("noreply.intelliread@gmail.com", "Original Admin", "vicky"),
-                createAdminUser("admin1.intelliread@gmail.com", "Admin One", "admin123"),
-                createAdminUser("admin2.intelliread@gmail.com", "Admin Two", "admin123"),
-                createAdminUser("admin3.intelliread@gmail.com", "Admin Three", "admin123"),
-                createAdminUser("admin4.intelliread@gmail.com", "Admin Four", "admin123")
+                createAdminUser("noreply.intelliread@gmail.com", "Original Admin", "Password098@"),
+                createAdminUser("mrvg4545@gmail.com", "Admin One", "Password098@"),
+                createAdminUser("aaarti.rcc090@gmail.com", "Admin Two", "Password098@"),
+                createAdminUser("jarpit0103@gmail.com", "Admin Three", "Password098@"),
+                createAdminUser("rwi.sharma001@gmail.com", "Admin Four", "Password098@")
         );
 
         int createdCount = 0;
@@ -89,11 +89,11 @@ public class OnlineReadingPaltformApplication implements CommandLineRunner {
 
         // Print login instructions
         System.out.println("\n🔐 ADMIN LOGIN CREDENTIALS:");
-        System.out.println("   📧 noreply.intelliread@gmail.com | 🔑 vicky");
-        System.out.println("   📧 admin1.intelliread@gmail.com  | 🔑 admin123");
-        System.out.println("   📧 admin2.intelliread@gmail.com  | 🔑 admin123");
-        System.out.println("   📧 admin3.intelliread@gmail.com  | 🔑 admin123");
-        System.out.println("   📧 admin4.intelliread@gmail.com  | 🔑 admin123");
+        System.out.println("   📧 noreply.intelliread@gmail.com | 🔑 Password098@");
+        System.out.println("   📧 mrvg4545@gmail.com  | 🔑 Password098@");
+        System.out.println("   📧 aaarti.rcc090@gmail.com  | 🔑 Password098@");
+        System.out.println("   📧 jarpit0103@gmail.com  | 🔑 Password098@");
+        System.out.println("   📧 rwi.sharma001@gmail.com  | 🔑 Password098@");
         System.out.println("\n💡 Login as PUBLISHER role with these credentials");
     }
 
@@ -112,11 +112,11 @@ public class OnlineReadingPaltformApplication implements CommandLineRunner {
 
     private String getRawPasswordForEmail(String email) {
         switch(email) {
-            case "noreply.intelliread@gmail.com": return "vicky";
-            case "admin1.intelliread@gmail.com": return "admin123";
-            case "admin2.intelliread@gmail.com": return "admin123";
-            case "admin3.intelliread@gmail.com": return "admin123";
-            case "admin4.intelliread@gmail.com": return "admin123";
+            case "noreply.intelliread@gmail.com": return "Password098@";
+            case "mrvg4545@gmail.com": return "Password098@";
+            case "aaarti.rcc090@gmail.com": return "Password098@";
+            case "jarpit0103@gmail.com": return "Password098@";
+            case "rwi.sharma001@gmail.com": return "Password098@";
             default: return "unknown";
         }
     }

@@ -21,10 +21,10 @@ public class PageController {
     // List of fixed admin emails
     private final List<String> ADMIN_EMAILS = Arrays.asList(
             "noreply.intelliread@gmail.com",
-            "admin1.intelliread@gmail.com",
-            "admin2.intelliread@gmail.com",
-            "admin3.intelliread@gmail.com",
-            "admin4.intelliread@gmail.com"
+            "mrvg4545@gmail.com",
+            "aaarti.rcc090@gmail.com",
+            "jarpit0103@gmail.com",
+            "rwi.sharma001@gmail.com"
     );
 
     // ✅ Home Page
