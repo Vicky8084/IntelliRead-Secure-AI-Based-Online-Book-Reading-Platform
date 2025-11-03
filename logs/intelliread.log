@@ -7926,3 +7926,5012 @@ org.thymeleaf.exceptions.TemplateInputException: Error resolving template [publi
         users u1_0 
     where
         u1_0.email=?
+2025-11-03 14:41:49 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 14:41:49 - Graceful shutdown complete
+2025-11-03 14:41:49 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 14:41:49 - HikariPool-1 - Shutdown initiated...
+2025-11-03 14:41:49 - HikariPool-1 - Shutdown completed.
+2025-11-03 14:41:52 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 40476 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 14:41:52 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 14:41:52 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 14:41:53 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 14:41:53 - Finished Spring Data repository scanning in 32 ms. Found 6 JPA repository interfaces.
+2025-11-03 14:41:53 - Tomcat initialized with port 8035 (http)
+2025-11-03 14:41:53 - Starting service [Tomcat]
+2025-11-03 14:41:53 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 14:41:53 - Initializing Spring embedded WebApplicationContext
+2025-11-03 14:41:53 - Root WebApplicationContext: initialization completed in 837 ms
+2025-11-03 14:41:53 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 14:41:53 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 14:41:53 - HHH000026: Second-level cache disabled
+2025-11-03 14:41:54 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 14:41:54 - HikariPool-1 - Starting...
+2025-11-03 14:41:54 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4537880f
+2025-11-03 14:41:54 - HikariPool-1 - Start completed.
+2025-11-03 14:41:54 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 14:41:54 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 14:41:54 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 14:41:54 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 14:41:54 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 14:41:55 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 14:41:55 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 14:41:55 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 14:41:58 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 14:41:58 - Started OnlineReadingPaltformApplication in 5.96 seconds (process running for 6.881)
+2025-11-03 14:41:58 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:41:58 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-03 14:42:08 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 14:42:08 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 14:42:08 - Completed initialization in 3 ms
+2025-11-03 14:42:09 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:42:09 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:42:26 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:42:26 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:42:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:42:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:42:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:42:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:45:29 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 14:45:29 - Graceful shutdown complete
+2025-11-03 14:45:29 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 14:45:29 - HikariPool-1 - Shutdown initiated...
+2025-11-03 14:45:29 - HikariPool-1 - Shutdown completed.
+2025-11-03 14:45:31 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 40534 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 14:45:31 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 14:45:31 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 14:45:32 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 14:45:32 - Finished Spring Data repository scanning in 40 ms. Found 6 JPA repository interfaces.
+2025-11-03 14:45:32 - Tomcat initialized with port 8035 (http)
+2025-11-03 14:45:32 - Starting service [Tomcat]
+2025-11-03 14:45:32 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 14:45:32 - Initializing Spring embedded WebApplicationContext
+2025-11-03 14:45:32 - Root WebApplicationContext: initialization completed in 929 ms
+2025-11-03 14:45:32 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 14:45:32 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 14:45:32 - HHH000026: Second-level cache disabled
+2025-11-03 14:45:32 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 14:45:32 - HikariPool-1 - Starting...
+2025-11-03 14:45:32 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@32a033b6
+2025-11-03 14:45:32 - HikariPool-1 - Start completed.
+2025-11-03 14:45:32 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 14:45:32 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 14:45:32 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 14:45:33 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 14:45:33 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 14:45:33 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 14:45:33 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 14:45:34 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 14:45:37 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 14:45:37 - Started OnlineReadingPaltformApplication in 6.289 seconds (process running for 6.638)
+2025-11-03 14:45:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:45:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-03 14:45:38 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 14:45:38 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 14:45:38 - Completed initialization in 1 ms
+2025-11-03 14:46:22 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:46:22 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:46:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:46:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:46:41 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:46:41 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:46:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:46:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:46:45 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:47:35 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 14:47:36 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:15:53 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 15:15:53 - Graceful shutdown complete
+2025-11-03 15:15:53 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 15:15:53 - HikariPool-1 - Shutdown initiated...
+2025-11-03 15:15:53 - HikariPool-1 - Shutdown completed.
+2025-11-03 15:16:15 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 41326 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 15:16:15 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 15:16:15 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 15:16:16 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 15:16:16 - Finished Spring Data repository scanning in 34 ms. Found 6 JPA repository interfaces.
+2025-11-03 15:16:16 - Tomcat initialized with port 8035 (http)
+2025-11-03 15:16:16 - Starting service [Tomcat]
+2025-11-03 15:16:16 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 15:16:16 - Initializing Spring embedded WebApplicationContext
+2025-11-03 15:16:16 - Root WebApplicationContext: initialization completed in 767 ms
+2025-11-03 15:16:16 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 15:16:16 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 15:16:16 - HHH000026: Second-level cache disabled
+2025-11-03 15:16:17 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 15:16:17 - HikariPool-1 - Starting...
+2025-11-03 15:16:17 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2729bb71
+2025-11-03 15:16:17 - HikariPool-1 - Start completed.
+2025-11-03 15:16:17 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 15:16:17 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 15:16:17 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 15:16:17 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 15:16:17 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 15:16:18 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 15:16:18 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 15:16:18 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 15:16:21 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 15:16:21 - Started OnlineReadingPaltformApplication in 5.797 seconds (process running for 6.043)
+2025-11-03 15:16:21 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:16:21 - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-11-03 15:16:21 - Application run failed
+org.springframework.dao.InvalidDataAccessApiUsageException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.ROLE
+	at org.springframework.orm.jpa.EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(EntityManagerFactoryUtils.java:371)
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:246)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:560)
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61)
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:343)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:160)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:136)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at jdk.proxy2/jdk.proxy2.$Proxy134.findUserByEmail(Unknown Source)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.run(OnlineReadingPaltformApplication.java:31)
+	at org.springframework.boot.SpringApplication.lambda$callRunner$5(SpringApplication.java:788)
+	at org.springframework.util.function.ThrowingConsumer$1.acceptWithException(ThrowingConsumer.java:82)
+	at org.springframework.util.function.ThrowingConsumer.accept(ThrowingConsumer.java:60)
+	at org.springframework.util.function.ThrowingConsumer$1.accept(ThrowingConsumer.java:86)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:796)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:787)
+	at org.springframework.boot.SpringApplication.lambda$callRunners$3(SpringApplication.java:772)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:357)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:510)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:772)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:325)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.main(OnlineReadingPaltformApplication.java:23)
+Caused by: java.lang.IllegalArgumentException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.ROLE
+	at java.base/java.lang.Enum.valueOf(Enum.java:293)
+	at org.hibernate.type.descriptor.java.EnumJavaType.fromName(EnumJavaType.java:259)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:127)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:36)
+	at org.hibernate.type.descriptor.jdbc.EnumJdbcType$2.doExtract(EnumJdbcType.java:81)
+	at org.hibernate.type.descriptor.jdbc.BasicExtractor.extract(BasicExtractor.java:44)
+	at org.hibernate.sql.results.jdbc.internal.JdbcValuesResultSetImpl.getCurrentRowValue(JdbcValuesResultSetImpl.java:387)
+	at org.hibernate.sql.results.internal.RowProcessingStateStandardImpl.getJdbcValue(RowProcessingStateStandardImpl.java:152)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.extractRawValue(BasicResultAssembler.java:54)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.assemble(BasicResultAssembler.java:60)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.extractConcreteTypeStateValues(EntityInitializerImpl.java:1611)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeEntityInstance(EntityInitializerImpl.java:1337)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:1316)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:97)
+	at org.hibernate.sql.results.internal.StandardRowReader.coordinateInitializers(StandardRowReader.java:244)
+	at org.hibernate.sql.results.internal.StandardRowReader.readRow(StandardRowReader.java:141)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.read(ListResultsConsumer.java:249)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:201)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:35)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:224)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:102)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.executeQuery(JdbcSelectExecutor.java:91)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.list(JdbcSelectExecutor.java:165)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:149)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:439)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:359)
+	at org.hibernate.query.sqm.internal.QuerySqmImpl.doList(QuerySqmImpl.java:380)
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:143)
+	at org.hibernate.query.spi.AbstractSelectionQuery.getSingleResult(AbstractSelectionQuery.java:275)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$DeferredQueryInvocationHandler.invoke(SharedEntityManagerCreator.java:419)
+	at jdk.proxy2/jdk.proxy2.$Proxy151.getSingleResult(Unknown Source)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:226)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:95)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:160)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:148)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:170)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	... 26 common frames omitted
+2025-11-03 15:16:21 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 15:16:21 - Graceful shutdown complete
+2025-11-03 15:16:21 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 15:16:21 - HikariPool-1 - Shutdown initiated...
+2025-11-03 15:16:21 - HikariPool-1 - Shutdown completed.
+2025-11-03 15:17:27 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 41370 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 15:17:27 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 15:17:27 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 15:17:28 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 15:17:28 - Finished Spring Data repository scanning in 35 ms. Found 6 JPA repository interfaces.
+2025-11-03 15:17:28 - Tomcat initialized with port 8035 (http)
+2025-11-03 15:17:28 - Starting service [Tomcat]
+2025-11-03 15:17:28 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 15:17:28 - Initializing Spring embedded WebApplicationContext
+2025-11-03 15:17:28 - Root WebApplicationContext: initialization completed in 813 ms
+2025-11-03 15:17:28 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 15:17:28 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 15:17:28 - HHH000026: Second-level cache disabled
+2025-11-03 15:17:28 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 15:17:28 - HikariPool-1 - Starting...
+2025-11-03 15:17:29 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@416b1265
+2025-11-03 15:17:29 - HikariPool-1 - Start completed.
+2025-11-03 15:17:29 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 15:17:29 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 15:17:29 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 15:17:29 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 15:17:29 - 
+    create table book (
+        id integer not null auto_increment,
+        author varchar(255) not null,
+        cover_image_path varchar(255),
+        description TEXT not null,
+        extracted_text LONGTEXT,
+        file_name varchar(255),
+        file_path varchar(255),
+        file_size bigint,
+        file_type varchar(255),
+        language varchar(255) not null,
+        title varchar(255) not null,
+        uploaded_at datetime(6) not null,
+        category_id integer,
+        user_id integer,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-03 15:17:29 - 
+    create table category (
+        id integer not null auto_increment,
+        category_name varchar(255) not null,
+        description varchar(255),
+        parent_category_id integer,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-03 15:17:29 - 
+    create table password_reset_tokens (
+        id integer not null auto_increment,
+        expiry_date datetime(6) not null,
+        token varchar(255) not null,
+        used bit not null,
+        user_id integer not null,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-03 15:17:29 - 
+    create table review (
+        id integer not null auto_increment,
+        created_at datetime(6) not null,
+        rating integer not null,
+        review_text TEXT not null,
+        book_id integer,
+        user_id integer,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-03 15:17:29 - 
+    create table suggestion (
+        id integer not null auto_increment,
+        author varchar(255),
+        created_at datetime(6) not null,
+        suggested_title varchar(255) not null,
+        suggestion_status enum ('APPROVED','PENDING','REJECTED') not null,
+        user_id integer,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-03 15:17:29 - 
+    create table users (
+        id integer not null auto_increment,
+        created_date datetime(6) not null,
+        email varchar(255) not null,
+        name varchar(255) not null,
+        password_hash varchar(255) not null,
+        preferred_language varchar(255) not null,
+        role enum ('ADMIN','PUBLISHER','SUPER_ADMIN','USER') not null,
+        status enum ('ACTIVE','INACTIVE') not null,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-03 15:17:29 - 
+    alter table category 
+       drop index UKlroeo5fvfdeg4hpicn4lw7x9b
+2025-11-03 15:17:30 - 
+    alter table category 
+       add constraint UKlroeo5fvfdeg4hpicn4lw7x9b unique (category_name)
+2025-11-03 15:17:30 - 
+    alter table password_reset_tokens 
+       drop index UK71lqwbwtklmljk3qlsugr1mig
+2025-11-03 15:17:30 - 
+    alter table password_reset_tokens 
+       add constraint UK71lqwbwtklmljk3qlsugr1mig unique (token)
+2025-11-03 15:17:30 - 
+    alter table users 
+       drop index UK6dotkott2kjsp8vw4d0m25fb7
+2025-11-03 15:17:30 - 
+    alter table users 
+       add constraint UK6dotkott2kjsp8vw4d0m25fb7 unique (email)
+2025-11-03 15:17:30 - 
+    alter table book 
+       add constraint FKam9riv8y6rjwkua1gapdfew4j 
+       foreign key (category_id) 
+       references category (id)
+2025-11-03 15:17:30 - 
+    alter table book 
+       add constraint FK9cv1tt952k857xoia51k1vj12 
+       foreign key (user_id) 
+       references users (id)
+2025-11-03 15:17:30 - 
+    alter table category 
+       add constraint FKs2ride9gvilxy2tcuv7witnxc 
+       foreign key (parent_category_id) 
+       references category (id)
+2025-11-03 15:17:30 - 
+    alter table password_reset_tokens 
+       add constraint FKk3ndxg5xp6v7wd4gjyusp15gq 
+       foreign key (user_id) 
+       references users (id)
+2025-11-03 15:17:30 - 
+    alter table review 
+       add constraint FK70yrt09r4r54tcgkrwbeqenbs 
+       foreign key (book_id) 
+       references book (id)
+2025-11-03 15:17:30 - 
+    alter table review 
+       add constraint FK6cpw2nlklblpvc7hyt7ko6v3e 
+       foreign key (user_id) 
+       references users (id)
+2025-11-03 15:17:30 - 
+    alter table suggestion 
+       add constraint FKlwyt2aya9jw90lwo4wt6edstj 
+       foreign key (user_id) 
+       references users (id)
+2025-11-03 15:17:30 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 15:17:30 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 15:17:30 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 15:17:30 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 15:17:33 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 15:17:33 - Started OnlineReadingPaltformApplication in 6.051 seconds (process running for 6.368)
+2025-11-03 15:17:33 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:17:33 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-03 15:17:33 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:17:33 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-03 15:17:33 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:17:33 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-03 15:17:33 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:17:33 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-03 15:17:33 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:17:34 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-03 15:17:44 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 15:17:44 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 15:17:44 - Completed initialization in 5 ms
+2025-11-03 15:17:54 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:18:00 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:18:21 - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    limit
+        ?
+2025-11-03 15:18:21 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-03 15:18:33 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:18:34 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:18:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:18:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:18:39 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:21:58 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 15:21:58 - Graceful shutdown complete
+2025-11-03 15:21:58 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 15:21:59 - HikariPool-1 - Shutdown initiated...
+2025-11-03 15:21:59 - HikariPool-1 - Shutdown completed.
+2025-11-03 15:22:01 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 41464 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 15:22:01 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 15:22:01 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 15:22:01 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 15:22:02 - Finished Spring Data repository scanning in 70 ms. Found 6 JPA repository interfaces.
+2025-11-03 15:22:02 - Tomcat initialized with port 8035 (http)
+2025-11-03 15:22:02 - Starting service [Tomcat]
+2025-11-03 15:22:02 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 15:22:02 - Initializing Spring embedded WebApplicationContext
+2025-11-03 15:22:02 - Root WebApplicationContext: initialization completed in 1135 ms
+2025-11-03 15:22:02 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 15:22:02 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 15:22:02 - HHH000026: Second-level cache disabled
+2025-11-03 15:22:02 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 15:22:02 - HikariPool-1 - Starting...
+2025-11-03 15:22:02 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@42211e04
+2025-11-03 15:22:02 - HikariPool-1 - Start completed.
+2025-11-03 15:22:02 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 15:22:02 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 15:22:02 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 15:22:03 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 15:22:03 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 15:22:03 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 15:22:03 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 15:22:04 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 15:22:07 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 15:22:07 - Started OnlineReadingPaltformApplication in 6.178 seconds (process running for 6.587)
+2025-11-03 15:22:07 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:22:07 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:22:07 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:22:07 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:22:07 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:22:14 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 15:22:14 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 15:22:14 - Completed initialization in 2 ms
+2025-11-03 15:47:48 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 15:47:48 - Graceful shutdown complete
+2025-11-03 15:47:48 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 15:47:48 - HikariPool-1 - Shutdown initiated...
+2025-11-03 15:47:48 - HikariPool-1 - Shutdown completed.
+2025-11-03 15:47:51 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 41977 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 15:47:51 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 15:47:51 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 15:47:51 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 15:47:52 - Finished Spring Data repository scanning in 29 ms. Found 6 JPA repository interfaces.
+2025-11-03 15:47:52 - Tomcat initialized with port 8035 (http)
+2025-11-03 15:47:52 - Starting service [Tomcat]
+2025-11-03 15:47:52 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 15:47:52 - Initializing Spring embedded WebApplicationContext
+2025-11-03 15:47:52 - Root WebApplicationContext: initialization completed in 1048 ms
+2025-11-03 15:47:52 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 15:47:52 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 15:47:52 - HHH000026: Second-level cache disabled
+2025-11-03 15:47:53 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 15:47:53 - HikariPool-1 - Starting...
+2025-11-03 15:47:53 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4537880f
+2025-11-03 15:47:53 - HikariPool-1 - Start completed.
+2025-11-03 15:47:53 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 15:47:53 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 15:47:53 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 15:47:53 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 15:47:53 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 15:47:54 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 15:47:54 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 15:47:54 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 15:47:57 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 15:47:57 - Started OnlineReadingPaltformApplication in 6.352 seconds (process running for 6.613)
+2025-11-03 15:47:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:47:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:47:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:47:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:47:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:47:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:47:57 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-03 15:47:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:47:57 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-03 15:48:04 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 15:48:04 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 15:48:04 - Completed initialization in 6 ms
+2025-11-03 15:49:57 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 15:49:57 - Graceful shutdown complete
+2025-11-03 15:49:57 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 15:49:57 - HikariPool-1 - Shutdown initiated...
+2025-11-03 15:49:57 - HikariPool-1 - Shutdown completed.
+2025-11-03 15:49:59 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 42040 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 15:49:59 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 15:49:59 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 15:50:00 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 15:50:00 - Finished Spring Data repository scanning in 33 ms. Found 6 JPA repository interfaces.
+2025-11-03 15:50:00 - Tomcat initialized with port 8035 (http)
+2025-11-03 15:50:00 - Starting service [Tomcat]
+2025-11-03 15:50:00 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 15:50:00 - Initializing Spring embedded WebApplicationContext
+2025-11-03 15:50:00 - Root WebApplicationContext: initialization completed in 724 ms
+2025-11-03 15:50:00 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 15:50:00 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 15:50:00 - HHH000026: Second-level cache disabled
+2025-11-03 15:50:00 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 15:50:00 - HikariPool-1 - Starting...
+2025-11-03 15:50:00 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@34cb0e49
+2025-11-03 15:50:00 - HikariPool-1 - Start completed.
+2025-11-03 15:50:00 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 15:50:00 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 15:50:01 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 15:50:01 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 15:50:01 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 15:50:01 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 15:50:01 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 15:50:02 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 15:50:05 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 15:50:05 - Started OnlineReadingPaltformApplication in 5.488 seconds (process running for 5.705)
+2025-11-03 15:50:05 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:50:05 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:50:05 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:50:05 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:50:05 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:50:05 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:50:05 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:50:11 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 15:50:11 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 15:50:11 - Completed initialization in 3 ms
+2025-11-03 15:50:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:50:58 - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    limit
+        ?
+2025-11-03 15:51:17 - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    limit
+        ?
+2025-11-03 15:51:17 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-03 15:51:33 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:51:33 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:51:33 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:51:35 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:56:44 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 15:56:44 - Graceful shutdown complete
+2025-11-03 15:56:44 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 15:56:44 - HikariPool-1 - Shutdown initiated...
+2025-11-03 15:56:44 - HikariPool-1 - Shutdown completed.
+2025-11-03 15:56:47 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 42204 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 15:56:47 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 15:56:47 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 15:56:47 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 15:56:47 - Finished Spring Data repository scanning in 31 ms. Found 6 JPA repository interfaces.
+2025-11-03 15:56:47 - Tomcat initialized with port 8035 (http)
+2025-11-03 15:56:47 - Starting service [Tomcat]
+2025-11-03 15:56:47 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 15:56:47 - Initializing Spring embedded WebApplicationContext
+2025-11-03 15:56:47 - Root WebApplicationContext: initialization completed in 832 ms
+2025-11-03 15:56:48 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 15:56:48 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 15:56:48 - HHH000026: Second-level cache disabled
+2025-11-03 15:56:48 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 15:56:48 - HikariPool-1 - Starting...
+2025-11-03 15:56:48 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@55071497
+2025-11-03 15:56:48 - HikariPool-1 - Start completed.
+2025-11-03 15:56:48 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 15:56:48 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 15:56:48 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 15:56:48 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 15:56:48 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 15:56:49 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 15:56:49 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 15:56:49 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 15:56:52 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 15:56:52 - Started OnlineReadingPaltformApplication in 5.663 seconds (process running for 5.894)
+2025-11-03 15:56:52 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:56:52 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:56:52 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:56:52 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:56:52 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:56:52 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:56:52 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:56:52 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-03 15:57:00 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 15:57:00 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 15:57:00 - Completed initialization in 2 ms
+2025-11-03 15:59:23 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 15:59:27 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:03:44 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 16:03:45 - Graceful shutdown complete
+2025-11-03 16:03:45 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 16:03:45 - HikariPool-1 - Shutdown initiated...
+2025-11-03 16:03:45 - HikariPool-1 - Shutdown completed.
+2025-11-03 16:03:47 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 42342 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 16:03:47 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 16:03:47 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 16:03:48 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 16:03:48 - Finished Spring Data repository scanning in 32 ms. Found 6 JPA repository interfaces.
+2025-11-03 16:03:48 - Tomcat initialized with port 8035 (http)
+2025-11-03 16:03:48 - Starting service [Tomcat]
+2025-11-03 16:03:48 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 16:03:48 - Initializing Spring embedded WebApplicationContext
+2025-11-03 16:03:48 - Root WebApplicationContext: initialization completed in 788 ms
+2025-11-03 16:03:48 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 16:03:48 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 16:03:48 - HHH000026: Second-level cache disabled
+2025-11-03 16:03:49 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 16:03:49 - HikariPool-1 - Starting...
+2025-11-03 16:03:49 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@42211e04
+2025-11-03 16:03:49 - HikariPool-1 - Start completed.
+2025-11-03 16:03:49 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 16:03:49 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 16:03:49 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 16:03:49 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 16:03:49 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 16:03:50 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 16:03:50 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 16:03:50 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 16:03:53 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 16:03:53 - Started OnlineReadingPaltformApplication in 6.006 seconds (process running for 6.278)
+2025-11-03 16:03:53 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:03:53 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:03:53 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:03:53 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:03:53 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:03:53 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:03:53 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:03:53 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-03 16:04:03 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 16:04:03 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 16:04:03 - Completed initialization in 2 ms
+2025-11-03 16:08:14 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 16:08:14 - Graceful shutdown complete
+2025-11-03 16:08:14 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 16:08:14 - HikariPool-1 - Shutdown initiated...
+2025-11-03 16:08:14 - HikariPool-1 - Shutdown completed.
+2025-11-03 16:08:17 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 42428 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 16:08:17 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 16:08:17 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 16:08:18 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 16:08:18 - Finished Spring Data repository scanning in 33 ms. Found 6 JPA repository interfaces.
+2025-11-03 16:08:18 - Tomcat initialized with port 8035 (http)
+2025-11-03 16:08:18 - Starting service [Tomcat]
+2025-11-03 16:08:18 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 16:08:18 - Initializing Spring embedded WebApplicationContext
+2025-11-03 16:08:18 - Root WebApplicationContext: initialization completed in 1277 ms
+2025-11-03 16:08:18 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 16:08:18 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 16:08:18 - HHH000026: Second-level cache disabled
+2025-11-03 16:08:18 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 16:08:18 - HikariPool-1 - Starting...
+2025-11-03 16:08:19 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@55071497
+2025-11-03 16:08:19 - HikariPool-1 - Start completed.
+2025-11-03 16:08:19 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 16:08:19 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 16:08:19 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 16:08:20 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 16:08:20 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 16:08:20 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 16:08:20 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 16:08:21 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 16:08:23 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 16:08:23 - Started OnlineReadingPaltformApplication in 7.013 seconds (process running for 7.499)
+2025-11-03 16:08:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:08:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:08:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:08:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:08:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:08:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:08:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:08:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-03 16:08:27 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 16:08:27 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 16:08:27 - Completed initialization in 3 ms
+2025-11-03 16:46:38 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m49s416ms).
+2025-11-03 16:50:56 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=4m18s32ms).
+2025-11-03 16:52:32 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 16:52:32 - Graceful shutdown complete
+2025-11-03 16:52:32 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 16:52:33 - HikariPool-1 - Shutdown initiated...
+2025-11-03 16:52:33 - HikariPool-1 - Shutdown completed.
+2025-11-03 16:52:36 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 43243 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 16:52:36 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 16:52:36 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 16:52:36 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 16:52:36 - Finished Spring Data repository scanning in 35 ms. Found 6 JPA repository interfaces.
+2025-11-03 16:52:37 - Tomcat initialized with port 8035 (http)
+2025-11-03 16:52:37 - Starting service [Tomcat]
+2025-11-03 16:52:37 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 16:52:37 - Initializing Spring embedded WebApplicationContext
+2025-11-03 16:52:37 - Root WebApplicationContext: initialization completed in 823 ms
+2025-11-03 16:52:37 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 16:52:37 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 16:52:37 - HHH000026: Second-level cache disabled
+2025-11-03 16:52:37 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 16:52:37 - HikariPool-1 - Starting...
+2025-11-03 16:52:37 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@34cb0e49
+2025-11-03 16:52:37 - HikariPool-1 - Start completed.
+2025-11-03 16:52:37 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 16:52:37 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 16:52:37 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 16:52:38 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 16:52:38 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 16:52:38 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 16:52:38 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 16:52:38 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 16:52:42 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 16:52:42 - Started OnlineReadingPaltformApplication in 6.064 seconds (process running for 6.37)
+2025-11-03 16:52:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:52:42 - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-11-03 16:52:42 - Application run failed
+org.springframework.dao.InvalidDataAccessApiUsageException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.SUPER_ADMIN
+	at org.springframework.orm.jpa.EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(EntityManagerFactoryUtils.java:371)
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:246)
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:560)
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61)
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:343)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:160)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:136)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:223)
+	at jdk.proxy2/jdk.proxy2.$Proxy134.findUserByEmail(Unknown Source)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.run(OnlineReadingPaltformApplication.java:31)
+	at org.springframework.boot.SpringApplication.lambda$callRunner$5(SpringApplication.java:788)
+	at org.springframework.util.function.ThrowingConsumer$1.acceptWithException(ThrowingConsumer.java:82)
+	at org.springframework.util.function.ThrowingConsumer.accept(ThrowingConsumer.java:60)
+	at org.springframework.util.function.ThrowingConsumer$1.accept(ThrowingConsumer.java:86)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:796)
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:787)
+	at org.springframework.boot.SpringApplication.lambda$callRunners$3(SpringApplication.java:772)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184)
+	at java.base/java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:357)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:510)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151)
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:596)
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:772)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:325)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.intelliRead.Online.Reading.Paltform.OnlineReadingPaltformApplication.main(OnlineReadingPaltformApplication.java:23)
+Caused by: java.lang.IllegalArgumentException: No enum constant com.intelliRead.Online.Reading.Paltform.enums.Role.SUPER_ADMIN
+	at java.base/java.lang.Enum.valueOf(Enum.java:293)
+	at org.hibernate.type.descriptor.java.EnumJavaType.fromName(EnumJavaType.java:259)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:127)
+	at org.hibernate.type.descriptor.java.EnumJavaType.wrap(EnumJavaType.java:36)
+	at org.hibernate.type.descriptor.jdbc.EnumJdbcType$2.doExtract(EnumJdbcType.java:81)
+	at org.hibernate.type.descriptor.jdbc.BasicExtractor.extract(BasicExtractor.java:44)
+	at org.hibernate.sql.results.jdbc.internal.JdbcValuesResultSetImpl.getCurrentRowValue(JdbcValuesResultSetImpl.java:387)
+	at org.hibernate.sql.results.internal.RowProcessingStateStandardImpl.getJdbcValue(RowProcessingStateStandardImpl.java:152)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.extractRawValue(BasicResultAssembler.java:54)
+	at org.hibernate.sql.results.graph.basic.BasicResultAssembler.assemble(BasicResultAssembler.java:60)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.extractConcreteTypeStateValues(EntityInitializerImpl.java:1611)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeEntityInstance(EntityInitializerImpl.java:1337)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:1316)
+	at org.hibernate.sql.results.graph.entity.internal.EntityInitializerImpl.initializeInstance(EntityInitializerImpl.java:97)
+	at org.hibernate.sql.results.internal.StandardRowReader.coordinateInitializers(StandardRowReader.java:244)
+	at org.hibernate.sql.results.internal.StandardRowReader.readRow(StandardRowReader.java:141)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.read(ListResultsConsumer.java:249)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:201)
+	at org.hibernate.sql.results.spi.ListResultsConsumer.consume(ListResultsConsumer.java:35)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:224)
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:102)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.executeQuery(JdbcSelectExecutor.java:91)
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.list(JdbcSelectExecutor.java:165)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:149)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:439)
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:359)
+	at org.hibernate.query.sqm.internal.QuerySqmImpl.doList(QuerySqmImpl.java:380)
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:143)
+	at org.hibernate.query.spi.AbstractSelectionQuery.getSingleResult(AbstractSelectionQuery.java:275)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$DeferredQueryInvocationHandler.invoke(SharedEntityManagerCreator.java:419)
+	at jdk.proxy2/jdk.proxy2.$Proxy151.getSingleResult(Unknown Source)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:226)
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:95)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:160)
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:148)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:170)
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:170)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:149)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:380)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:138)
+	... 26 common frames omitted
+2025-11-03 16:52:42 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 16:52:42 - Graceful shutdown complete
+2025-11-03 16:52:42 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 16:52:42 - HikariPool-1 - Shutdown initiated...
+2025-11-03 16:52:42 - HikariPool-1 - Shutdown completed.
+2025-11-03 16:53:17 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 43269 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 16:53:17 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 16:53:17 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 16:53:17 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 16:53:17 - Finished Spring Data repository scanning in 30 ms. Found 6 JPA repository interfaces.
+2025-11-03 16:53:18 - Tomcat initialized with port 8035 (http)
+2025-11-03 16:53:18 - Starting service [Tomcat]
+2025-11-03 16:53:18 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 16:53:18 - Initializing Spring embedded WebApplicationContext
+2025-11-03 16:53:18 - Root WebApplicationContext: initialization completed in 951 ms
+2025-11-03 16:53:18 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 16:53:18 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 16:53:18 - HHH000026: Second-level cache disabled
+2025-11-03 16:53:18 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 16:53:18 - HikariPool-1 - Starting...
+2025-11-03 16:53:18 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@14292d71
+2025-11-03 16:53:18 - HikariPool-1 - Start completed.
+2025-11-03 16:53:18 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 16:53:18 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 16:53:18 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 16:53:19 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 16:53:19 - 
+    create table book (
+        id integer not null auto_increment,
+        author varchar(255) not null,
+        cover_image_path varchar(255),
+        description TEXT not null,
+        extracted_text LONGTEXT,
+        file_name varchar(255),
+        file_path varchar(255),
+        file_size bigint,
+        file_type varchar(255),
+        language varchar(255) not null,
+        title varchar(255) not null,
+        uploaded_at datetime(6) not null,
+        category_id integer,
+        user_id integer,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-03 16:53:19 - 
+    create table category (
+        id integer not null auto_increment,
+        category_name varchar(255) not null,
+        description varchar(255),
+        parent_category_id integer,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-03 16:53:19 - 
+    create table password_reset_tokens (
+        id integer not null auto_increment,
+        expiry_date datetime(6) not null,
+        token varchar(255) not null,
+        used bit not null,
+        user_id integer not null,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-03 16:53:19 - 
+    create table review (
+        id integer not null auto_increment,
+        created_at datetime(6) not null,
+        rating integer not null,
+        review_text TEXT not null,
+        book_id integer,
+        user_id integer,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-03 16:53:19 - 
+    create table suggestion (
+        id integer not null auto_increment,
+        author varchar(255),
+        created_at datetime(6) not null,
+        suggested_title varchar(255) not null,
+        suggestion_status enum ('APPROVED','PENDING','REJECTED') not null,
+        user_id integer,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-03 16:53:19 - 
+    create table users (
+        id integer not null auto_increment,
+        created_date datetime(6) not null,
+        email varchar(255) not null,
+        name varchar(255) not null,
+        password_hash varchar(255) not null,
+        preferred_language varchar(255) not null,
+        role enum ('ROLE','USER') not null,
+        status enum ('ACTIVE','INACTIVE') not null,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-03 16:53:19 - 
+    alter table category 
+       drop index UKlroeo5fvfdeg4hpicn4lw7x9b
+2025-11-03 16:53:19 - 
+    alter table category 
+       add constraint UKlroeo5fvfdeg4hpicn4lw7x9b unique (category_name)
+2025-11-03 16:53:19 - 
+    alter table password_reset_tokens 
+       drop index UK71lqwbwtklmljk3qlsugr1mig
+2025-11-03 16:53:19 - 
+    alter table password_reset_tokens 
+       add constraint UK71lqwbwtklmljk3qlsugr1mig unique (token)
+2025-11-03 16:53:19 - 
+    alter table users 
+       drop index UK6dotkott2kjsp8vw4d0m25fb7
+2025-11-03 16:53:19 - 
+    alter table users 
+       add constraint UK6dotkott2kjsp8vw4d0m25fb7 unique (email)
+2025-11-03 16:53:19 - 
+    alter table book 
+       add constraint FKam9riv8y6rjwkua1gapdfew4j 
+       foreign key (category_id) 
+       references category (id)
+2025-11-03 16:53:19 - 
+    alter table book 
+       add constraint FK9cv1tt952k857xoia51k1vj12 
+       foreign key (user_id) 
+       references users (id)
+2025-11-03 16:53:20 - 
+    alter table category 
+       add constraint FKs2ride9gvilxy2tcuv7witnxc 
+       foreign key (parent_category_id) 
+       references category (id)
+2025-11-03 16:53:20 - 
+    alter table password_reset_tokens 
+       add constraint FKk3ndxg5xp6v7wd4gjyusp15gq 
+       foreign key (user_id) 
+       references users (id)
+2025-11-03 16:53:20 - 
+    alter table review 
+       add constraint FK70yrt09r4r54tcgkrwbeqenbs 
+       foreign key (book_id) 
+       references book (id)
+2025-11-03 16:53:20 - 
+    alter table review 
+       add constraint FK6cpw2nlklblpvc7hyt7ko6v3e 
+       foreign key (user_id) 
+       references users (id)
+2025-11-03 16:53:20 - 
+    alter table suggestion 
+       add constraint FKlwyt2aya9jw90lwo4wt6edstj 
+       foreign key (user_id) 
+       references users (id)
+2025-11-03 16:53:20 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 16:53:20 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 16:53:20 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 16:53:20 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 16:53:23 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 16:53:23 - Started OnlineReadingPaltformApplication in 6.67 seconds (process running for 6.974)
+2025-11-03 16:53:23 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:53:23 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-03 16:53:23 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-03 16:53:31 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 16:53:31 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 16:53:31 - Completed initialization in 5 ms
+2025-11-03 16:54:08 - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    limit
+        ?
+2025-11-03 16:54:08 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-03 16:54:29 - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    limit
+        ?
+2025-11-03 16:54:29 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-03 16:54:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 16:54:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 16:54:42 - 
+    update
+        users 
+    set
+        created_date=?,
+        email=?,
+        name=?,
+        password_hash=?,
+        preferred_language=?,
+        role=?,
+        status=? 
+    where
+        id=?
+2025-11-03 16:55:02 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:55:02 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:55:04 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:55:13 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 16:55:13 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:34:30 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 17:34:30 - Graceful shutdown complete
+2025-11-03 17:34:30 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 17:34:30 - HikariPool-1 - Shutdown initiated...
+2025-11-03 17:34:30 - HikariPool-1 - Shutdown completed.
+2025-11-03 17:34:34 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 44049 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 17:34:34 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 17:34:34 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 17:34:35 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 17:34:35 - Finished Spring Data repository scanning in 32 ms. Found 6 JPA repository interfaces.
+2025-11-03 17:34:35 - Tomcat initialized with port 8035 (http)
+2025-11-03 17:34:35 - Starting service [Tomcat]
+2025-11-03 17:34:35 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 17:34:35 - Initializing Spring embedded WebApplicationContext
+2025-11-03 17:34:35 - Root WebApplicationContext: initialization completed in 800 ms
+2025-11-03 17:34:35 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 17:34:35 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 17:34:35 - HHH000026: Second-level cache disabled
+2025-11-03 17:34:35 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 17:34:35 - HikariPool-1 - Starting...
+2025-11-03 17:34:35 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2729bb71
+2025-11-03 17:34:35 - HikariPool-1 - Start completed.
+2025-11-03 17:34:36 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 17:34:36 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 17:34:36 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 17:34:36 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 17:34:37 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 17:34:37 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 17:34:37 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 17:34:38 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 17:34:41 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 17:34:41 - Started OnlineReadingPaltformApplication in 7.407 seconds (process running for 7.715)
+2025-11-03 17:34:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:34:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:34:42 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-03 17:34:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:34:42 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-03 17:34:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:34:42 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-03 17:34:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:34:42 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-03 17:34:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-03 17:34:44 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 17:34:44 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 17:34:44 - Completed initialization in 2 ms
+2025-11-03 17:35:11 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:35:11 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:35:21 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:35:21 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:35:28 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:35:28 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:39:01 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 17:39:01 - Graceful shutdown complete
+2025-11-03 17:39:01 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 17:39:01 - HikariPool-1 - Shutdown initiated...
+2025-11-03 17:39:01 - HikariPool-1 - Shutdown completed.
+2025-11-03 17:39:05 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 44117 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 17:39:05 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 17:39:05 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 17:39:05 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 17:39:05 - Finished Spring Data repository scanning in 30 ms. Found 6 JPA repository interfaces.
+2025-11-03 17:39:05 - Tomcat initialized with port 8035 (http)
+2025-11-03 17:39:05 - Starting service [Tomcat]
+2025-11-03 17:39:05 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 17:39:06 - Initializing Spring embedded WebApplicationContext
+2025-11-03 17:39:06 - Root WebApplicationContext: initialization completed in 906 ms
+2025-11-03 17:39:06 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 17:39:06 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 17:39:06 - HHH000026: Second-level cache disabled
+2025-11-03 17:39:06 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 17:39:06 - HikariPool-1 - Starting...
+2025-11-03 17:39:06 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2729bb71
+2025-11-03 17:39:06 - HikariPool-1 - Start completed.
+2025-11-03 17:39:06 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 17:39:06 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 17:39:06 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 17:39:06 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 17:39:07 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 17:39:07 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 17:39:07 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 17:39:07 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 17:39:10 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 17:39:10 - Started OnlineReadingPaltformApplication in 6.141 seconds (process running for 6.749)
+2025-11-03 17:39:11 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:39:11 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:39:11 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:39:11 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:39:11 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:39:11 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-03 17:39:11 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 17:39:11 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 17:39:11 - Completed initialization in 0 ms
+2025-11-03 17:39:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:39:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:40:02 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:40:06 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:40:06 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:40:09 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:40:16 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:40:21 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:40:21 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:44:48 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 17:44:48 - Graceful shutdown complete
+2025-11-03 17:44:48 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 17:44:49 - HikariPool-1 - Shutdown initiated...
+2025-11-03 17:44:49 - HikariPool-1 - Shutdown completed.
+2025-11-03 17:44:52 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 44237 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 17:44:52 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 17:44:52 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 17:44:52 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 17:44:52 - Finished Spring Data repository scanning in 29 ms. Found 6 JPA repository interfaces.
+2025-11-03 17:44:52 - Tomcat initialized with port 8035 (http)
+2025-11-03 17:44:52 - Starting service [Tomcat]
+2025-11-03 17:44:52 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 17:44:52 - Initializing Spring embedded WebApplicationContext
+2025-11-03 17:44:52 - Root WebApplicationContext: initialization completed in 724 ms
+2025-11-03 17:44:52 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 17:44:52 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 17:44:52 - HHH000026: Second-level cache disabled
+2025-11-03 17:44:53 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 17:44:53 - HikariPool-1 - Starting...
+2025-11-03 17:44:53 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7a3643e3
+2025-11-03 17:44:53 - HikariPool-1 - Start completed.
+2025-11-03 17:44:53 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 17:44:53 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 17:44:53 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 17:44:53 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 17:44:53 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 17:44:54 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 17:44:54 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 17:44:54 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 17:44:57 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 17:44:57 - Started OnlineReadingPaltformApplication in 5.491 seconds (process running for 5.764)
+2025-11-03 17:44:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:44:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:44:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:44:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:44:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:44:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-03 17:45:02 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 17:45:02 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 17:45:02 - Completed initialization in 2 ms
+2025-11-03 17:53:23 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 17:53:23 - Graceful shutdown complete
+2025-11-03 17:53:23 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 17:53:23 - HikariPool-1 - Shutdown initiated...
+2025-11-03 17:53:23 - HikariPool-1 - Shutdown completed.
+2025-11-03 17:53:25 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 44411 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 17:53:25 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 17:53:25 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 17:53:26 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 17:53:26 - Finished Spring Data repository scanning in 29 ms. Found 6 JPA repository interfaces.
+2025-11-03 17:53:26 - Tomcat initialized with port 8035 (http)
+2025-11-03 17:53:26 - Starting service [Tomcat]
+2025-11-03 17:53:26 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 17:53:26 - Initializing Spring embedded WebApplicationContext
+2025-11-03 17:53:26 - Root WebApplicationContext: initialization completed in 725 ms
+2025-11-03 17:53:26 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 17:53:26 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 17:53:26 - HHH000026: Second-level cache disabled
+2025-11-03 17:53:27 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 17:53:27 - HikariPool-1 - Starting...
+2025-11-03 17:53:27 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1d1cfe4
+2025-11-03 17:53:27 - HikariPool-1 - Start completed.
+2025-11-03 17:53:27 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 17:53:27 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 17:53:27 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 17:53:27 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 17:53:27 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 17:53:28 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 17:53:28 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 17:53:28 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 17:53:31 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 17:53:31 - Started OnlineReadingPaltformApplication in 5.781 seconds (process running for 6.022)
+2025-11-03 17:53:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:53:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:53:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 17:53:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:53:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:53:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 17:53:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:53:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:53:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 17:53:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:53:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:53:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 17:53:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:53:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 17:53:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 17:53:31 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-03 17:53:39 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 17:53:39 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 17:53:39 - Completed initialization in 5 ms
+2025-11-03 18:00:34 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 18:00:34 - Graceful shutdown complete
+2025-11-03 18:00:34 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 18:00:34 - HikariPool-1 - Shutdown initiated...
+2025-11-03 18:00:34 - HikariPool-1 - Shutdown completed.
+2025-11-03 18:00:37 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 44541 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 18:00:37 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 18:00:37 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 18:00:37 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 18:00:37 - Finished Spring Data repository scanning in 30 ms. Found 6 JPA repository interfaces.
+2025-11-03 18:00:37 - Tomcat initialized with port 8035 (http)
+2025-11-03 18:00:37 - Starting service [Tomcat]
+2025-11-03 18:00:37 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 18:00:37 - Initializing Spring embedded WebApplicationContext
+2025-11-03 18:00:37 - Root WebApplicationContext: initialization completed in 719 ms
+2025-11-03 18:00:37 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 18:00:37 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 18:00:37 - HHH000026: Second-level cache disabled
+2025-11-03 18:00:38 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 18:00:38 - HikariPool-1 - Starting...
+2025-11-03 18:00:38 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4d8056bf
+2025-11-03 18:00:38 - HikariPool-1 - Start completed.
+2025-11-03 18:00:38 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 18:00:38 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 18:00:38 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 18:00:38 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 18:00:38 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 18:00:39 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 18:00:39 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 18:00:39 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 18:00:42 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 18:00:42 - Started OnlineReadingPaltformApplication in 5.57 seconds (process running for 5.81)
+2025-11-03 18:00:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:00:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:00:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 18:00:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:00:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:00:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 18:00:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:00:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:00:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 18:00:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:00:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:00:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 18:00:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:00:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:00:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 18:00:42 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-03 18:00:48 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 18:00:48 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 18:00:48 - Completed initialization in 2 ms
+2025-11-03 18:03:09 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 18:03:09 - Graceful shutdown complete
+2025-11-03 18:03:09 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 18:03:09 - HikariPool-1 - Shutdown initiated...
+2025-11-03 18:03:09 - HikariPool-1 - Shutdown completed.
+2025-11-03 18:03:10 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 44591 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 18:03:10 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 18:03:10 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 18:03:11 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 18:03:11 - Finished Spring Data repository scanning in 30 ms. Found 6 JPA repository interfaces.
+2025-11-03 18:03:11 - Tomcat initialized with port 8035 (http)
+2025-11-03 18:03:11 - Starting service [Tomcat]
+2025-11-03 18:03:11 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 18:03:11 - Initializing Spring embedded WebApplicationContext
+2025-11-03 18:03:11 - Root WebApplicationContext: initialization completed in 741 ms
+2025-11-03 18:03:11 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 18:03:11 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 18:03:11 - HHH000026: Second-level cache disabled
+2025-11-03 18:03:11 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 18:03:11 - HikariPool-1 - Starting...
+2025-11-03 18:03:12 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@2830315f
+2025-11-03 18:03:12 - HikariPool-1 - Start completed.
+2025-11-03 18:03:12 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 18:03:12 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 18:03:12 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 18:03:12 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 18:03:12 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 18:03:12 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 18:03:13 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 18:03:13 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 18:03:16 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 18:03:16 - Started OnlineReadingPaltformApplication in 5.902 seconds (process running for 6.187)
+2025-11-03 18:03:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:03:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:03:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 18:03:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:03:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:03:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 18:03:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:03:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:03:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 18:03:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:03:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:03:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 18:03:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:03:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:03:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 18:03:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-03 18:03:19 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 18:03:19 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 18:03:19 - Completed initialization in 0 ms
+2025-11-03 18:07:15 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 18:07:15 - Graceful shutdown complete
+2025-11-03 18:07:15 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 18:07:15 - HikariPool-1 - Shutdown initiated...
+2025-11-03 18:07:15 - HikariPool-1 - Shutdown completed.
+2025-11-03 18:07:18 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 44743 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 18:07:18 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 18:07:18 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 18:07:18 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 18:07:18 - Finished Spring Data repository scanning in 31 ms. Found 6 JPA repository interfaces.
+2025-11-03 18:07:18 - Tomcat initialized with port 8035 (http)
+2025-11-03 18:07:18 - Starting service [Tomcat]
+2025-11-03 18:07:18 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 18:07:19 - Initializing Spring embedded WebApplicationContext
+2025-11-03 18:07:19 - Root WebApplicationContext: initialization completed in 756 ms
+2025-11-03 18:07:19 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 18:07:19 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 18:07:19 - HHH000026: Second-level cache disabled
+2025-11-03 18:07:19 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 18:07:19 - HikariPool-1 - Starting...
+2025-11-03 18:07:19 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@42211e04
+2025-11-03 18:07:19 - HikariPool-1 - Start completed.
+2025-11-03 18:07:19 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 18:07:19 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 18:07:19 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 18:07:20 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 18:07:20 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 18:07:20 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 18:07:20 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 18:07:20 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 18:07:23 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 18:07:23 - Started OnlineReadingPaltformApplication in 5.875 seconds (process running for 6.156)
+2025-11-03 18:07:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:07:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:07:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 18:07:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:07:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:07:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 18:07:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:07:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:07:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 18:07:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:07:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:07:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 18:07:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:07:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 18:07:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 18:07:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-03 18:07:27 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 18:07:27 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 18:07:27 - Completed initialization in 1 ms
+2025-11-03 18:09:14 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=54s804ms).
+2025-11-03 18:25:39 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m54s844ms).
+2025-11-03 18:42:04 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m55s571ms).
+2025-11-03 18:58:15 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=16m10s971ms).
+2025-11-03 19:05:35 - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=6m50s42ms).
+2025-11-03 19:06:05 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:06:05 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:06:10 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:06:10 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:06:12 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:06:19 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:06:20 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:06:28 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:06:28 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:06:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:06:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:12:33 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-03 19:12:33 - Graceful shutdown complete
+2025-11-03 19:12:33 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 19:12:33 - HikariPool-1 - Shutdown initiated...
+2025-11-03 19:12:33 - HikariPool-1 - Shutdown completed.
+2025-11-03 19:12:37 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 45189 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-03 19:12:37 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-03 19:12:37 - No active profile set, falling back to 1 default profile: "default"
+2025-11-03 19:12:37 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-03 19:12:37 - Finished Spring Data repository scanning in 31 ms. Found 6 JPA repository interfaces.
+2025-11-03 19:12:38 - Tomcat initialized with port 8035 (http)
+2025-11-03 19:12:38 - Starting service [Tomcat]
+2025-11-03 19:12:38 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-03 19:12:38 - Initializing Spring embedded WebApplicationContext
+2025-11-03 19:12:38 - Root WebApplicationContext: initialization completed in 845 ms
+2025-11-03 19:12:38 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-03 19:12:38 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-03 19:12:38 - HHH000026: Second-level cache disabled
+2025-11-03 19:12:38 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-03 19:12:38 - HikariPool-1 - Starting...
+2025-11-03 19:12:38 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7858d31d
+2025-11-03 19:12:38 - HikariPool-1 - Start completed.
+2025-11-03 19:12:38 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-03 19:12:38 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-03 19:12:38 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-03 19:12:39 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-03 19:12:39 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-03 19:12:39 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-03 19:12:39 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-03 19:12:39 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-03 19:12:43 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-03 19:12:43 - Started OnlineReadingPaltformApplication in 6.296 seconds (process running for 6.569)
+2025-11-03 19:12:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:12:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:12:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 19:12:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:12:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:12:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 19:12:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:12:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:12:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 19:12:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:12:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:12:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 19:12:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:12:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:12:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-03 19:12:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-03 19:12:44 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-03 19:12:44 - Initializing Servlet 'dispatcherServlet'
+2025-11-03 19:12:44 - Completed initialization in 1 ms
+2025-11-03 19:13:00 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:13:00 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:13:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:13:28 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:13:28 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:13:32 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:13:32 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:13:41 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:13:41 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:13:48 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:13:48 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:13:50 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:13:56 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:00 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:00 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:06 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:06 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:07 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:13 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:21 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:21 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:26 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:26 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:30 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:33 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:34 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:40 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:41 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:54 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:14:54 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:15:02 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:15:02 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:15:08 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:15:08 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:15:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-03 19:15:15 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?

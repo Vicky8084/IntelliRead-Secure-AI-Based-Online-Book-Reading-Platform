@@ -1,125 +1,104 @@
-// Admin Login Functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const loginForm = document.getElementById('adminLoginForm');
+// Enhanced Admin Login with Better Error Handling
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('🔐 Admin Login Page Loaded');
 
-    if (loginForm) {
-        loginForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
+    const adminLoginForm = document.getElementById('adminLoginForm');
 
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+    adminLoginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
 
-            await handleAdminLogin(email, password);
-        });
-    }
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
 
-    // Check if already logged in
-    checkExistingSession();
-});
+        if (!email || !password) {
+            alert('Please fill in all fields');
+            return;
+        }
 
-async function checkExistingSession() {
-    const token = localStorage.getItem('jwtToken');
-    const user = localStorage.getItem('user');
+        const loginBtn = adminLoginForm.querySelector('.login-btn');
+        const originalText = loginBtn.textContent;
+        loginBtn.textContent = 'Signing In...';
+        loginBtn.disabled = true;
 
-    if (token && user) {
         try {
-            const userData = JSON.parse(user);
-            if (userData.role === 'ADMIN') {
-                // Verify session with backend
-                const response = await fetch('/auth/check', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
+            console.log('📤 Sending ADMIN login request...');
+            console.log('📧 Email:', email);
 
-                const authCheck = await response.json();
-                if (authCheck.authenticated) {
-                    // Redirect to dashboard
-                    window.location.href = '/admin-dashboard';
+            // ✅ Use ADMIN login endpoint
+            const response = await fetch('http://localhost:8035/auth/admin/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            });
+
+            console.log('✅ Response status:', response.status);
+
+            // Get response text first
+            const responseText = await response.text();
+            console.log('📥 Raw response text:', responseText);
+
+            let data;
+
+            // Try to parse as JSON
+            try {
+                data = JSON.parse(responseText);
+                console.log('📥 Parsed JSON data:', data);
+            } catch (parseError) {
+                console.error('❌ JSON parse error:', parseError);
+                throw new Error('Server error. Please try again.');
+            }
+
+            if (data.success) {
+                // ✅ Store user data in localStorage
+                const userData = {
+                    email: data.email,
+                    name: data.name,
+                    role: data.role,
+                    userId: data.userId
+                };
+
+                localStorage.setItem('user', JSON.stringify(userData));
+                localStorage.setItem('isLoggedIn', 'true');
+                if (data.token) {
+                    localStorage.setItem('jwtToken', data.token);
                 }
+                localStorage.setItem('loginTime', new Date().toISOString());
+
+                console.log('💾 Admin data stored in localStorage');
+
+                // ✅ ALWAYS redirect to ADMIN DASHBOARD
+                console.log('🔄 Redirecting to ADMIN DASHBOARD');
+                alert('✅ Admin login successful! Redirecting to admin dashboard...');
+
+                setTimeout(() => {
+                    window.location.href = '/admin-dashboard';
+                }, 1000);
+
+            } else {
+                console.log('❌ Login failed with message:', data.message);
+                alert(data.message || 'Login failed. Please try again.');
+                loginBtn.textContent = originalText;
+                loginBtn.disabled = false;
             }
         } catch (error) {
-            // Clear invalid session
-            localStorage.removeItem('jwtToken');
-            localStorage.removeItem('user');
-            localStorage.removeItem('isLoggedIn');
+            console.error('❌ Admin login error:', error);
+            alert('Login error: ' + error.message);
+            loginBtn.textContent = originalText;
+            loginBtn.disabled = false;
         }
-    }
-}
+    });
 
-async function handleAdminLogin(email, password) {
-    try {
-        showLoading('Logging in...');
-
-        const response = await fetch('/auth/admin/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password })
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-            // Store token and user data in localStorage
-            localStorage.setItem('jwtToken', data.token);
-            localStorage.setItem('user', JSON.stringify({
-                id: data.userId,
-                name: data.name,
-                email: data.email,
-                role: data.role
-            }));
-            localStorage.setItem('isLoggedIn', 'true');
-
-            showSuccess('Login successful! Redirecting to admin dashboard...');
-
-            // Redirect to admin dashboard after 1 second
-            setTimeout(() => {
-                window.location.href = '/admin-dashboard';
-            }, 1000);
-        } else {
-            showError(data.message || 'Login failed');
+    // Add enter key support
+    adminLoginForm.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            adminLoginForm.dispatchEvent(new Event('submit'));
         }
-    } catch (error) {
-        console.error('Login error:', error);
-        showError('Login failed. Please try again.');
-    } finally {
-        hideLoading();
-    }
-}
-
-// Utility functions for notifications
-function showLoading(message) {
-    // You can implement a proper loading indicator here
-    const submitBtn = document.querySelector('#adminLoginForm button[type="submit"]');
-    if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> ' + message;
-    }
-}
-
-function hideLoading() {
-    const submitBtn = document.querySelector('#adminLoginForm button[type="submit"]');
-    if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="bx bx-log-in"></i> Login';
-    }
-}
-
-function showSuccess(message) {
-    // You can use your existing notification system or a simple alert
-    if (typeof showNotification === 'function') {
-        showNotification(message, 'success');
-    } else {
-        alert('✅ ' + message);
-    }
-}
-
-function showError(message) {
-    if (typeof showNotification === 'function') {
-        showNotification(message, 'error');
-    } else {
-        alert('❌ ' + message);
-    }
-}
+    });
+});

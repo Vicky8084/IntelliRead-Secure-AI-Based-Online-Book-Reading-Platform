@@ -1,4 +1,3 @@
-
 package com.intelliRead.Online.Reading.Paltform.responseDTO;
 
 import com.intelliRead.Online.Reading.Paltform.enums.Role;
@@ -17,4 +16,5 @@ public class LoginResponseDTO {
     private String name;
     private String message;
     private boolean success;
+    private String redirectUrl; // ✅ NEW FIELD ADDED
 }

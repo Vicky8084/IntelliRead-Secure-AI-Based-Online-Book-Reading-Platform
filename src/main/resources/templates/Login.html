@@ -67,7 +67,7 @@
 
             <button type="submit" class="login-btn">Sign In</button>
             <p class="signup-link">Don't have an account? - <a th:href="@{/signup}">Sign up here</a></p>
-            <p class="signup-link">SignIn as Admin  - <a th:href="@{/admin}">Login Here</a></p>
+            <p class="signup-link">SignIn as Admin - <a href="/admin-login">Login Here</a></p>
         </form>
     </div>
 </div>
@@ -177,19 +177,40 @@
             console.log('💾 User data stored in localStorage:', userData);
             console.log('🔑 Token stored:', !!data.token);
 
-            // ✅✅✅ FIXED: Role-based redirect
+            // ✅✅✅ FIXED: Smart Redirect System
             let redirectUrl = '';
             let successMessage = '';
 
-            if (data.role === 'ROLE') {
-              redirectUrl = '/publisher';  // ✅ CHANGE: publisher-dashboard se admin-dashboard
-              successMessage = 'Publisher login successful!';
+            // Check if user is one of the fixed admins
+            const adminEmails = [
+                'noreply.intelliread@gmail.com',
+                'admin1.intelliread@gmail.com',
+                'admin2.intelliread@gmail.com',
+                'admin3.intelliread@gmail.com',
+                'admin4.intelliread@gmail.com'
+            ];
+
+            const isAdmin = adminEmails.includes(email.toLowerCase());
+
+            if (isAdmin) {
+                // ✅ ADMIN: Always redirect to admin dashboard
+                redirectUrl = '/admin-dashboard';
+                successMessage = 'Admin login successful! Redirecting to admin dashboard...';
+                console.log('👑 Admin user detected, redirecting to admin dashboard');
+            } else if (data.role === 'ROLE') {
+                // ✅ PUBLISHER: Redirect to publisher dashboard
+                redirectUrl = '/publisher-dashboard';
+                successMessage = 'Publisher login successful!';
+                console.log('📚 Publisher user, redirecting to publisher dashboard');
             } else if (data.role === 'USER') {
-              redirectUrl = '/bookscreen';
-              successMessage = 'Login successful! Redirecting to books...';
+                // ✅ USER: Redirect to bookscreen (as before)
+                redirectUrl = '/bookscreen';
+                successMessage = 'Login successful! Redirecting to books...';
+                console.log('👤 Regular user, redirecting to bookscreen');
             } else {
-              redirectUrl = '/bookscreen';
-              successMessage = 'Login successful!';
+                // ✅ DEFAULT: Redirect to home
+                redirectUrl = '/Home';
+                successMessage = 'Login successful!';
             }
 
             console.log('🔄 Redirecting to:', redirectUrl);
