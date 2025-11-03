@@ -50,20 +50,9 @@ public class LoginService {
         try {
             System.out.println("🔐 Login attempt for: " + loginRequestDTO.getEmail());
 
-            // Input validation
-            if (loginRequestDTO.getEmail() == null || loginRequestDTO.getEmail().trim().isEmpty()) {
-                return new LoginResponseDTO(null, null, null, 0, null, "Email is required", false, null);
-            }
-
-            if (loginRequestDTO.getPassword() == null || loginRequestDTO.getPassword().isEmpty()) {
-                return new LoginResponseDTO(null, null, null, 0, null, "Password is required", false, null);
-            }
-
-            String email = loginRequestDTO.getEmail().trim().toLowerCase();
-
-            Optional<User> optionalUser = userRepository.findUserByEmail(email);
+            Optional<User> optionalUser = userRepository.findUserByEmail(loginRequestDTO.getEmail());
             if (optionalUser.isEmpty()) {
-                System.out.println("❌ User not found: " + email);
+                System.out.println("❌ User not found: " + loginRequestDTO.getEmail());
                 return new LoginResponseDTO(null, null, null, 0, null, "Invalid email or password", false, null);
             }
 
@@ -79,29 +68,36 @@ public class LoginService {
             }
 
             // ✅ Check if user is admin
-            boolean isAdmin = ADMIN_EMAILS.contains(email);
-
-            // For ALL users (admin and non-admin), manually verify password
-            // This avoids AuthenticationManager issues
-            if (!passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPasswordHash())) {
-                System.out.println("❌ Password mismatch for: " + email);
-                return new LoginResponseDTO(null, null, null, 0, null, "Invalid email or password", false, null);
-            }
-
-            System.out.println("✅ Password verified for: " + email);
+            boolean isAdmin = ADMIN_EMAILS.contains(loginRequestDTO.getEmail().toLowerCase());
 
             if (isAdmin) {
-                System.out.println("👑 Admin login successful: " + email);
+                System.out.println("👑 Admin login detected: " + loginRequestDTO.getEmail());
+                // For admin users, manually verify password
+                if (!passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPasswordHash())) {
+                    System.out.println("❌ Admin password mismatch for: " + loginRequestDTO.getEmail());
+                    return new LoginResponseDTO(null, null, null, 0, null, "Invalid email or password", false, null);
+                }
+                System.out.println("✅ Admin password verified: " + loginRequestDTO.getEmail());
             } else {
-                System.out.println("✅ Non-admin login successful: " + email);
+                // For non-admin users, use Spring Security authentication
+                System.out.println("🔐 Authenticating non-admin user: " + loginRequestDTO.getEmail());
+                try {
+                    Authentication authentication = authenticationManager.authenticate(
+                            new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(), loginRequestDTO.getPassword())
+                    );
+                    System.out.println("✅ Non-admin authentication successful: " + loginRequestDTO.getEmail());
+                } catch (Exception e) {
+                    System.out.println("❌ Non-admin authentication failed: " + e.getMessage());
+                    return new LoginResponseDTO(null, null, null, 0, null, "Invalid email or password", false, null);
+                }
             }
 
             // Generate JWT Token
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-            final String jwtToken = jwtUtil.generateToken(email);
-            System.out.println("✅ JWT Token generated for: " + email);
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequestDTO.getEmail());
+            final String jwtToken = jwtUtil.generateToken(loginRequestDTO.getEmail());
+            System.out.println("✅ JWT Token generated for: " + loginRequestDTO.getEmail());
 
-            // Determine redirect URL based on user type
+            // ✅ CRITICAL FIX: Determine redirect URL
             String redirectUrl = determineRedirectUrl(user.getEmail(), user.getRole());
             System.out.println("🔄 Redirect URL determined: " + redirectUrl);
 
@@ -124,7 +120,7 @@ public class LoginService {
     }
 
     private String determineRedirectUrl(String email, Role role) {
-        // ✅ Check admin by EMAIL, not by role
+        // ✅ CRITICAL FIX: Check admin by EMAIL first, then by role
         boolean isAdmin = ADMIN_EMAILS.contains(email.toLowerCase());
 
         System.out.println("🎯 Redirect Decision:");
@@ -132,16 +128,27 @@ public class LoginService {
         System.out.println("   🔑 Role: " + role);
         System.out.println("   👑 Is Admin: " + isAdmin);
 
+        // ✅ ADMIN USERS: Always go to admin dashboard
         if (isAdmin) {
             System.out.println("   🚀 Redirecting to ADMIN DASHBOARD");
-            return "/admin-dashboard"; // Admin users go to admin dashboard
-        } else if (role == Role.ROLE) {
-            System.out.println("   📚 Redirecting to PUBLISHER DASHBOARD");
-            return "/publisher-dashboard"; // Regular publishers
-        } else {
-            System.out.println("   👤 Redirecting to BOOKSCREEN");
-            return "/bookscreen"; // Regular users
+            return "/admin-dashboard";
         }
+
+        // ✅ REGULAR PUBLISHERS: Go to publisher dashboard
+        if (role == Role.ROLE) {
+            System.out.println("   📚 Redirecting to PUBLISHER DASHBOARD");
+            return "/publisher-dashboard";
+        }
+
+        // ✅ REGULAR USERS: Go to bookscreen
+        if (role == Role.USER) {
+            System.out.println("   👤 Redirecting to BOOKSCREEN");
+            return "/bookscreen";
+        }
+
+        // ✅ DEFAULT: Home page
+        System.out.println("   🏠 Redirecting to HOME");
+        return "/Home";
     }
 
     private boolean isAdminUser(String email) {

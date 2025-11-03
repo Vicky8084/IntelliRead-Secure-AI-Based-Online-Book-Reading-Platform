@@ -177,43 +177,50 @@
             console.log('💾 User data stored in localStorage:', userData);
             console.log('🔑 Token stored:', !!data.token);
 
-            // ✅✅✅ FIXED: Smart Redirect System
-            let redirectUrl = '';
-            let successMessage = '';
+            // ✅ USE BACKEND REDIRECT URL (Don't override it)
+            let redirectUrl = data.redirectUrl;
+            let successMessage = 'Login successful!';
 
-            // Check if user is one of the fixed admins
-            const adminEmails = [
-                'noreply.intelliread@gmail.com',
-                'admin1.intelliread@gmail.com',
-                'admin2.intelliread@gmail.com',
-                'admin3.intelliread@gmail.com',
-                'admin4.intelliread@gmail.com'
-            ];
+            if (redirectUrl) {
+                console.log('🔄 Using backend redirect URL:', redirectUrl);
 
-            const isAdmin = adminEmails.includes(email.toLowerCase());
-
-            if (isAdmin) {
-                // ✅ ADMIN: Always redirect to admin dashboard
-                redirectUrl = '/admin-dashboard';
-                successMessage = 'Admin login successful! Redirecting to admin dashboard...';
-                console.log('👑 Admin user detected, redirecting to admin dashboard');
-            } else if (data.role === 'ROLE') {
-                // ✅ PUBLISHER: Redirect to publisher dashboard
-                redirectUrl = '/publisher-dashboard';
-                successMessage = 'Publisher login successful!';
-                console.log('📚 Publisher user, redirecting to publisher dashboard');
-            } else if (data.role === 'USER') {
-                // ✅ USER: Redirect to bookscreen (as before)
-                redirectUrl = '/bookscreen';
-                successMessage = 'Login successful! Redirecting to books...';
-                console.log('👤 Regular user, redirecting to bookscreen');
+                if (redirectUrl === '/admin-dashboard') {
+                    successMessage = 'Admin login successful! Redirecting to admin dashboard...';
+                } else if (redirectUrl === '/publisher-dashboard') {
+                    successMessage = 'Publisher login successful!';
+                } else if (redirectUrl === '/bookscreen') {
+                    successMessage = 'Login successful! Redirecting to books...';
+                }
             } else {
-                // ✅ DEFAULT: Redirect to home
-                redirectUrl = '/Home';
-                successMessage = 'Login successful!';
+                // Fallback if backend doesn't provide redirect URL
+                console.log('⚠️ No redirect URL from backend, using fallback');
+
+                const adminEmails = [
+                    'noreply.intelliread@gmail.com',
+                    'admin1.intelliread@gmail.com',
+                    'admin2.intelliread@gmail.com',
+                    'admin3.intelliread@gmail.com',
+                    'admin4.intelliread@gmail.com'
+                ];
+
+                const isAdmin = adminEmails.includes(email.toLowerCase());
+
+                if (isAdmin) {
+                    redirectUrl = '/admin-dashboard';
+                    successMessage = 'Admin login successful! Redirecting to admin dashboard...';
+                } else if (data.role === 'ROLE') {
+                    redirectUrl = '/publisher-dashboard';
+                    successMessage = 'Publisher login successful!';
+                } else if (data.role === 'USER') {
+                    redirectUrl = '/bookscreen';
+                    successMessage = 'Login successful! Redirecting to books...';
+                } else {
+                    redirectUrl = '/Home';
+                    successMessage = 'Login successful!';
+                }
             }
 
-            console.log('🔄 Redirecting to:', redirectUrl);
+            console.log('🔄 Final redirect URL:', redirectUrl);
 
             // Show success message and redirect
             alert(successMessage);
