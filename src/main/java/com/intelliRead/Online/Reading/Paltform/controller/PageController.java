@@ -79,4 +79,10 @@ public class PageController {
     public String adminDashboard() {
         return "admin-dashboard";
     }
+
+    // ✅ NEW: Publisher Route Add Karo (Aapke login code ke liye)
+    @GetMapping("/publisher")
+    public String publisher() {
+        return "publisher-dashboard"; // Same page as publisher-dashboard
+    }
 }

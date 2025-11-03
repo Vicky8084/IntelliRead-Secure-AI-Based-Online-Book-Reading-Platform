@@ -177,12 +177,12 @@
             console.log('💾 User data stored in localStorage:', userData);
             console.log('🔑 Token stored:', !!data.token);
 
-            // Role-based redirect - FIXED
+            // ✅✅✅ FIXED: Role-based redirect
             let redirectUrl = '';
             let successMessage = '';
 
             if (data.role === 'ROLE') {
-              redirectUrl = '/publisher-dashboard';
+              redirectUrl = '/publisher';  // ✅ CHANGE: publisher-dashboard se admin-dashboard
               successMessage = 'Publisher login successful!';
             } else if (data.role === 'USER') {
               redirectUrl = '/bookscreen';
