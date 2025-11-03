@@ -38,7 +38,7 @@
                         <span>USER</span>
                     </div>
                     <div class="role-option" data-role="publisher">
-                        <input type="radio" id="role-publisher" name="role" value="PUBLISHER" required>
+                        <input type="radio" id="role-publisher" name="role" value="ROLE" required>
                         <i class='bx bx-book-alt role-icon'></i>
                         <span>PUBLISHER</span>
                     </div>
@@ -153,9 +153,9 @@
           console.log('📥 Login response data:', data);
 
           if (data.success) {
-            // ✅ Role check
+            // ✅ Role check - FIXED: Compare with backend role
             if (data.role !== selectedRole) {
-              alert(`❌ Please login as ${selectedRole} using the correct credentials.`);
+              alert(`❌ Please login as ${selectedRole === 'USER' ? 'User' : 'Publisher'} using the correct credentials.`);
               loginBtn.textContent = originalText;
               loginBtn.disabled = false;
               return;
@@ -172,29 +172,24 @@
             localStorage.setItem('user', JSON.stringify(userData));
             localStorage.setItem('isLoggedIn', 'true');
             localStorage.setItem('jwtToken', data.token);
-            localStorage.setItem('loginTime', new Date().toISOString()); // Add login timestamp
+            localStorage.setItem('loginTime', new Date().toISOString());
 
             console.log('💾 User data stored in localStorage:', userData);
             console.log('🔑 Token stored:', !!data.token);
 
-            // Role-based redirect
+            // Role-based redirect - FIXED
             let redirectUrl = '';
             let successMessage = '';
 
-            switch(data.role) {
-              case 'ADMIN':
-                redirectUrl = '/admin-dashboard';
-                successMessage = 'Admin login successful!';
-                break;
-              case 'PUBLISHER':
-                redirectUrl = '/publisher-dashboard';
-                successMessage = 'Publisher login successful!';
-                break;
-              case 'USER':
-              default:
-                redirectUrl = '/bookscreen';
-                successMessage = 'Login successful! Redirecting to books...';
-                break;
+            if (data.role === 'ROLE') {
+              redirectUrl = '/publisher-dashboard';
+              successMessage = 'Publisher login successful!';
+            } else if (data.role === 'USER') {
+              redirectUrl = '/bookscreen';
+              successMessage = 'Login successful! Redirecting to books...';
+            } else {
+              redirectUrl = '/bookscreen';
+              successMessage = 'Login successful!';
             }
 
             console.log('🔄 Redirecting to:', redirectUrl);
@@ -204,8 +199,6 @@
 
             // Use setTimeout to ensure alert is shown before redirect
             setTimeout(() => {
-              // Clear any existing redirect loops
-              localStorage.setItem('lastRedirect', redirectUrl);
               window.location.href = redirectUrl;
             }, 100);
 
@@ -220,60 +213,7 @@
           loginBtn.disabled = false;
         }
       });
-
-      // ✅ Check if already logged in (but don't auto-redirect from login page)
-      const isLoggedIn = localStorage.getItem('isLoggedIn');
-      const userData = localStorage.getItem('user');
-
-      if (isLoggedIn && userData) {
-        const user = JSON.parse(userData);
-        console.log('👤 User already logged in:', user.email);
-        console.log('ℹ️  Auto-redirect disabled on login page to prevent loops');
-      }
     });
-
-    // ✅ Debug Helper Functions
-    function debugAuth() {
-      console.log('=== AUTH DEBUG INFO ===');
-      console.log('isLoggedIn:', localStorage.getItem('isLoggedIn'));
-      console.log('user:', localStorage.getItem('user'));
-      console.log('jwtToken:', localStorage.getItem('jwtToken') ? 'Present' : 'Missing');
-      console.log('loginTime:', localStorage.getItem('loginTime'));
-      console.log('currentTime:', new Date().toISOString());
-    }
-
-    // ✅ ADDED: Test Connection Button
-    const testBtn = document.createElement('button');
-    testBtn.textContent = 'Test Connection';
-    testBtn.style.cssText = 'position: fixed; bottom: 20px; right: 20px; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; z-index: 1000;';
-    testBtn.onclick = async function() {
-        try {
-            const response = await fetch('http://localhost:8035/auth/test-connection');
-            const result = await response.text();
-            alert('✅ ' + result);
-        } catch (error) {
-            alert('❌ Cannot connect to backend');
-        }
-    };
-    document.body.appendChild(testBtn);
-
-    // ✅ ADDED: Debug Auth Button
-    const debugBtn = document.createElement('button');
-    debugBtn.textContent = 'Debug Auth';
-    debugBtn.style.cssText = 'position: fixed; bottom: 20px; right: 150px; padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; z-index: 1000;';
-    debugBtn.onclick = debugAuth;
-    document.body.appendChild(debugBtn);
-
-    // ✅ ADDED: Clear Storage Button (for testing)
-    const clearBtn = document.createElement('button');
-    clearBtn.textContent = 'Clear Storage';
-    clearBtn.style.cssText = 'position: fixed; bottom: 20px; right: 260px; padding: 10px; background: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer; z-index: 1000;';
-    clearBtn.onclick = function() {
-        localStorage.clear();
-        alert('🗑️ Storage cleared!');
-        location.reload();
-    };
-    document.body.appendChild(clearBtn);
 </script>
 </body>
 </html>

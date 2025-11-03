@@ -1,3 +1,4 @@
+
 package com.intelliRead.Online.Reading.Paltform.responseDTO;
 
 import com.intelliRead.Online.Reading.Paltform.enums.Role;

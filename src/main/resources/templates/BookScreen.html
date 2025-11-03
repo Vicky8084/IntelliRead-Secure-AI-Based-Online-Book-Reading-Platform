@@ -594,141 +594,8 @@
                 author: "James Clear",
                 image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
                 description: "Tiny changes, remarkable results. An easy way to build good habits and break bad ones."
-            },
-            {
-                id: 3,
-                title: "Deep Work",
-                author: "Cal Newport",
-                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
-                description: "Rules for focused success in a distracted world. Master the ability to concentrate without distraction."
-            },
-            {
-                id: 4,
-                title: "The Psychology of Money",
-                author: "Morgan Housel",
-                image: "https://images.unsplash.com/photo-1553729459-efe14ef6055d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
-                description: "Timeless lessons on wealth, greed, and happiness."
-            },
-            {
-                id: 5,
-                title: "Thinking, Fast and Slow",
-                author: "Daniel Kahneman",
-                image: "https://images.unsplash.com/photo-1589998059171-988d887df646?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
-                description: "The groundbreaking work about how our minds work and the two systems that drive our thinking."
             }
         ];
-    }
-
-    // Function to create book cards
-    function createBookCards() {
-        const container = document.getElementById('recommended-container');
-        container.innerHTML = '';
-
-        if (recommendedBooks.length === 0) {
-            container.innerHTML = '<p style="text-align: center; color: #fff; width: 100%;">No recommendations available at the moment.</p>';
-            return;
-        }
-
-        recommendedBooks.forEach(book => {
-            const bookCard = document.createElement('div');
-            bookCard.className = 'book-card';
-            bookCard.innerHTML = `
-                <img src="${book.image}" alt="${book.title}" onerror="this.src='https://images.unsplash.com/photo-1541963463532-d68292c34b19?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80'">
-                <h3>${book.title}</h3>
-                <p class="author">${book.author}</p>
-                <div class="book-description">
-                    <p>${book.description}</p>
-                </div>
-            `;
-            container.appendChild(bookCard);
-        });
-    }
-
-    // Function to create dot indicators
-    function createDotIndicators() {
-        const dotsContainer = document.getElementById('dots-container');
-        const bookCards = document.querySelectorAll('.book-card');
-
-        if (bookCards.length === 0) return;
-
-        const cardsPerView = Math.max(1, Math.floor(window.innerWidth / 200));
-        const totalDots = Math.ceil(bookCards.length / cardsPerView);
-
-        dotsContainer.innerHTML = '';
-
-        for (let i = 0; i < totalDots; i++) {
-            const dot = document.createElement('div');
-            dot.className = 'dot';
-            if (i === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => {
-                scrollToSlide(i, cardsPerView);
-            });
-            dotsContainer.appendChild(dot);
-        }
-    }
-
-    // Function to scroll to specific slide
-    function scrollToSlide(slideIndex, cardsPerView) {
-        const slider = document.getElementById('recommended-container');
-        const cardWidth = 160 + 25;
-        const scrollPosition = slideIndex * cardWidth * cardsPerView;
-
-        slider.scrollTo({
-            left: scrollPosition,
-            behavior: 'smooth'
-        });
-
-        document.querySelectorAll('.dot').forEach((dot, index) => {
-            if (index === slideIndex) {
-                dot.classList.add('active');
-            } else {
-                dot.classList.remove('active');
-            }
-        });
-    }
-
-    // Function to update active dot based on scroll position
-    function updateActiveDot() {
-        const slider = document.getElementById('recommended-container');
-        const dots = document.querySelectorAll('.dot');
-        const cardWidth = 160 + 25;
-        const cardsPerView = Math.max(1, Math.floor(window.innerWidth / 200));
-
-        const scrollPosition = slider.scrollLeft;
-        const activeDotIndex = Math.round(scrollPosition / (cardWidth * cardsPerView));
-
-        dots.forEach((dot, index) => {
-            if (index === activeDotIndex) {
-                dot.classList.add('active');
-            } else {
-                dot.classList.remove('active');
-            }
-        });
-    }
-
-    // Function to handle slider navigation
-    function setupSliderNavigation() {
-        const slider = document.getElementById('recommended-container');
-        const slideLeft = document.getElementById('slideLeft');
-        const slideRight = document.getElementById('slideRight');
-        const cardWidth = 160 + 25;
-        const cardsPerView = Math.max(1, Math.floor(window.innerWidth / 200));
-
-        slideLeft.addEventListener('click', () => {
-            slider.scrollBy({
-                left: -cardWidth * cardsPerView,
-                behavior: 'smooth'
-            });
-        });
-
-        slideRight.addEventListener('click', () => {
-            slider.scrollBy({
-                left: cardWidth * cardsPerView,
-                behavior: 'smooth'
-            });
-        });
-
-        slider.addEventListener('scroll', updateActiveDot);
     }
 
     // Logout function
@@ -740,18 +607,6 @@
             localStorage.removeItem('user');
             localStorage.removeItem('jwtToken');
             localStorage.removeItem('loginTime');
-
-            // Optional: Call backend logout
-            try {
-                await fetch('http://localhost:8035/auth/logout', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
-                    }
-                });
-            } catch (error) {
-                console.log('Backend logout failed, continuing with frontend logout');
-            }
 
             hideLoading();
             alert("You have been logged out successfully!");
@@ -824,31 +679,9 @@
             logout();
         });
 
-        // Search form handling
-        const searchForm = document.getElementById('form');
-        const searchButton = document.getElementById('search-btn');
-
-        searchButton.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768) {
-                if (!searchForm.classList.contains('active')) {
-                    e.preventDefault();
-                    searchForm.classList.add('active');
-                }
-            }
-        });
-
         // Initialize the page
         initializePage();
     });
-
-    // Debug helper
-    window.debugAuth = function() {
-        console.log('=== AUTH DEBUG INFO ===');
-        console.log('isLoggedIn:', localStorage.getItem('isLoggedIn'));
-        console.log('user:', localStorage.getItem('user'));
-        console.log('jwtToken:', localStorage.getItem('jwtToken') ? 'Present' : 'Missing');
-        console.log('loginTime:', localStorage.getItem('loginTime'));
-    };
 </script>
 
 <script src="BookScript.js"></script>

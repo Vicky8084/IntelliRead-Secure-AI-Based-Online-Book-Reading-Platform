@@ -30,7 +30,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // ✅ CHANGE: Return User object instead of String
+    // ✅ FIXED: Return User object instead of String
     public User addUser(UserRequestDTO dto) {
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new UserAlreadyExistException("User already exists!");
@@ -54,19 +54,6 @@ public class UserService {
         return savedUser; // ✅ Return User object
     }
 
-    // ✅ ADD: String return wala method for direct use
-    public String registerUserWithMessage(UserRequestDTO dto) {
-        User user = addUser(dto);
-
-        if (user.getRole() == Role.ROLE
-                && user.getStatus() == Status.INACTIVE) {
-            return "✅ Admin registration pending approval!";
-        } else {
-            return "✅ User registered successfully!";
-        }
-    }
-
-    // ... rest of the methods same as before
     public String approveAdmin(int userId) {
         User user = getUserById(userId);
         if (user != null && user.getRole() == Role.ROLE) {

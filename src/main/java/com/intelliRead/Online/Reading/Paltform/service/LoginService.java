@@ -9,9 +9,7 @@ import com.intelliRead.Online.Reading.Paltform.requestDTO.LoginRequestDto;
 import com.intelliRead.Online.Reading.Paltform.responseDTO.LoginResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -47,10 +45,14 @@ public class LoginService {
 
             User user = optionalUser.get();
 
+            // Check if account is active
             if (user.getStatus() != Status.ACTIVE) {
-                return new LoginResponseDTO(null, null, null, 0, null, "Account is inactive", false);
+                return new LoginResponseDTO(null, null, null, 0, null,
+                        user.getRole() == Role.ROLE ?
+                                "Publisher account pending admin approval" : "Account is inactive", false);
             }
 
+            // Verify password
             if (!passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPasswordHash())) {
                 return new LoginResponseDTO(null, null, null, 0, null, "Invalid email or password", false);
             }
