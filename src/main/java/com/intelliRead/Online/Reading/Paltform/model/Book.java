@@ -1,6 +1,7 @@
 package com.intelliRead.Online.Reading.Paltform.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -38,20 +39,21 @@ public class Book {
     @CreationTimestamp
     private LocalDateTime uploadedAt;
 
-    // ✅ ADDED: Category relationship
+    // Category relationship - EAGER banao
     @JsonBackReference("category-books")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)  // <-- EAGER ADD KARO
     @JoinColumn(name = "category_id")
     private Category category;
 
-    // Unique back reference name for user
+    // User relationship - EAGER banao
     @JsonBackReference("user-books")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)  // <-- EAGER ADD KARO
     private User user;
 
-    // Book has reviews
+    // Book has reviews - EAGER banao
     @JsonManagedReference("book-reviews")
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)  // <-- EAGER
+    @JsonIgnore
     private List<Review> reviewList;
 
     /* --- New fields for file handling --- */
