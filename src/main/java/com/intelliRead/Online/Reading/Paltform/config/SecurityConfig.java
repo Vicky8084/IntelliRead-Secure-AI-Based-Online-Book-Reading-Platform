@@ -59,19 +59,17 @@ public class SecurityConfig {
                         .requestMatchers("/", "/Home", "/login", "/Login", "/signup", "/SignUp",
                                 "/forgotpassword", "/ForgotPass", "/admin-login",
                                 "/auth/**", "/user/apies/save", "/password/**",
-                                "/admin/approve/**", "/admin/reject/**").permitAll() // ✅ MOVE HERE - IMPORTANT!
+                                "/admin/approve/**", "/admin/reject/**").permitAll()
 
                         // ✅ STATIC RESOURCES
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/uploads/**").permitAll()
 
-                        // ✅ ADMIN PAGES & APIS (EXCEPT APPROVAL LINKS)
-                        .requestMatchers("/admin/**", "/admin-dashboard").hasRole("ADMIN")
+                        // ✅ STRICT ROLE-BASED ACCESS
+                        .requestMatchers("/admin/**", "/admin-dashboard").hasRole("ADMIN")  // ONLY ADMIN
 
-                        // ✅ PUBLISHER PAGES
-                        .requestMatchers("/publisher-dashboard", "/publisher").hasAnyRole("PUBLISHER", "ADMIN")
+                        .requestMatchers("/publisher-dashboard", "/publisher").hasRole("PUBLISHER")  // ONLY PUBLISHER
 
-                        // ✅ USER PAGES
-                        .requestMatchers("/bookscreen", "/books").hasAnyRole("USER", "ADMIN", "PUBLISHER")
+                        .requestMatchers("/bookscreen", "/books").hasRole("USER")  // ONLY USER
 
                         // ✅ OTHER APIS
                         .requestMatchers("/user/apies/**").authenticated()
@@ -86,7 +84,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("*")); // ✅ ALLOW ALL ORIGINS
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);

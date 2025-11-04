@@ -59,8 +59,24 @@ public class LoginService {
             User user = optionalUser.get();
             System.out.println("✅ User found: " + user.getEmail() + " | Role: " + user.getRole() + " | Status: " + user.getStatus());
 
+            // ✅ STRICT ROLE VALIDATION - ADD THIS SECTION
+            boolean isAdminEmail = ADMIN_EMAILS.contains(loginRequestDTO.getEmail().toLowerCase());
+
+            // Admin emails can ONLY have ADMIN role
+            if (isAdminEmail && user.getRole() != Role.ADMIN) {
+                System.out.println("❌ Admin email but non-admin role: " + loginRequestDTO.getEmail());
+                return new LoginResponseDTO(null, null, null, 0, null,
+                        "Access denied. Please use admin login portal.", false, null);
+            }
+
+            // Non-admin emails cannot have ADMIN role
+            if (!isAdminEmail && user.getRole() == Role.ADMIN) {
+                System.out.println("❌ Non-admin email with ADMIN role: " + loginRequestDTO.getEmail());
+                return new LoginResponseDTO(null, null, null, 0, null,
+                        "Access denied. Invalid account type.", false, null);
+            }
+
             // Check if account is active
-            // ✅ ADD this status check in login() method
             if (user.getStatus() != Status.ACTIVE) {
                 System.out.println("❌ Account not active: " + user.getEmail());
                 return new LoginResponseDTO(null, null, null, 0, null,
@@ -69,10 +85,7 @@ public class LoginService {
                         false, null);
             }
 
-            // ✅ Check if user is admin by EMAIL (yeh fixed hai)
-            boolean isAdmin = ADMIN_EMAILS.contains(loginRequestDTO.getEmail().toLowerCase());
-
-            if (isAdmin) {
+            if (isAdminEmail) {
                 System.out.println("👑 Admin login detected: " + loginRequestDTO.getEmail());
                 // For admin users, manually verify password
                 if (!passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPasswordHash())) {
@@ -121,9 +134,7 @@ public class LoginService {
         }
     }
 
-    // In determineRedirectUrl method - REPLACE ENTIRE METHOD:
     private String determineRedirectUrl(String email, Role role) {
-        // ✅ CRITICAL FIX: Check admin by EMAIL first (fixed 5 emails), then by role
         boolean isAdmin = ADMIN_EMAILS.contains(email.toLowerCase());
 
         System.out.println("🎯 Redirect Decision:");
