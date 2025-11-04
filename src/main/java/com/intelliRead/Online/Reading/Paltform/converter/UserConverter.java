@@ -12,7 +12,7 @@ public class UserConverter {
         user.setPasswordHash(userRequestDTO.getPasswordHash());
         user.setRole(userRequestDTO.getRole());
         user.setPreferredLanguage(userRequestDTO.getPreferredLanguage());
-        user.setStatus(Status.ACTIVE);
+        //user.setStatus(Status.ACTIVE);
         return user;
     }
 }

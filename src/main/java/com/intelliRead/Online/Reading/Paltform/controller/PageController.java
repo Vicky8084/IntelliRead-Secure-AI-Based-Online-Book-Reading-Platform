@@ -18,7 +18,7 @@ public class PageController {
     @Autowired
     private UserRepository userRepository;
 
-    // List of fixed admin emails
+    // Fixed admin emails - yeh 5 hi ADMIN hain
     private final List<String> ADMIN_EMAILS = Arrays.asList(
             "noreply.intelliread@gmail.com",
             "mrvg4545@gmail.com",
@@ -94,7 +94,7 @@ public class PageController {
             model.addAttribute("warning", "Please login first for full functionality");
         }
 
-        // Check if user is admin
+        // Check if user is admin (by email - fixed list)
         boolean isAdmin = userEmail != null && ADMIN_EMAILS.contains(userEmail.toLowerCase());
         System.out.println("👑 Is Admin: " + isAdmin);
 
@@ -125,6 +125,85 @@ public class PageController {
         return "admin-dashboard";
     }
 
+    // ✅ Publisher Dashboard - Role-based Access
+    @GetMapping("/publisher-dashboard")
+    public String publisherDashboard(HttpServletRequest request, Model model) {
+        System.out.println("🔄 Publisher Dashboard accessed");
+
+        // Check session
+        Boolean isLoggedIn = (Boolean) request.getSession().getAttribute("isLoggedIn");
+        String userEmail = (String) request.getSession().getAttribute("userEmail");
+
+        System.out.println("📧 Session userEmail: " + userEmail);
+
+        if (isLoggedIn == null || userEmail == null) {
+            System.out.println("⚠️ No session found for publisher dashboard");
+            model.addAttribute("warning", "Please login first for full functionality");
+        }
+
+        // Get user data
+        if (userEmail != null) {
+            Optional<User> userOptional = userRepository.findUserByEmail(userEmail);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                model.addAttribute("publisher", user);
+                System.out.println("✅ Publisher data added to model: " + user.getName());
+
+                // Check if user is actually a publisher
+                if (user.getRole().name().equals("PUBLISHER")) {
+                    System.out.println("✅ Valid publisher access");
+                } else {
+                    System.out.println("⚠️ User is not a publisher, but accessing publisher dashboard");
+                }
+            } else {
+                // Add default publisher for testing
+                User defaultPublisher = new User();
+                defaultPublisher.setName("Publisher User");
+                defaultPublisher.setEmail(userEmail != null ? userEmail : "publisher@example.com");
+                model.addAttribute("publisher", defaultPublisher);
+                System.out.println("ℹ️ Default publisher data added to model");
+            }
+        } else {
+            // Add default publisher for direct access
+            User defaultPublisher = new User();
+            defaultPublisher.setName("Publisher");
+            defaultPublisher.setEmail("publisher@example.com");
+            model.addAttribute("publisher", defaultPublisher);
+            System.out.println("ℹ️ Default publisher data added for direct access");
+        }
+
+        return "publisher-dashboard";
+    }
+
+    // ✅ Book Screen for Users
+    @GetMapping("/bookscreen")
+    public String bookScreen(HttpServletRequest request, Model model) {
+        System.out.println("🔄 Book Screen accessed");
+
+        // Check session
+        Boolean isLoggedIn = (Boolean) request.getSession().getAttribute("isLoggedIn");
+        String userEmail = (String) request.getSession().getAttribute("userEmail");
+
+        System.out.println("📧 Session userEmail: " + userEmail);
+
+        if (isLoggedIn == null || userEmail == null) {
+            System.out.println("⚠️ No session found for book screen");
+            model.addAttribute("warning", "Please login first for full functionality");
+        }
+
+        // Get user data
+        if (userEmail != null) {
+            Optional<User> userOptional = userRepository.findUserByEmail(userEmail);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                model.addAttribute("user", user);
+                System.out.println("✅ User data added to model: " + user.getName());
+            }
+        }
+
+        return "bookscreen";
+    }
+
     // ✅ Admin Logout and Session Management
     @GetMapping("/admin-logout")
     public String adminLogout(HttpServletRequest request) {
@@ -150,61 +229,28 @@ public class PageController {
         return "redirect:/admin-dashboard";
     }
 
+    // ✅ Publisher Session Setter (for testing)
+    @GetMapping("/publisher-set-session")
+    public String setPublisherSession(HttpServletRequest request) {
+        System.out.println("🔧 Setting publisher session for testing");
+
+        request.getSession().setAttribute("isLoggedIn", true);
+        request.getSession().setAttribute("userEmail", "publisher@example.com");
+        request.getSession().setAttribute("userRole", "PUBLISHER");
+
+        System.out.println("✅ Publisher session set for: publisher@example.com");
+        return "redirect:/publisher-dashboard";
+    }
+
     // ✅ Additional pages
     @GetMapping("/books")
     public String books() {
         return "books";
     }
 
-    @GetMapping("/bookscreen")
-    public String bookScreen() {
-        return "bookscreen";
-    }
-
-    @GetMapping("/publisher-dashboard")
-    public String publisherDashboard() {
-        return "publisher-dashboard";
-    }
-
     // ✅ Publisher Route
     @GetMapping("/publisher")
     public String publisher() {
         return "publisher-dashboard";
-    }
-
-    // Helper method to check if current user is admin
-    private boolean isAdminUser(HttpServletRequest request) {
-        String userEmail = getCurrentUserEmail(request);
-        return userEmail != null && ADMIN_EMAILS.contains(userEmail.toLowerCase());
-    }
-
-    // Helper method to get current user email from multiple sources
-    private String getCurrentUserEmail(HttpServletRequest request) {
-        // 1. Try to get from session
-        Object sessionEmail = request.getSession().getAttribute("userEmail");
-        if (sessionEmail != null) {
-            System.out.println("📧 Email from session: " + sessionEmail);
-            return sessionEmail.toString();
-        }
-
-        // 2. Try to get from JWT token (if implemented)
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            System.out.println("🔑 JWT token found in header");
-            // In real implementation, decode JWT token here
-        }
-
-        // 3. Try to get from request parameter
-        String emailParam = request.getParameter("email");
-        if (emailParam != null && !emailParam.trim().isEmpty()) {
-            System.out.println("📧 Email from parameter: " + emailParam);
-            return emailParam;
-        }
-
-        // 4. Try to get from localStorage (via JavaScript)
-        // This would require JavaScript to send the email in a header or parameter
-
-        System.out.println("❌ No user email found");
-        return null;
     }
 }

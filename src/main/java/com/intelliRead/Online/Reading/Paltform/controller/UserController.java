@@ -1,9 +1,12 @@
 package com.intelliRead.Online.Reading.Paltform.controller;
 
+import com.intelliRead.Online.Reading.Paltform.enums.Role;
+import com.intelliRead.Online.Reading.Paltform.exception.UserAlreadyExistException;
 import com.intelliRead.Online.Reading.Paltform.model.User;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.UserRequestDTO;
 import com.intelliRead.Online.Reading.Paltform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +21,23 @@ public class UserController {
     @Autowired
     public UserController(UserService userService){
         this.userService = userService;
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity<?> registerUser(@RequestBody UserRequestDTO userRequestDTO) {
+        try {
+            // ✅ Prevent ADMIN registration through API
+            if (userRequestDTO.getRole() == Role.ADMIN) {
+                return ResponseEntity.badRequest().body("Admin registration not allowed through this endpoint");
+            }
+
+            User savedUser = userService.addUser(userRequestDTO);
+            return ResponseEntity.ok(savedUser);
+        } catch (UserAlreadyExistException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error creating user: " + e.getMessage());
+        }
     }
 
     @GetMapping("/get/{id}")

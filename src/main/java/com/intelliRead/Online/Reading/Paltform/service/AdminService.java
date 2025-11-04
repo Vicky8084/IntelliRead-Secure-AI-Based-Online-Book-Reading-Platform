@@ -14,41 +14,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class AdminService {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private EmailService emailService;
-
-    @Value("${admin.registration.secret:ADMIN_SECRET_2024}")
-    private String adminSecretKey;
-
     public String registerAdmin(AdminRequestDTO dto) {
-        if (userRepository.existsByEmail(dto.getEmail())) {
-            throw new UserAlreadyExistException("Admin user already exists!");
-        }
-
-        // Validate admin secret key
-        if (!adminSecretKey.equals(dto.getAdminSecretKey())) {
-            return "❌ Invalid admin secret key!";
-        }
-
-        User admin = new User();
-        admin.setName(dto.getName());
-        admin.setEmail(dto.getEmail());
-        admin.setPasswordHash(passwordEncoder.encode(dto.getPasswordHash()));
-        admin.setRole(Role.ROLE);
-        admin.setStatus(Status.ACTIVE);
-        admin.setPreferredLanguage(dto.getPreferredLanguage());
-
-        userRepository.save(admin);
-
-        // Send admin welcome email
-        emailService.sendAdminWelcomeEmail(admin);
-
-        return "✅ Admin registered successfully!";
+        // ✅ COMPLETELY DISABLED: Admin registration through API
+        throw new UnsupportedOperationException(
+                "❌ Admin registration is disabled. Admins can only be created during application startup."
+        );
     }
 }

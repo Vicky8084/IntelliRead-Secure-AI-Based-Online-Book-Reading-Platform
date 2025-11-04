@@ -75,7 +75,7 @@ public class OnlineReadingPaltformApplication implements CommandLineRunner {
 
                 // Update existing admin to ensure correct role and status
                 User existingAdmin = userRepository.findUserByEmail(admin.getEmail()).get();
-                existingAdmin.setRole(Role.ROLE);
+                existingAdmin.setRole(Role.ADMIN);
                 existingAdmin.setStatus(Status.ACTIVE);
                 userRepository.save(existingAdmin);
                 System.out.println("   🔄 Updated existing admin role to ROLE and status to ACTIVE");
@@ -104,7 +104,7 @@ public class OnlineReadingPaltformApplication implements CommandLineRunner {
         admin.setPasswordHash(passwordEncoder.encode(password));
 
         // ✅ Use ROLE as the role for admin accounts (since that's what's available)
-        admin.setRole(Role.ROLE);
+        admin.setRole(Role.ADMIN);
         admin.setStatus(Status.ACTIVE);
         admin.setPreferredLanguage("English");
         return admin;

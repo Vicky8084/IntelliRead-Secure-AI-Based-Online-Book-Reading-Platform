@@ -37,13 +37,13 @@ public class LoginService {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
-    // List of fixed admin emails
+    // Fixed admin emails - yeh 5 hi ADMIN hain, koi aur nahi ban sakta
     private final List<String> ADMIN_EMAILS = Arrays.asList(
             "noreply.intelliread@gmail.com",
-            "admin1.intelliread@gmail.com",
-            "admin2.intelliread@gmail.com",
-            "admin3.intelliread@gmail.com",
-            "admin4.intelliread@gmail.com"
+            "mrvg4545@gmail.com",
+            "aaarti.rcc090@gmail.com",
+            "jarpit0103@gmail.com",
+            "rwi.sharma001@gmail.com"
     );
 
     public LoginResponseDTO login(LoginRequestDto loginRequestDTO) {
@@ -60,14 +60,16 @@ public class LoginService {
             System.out.println("✅ User found: " + user.getEmail() + " | Role: " + user.getRole() + " | Status: " + user.getStatus());
 
             // Check if account is active
+            // ✅ ADD this status check in login() method
             if (user.getStatus() != Status.ACTIVE) {
                 System.out.println("❌ Account not active: " + user.getEmail());
                 return new LoginResponseDTO(null, null, null, 0, null,
-                        user.getRole() == Role.ROLE ?
-                                "Publisher account pending admin approval" : "Account is inactive", false, null);
+                        user.getRole() == Role.PUBLISHER ?
+                                "Publisher account pending admin approval" : "Account is inactive",
+                        false, null);
             }
 
-            // ✅ Check if user is admin
+            // ✅ Check if user is admin by EMAIL (yeh fixed hai)
             boolean isAdmin = ADMIN_EMAILS.contains(loginRequestDTO.getEmail().toLowerCase());
 
             if (isAdmin) {
@@ -97,7 +99,7 @@ public class LoginService {
             final String jwtToken = jwtUtil.generateToken(loginRequestDTO.getEmail());
             System.out.println("✅ JWT Token generated for: " + loginRequestDTO.getEmail());
 
-            // ✅ CRITICAL FIX: Determine redirect URL
+            // ✅ CRITICAL FIX: Determine redirect URL based on ROLE and EMAIL
             String redirectUrl = determineRedirectUrl(user.getEmail(), user.getRole());
             System.out.println("🔄 Redirect URL determined: " + redirectUrl);
 
@@ -119,8 +121,9 @@ public class LoginService {
         }
     }
 
+    // In determineRedirectUrl method - REPLACE ENTIRE METHOD:
     private String determineRedirectUrl(String email, Role role) {
-        // ✅ CRITICAL FIX: Check admin by EMAIL first, then by role
+        // ✅ CRITICAL FIX: Check admin by EMAIL first (fixed 5 emails), then by role
         boolean isAdmin = ADMIN_EMAILS.contains(email.toLowerCase());
 
         System.out.println("🎯 Redirect Decision:");
@@ -128,19 +131,19 @@ public class LoginService {
         System.out.println("   🔑 Role: " + role);
         System.out.println("   👑 Is Admin: " + isAdmin);
 
-        // ✅ ADMIN USERS: Always go to admin dashboard
+        // ✅ ADMIN USERS: Always go to admin dashboard (fixed 5 emails)
         if (isAdmin) {
             System.out.println("   🚀 Redirecting to ADMIN DASHBOARD");
             return "/admin-dashboard";
         }
 
-        // ✅ REGULAR PUBLISHERS: Go to publisher dashboard
-        if (role == Role.ROLE) {
+        // ✅ PUBLISHERS: Go to publisher dashboard
+        if (role == Role.PUBLISHER) {
             System.out.println("   📚 Redirecting to PUBLISHER DASHBOARD");
             return "/publisher-dashboard";
         }
 
-        // ✅ REGULAR USERS: Go to bookscreen
+        // ✅ USERS: Go to bookscreen
         if (role == Role.USER) {
             System.out.println("   👤 Redirecting to BOOKSCREEN");
             return "/bookscreen";
@@ -149,9 +152,5 @@ public class LoginService {
         // ✅ DEFAULT: Home page
         System.out.println("   🏠 Redirecting to HOME");
         return "/Home";
-    }
-
-    private boolean isAdminUser(String email) {
-        return ADMIN_EMAILS.contains(email.toLowerCase());
     }
 }

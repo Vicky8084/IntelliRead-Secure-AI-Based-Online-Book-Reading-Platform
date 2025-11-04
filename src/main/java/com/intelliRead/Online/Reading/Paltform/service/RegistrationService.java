@@ -37,7 +37,7 @@ public class RegistrationService {
         user.setPreferredLanguage(userRequestDTO.getPreferredLanguage());
 
         // Set status based on role
-        if (userRequestDTO.getRole() == Role.ROLE) {
+        if (userRequestDTO.getRole() == Role.PUBLISHER) {
             user.setStatus(Status.INACTIVE); // Admin needs approval
         } else {
             user.setStatus(Status.ACTIVE); // User is active immediately
@@ -46,7 +46,7 @@ public class RegistrationService {
         User savedUser = userRepository.save(user);
 
         // Send appropriate email
-        if (userRequestDTO.getRole() == Role.ROLE) {
+        if (userRequestDTO.getRole() == Role.PUBLISHER) {
             emailService.sendAdminApprovalRequest(savedUser);
             return new RegistrationResponseDTO(
                     savedUser.getId(),

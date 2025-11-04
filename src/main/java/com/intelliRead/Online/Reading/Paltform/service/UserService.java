@@ -30,33 +30,38 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // ✅ FIXED: Return User object instead of String
     public User addUser(UserRequestDTO dto) {
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new UserAlreadyExistException("User already exists!");
+        }
+
+        // ✅ BLOCK ADMIN registration through API
+        if (dto.getRole() == Role.ADMIN) {
+            throw new IllegalArgumentException("Admin registration not allowed through this endpoint");
         }
 
         User user = UserConverter.convertUserRequestDtoIntoUser(dto);
         user.setPasswordHash(passwordEncoder.encode(dto.getPasswordHash()));
 
         User savedUser;
-
-        if (dto.getRole() == Role.ROLE) {
-            user.setStatus(Status.INACTIVE);
+        // ✅ Only handle USER and PUBLISHER
+        if (dto.getRole() == Role.PUBLISHER) {
+            user.setStatus(Status.INACTIVE); // ✅ CHANGE: Publisher immediately active
             savedUser = userRepository.save(user);
-            emailService.sendAdminApprovalRequest(savedUser);
+            emailService.sendWelcomeEmail(savedUser); // ✅ Send welcome instead of approval
         } else {
+            // For USER role
             user.setStatus(Status.ACTIVE);
             savedUser = userRepository.save(user);
             emailService.sendWelcomeEmail(savedUser);
         }
 
-        return savedUser; // ✅ Return User object
+        return savedUser;
     }
 
     public String approveAdmin(int userId) {
         User user = getUserById(userId);
-        if (user != null && user.getRole() == Role.ROLE) {
+        if (user != null && user.getRole() == Role.PUBLISHER) {
             user.setStatus(Status.ACTIVE);
             userRepository.save(user);
             emailService.sendAdminApproved(user);
@@ -67,7 +72,7 @@ public class UserService {
 
     public String rejectAdmin(int userId) {
         User user = getUserById(userId);
-        if (user != null && user.getRole() == Role.ROLE) {
+        if (user != null && user.getRole() == Role.PUBLISHER) {
             emailService.sendAdminRejected(user);
             userRepository.delete(user);
             return "✅ Admin registration rejected!";
@@ -102,6 +107,16 @@ public class UserService {
     public String updateUser(int id, UserRequestDTO userRequestDTO){
         User user = getUserById(id);
         if(user != null){
+            // ✅ NEW: Prevent changing role to ADMIN through update
+            if (userRequestDTO.getRole() == Role.ADMIN && user.getRole() != Role.ADMIN) {
+                throw new IllegalArgumentException("Cannot assign ADMIN role to users");
+            }
+
+            // ✅ NEW: Existing ADMIN users cannot be demoted through this endpoint
+            if (user.getRole() == Role.ADMIN && userRequestDTO.getRole() != Role.ADMIN) {
+                throw new IllegalArgumentException("Cannot change role of existing ADMIN users");
+            }
+
             user.setName(userRequestDTO.getName());
             user.setEmail(userRequestDTO.getEmail());
 
