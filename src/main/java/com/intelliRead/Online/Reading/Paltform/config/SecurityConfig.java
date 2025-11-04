@@ -59,7 +59,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/Home", "/login", "/Login", "/signup", "/SignUp",
                                 "/forgotpassword", "/ForgotPass", "/admin-login",
                                 "/auth/**", "/user/apies/save", "/password/**",
-                                "/admin/approve/**", "/admin/reject/**").permitAll()
+                                "/admin/approve/**", "/admin/reject/**","/bookscreen", "/publisher-dashboard", "/admin-dashboard").permitAll()
 
                         // ✅ STATIC RESOURCES
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/uploads/**").permitAll()

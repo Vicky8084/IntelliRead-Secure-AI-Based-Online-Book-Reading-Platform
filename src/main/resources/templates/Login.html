@@ -215,7 +215,8 @@
 
             // Use setTimeout to ensure alert is shown before redirect
             setTimeout(() => {
-              window.location.href = redirectUrl;
+              let redirectUrl = data.redirectUrl;
+               window.location.href = redirectUrl;
             }, 100);
 
           } else {
