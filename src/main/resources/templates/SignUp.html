@@ -38,8 +38,8 @@
                         <span>USER</span>
                     </div>
 
-                    <div class="role-option" data-role="ROLE">
-                        <input type="radio" id="role-admin" name="role" value="ROLE" required>
+                    <div class="role-option" data-role="PUBLISHER">
+                        <<input type="radio" id="role-admin" name="role" value="PUBLISHER" required>
                         <i class='bx bx-book-alt role-icon'></i>
                         <span>PUBLISHER</span>
                     </div>
@@ -208,15 +208,21 @@
       setLoadingState(true);
 
       try {
-        const selectedRole = document.querySelector('input[name="role"]:checked').value;
+        // ✅ CHANGE THIS CODE:
+const selectedRole = document.querySelector('input[name="role"]:checked').value;
 
-        const userData = {
-          name: fullName.value.trim(),
-          email: email.value.trim(),
-          passwordHash: password.value,
-          role: selectedRole,
-          preferredLanguage: "English"
-        };
+// ADD DEBUGGING:
+console.log('Selected Role Value:', selectedRole);
+
+const userData = {
+  name: fullName.value.trim(),
+  email: email.value.trim(),
+  passwordHash: password.value,
+  role: selectedRole,  // ✅ YAHAN PROBLEM HO SAKTI HAI
+  preferredLanguage: "English"
+};
+
+console.log('Final User Data:', userData); // ✅ CHECK kya bhej raha hai
 
         console.log('🔄 Sending signup request to:', `${BACKEND_BASE_URL}/auth/register`);
         console.log('User Data:', userData);
