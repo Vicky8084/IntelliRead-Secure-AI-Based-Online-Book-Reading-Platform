@@ -154,12 +154,12 @@
 
           if (data.success) {
             // ✅ Role check - FIXED: Compare with backend role
-            if (data.role !== selectedRole) {
-              alert(`❌ Please login as ${selectedRole === 'USER' ? 'User' : 'Publisher'} using the correct credentials.`);
-              loginBtn.textContent = originalText;
-              loginBtn.disabled = false;
-              return;
-            }
+            if (selectedRole === 'PUBLISHER' && data.role !== 'PUBLISHER') {
+  alert(`❌ Please login as Publisher using the correct credentials.`);
+  loginBtn.textContent = originalText;
+  loginBtn.disabled = false;
+  return;
+}
 
             // ✅ Store user data in localStorage
             const userData = {

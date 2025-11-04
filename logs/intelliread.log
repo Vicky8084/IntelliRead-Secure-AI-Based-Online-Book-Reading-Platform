@@ -4027,3 +4027,790 @@ Caused by: java.lang.IllegalArgumentException: ROLE_PUBLISHER should not start w
         users u1_0 
     where
         u1_0.email=?
+2025-11-05 01:55:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:55:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:55:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:56:04 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:56:04 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:56:04 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:56:12 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:56:12 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:56:12 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:56:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:56:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:56:24 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:56:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:56:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:56:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:56:44 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:56:44 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:56:44 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:57:40 - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    limit
+        ?
+2025-11-05 01:58:38 - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    limit
+        ?
+2025-11-05 01:58:48 - 
+    select
+        u1_0.id 
+    from
+        users u1_0 
+    where
+        u1_0.email=? 
+    limit
+        ?
+2025-11-05 01:58:48 - 
+    insert 
+    into
+        users
+        (created_date, email, name, password_hash, preferred_language, role, status) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-05 01:59:06 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-05 01:59:06 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-05 01:59:06 - 
+    update
+        users 
+    set
+        created_date=?,
+        email=?,
+        name=?,
+        password_hash=?,
+        preferred_language=?,
+        role=?,
+        status=? 
+    where
+        id=?
+2025-11-05 01:59:38 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:59:38 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 01:59:38 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:00:22 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:00:22 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:00:22 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:02:06 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-05 02:02:06 - Graceful shutdown complete
+2025-11-05 02:02:06 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-05 02:02:06 - HikariPool-1 - Shutdown initiated...
+2025-11-05 02:02:06 - HikariPool-1 - Shutdown completed.
+2025-11-05 02:02:08 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 66197 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-05 02:02:08 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-05 02:02:08 - No active profile set, falling back to 1 default profile: "default"
+2025-11-05 02:02:09 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-05 02:02:09 - Finished Spring Data repository scanning in 34 ms. Found 6 JPA repository interfaces.
+2025-11-05 02:02:09 - Tomcat initialized with port 8035 (http)
+2025-11-05 02:02:09 - Starting service [Tomcat]
+2025-11-05 02:02:09 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-05 02:02:09 - Initializing Spring embedded WebApplicationContext
+2025-11-05 02:02:09 - Root WebApplicationContext: initialization completed in 891 ms
+2025-11-05 02:02:09 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-05 02:02:09 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-05 02:02:09 - HHH000026: Second-level cache disabled
+2025-11-05 02:02:09 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-05 02:02:09 - HikariPool-1 - Starting...
+2025-11-05 02:02:09 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@38e00b47
+2025-11-05 02:02:09 - HikariPool-1 - Start completed.
+2025-11-05 02:02:09 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-05 02:02:09 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-05 02:02:09 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-05 02:02:10 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-05 02:02:10 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-05 02:02:10 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-05 02:02:10 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-05 02:02:10 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-05 02:02:13 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-05 02:02:13 - Started OnlineReadingPaltformApplication in 5.556 seconds (process running for 5.861)
+2025-11-05 02:02:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:02:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:02:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-05 02:02:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:02:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:02:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-05 02:02:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:02:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:02:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-05 02:02:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:02:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:02:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-05 02:02:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:02:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:02:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-05 02:02:14 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-05 02:02:18 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-05 02:02:18 - Initializing Servlet 'dispatcherServlet'
+2025-11-05 02:02:18 - Completed initialization in 1 ms
+2025-11-05 02:02:22 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:02:22 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:02:22 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:02:39 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:02:39 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:02:39 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:02:47 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-05 02:02:47 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
