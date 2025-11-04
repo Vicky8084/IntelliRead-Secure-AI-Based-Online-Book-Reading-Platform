@@ -69,11 +69,11 @@ public class PageController {
         return "ForgotPass";
     }
 
-    // ✅ Admin Login Page (Separate route) - DIRECT ACCESS
-    @GetMapping("/admin-login")
-    public String adminLoginPage() {
-        return "Admin"; // This opens Admin.html page
-    }
+//    // ✅ Admin Login Page (Separate route) - DIRECT ACCESS
+//    @GetMapping("/admin-login")
+//    public String adminLoginPage() {
+//        return "Admin"; // This opens Admin.html page
+//    }
 
     // ✅ Admin Dashboard - With Simple Session Check
     @GetMapping("/admin-dashboard")
@@ -252,5 +252,19 @@ public class PageController {
     @GetMapping("/publisher")
     public String publisher() {
         return "publisher-dashboard";
+    }
+
+    @GetMapping("/admin-login")
+    public String adminLoginPage(HttpServletRequest request) {
+        System.out.println("🔐 Admin Login Page Accessed");
+
+        // ✅ Check if already logged in as admin
+        String userEmail = (String) request.getSession().getAttribute("userEmail");
+        if (userEmail != null && ADMIN_EMAILS.contains(userEmail.toLowerCase())) {
+            System.out.println("✅ Already logged in as admin, redirecting to dashboard");
+            return "redirect:/admin-dashboard";
+        }
+
+        return "Admin"; // This opens Admin.html page
     }
 }

@@ -39,7 +39,7 @@
                     </div>
 
                     <div class="role-option" data-role="PUBLISHER">
-                        <<input type="radio" id="role-admin" name="role" value="PUBLISHER" required>
+                        <input type="radio" id="role-publisher" name="role" value="PUBLISHER" required>
                         <i class='bx bx-book-alt role-icon'></i>
                         <span>PUBLISHER</span>
                     </div>
@@ -208,21 +208,31 @@
       setLoadingState(true);
 
       try {
-        // ✅ CHANGE THIS CODE:
-const selectedRole = document.querySelector('input[name="role"]:checked').value;
+        const selectedRole = document.querySelector('input[name="role"]:checked').value;
 
-// ADD DEBUGGING:
-console.log('Selected Role Value:', selectedRole);
+        // ✅ STRICT ADMIN EMAIL CHECK - ADD THIS
+        const adminEmails = [
+            'noreply.intelliread@gmail.com',
+            'mrvg4545@gmail.com',
+            'aaarti.rcc090@gmail.com',
+            'jarpit0103@gmail.com',
+            'rwi.sharma001@gmail.com'
+        ];
 
-const userData = {
-  name: fullName.value.trim(),
-  email: email.value.trim(),
-  passwordHash: password.value,
-  role: selectedRole,  // ✅ YAHAN PROBLEM HO SAKTI HAI
-  preferredLanguage: "English"
-};
+        // Block admin registration through signup form
+        if (adminEmails.includes(email.value.trim().toLowerCase())) {
+            alert('❌ Admin accounts cannot be created through signup. Please use admin login.');
+            setLoadingState(false);
+            return;
+        }
 
-console.log('Final User Data:', userData); // ✅ CHECK kya bhej raha hai
+        const userData = {
+          name: fullName.value.trim(),
+          email: email.value.trim(),
+          passwordHash: password.value,
+          role: selectedRole,
+          preferredLanguage: "English"
+        };
 
         console.log('🔄 Sending signup request to:', `${BACKEND_BASE_URL}/auth/register`);
         console.log('User Data:', userData);
@@ -242,7 +252,7 @@ console.log('Final User Data:', userData); // ✅ CHECK kya bhej raha hai
           console.log('📨 Server response:', result);
 
           if (result.success) {
-            if (selectedRole === 'ROLE') {
+            if (selectedRole === 'PUBLISHER') {
               alert('✅ Publisher account created successfully! Please wait for Admin approval.');
             } else {
               alert('✅ User account created successfully! Redirecting to login...');
