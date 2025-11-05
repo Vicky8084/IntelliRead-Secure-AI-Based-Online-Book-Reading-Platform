@@ -1044,12 +1044,10 @@
     </div>
 </div>
 
+
 </script>
 
-<!-- ✅ YEH NAYA SCRIPT ADD KARDO -->
-</script>
-
-<!-- ✅ YEH NAYA SCRIPT ADD KARDO -->
+<!-- ✅ YEH PURA NAYA SCRIPT ADD KARDO -->
 <script>
     // =============================================
     // ✅ GLOBAL VARIABLES & CONFIGURATION
@@ -1060,7 +1058,7 @@
     let currentPublisher = null;
 
     // =============================================
-    // ✅ BASIC UI FUNCTIONS (Pehle define karo)
+    // ✅ BASIC UI FUNCTIONS
     // =============================================
 
     function showSection(sectionId) {
@@ -1155,7 +1153,6 @@
     // =============================================
 
     function initializeDashboard() {
-        // Check authentication first
         const token = getAuthToken();
         if (!token) {
             showToast('Please login to access publisher dashboard', 'error');
@@ -1203,7 +1200,6 @@
             });
         }
 
-        // Modal close handlers
         window.addEventListener('click', function(event) {
             const bookModal = document.getElementById('bookModal');
             const editModal = document.getElementById('editBookModal');
@@ -1217,7 +1213,6 @@
             }
         });
 
-        // Close buttons for modals
         const closeButtons = document.querySelectorAll('.close');
         closeButtons.forEach(btn => {
             btn.addEventListener('click', function() {
@@ -1240,7 +1235,7 @@
             { id: 3, categoryName: "Technology" },
             { id: 4, categoryName: "Science" },
             { id: 5, categoryName: "Business" },
-            { id: 6, categoryName: "Business" },
+            { id: 6, categoryName: "Biography" },
             { id: 7, categoryName: "History" },
             { id: 8, categoryName: "Children" }
         ];
@@ -1271,16 +1266,18 @@
     function populateCategoryDropdowns() {
         const addBookCategory = document.getElementById('bookCategory');
         const filterCategory = document.getElementById('categoryFilter');
-        const editBookCategory = document.getElementById('editBookCategory');
 
-        // Clear existing options except first one
-        [addBookCategory, filterCategory].forEach(select => {
-            if (select) {
-                while (select.options.length > 1) {
-                    select.remove(1);
-                }
+        if (addBookCategory) {
+            while (addBookCategory.options.length > 1) {
+                addBookCategory.remove(1);
             }
-        });
+        }
+
+        if (filterCategory) {
+            while (filterCategory.options.length > 1) {
+                filterCategory.remove(1);
+            }
+        }
 
         categories.forEach(category => {
             const option1 = new Option(category.categoryName, category.id);
@@ -1317,17 +1314,25 @@
 
     function updateDashboardStats() {
         const totalBooks = books.length;
-        const publishedBooks = books.filter(book => book.status === 'published' || book.status === 'PUBLISHED').length;
-        const draftBooks = books.filter(book => book.status === 'draft' || book.status === 'DRAFT' || !book.status).length;
-        const uniqueCategories = new Set(books.map(book =>
-            book.category ? book.category.id : null
-        ).filter(id => id !== null)).size;
+        const publishedBooks = books.filter(book =>
+            book.status === 'published' || book.status === 'PUBLISHED' || book.status === 'APPROVED'
+        ).length;
+        const draftBooks = books.filter(book =>
+            book.status === 'draft' || book.status === 'DRAFT' || book.status === 'PENDING' || !book.status
+        ).length;
+
+        const uniqueCategories = new Set();
+        books.forEach(book => {
+            if (book.category && book.category.id) {
+                uniqueCategories.add(book.category.id);
+            }
+        });
 
         updateStats({
             totalBooks,
             publishedBooks,
             draftBooks,
-            totalCategories: uniqueCategories
+            totalCategories: uniqueCategories.size
         });
     }
 
@@ -1350,6 +1355,137 @@
             draftBooks: 0,
             totalCategories: 0
         });
+    }
+
+    // =============================================
+    // ✅ RECENT BOOKS & CATEGORY DISTRIBUTION
+    // =============================================
+
+    function loadRecentBooks() {
+        const recentBooksContainer = document.getElementById('recentBooks');
+        if (!recentBooksContainer) return;
+
+        const sortedBooks = [...books].sort((a, b) => {
+            const dateA = new Date(a.uploadedAt || 0);
+            const dateB = new Date(b.uploadedAt || 0);
+            return dateB - dateA;
+        });
+
+        const recentBooks = sortedBooks.slice(0, 5);
+        let html = '';
+
+        if (recentBooks.length > 0) {
+            recentBooks.forEach(book => {
+                const statusClass = `status-${book.status || 'draft'}`;
+                const date = book.uploadedAt ?
+                    new Date(book.uploadedAt).toLocaleDateString() :
+                    'Recent';
+
+                const categoryName = book.category ?
+                    (book.category.categoryName || book.category) :
+                    'Uncategorized';
+
+                html += `
+                    <div class="activity-item">
+                        <div class="activity-info">
+                            <h4>${book.title || 'Untitled'}</h4>
+                            <div style="display: flex; gap: 8px; margin-top: 5px;">
+                                <span class="status-badge ${statusClass}">${book.status || 'draft'}</span>
+                                <span class="category-badge">${categoryName}</span>
+                            </div>
+                        </div>
+                        <span class="activity-time">${date}</span>
+                    </div>
+                `;
+            });
+        } else {
+            html = `
+                <div class="activity-item">
+                    <div class="activity-info">
+                        <h4>No books found</h4>
+                        <p>Add your first book to see it here!</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        recentBooksContainer.innerHTML = html;
+    }
+
+    function updateCategoryDistribution() {
+        const distributionContainer = document.getElementById('categoryDistribution');
+        if (!distributionContainer) return;
+
+        const categoryCounts = {};
+
+        books.forEach(book => {
+            let categoryName = 'Uncategorized';
+
+            if (book.category) {
+                categoryName = book.category.categoryName ||
+                              (typeof book.category === 'string' ? book.category : 'Uncategorized');
+            }
+
+            categoryCounts[categoryName] = (categoryCounts[categoryName] || 0) + 1;
+        });
+
+        let html = '';
+
+        if (Object.keys(categoryCounts).length > 0) {
+            Object.entries(categoryCounts).forEach(([category, count]) => {
+                const percentage = books.length > 0 ? ((count / books.length) * 100).toFixed(1) : 0;
+
+                html += `
+                    <div class="activity-item">
+                        <div class="activity-info">
+                            <h4>${category}</h4>
+                            <span class="category-badge">${count} books</span>
+                        </div>
+                        <span class="activity-time">${percentage}%</span>
+                    </div>
+                `;
+            });
+        } else {
+            html = `
+                <div class="activity-item">
+                    <div class="activity-info">
+                        <h4>No categories found</h4>
+                        <p>Books will appear here once categories are assigned</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        distributionContainer.innerHTML = html;
+    }
+
+    function updateCategoryFilters() {
+        const quickFilters = document.getElementById('quickCategoryFilters');
+        if (!quickFilters) return;
+
+        let html = '<div class="category-filter-btn active" onclick="filterBooksByCategory(\'\')">All</div>';
+
+        const categoryCounts = {};
+        books.forEach(book => {
+            if (book.category && book.category.id) {
+                categoryCounts[book.category.id] = (categoryCounts[book.category.id] || 0) + 1;
+            }
+        });
+
+        const topCategories = Object.entries(categoryCounts)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 5);
+
+        topCategories.forEach(([categoryId, count]) => {
+            const category = categories.find(c => c.id == categoryId);
+            if (category) {
+                html += `<div class="category-filter-btn" onclick="filterBooksByCategory(${categoryId})">
+                          ${category.categoryName} (${count})
+                         </div>`;
+            }
+        });
+
+        quickFilters.innerHTML = html;
     }
 
     // =============================================
@@ -1450,11 +1586,15 @@
             const pdfFile = document.getElementById('bookFile').files[0];
             const coverFile = document.getElementById('coverUpload').files[0];
 
+            if (!pdfFile) {
+                throw new Error('Please select a book file (PDF/TXT)');
+            }
+
             if (pdfFile) {
                 formData.append('file', pdfFile);
             }
             if (coverFile) {
-                formData.append('cover', coverFile); // ✅ FIXED: 'cover' use karo
+                formData.append('cover', coverFile);
             }
 
             const response = await authFetch(`${API_BASE_URL}/book/apies/upload`, {
@@ -1527,75 +1667,191 @@
         modal.style.display = 'block';
     }
 
-    // =============================================
-    // ✅ PAGE INITIALIZATION
-    // =============================================
-
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM loaded - initializing dashboard...');
-        initializeDashboard();
-        setupEventListeners();
-        loadPublisherData();
-        loadCategories();
-        loadBooksFromAPI();
-
-        // ✅ FAVICON FIX - Agar favicon.ico nahi hai to error prevent karo
-        const favicon = document.querySelector('link[rel="icon"]');
-        if (!favicon) {
-            const newFavicon = document.createElement('link');
-            newFavicon.rel = 'icon';
-            newFavicon.href = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>';
-            document.head.appendChild(newFavicon);
+    function editBook(bookId) {
+        const book = books.find(b => b.id === bookId);
+        if (!book) {
+            showToast('Book not found', 'error');
+            return;
         }
-    });
+
+        const modal = document.getElementById('editBookModal');
+        const editForm = document.getElementById('editBookForm');
+
+        if (!modal || !editForm) return;
+
+        let categoryOptions = '';
+        categories.forEach(category => {
+            const selected = book.category && book.category.id === category.id ? 'selected' : '';
+            categoryOptions += `<option value="${category.id}" ${selected}>${category.categoryName}</option>`;
+        });
+
+        editForm.innerHTML = `
+            <input type="hidden" id="editBookId" value="${book.id}">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editBookTitle">Book Title *</label>
+                    <input type="text" id="editBookTitle" value="${book.title || ''}" required>
+                </div>
+                <div class="form-group">
+                    <label for="editBookAuthor">Author *</label>
+                    <input type="text" id="editBookAuthor" value="${book.author || ''}" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="editBookCategory">Category</label>
+                    <select id="editBookCategory">
+                        <option value="">Select Category</option>
+                        ${categoryOptions}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editBookLanguage">Language *</label>
+                    <input type="text" id="editBookLanguage" value="${book.language || 'English'}" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="editBookDescription">Description</label>
+                <textarea id="editBookDescription" rows="4">${book.description || ''}</textarea>
+            </div>
+
+            <div class="action-buttons">
+                <button type="button" class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+                <button type="submit" class="btn-primary">Update Book</button>
+            </div>
+        `;
+
+        modal.style.display = 'block';
+
+        editForm.onsubmit = async function(e) {
+            e.preventDefault();
+            await updateBook(bookId);
+        };
+    }
+
+    async function updateBook(bookId) {
+        try {
+            const bookData = {
+                title: document.getElementById('editBookTitle').value,
+                author: document.getElementById('editBookAuthor').value,
+                description: document.getElementById('editBookDescription').value,
+                language: document.getElementById('editBookLanguage').value,
+                userId: parseInt(document.getElementById('userId').value),
+                categoryId: document.getElementById('editBookCategory').value || null
+            };
+
+            const response = await authFetch(`${API_BASE_URL}/book/apies/Update/${bookId}`, {
+                method: 'PUT',
+                body: JSON.stringify(bookData)
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || 'Failed to update book');
+            }
+
+            const result = await response.text();
+            showToast('Book updated successfully!', 'success');
+
+            await loadBooksFromAPI();
+            closeEditModal();
+
+        } catch (error) {
+            console.error('Error updating book:', error);
+            showToast('Failed to update book: ' + error.message, 'error');
+        }
+    }
+
+    async function deleteBook(bookId) {
+        if (confirm('Are you sure you want to delete this book? This action cannot be undone.')) {
+            try {
+                const response = await authFetch(`${API_BASE_URL}/book/apies/delete/${bookId}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Failed to delete book');
+                }
+
+                const result = await response.text();
+                showToast('Book deleted successfully!', 'success');
+
+                await loadBooksFromAPI();
+
+            } catch (error) {
+                console.error('Error deleting book:', error);
+                showToast('Failed to delete book: ' + error.message, 'error');
+            }
+        }
+    }
 
     // =============================================
-    // ✅ TEMPORARY PLACEHOLDER FUNCTIONS
+    // ✅ SEARCH & FILTER FUNCTIONS
     // =============================================
-
-    // Yeh functions temporarily define karte hain taki error na aaye
-    function filterBooksByCategory(categoryId) {
-        // Implementation baad mein karenge
-        console.log('Filter by category:', categoryId);
-    }
-
-    function updateCategoryFilters() {
-        // Implementation baad mein karenge
-    }
-
-    function updateCategoryDistribution() {
-        // Implementation baad mein karenge
-    }
-
-    function loadRecentBooks() {
-        // Implementation baad mein karenge
-    }
 
     function searchBooks() {
-        // Implementation baad mein karenge
+        const searchTerm = document.getElementById('bookSearch').value.toLowerCase();
+        if (!searchTerm.trim()) {
+            renderBooksTable();
+            return;
+        }
+
+        const filteredBooks = books.filter(book =>
+            (book.title && book.title.toLowerCase().includes(searchTerm)) ||
+            (book.author && book.author.toLowerCase().includes(searchTerm)) ||
+            (book.category &&
+             ((book.category.categoryName && book.category.categoryName.toLowerCase().includes(searchTerm)) ||
+              (typeof book.category === 'string' && book.category.toLowerCase().includes(searchTerm))))
+        );
+
+        renderBooksTable(filteredBooks);
     }
 
     function filterBooks() {
-        // Implementation baad mein karenge
-    }
+        const status = document.getElementById('statusFilter').value;
+        const category = document.getElementById('categoryFilter').value;
 
-    function editBook(bookId) {
-        // Implementation baad mein karenge
-        console.log('Edit book:', bookId);
-        showToast('Edit functionality coming soon', 'info');
-    }
+        let filteredBooks = books;
 
-    function updateBook(bookId) {
-        // Implementation baad mein karenge
-        console.log('Update book:', bookId);
-    }
-
-    function deleteBook(bookId) {
-        if (confirm('Are you sure you want to delete this book? This action cannot be undone.')) {
-            console.log('Delete book:', bookId);
-            showToast('Delete functionality coming soon', 'info');
+        if (status) {
+            filteredBooks = filteredBooks.filter(book =>
+                book.status && book.status.toLowerCase() === status.toLowerCase()
+            );
         }
+
+        if (category) {
+            filteredBooks = filteredBooks.filter(book =>
+                book.category && book.category.id == category
+            );
+        }
+
+        renderBooksTable(filteredBooks);
     }
+
+    function filterBooksByCategory(categoryId) {
+        document.querySelectorAll('.category-filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        event.target.classList.add('active');
+
+        if (!categoryId) {
+            renderBooksTable();
+            return;
+        }
+
+        const filteredBooks = books.filter(book =>
+            book.category && book.category.id == categoryId
+        );
+        renderBooksTable(filteredBooks);
+    }
+
+    // =============================================
+    // ✅ PROFILE MANAGEMENT
+    // =============================================
 
     function updateProfile() {
         const name = document.getElementById('publisherNameInput').value;
@@ -1608,6 +1864,28 @@
 
         showToast('Profile updated successfully!', 'success');
     }
+
+    // =============================================
+    // ✅ PAGE INITIALIZATION
+    // =============================================
+
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM loaded - initializing dashboard...');
+        initializeDashboard();
+        setupEventListeners();
+        loadPublisherData();
+        loadCategories();
+        loadBooksFromAPI();
+
+        // ✅ FAVICON FIX
+        const favicon = document.querySelector('link[rel="icon"]');
+        if (!favicon) {
+            const newFavicon = document.createElement('link');
+            newFavicon.rel = 'icon';
+            newFavicon.href = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>';
+            document.head.appendChild(newFavicon);
+        }
+    });
 </script>
 </body>
 </html>
