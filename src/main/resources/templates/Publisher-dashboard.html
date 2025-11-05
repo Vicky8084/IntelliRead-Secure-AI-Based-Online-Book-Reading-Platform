@@ -902,7 +902,7 @@
             </div>
 
             <form id="addBookForm">
-                <input type="hidden" id="userId" value="1">
+                <input type="hidden" id="userId">
 
                 <div class="form-row">
                     <div class="form-group">
@@ -1058,6 +1058,64 @@
     let currentPublisher = null;
 
     // =============================================
+    // ✅ USER AUTHENTICATION & ID MANAGEMENT
+    // =============================================
+
+    function getCurrentUserId() {
+        // ✅ URL parameters se user ID lo
+        const urlParams = new URLSearchParams(window.location.search);
+        let userId = urlParams.get('userId');
+
+        if (userId) {
+            console.log('User ID from URL:', userId);
+            localStorage.setItem('currentUserId', userId);
+            return parseInt(userId);
+        }
+
+        // ✅ Ya localStorage se lo
+        userId = localStorage.getItem('currentUserId');
+        if (userId) {
+            console.log('User ID from localStorage:', userId);
+            return parseInt(userId);
+        }
+
+        // ✅ Fallback - prompt se lo (development ke liye)
+        userId = prompt('Please enter your User ID:', '1');
+        if (userId) {
+            localStorage.setItem('currentUserId', userId);
+            return parseInt(userId);
+        }
+
+        return 1; // Final fallback
+    }
+
+    function initializeUser() {
+        const userId = getCurrentUserId();
+        const userIdInput = document.getElementById('userId');
+        if (userIdInput) {
+            userIdInput.value = userId;
+        }
+        console.log('Current user ID:', userId);
+        return userId;
+    }
+
+    function initializeUserFromURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('userId');
+
+        if (userId) {
+            const userIdInput = document.getElementById('userId');
+            if (userIdInput) {
+                userIdInput.value = userId;
+            }
+            localStorage.setItem('currentUserId', userId);
+            console.log('User ID set from URL:', userId);
+            return true;
+        }
+        return false;
+    }
+
+    // =============================================
     // ✅ BASIC UI FUNCTIONS
     // =============================================
 
@@ -1093,6 +1151,7 @@
     function logout() {
         if (confirm('Are you sure you want to logout?')) {
             localStorage.removeItem('currentPublisher');
+            localStorage.removeItem('currentUserId');
             localStorage.removeItem('jwtToken');
             sessionStorage.removeItem('jwtToken');
             window.location.href = '/login';
@@ -1165,8 +1224,15 @@
         const savedPublisher = localStorage.getItem('currentPublisher');
         if (savedPublisher) {
             currentPublisher = JSON.parse(savedPublisher);
-            document.getElementById('publisherName').textContent = `Welcome, ${currentPublisher.name}`;
-            document.getElementById('publisherNameInput').value = currentPublisher.name;
+            const publisherNameElem = document.getElementById('publisherName');
+            const publisherNameInput = document.getElementById('publisherNameInput');
+
+            if (publisherNameElem) {
+                publisherNameElem.textContent = `Welcome, ${currentPublisher.name}`;
+            }
+            if (publisherNameInput) {
+                publisherNameInput.value = currentPublisher.name;
+            }
         }
     }
 
@@ -1184,8 +1250,10 @@
                     const reader = new FileReader();
                     reader.onload = function(e) {
                         const preview = document.getElementById('coverPreview');
-                        preview.src = e.target.result;
-                        preview.style.display = 'block';
+                        if (preview) {
+                            preview.src = e.target.result;
+                            preview.style.display = 'block';
+                        }
                     }
                     reader.readAsDataURL(this.files[0]);
                 }
@@ -1204,11 +1272,11 @@
             const bookModal = document.getElementById('bookModal');
             const editModal = document.getElementById('editBookModal');
 
-            if (event.target == bookModal) {
+            if (event.target == bookModal && bookModal) {
                 bookModal.style.display = 'none';
             }
 
-            if (event.target == editModal) {
+            if (event.target == editModal && editModal) {
                 editModal.style.display = 'none';
             }
         });
@@ -1294,21 +1362,30 @@
 
     async function loadBooksFromAPI() {
         try {
-            const userId = document.getElementById('userId').value;
+            const userIdInput = document.getElementById('userId');
+            const userId = userIdInput ? userIdInput.value : getCurrentUserId();
+
+            console.log('Loading books for user ID:', userId);
+
             const response = await authFetch(`${API_BASE_URL}/book/apies/user/${userId}`);
 
             if (response.ok) {
                 const booksData = await response.json();
                 books = booksData;
+                console.log(`Loaded ${books.length} books for user ${userId}`);
+
                 renderBooksTable();
                 updateDashboardStats();
                 loadRecentBooks();
                 updateCategoryDistribution();
                 updateCategoryFilters();
+            } else {
+                console.error('Failed to load books, status:', response.status);
+                showToast('Failed to load books', 'error');
             }
         } catch (error) {
             console.error('Error loading books:', error);
-            showToast('Failed to load books', 'error');
+            showToast('Failed to load books: ' + error.message, 'error');
         }
     }
 
@@ -1569,17 +1646,20 @@
             if (spinner) spinner.style.display = 'inline-block';
 
             const formData = new FormData();
+            const userIdInput = document.getElementById('userId');
+            const userId = userIdInput ? userIdInput.value : getCurrentUserId();
+
             const bookData = {
                 title: document.getElementById('bookTitle').value,
                 author: document.getElementById('bookAuthor').value,
                 description: document.getElementById('bookDescription').value,
                 language: document.getElementById('bookLanguage').value,
-                userId: parseInt(document.getElementById('userId').value),
+                userId: parseInt(userId),
                 categoryId: document.getElementById('bookCategory').value || null,
                 status: "PENDING"
             };
 
-            console.log('Book data to send:', bookData);
+            console.log('Book data to send for user', userId, ':', bookData);
 
             formData.append('book', JSON.stringify(bookData));
 
@@ -1733,12 +1813,15 @@
 
     async function updateBook(bookId) {
         try {
+            const userIdInput = document.getElementById('userId');
+            const userId = userIdInput ? userIdInput.value : getCurrentUserId();
+
             const bookData = {
                 title: document.getElementById('editBookTitle').value,
                 author: document.getElementById('editBookAuthor').value,
                 description: document.getElementById('editBookDescription').value,
                 language: document.getElementById('editBookLanguage').value,
-                userId: parseInt(document.getElementById('userId').value),
+                userId: parseInt(userId),
                 categoryId: document.getElementById('editBookCategory').value || null
             };
 
@@ -1855,7 +1938,11 @@
 
     function updateProfile() {
         const name = document.getElementById('publisherNameInput').value;
-        document.getElementById('publisherName').textContent = `Welcome, ${name}`;
+        const publisherNameElem = document.getElementById('publisherName');
+
+        if (publisherNameElem) {
+            publisherNameElem.textContent = `Welcome, ${name}`;
+        }
 
         if (currentPublisher) {
             currentPublisher.name = name;
@@ -1871,6 +1958,12 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         console.log('DOM loaded - initializing dashboard...');
+
+        // ✅ Pehle URL se user ID try karo, fir fallback
+        if (!initializeUserFromURL()) {
+            initializeUser();
+        }
+
         initializeDashboard();
         setupEventListeners();
         loadPublisherData();
@@ -1889,3 +1982,4 @@
 </script>
 </body>
 </html>
+
