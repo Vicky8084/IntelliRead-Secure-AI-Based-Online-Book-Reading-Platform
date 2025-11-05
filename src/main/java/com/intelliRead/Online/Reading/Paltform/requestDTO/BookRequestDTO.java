@@ -1,5 +1,6 @@
 package com.intelliRead.Online.Reading.Paltform.requestDTO;
 
+import com.intelliRead.Online.Reading.Paltform.enums.BookStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,5 +15,5 @@ public class BookRequestDTO {
     private String language;
     private int userId;
     private Integer categoryId; // ✅ ADDED: For category assignment
-    private String status = "draft";
+    private BookStatus status = BookStatus.PENDING;
 }

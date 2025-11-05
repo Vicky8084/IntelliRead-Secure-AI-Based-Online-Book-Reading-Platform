@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.intelliRead.Online.Reading.Paltform.enums.BookStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -63,7 +64,9 @@ public class Book {
     @Column
     private String fileName;
 
-    private String status = "draft";
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private BookStatus status = BookStatus.PENDING;
 
     // physical path (relative) to stored file (pdf or text)
     @Column

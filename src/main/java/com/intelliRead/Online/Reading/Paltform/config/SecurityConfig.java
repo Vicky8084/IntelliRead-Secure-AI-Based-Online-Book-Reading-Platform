@@ -55,26 +55,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
-                        // ✅ PUBLIC ENDPOINTS
-                        .requestMatchers("/", "/Home", "/login", "/Login", "/signup", "/SignUp",
-                                "/forgotpassword", "/ForgotPass", "/admin-login",
-                                "/auth/**", "/user/apies/save", "/password/**",
-                                "/admin/approve/**", "/admin/reject/**","/bookscreen", "/publisher-dashboard", "/admin-dashboard").permitAll()
-
-                        // ✅ STATIC RESOURCES
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/uploads/**").permitAll()
-
-                        // ✅ STRICT ROLE-BASED ACCESS
-                        .requestMatchers("/admin/**", "/admin-dashboard").hasRole("ADMIN")  // ONLY ADMIN
-
-                        .requestMatchers("/publisher-dashboard", "/publisher").hasRole("PUBLISHER")  // ONLY PUBLISHER
-
-                        .requestMatchers("/bookscreen", "/books").hasRole("USER")  // ONLY USER
-
-                        // ✅ OTHER APIS
-                        .requestMatchers("/user/apies/**").authenticated()
-
-                        .anyRequest().authenticated()
+                        // ✅ TEMPORARY FIX: Sare endpoints ko public kar do
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 

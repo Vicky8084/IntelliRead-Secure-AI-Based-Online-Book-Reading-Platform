@@ -10,7 +10,7 @@ public class BookConverter {
         book.setAuthor(bookRequestDTO.getAuthor());
         book.setDescription(bookRequestDTO.getDescription());
         book.setLanguage(bookRequestDTO.getLanguage());
-        // ✅ Category will be set in Service class using categoryId
+        book.setStatus(bookRequestDTO.getStatus());
         return book;
     }
 }

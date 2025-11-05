@@ -61,7 +61,7 @@ public class BookService {
 
         Book book = BookConverter.convertBookRequestDtoIntoBook(bookRequestDTO);
         book.setUser(user);
-
+        book.setStatus(bookRequestDTO.getStatus());
         // ✅ ADDED: Handle category assignment
         if (bookRequestDTO.getCategoryId() != null) {
             Category category = categoryRepository.findById(bookRequestDTO.getCategoryId()).orElse(null);
@@ -109,6 +109,7 @@ public class BookService {
 
         Book book = BookConverter.convertBookRequestDtoIntoBook(bookRequestDTO);
         book.setUser(user);
+        book.setStatus(bookRequestDTO.getStatus());
 
         // ✅ ADDED: Handle category assignment
         if (bookRequestDTO.getCategoryId() != null) {
@@ -233,6 +234,7 @@ public class BookService {
             book.setAuthor(bookRequestDTO.getAuthor());
             book.setDescription(bookRequestDTO.getDescription());
             book.setLanguage(bookRequestDTO.getLanguage());
+            book.setStatus(bookRequestDTO.getStatus());
 
             // ✅ ADDED: Update category if provided
             if (bookRequestDTO.getCategoryId() != null) {

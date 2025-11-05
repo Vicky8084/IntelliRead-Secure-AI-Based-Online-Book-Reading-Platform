@@ -1044,693 +1044,569 @@
     </div>
 </div>
 
+</script>
+
+<!-- ✅ YEH NAYA SCRIPT ADD KARDO -->
+</script>
+
+<!-- ✅ YEH NAYA SCRIPT ADD KARDO -->
 <script>
-    // Configuration
+    // =============================================
+    // ✅ GLOBAL VARIABLES & CONFIGURATION
+    // =============================================
     const API_BASE_URL = 'http://localhost:8035';
-
-    // Global variables
-    let currentPublisher = null;
-    let books = [];
     let categories = [];
+    let books = [];
+    let currentPublisher = null;
 
-    // Initialize the dashboard
-    document.addEventListener('DOMContentLoaded', function() {
-      initializeDashboard();
-      setupEventListeners();
-      loadPublisherData();
-      loadCategories();
-      loadBooksFromAPI();
-    });
+    // =============================================
+    // ✅ BASIC UI FUNCTIONS (Pehle define karo)
+    // =============================================
 
-    // Initialize dashboard
-    function initializeDashboard() {
-      setupSectionNavigation();
-
-      const savedPublisher = localStorage.getItem('currentPublisher');
-      if (savedPublisher) {
-        currentPublisher = JSON.parse(savedPublisher);
-        document.getElementById('publisherName').textContent = `Welcome, ${currentPublisher.name}`;
-        document.getElementById('publisherNameInput').value = currentPublisher.name;
-      }
-    }
-
-    // Set up event listeners
-    function setupEventListeners() {
-      const uploadArea = document.getElementById('uploadArea');
-      const coverUpload = document.getElementById('coverUpload');
-
-      uploadArea.addEventListener('click', () => {
-        coverUpload.click();
-      });
-
-      coverUpload.addEventListener('change', function(e) {
-        if (this.files && this.files[0]) {
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            const preview = document.getElementById('coverPreview');
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-          }
-          reader.readAsDataURL(this.files[0]);
-        }
-      });
-
-      document.getElementById('addBookForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        addNewBook();
-      });
-
-      window.addEventListener('click', function(event) {
-        const bookModal = document.getElementById('bookModal');
-        const editModal = document.getElementById('editBookModal');
-
-        if (event.target == bookModal) {
-          bookModal.style.display = 'none';
-        }
-
-        if (event.target == editModal) {
-          editModal.style.display = 'none';
-        }
-      });
-    }
-
-    // Load categories from backend
-    async function loadCategories() {
-      try {
-        const response = await fetch(`${API_BASE_URL}/category/apies/findAll`);
-        if (response.ok) {
-          const categoriesData = await response.json();
-          if (categoriesData.length > 0) {
-            categories = categoriesData;
-          } else {
-            // Agar backend empty array return kare toh default use karo
-            setDefaultCategories();
-          }
-          populateCategoryDropdowns();
-          updateCategoryFilters();
-        } else {
-          setDefaultCategories();
-        }
-      } catch (error) {
-        console.error('Error loading categories:', error);
-        setDefaultCategories();
-      }
-    }
-
-    // Set default categories if backend fails
-    function setDefaultCategories() {
-      categories = [
-        { id: 1, categoryName: "Fiction" },
-        { id: 2, categoryName: "Education" },
-        { id: 3, categoryName: "Technology" },
-        { id: 4, categoryName: "Science" },
-        { id: 5, categoryName: "Business" },
-        { id: 6, categoryName: "Biography" },
-        { id: 7, categoryName: "History" },
-        { id: 8, categoryName: "Children" }
-      ];
-      populateCategoryDropdowns();
-    }
-
-    // Populate category dropdowns in forms
-    function populateCategoryDropdowns() {
-      const addBookCategory = document.getElementById('bookCategory');
-      const filterCategory = document.getElementById('categoryFilter');
-
-      // Clear existing options except first one
-      while (addBookCategory.options.length > 1) {
-        addBookCategory.remove(1);
-      }
-      while (filterCategory.options.length > 1) {
-        filterCategory.remove(1);
-      }
-
-      categories.forEach(category => {
-        const option1 = new Option(category.categoryName, category.id);
-        const option2 = new Option(category.categoryName, category.id);
-
-        addBookCategory.add(option1);
-        filterCategory.add(option2);
-      });
-    }
-
-    // Update category filters in My Books section
-    function updateCategoryFilters() {
-      const quickFilters = document.getElementById('quickCategoryFilters');
-      let html = '<div class="category-filter-btn active" onclick="filterBooksByCategory(\'\')">All</div>';
-
-      // Get top 5 categories used in books
-      const categoryCounts = {};
-      books.forEach(book => {
-        if (book.category && book.category.id) {
-          categoryCounts[book.category.id] = (categoryCounts[book.category.id] || 0) + 1;
-        }
-      });
-
-      // Sort categories by count and take top 5
-      const topCategories = Object.entries(categoryCounts)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 5);
-
-      topCategories.forEach(([categoryId, count]) => {
-        const category = categories.find(c => c.id == categoryId);
-        if (category) {
-          html += `<div class="category-filter-btn" onclick="filterBooksByCategory(${categoryId})">
-                    ${category.categoryName} (${count})
-                   </div>`;
-        }
-      });
-
-      quickFilters.innerHTML = html;
-    }
-
-    // Filter books by category
-    function filterBooksByCategory(categoryId) {
-      // Update active state of filter buttons
-      document.querySelectorAll('.category-filter-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      event.target.classList.add('active');
-
-      if (!categoryId) {
-        renderBooksTable();
-        return;
-      }
-
-      const filteredBooks = books.filter(book =>
-        book.category && book.category.id == categoryId
-      );
-      renderBooksTable(filteredBooks);
-    }
-
-    // Load publisher data
-    function loadPublisherData() {
-      updateStats({
-        totalBooks: 0,
-        publishedBooks: 0,
-        draftBooks: 0,
-        totalCategories: 0
-      });
-    }
-
-    // Update stats cards
-    function updateStats(stats) {
-      document.getElementById('totalBooks').textContent = stats.totalBooks;
-      document.getElementById('publishedBooks').textContent = stats.publishedBooks;
-      document.getElementById('draftBooks').textContent = stats.draftBooks;
-      document.getElementById('totalCategories').textContent = stats.totalCategories;
-    }
-
-    // Load books from API
-    async function loadBooksFromAPI() {
-      try {
-        const userId = document.getElementById('userId').value;
-        const response = await fetch(`${API_BASE_URL}/book/apies/user/${userId}`);
-
-        if (response.ok) {
-          const booksData = await response.json();
-          books = booksData;
-          renderBooksTable();
-          updateDashboardStats();
-          loadRecentBooks();
-          updateCategoryDistribution();
-          updateCategoryFilters();
-        }
-      } catch (error) {
-        console.error('Error loading books:', error);
-      }
-    }
-
-    // Update dashboard stats from loaded books
-    function updateDashboardStats() {
-      const totalBooks = books.length;
-      const publishedBooks = books.filter(book => book.status === 'published').length;
-      const draftBooks = books.filter(book => book.status === 'draft' || !book.status).length;
-      const uniqueCategories = new Set(books.map(book =>
-        book.category ? book.category.id : null
-      ).filter(id => id !== null)).size;
-
-      updateStats({
-        totalBooks,
-        publishedBooks,
-        draftBooks,
-        totalCategories: uniqueCategories
-      });
-    }
-
-    // Update category distribution
-    function updateCategoryDistribution() {
-      const distributionContainer = document.getElementById('categoryDistribution');
-      const categoryCounts = {};
-
-      books.forEach(book => {
-        if (book.category && book.category.categoryName) {
-          const catName = book.category.categoryName;
-          categoryCounts[catName] = (categoryCounts[catName] || 0) + 1;
-        }
-      });
-
-      let html = '';
-      Object.entries(categoryCounts).forEach(([category, count]) => {
-        const percentage = ((count / books.length) * 100).toFixed(1);
-        html += `
-          <div class="activity-item">
-            <div class="activity-info">
-              <h4>${category}</h4>
-              <span class="category-badge">${count} books</span>
-            </div>
-            <span class="activity-time">${percentage}%</span>
-          </div>
-        `;
-      });
-
-      distributionContainer.innerHTML = html || '<p>No category data available</p>';
-    }
-
-    // Load recent books
-    function loadRecentBooks() {
-      const recentBooksContainer = document.getElementById('recentBooks');
-      const sortedBooks = [...books].sort((a, b) =>
-        new Date(b.uploadedAt || 0) - new Date(a.uploadedAt || 0)
-      );
-
-      const recentBooks = sortedBooks.slice(0, 3);
-      let html = '';
-
-      if (recentBooks.length > 0) {
-        recentBooks.forEach(book => {
-          const statusClass = `status-${book.status || 'draft'}`;
-          const date = book.uploadedAt ?
-            new Date(book.uploadedAt).toLocaleDateString() :
-            'Recent';
-
-          const categoryName = book.category ? book.category.categoryName : 'Uncategorized';
-
-          html += `
-            <div class="activity-item">
-              <div class="activity-info">
-                <h4>${book.title || 'Untitled'}</h4>
-                <div>
-                  <span class="status-badge ${statusClass}">${book.status || 'draft'}</span>
-                  <span class="category-badge">${categoryName}</span>
-                </div>
-              </div>
-              <span class="activity-time">${date}</span>
-            </div>
-          `;
-        });
-      } else {
-        html = '<p>No books found. Add your first book!</p>';
-      }
-
-      recentBooksContainer.innerHTML = html;
-    }
-
-    // Render books table - IMPROVED with category handling
-    function renderBooksTable(filteredBooks = null) {
-      const booksToRender = filteredBooks || books;
-      const tableBody = document.getElementById('bookTableBody');
-
-      if (!booksToRender || booksToRender.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">No books found</td></tr>';
-        return;
-      }
-
-      let html = '';
-      booksToRender.forEach(book => {
-        const statusClass = `status-${book.status || 'draft'}`;
-        const date = book.uploadedAt ?
-          new Date(book.uploadedAt).toLocaleDateString() :
-          new Date().toLocaleDateString();
-
-        // FIXED: Cover image handling
-        const coverUrl = book.coverImagePath ?
-          `${API_BASE_URL}/uploads/${book.coverImagePath}` :
-          generatePlaceholderSvg(book.title);
-
-        const categoryName = book.category ?
-          (book.category.categoryName || book.category) :
-          'Uncategorized';
-
-        html += `
-          <tr>
-            <td class="book-cover-cell">
-              <img src="${coverUrl}" alt="${book.title}"
-                   onerror="this.src='${generatePlaceholderSvg(book.title)}'">
-            </td>
-            <td>${book.title || 'Untitled'}</td>
-            <td>${book.author || 'Unknown Author'}</td>
-            <td><span class="category-badge">${categoryName}</span></td>
-            <td>${book.language || 'English'}</td>
-            <td><span class="status-badge ${statusClass}">${book.status || 'draft'}</span></td>
-            <td>${date}</td>
-            <td>
-              <div class="book-actions">
-                <button class="btn-primary btn-sm" onclick="viewBook(${book.id})">View</button>
-                <button class="btn-secondary btn-sm" onclick="editBook(${book.id})">Edit</button>
-                <button class="btn-danger btn-sm" onclick="deleteBook(${book.id})">Delete</button>
-              </div>
-            </td>
-          </tr>
-        `;
-      });
-
-      tableBody.innerHTML = html;
-    }
-
-    // Generate SVG placeholder for book covers
-    function generatePlaceholderSvg(title) {
-      const initials = title ? title.charAt(0).toUpperCase() : 'B';
-      const svg = `
-        <svg width="50" height="65" xmlns="http://www.w3.org/2000/svg">
-          <rect width="100%" height="100%" fill="#4a90e2"/>
-          <text x="50%" y="50%" font-family="Arial" font-size="20" fill="white"
-                text-anchor="middle" dy=".3em">${initials}</text>
-        </svg>
-      `;
-      return 'data:image/svg+xml;base64,' + btoa(svg);
-    }
-
-    // Search books
-    function searchBooks() {
-      const searchTerm = document.getElementById('bookSearch').value.toLowerCase();
-      const filteredBooks = books.filter(book =>
-        (book.title && book.title.toLowerCase().includes(searchTerm)) ||
-        (book.author && book.author.toLowerCase().includes(searchTerm)) ||
-        (book.category && book.category.categoryName && book.category.categoryName.toLowerCase().includes(searchTerm))
-      );
-      renderBooksTable(filteredBooks);
-    }
-
-    // Filter books by status and category
-    function filterBooks() {
-      const status = document.getElementById('statusFilter').value;
-      const category = document.getElementById('categoryFilter').value;
-
-      let filteredBooks = books;
-
-      if (status) {
-        filteredBooks = filteredBooks.filter(book => book.status === status);
-      }
-
-      if (category) {
-        filteredBooks = filteredBooks.filter(book =>
-          book.category && book.category.id == category
-        );
-      }
-
-      renderBooksTable(filteredBooks);
-    }
-
-    // Add new book - IMPROVED with category handling
-    async function addNewBook() {
-      const submitBtn = document.querySelector('#addBookForm button[type="submit"]');
-      const spinner = document.getElementById('submitSpinner');
-
-      try {
-        submitBtn.disabled = true;
-        spinner.style.display = 'inline-block';
-
-        const formData = new FormData();
-
-        const bookData = {
-          title: document.getElementById('bookTitle').value,
-          author: document.getElementById('bookAuthor').value,
-          description: document.getElementById('bookDescription').value,
-          language: document.getElementById('bookLanguage').value,
-          userId: parseInt(document.getElementById('userId').value),
-          categoryId: document.getElementById('bookCategory').value || null
-          // STATUS TEMPORARILY REMOVED - Backend mein nahi hai
-        };
-
-        console.log('Book data to send:', bookData);
-
-        formData.append('book', JSON.stringify(bookData));
-
-        const pdfFile = document.getElementById('bookFile').files[0];
-        const coverFile = document.getElementById('coverUpload').files[0];
-
-        if (pdfFile) {
-          formData.append('file', pdfFile);
-        }
-        if (coverFile) {
-          formData.append('coverImage', coverFile);
-        }
-
-        const response = await fetch(`${API_BASE_URL}/book/apies/upload`, {
-          method: 'POST',
-          body: formData
+    function showSection(sectionId) {
+        document.querySelectorAll('.section').forEach(section => {
+            section.classList.remove('active');
         });
 
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(errorText || `Upload failed with status: ${response.status}`);
-        }
-
-        const result = await response.text();
-        showToast('Book created successfully!', 'success');
-
-        document.getElementById('addBookForm').reset();
-        document.getElementById('coverPreview').style.display = 'none';
-
-        setTimeout(() => {
-          loadBooksFromAPI();
-          showSection('myBooks');
-        }, 1500);
-
-      } catch (error) {
-        console.error('Error creating book:', error);
-        showToast('Failed to create book: ' + error.message, 'error');
-      } finally {
-        submitBtn.disabled = false;
-        spinner.style.display = 'none';
-      }
-    }
-
-    // View book details
-    function viewBook(bookId) {
-      const book = books.find(b => b.id === bookId);
-      if (!book) return;
-
-      const modal = document.getElementById('bookModal');
-      const bookDetails = document.getElementById('bookDetails');
-
-      const coverUrl = book.coverImagePath ?
-        `${API_BASE_URL}/uploads/${book.coverImagePath}` :
-        generatePlaceholderSvg(book.title);
-
-      const date = new Date(book.uploadedAt).toLocaleDateString();
-      const categoryName = book.category ? book.category.categoryName : 'Uncategorized';
-
-      bookDetails.innerHTML = `
-        <div class="book-detail-view">
-          <div class="book-cover-large">
-            <img src="${coverUrl}" alt="${book.title}"
-                 onerror="this.src='${generatePlaceholderSvg(book.title)}'">
-          </div>
-          <div class="book-info">
-            <h3>${book.title}</h3>
-            <p><strong>Author:</strong> ${book.author}</p>
-            <p><strong>Category:</strong> <span class="category-badge">${categoryName}</span></p>
-            <p><strong>Language:</strong> ${book.language || 'English'}</p>
-            <p><strong>Status:</strong> <span class="status-badge status-${book.status || 'draft'}">${book.status || 'draft'}</span></p>
-            <p><strong>Date Added:</strong> ${date}</p>
-            <p><strong>Description:</strong> ${book.description || 'No description available.'}</p>
-            ${book.fileName ? `<p><strong>File:</strong> ${book.fileName}</p>` : ''}
-            ${book.fileSize ? `<p><strong>File Size:</strong> ${(book.fileSize / 1024 / 1024).toFixed(2)} MB</p>` : ''}
-          </div>
-        </div>
-      `;
-
-      modal.style.display = 'block';
-      modal.querySelector('.close').onclick = function() {
-        modal.style.display = 'none';
-      }
-    }
-
-    // Edit book - IMPROVED with category
-    function editBook(bookId) {
-      const book = books.find(b => b.id === bookId);
-      if (!book) return;
-
-      const modal = document.getElementById('editBookModal');
-      const editForm = document.getElementById('editBookForm');
-
-      // Build category options
-      let categoryOptions = '';
-      categories.forEach(category => {
-        const selected = book.category && book.category.id === category.id ? 'selected' : '';
-        categoryOptions += `<option value="${category.id}" ${selected}>${category.categoryName}</option>`;
-      });
-
-      editForm.innerHTML = `
-        <input type="hidden" id="editBookId" value="${book.id}">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="editBookTitle">Book Title *</label>
-            <input type="text" id="editBookTitle" value="${book.title}" required>
-          </div>
-          <div class="form-group">
-            <label for="editBookAuthor">Author *</label>
-            <input type="text" id="editBookAuthor" value="${book.author}" required>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="editBookCategory">Category</label>
-            <select id="editBookCategory">
-              <option value="">Select Category</option>
-              ${categoryOptions}
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="editBookLanguage">Language *</label>
-            <input type="text" id="editBookLanguage" value="${book.language || 'English'}" required>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="editBookDescription">Description</label>
-          <textarea id="editBookDescription">${book.description || ''}</textarea>
-        </div>
-
-        <div class="action-buttons">
-          <button type="button" class="btn-secondary" onclick="closeEditModal()">Cancel</button>
-          <button type="submit" class="btn-primary">Update Book</button>
-        </div>
-      `;
-
-      modal.style.display = 'block';
-
-      editForm.onsubmit = function(e) {
-        e.preventDefault();
-        updateBook(bookId);
-      };
-
-      modal.querySelector('.close').onclick = function() {
-        modal.style.display = 'none';
-      }
-    }
-
-    // Update book - IMPROVED with category
-    async function updateBook(bookId) {
-      try {
-        const bookData = {
-          title: document.getElementById('editBookTitle').value,
-          author: document.getElementById('editBookAuthor').value,
-          description: document.getElementById('editBookDescription').value,
-          language: document.getElementById('editBookLanguage').value,
-          userId: parseInt(document.getElementById('userId').value),
-          categoryId: document.getElementById('editBookCategory').value || null
-          // STATUS TEMPORARILY REMOVED - Backend mein nahi hai
-        };
-
-        const response = await fetch(`${API_BASE_URL}/book/apies/Update/${bookId}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(bookData)
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.classList.remove('active');
         });
 
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(errorText || 'Failed to update book');
+        document.getElementById(sectionId).classList.add('active');
+        const menuItem = document.querySelector(`.menu-item[onclick="showSection('${sectionId}')"]`);
+        if (menuItem) {
+            menuItem.classList.add('active');
         }
-
-        const result = await response.text();
-        showToast('Book updated successfully!', 'success');
-
-        await loadBooksFromAPI();
-        closeEditModal();
-
-      } catch (error) {
-        console.error('Error updating book:', error);
-        showToast('Failed to update book: ' + error.message, 'error');
-      }
     }
 
-    // Close edit modal
+    function showToast(message, type = 'success') {
+        const toast = document.getElementById('toast');
+        if (toast) {
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.style.display = 'block';
+
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+    }
+
+    function logout() {
+        if (confirm('Are you sure you want to logout?')) {
+            localStorage.removeItem('currentPublisher');
+            localStorage.removeItem('jwtToken');
+            sessionStorage.removeItem('jwtToken');
+            window.location.href = '/login';
+        }
+    }
+
     function closeEditModal() {
-      document.getElementById('editBookModal').style.display = 'none';
+        const editModal = document.getElementById('editBookModal');
+        if (editModal) {
+            editModal.style.display = 'none';
+        }
     }
 
-    // Delete book
-    async function deleteBook(bookId) {
-      if (confirm('Are you sure you want to delete this book? This action cannot be undone.')) {
+    // =============================================
+    // ✅ AUTHENTICATION FUNCTIONS
+    // =============================================
+
+    function getAuthToken() {
+        return localStorage.getItem('jwtToken') || sessionStorage.getItem('jwtToken');
+    }
+
+    async function authFetch(url, options = {}) {
+        const token = getAuthToken();
+
+        const headers = {
+            ...options.headers
+        };
+
+        if (!(options.body instanceof FormData) && !headers['Content-Type']) {
+            headers['Content-Type'] = 'application/json';
+        }
+
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
+
         try {
-          const response = await fetch(`${API_BASE_URL}/book/apies/delete/${bookId}`, {
-            method: 'DELETE'
-          });
+            const response = await fetch(url, {
+                ...options,
+                headers
+            });
 
-          if (!response.ok) {
-            const errorText = await response.text();
-            throw new Error(errorText || 'Failed to delete book');
-          }
+            if (response.status === 403) {
+                console.error('Access forbidden - check authentication');
+                showToast('Session expired. Please login again.', 'error');
+                throw new Error('Authentication failed');
+            }
 
-          const result = await response.text();
-          showToast('Book deleted successfully!', 'success');
+            return response;
+        } catch (error) {
+            console.error('Fetch error:', error);
+            throw error;
+        }
+    }
 
-          await loadBooksFromAPI();
+    // =============================================
+    // ✅ DASHBOARD INITIALIZATION
+    // =============================================
+
+    function initializeDashboard() {
+        // Check authentication first
+        const token = getAuthToken();
+        if (!token) {
+            showToast('Please login to access publisher dashboard', 'error');
+            setTimeout(() => {
+                window.location.href = '/login';
+            }, 2000);
+            return;
+        }
+
+        const savedPublisher = localStorage.getItem('currentPublisher');
+        if (savedPublisher) {
+            currentPublisher = JSON.parse(savedPublisher);
+            document.getElementById('publisherName').textContent = `Welcome, ${currentPublisher.name}`;
+            document.getElementById('publisherNameInput').value = currentPublisher.name;
+        }
+    }
+
+    function setupEventListeners() {
+        const uploadArea = document.getElementById('uploadArea');
+        const coverUpload = document.getElementById('coverUpload');
+
+        if (uploadArea && coverUpload) {
+            uploadArea.addEventListener('click', () => {
+                coverUpload.click();
+            });
+
+            coverUpload.addEventListener('change', function(e) {
+                if (this.files && this.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const preview = document.getElementById('coverPreview');
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+        }
+
+        const addBookForm = document.getElementById('addBookForm');
+        if (addBookForm) {
+            addBookForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                addNewBook();
+            });
+        }
+
+        // Modal close handlers
+        window.addEventListener('click', function(event) {
+            const bookModal = document.getElementById('bookModal');
+            const editModal = document.getElementById('editBookModal');
+
+            if (event.target == bookModal) {
+                bookModal.style.display = 'none';
+            }
+
+            if (event.target == editModal) {
+                editModal.style.display = 'none';
+            }
+        });
+
+        // Close buttons for modals
+        const closeButtons = document.querySelectorAll('.close');
+        closeButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const modal = this.closest('.modal');
+                if (modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    }
+
+    // =============================================
+    // ✅ CATEGORY MANAGEMENT
+    // =============================================
+
+    function setDefaultCategories() {
+        categories = [
+            { id: 1, categoryName: "Fiction" },
+            { id: 2, categoryName: "Education" },
+            { id: 3, categoryName: "Technology" },
+            { id: 4, categoryName: "Science" },
+            { id: 5, categoryName: "Business" },
+            { id: 6, categoryName: "Business" },
+            { id: 7, categoryName: "History" },
+            { id: 8, categoryName: "Children" }
+        ];
+        populateCategoryDropdowns();
+    }
+
+    async function loadCategories() {
+        try {
+            const response = await authFetch(`${API_BASE_URL}/category/apies/findAll`);
+            if (response.ok) {
+                const categoriesData = await response.json();
+                if (categoriesData.length > 0) {
+                    categories = categoriesData;
+                } else {
+                    setDefaultCategories();
+                }
+                populateCategoryDropdowns();
+                updateCategoryFilters();
+            } else {
+                setDefaultCategories();
+            }
+        } catch (error) {
+            console.error('Error loading categories:', error);
+            setDefaultCategories();
+        }
+    }
+
+    function populateCategoryDropdowns() {
+        const addBookCategory = document.getElementById('bookCategory');
+        const filterCategory = document.getElementById('categoryFilter');
+        const editBookCategory = document.getElementById('editBookCategory');
+
+        // Clear existing options except first one
+        [addBookCategory, filterCategory].forEach(select => {
+            if (select) {
+                while (select.options.length > 1) {
+                    select.remove(1);
+                }
+            }
+        });
+
+        categories.forEach(category => {
+            const option1 = new Option(category.categoryName, category.id);
+            const option2 = new Option(category.categoryName, category.id);
+
+            if (addBookCategory) addBookCategory.add(option1);
+            if (filterCategory) filterCategory.add(option2);
+        });
+    }
+
+    // =============================================
+    // ✅ BOOK MANAGEMENT FUNCTIONS
+    // =============================================
+
+    async function loadBooksFromAPI() {
+        try {
+            const userId = document.getElementById('userId').value;
+            const response = await authFetch(`${API_BASE_URL}/book/apies/user/${userId}`);
+
+            if (response.ok) {
+                const booksData = await response.json();
+                books = booksData;
+                renderBooksTable();
+                updateDashboardStats();
+                loadRecentBooks();
+                updateCategoryDistribution();
+                updateCategoryFilters();
+            }
+        } catch (error) {
+            console.error('Error loading books:', error);
+            showToast('Failed to load books', 'error');
+        }
+    }
+
+    function updateDashboardStats() {
+        const totalBooks = books.length;
+        const publishedBooks = books.filter(book => book.status === 'published' || book.status === 'PUBLISHED').length;
+        const draftBooks = books.filter(book => book.status === 'draft' || book.status === 'DRAFT' || !book.status).length;
+        const uniqueCategories = new Set(books.map(book =>
+            book.category ? book.category.id : null
+        ).filter(id => id !== null)).size;
+
+        updateStats({
+            totalBooks,
+            publishedBooks,
+            draftBooks,
+            totalCategories: uniqueCategories
+        });
+    }
+
+    function updateStats(stats) {
+        const totalBooksElem = document.getElementById('totalBooks');
+        const publishedBooksElem = document.getElementById('publishedBooks');
+        const draftBooksElem = document.getElementById('draftBooks');
+        const totalCategoriesElem = document.getElementById('totalCategories');
+
+        if (totalBooksElem) totalBooksElem.textContent = stats.totalBooks;
+        if (publishedBooksElem) publishedBooksElem.textContent = stats.publishedBooks;
+        if (draftBooksElem) draftBooksElem.textContent = stats.draftBooks;
+        if (totalCategoriesElem) totalCategoriesElem.textContent = stats.totalCategories;
+    }
+
+    function loadPublisherData() {
+        updateStats({
+            totalBooks: 0,
+            publishedBooks: 0,
+            draftBooks: 0,
+            totalCategories: 0
+        });
+    }
+
+    // =============================================
+    // ✅ BOOK TABLE & DISPLAY FUNCTIONS
+    // =============================================
+
+    function renderBooksTable(filteredBooks = null) {
+        const booksToRender = filteredBooks || books;
+        const tableBody = document.getElementById('bookTableBody');
+
+        if (!tableBody) return;
+
+        if (!booksToRender || booksToRender.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">No books found</td></tr>';
+            return;
+        }
+
+        let html = '';
+        booksToRender.forEach(book => {
+            const statusClass = `status-${book.status || 'draft'}`;
+            const date = book.uploadedAt ?
+                new Date(book.uploadedAt).toLocaleDateString() :
+                new Date().toLocaleDateString();
+
+            const coverUrl = book.coverImagePath ?
+                `${API_BASE_URL}/uploads/${book.coverImagePath}` :
+                generatePlaceholderSvg(book.title);
+
+            const categoryName = book.category ?
+                (book.category.categoryName || book.category) :
+                'Uncategorized';
+
+            html += `
+                <tr>
+                    <td class="book-cover-cell">
+                        <img src="${coverUrl}" alt="${book.title}"
+                             onerror="this.src='${generatePlaceholderSvg(book.title)}'">
+                    </td>
+                    <td>${book.title || 'Untitled'}</td>
+                    <td>${book.author || 'Unknown Author'}</td>
+                    <td><span class="category-badge">${categoryName}</span></td>
+                    <td>${book.language || 'English'}</td>
+                    <td><span class="status-badge ${statusClass}">${book.status || 'draft'}</span></td>
+                    <td>${date}</td>
+                    <td>
+                        <div class="book-actions">
+                            <button class="btn-primary btn-sm" onclick="viewBook(${book.id})">View</button>
+                            <button class="btn-secondary btn-sm" onclick="editBook(${book.id})">Edit</button>
+                            <button class="btn-danger btn-sm" onclick="deleteBook(${book.id})">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        });
+
+        tableBody.innerHTML = html;
+    }
+
+    function generatePlaceholderSvg(title) {
+        const initials = title ? title.charAt(0).toUpperCase() : 'B';
+        const svg = `
+            <svg width="50" height="65" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100%" height="100%" fill="#4a90e2"/>
+                <text x="50%" y="50%" font-family="Arial" font-size="20" fill="white"
+                      text-anchor="middle" dy=".3em">${initials}</text>
+            </svg>
+        `;
+        return 'data:image/svg+xml;base64,' + btoa(svg);
+    }
+
+    // =============================================
+    // ✅ BOOK CRUD OPERATIONS
+    // =============================================
+
+    async function addNewBook() {
+        const submitBtn = document.querySelector('#addBookForm button[type="submit"]');
+        const spinner = document.getElementById('submitSpinner');
+
+        try {
+            submitBtn.disabled = true;
+            if (spinner) spinner.style.display = 'inline-block';
+
+            const formData = new FormData();
+            const bookData = {
+                title: document.getElementById('bookTitle').value,
+                author: document.getElementById('bookAuthor').value,
+                description: document.getElementById('bookDescription').value,
+                language: document.getElementById('bookLanguage').value,
+                userId: parseInt(document.getElementById('userId').value),
+                categoryId: document.getElementById('bookCategory').value || null,
+                status: "PENDING"
+            };
+
+            console.log('Book data to send:', bookData);
+
+            formData.append('book', JSON.stringify(bookData));
+
+            const pdfFile = document.getElementById('bookFile').files[0];
+            const coverFile = document.getElementById('coverUpload').files[0];
+
+            if (pdfFile) {
+                formData.append('file', pdfFile);
+            }
+            if (coverFile) {
+                formData.append('cover', coverFile); // ✅ FIXED: 'cover' use karo
+            }
+
+            const response = await authFetch(`${API_BASE_URL}/book/apies/upload`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(errorText || `Upload failed with status: ${response.status}`);
+            }
+
+            const result = await response.text();
+            showToast('Book created successfully!', 'success');
+
+            document.getElementById('addBookForm').reset();
+            const coverPreview = document.getElementById('coverPreview');
+            if (coverPreview) coverPreview.style.display = 'none';
+
+            setTimeout(() => {
+                loadBooksFromAPI();
+                showSection('myBooks');
+            }, 1500);
 
         } catch (error) {
-          console.error('Error deleting book:', error);
-          showToast('Failed to delete book: ' + error.message, 'error');
+            console.error('Error creating book:', error);
+            showToast('Failed to create book: ' + error.message, 'error');
+        } finally {
+            submitBtn.disabled = false;
+            if (spinner) spinner.style.display = 'none';
         }
-      }
     }
 
-    // Update profile
+    function viewBook(bookId) {
+        const book = books.find(b => b.id === bookId);
+        if (!book) return;
+
+        const modal = document.getElementById('bookModal');
+        const bookDetails = document.getElementById('bookDetails');
+
+        if (!modal || !bookDetails) return;
+
+        const coverUrl = book.coverImagePath ?
+            `${API_BASE_URL}/uploads/${book.coverImagePath}` :
+            generatePlaceholderSvg(book.title);
+
+        const date = new Date(book.uploadedAt).toLocaleDateString();
+        const categoryName = book.category ? book.category.categoryName : 'Uncategorized';
+
+        bookDetails.innerHTML = `
+            <div class="book-detail-view">
+                <div class="book-cover-large">
+                    <img src="${coverUrl}" alt="${book.title}"
+                         onerror="this.src='${generatePlaceholderSvg(book.title)}'">
+                </div>
+                <div class="book-info">
+                    <h3>${book.title}</h3>
+                    <p><strong>Author:</strong> ${book.author}</p>
+                    <p><strong>Category:</strong> <span class="category-badge">${categoryName}</span></p>
+                    <p><strong>Language:</strong> ${book.language || 'English'}</p>
+                    <p><strong>Status:</strong> <span class="status-badge status-${book.status || 'draft'}">${book.status || 'draft'}</span></p>
+                    <p><strong>Date Added:</strong> ${date}</p>
+                    <p><strong>Description:</strong> ${book.description || 'No description available.'}</p>
+                    ${book.fileName ? `<p><strong>File:</strong> ${book.fileName}</p>` : ''}
+                    ${book.fileSize ? `<p><strong>File Size:</strong> ${(book.fileSize / 1024 / 1024).toFixed(2)} MB</p>` : ''}
+                </div>
+            </div>
+        `;
+
+        modal.style.display = 'block';
+    }
+
+    // =============================================
+    // ✅ PAGE INITIALIZATION
+    // =============================================
+
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM loaded - initializing dashboard...');
+        initializeDashboard();
+        setupEventListeners();
+        loadPublisherData();
+        loadCategories();
+        loadBooksFromAPI();
+
+        // ✅ FAVICON FIX - Agar favicon.ico nahi hai to error prevent karo
+        const favicon = document.querySelector('link[rel="icon"]');
+        if (!favicon) {
+            const newFavicon = document.createElement('link');
+            newFavicon.rel = 'icon';
+            newFavicon.href = 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>';
+            document.head.appendChild(newFavicon);
+        }
+    });
+
+    // =============================================
+    // ✅ TEMPORARY PLACEHOLDER FUNCTIONS
+    // =============================================
+
+    // Yeh functions temporarily define karte hain taki error na aaye
+    function filterBooksByCategory(categoryId) {
+        // Implementation baad mein karenge
+        console.log('Filter by category:', categoryId);
+    }
+
+    function updateCategoryFilters() {
+        // Implementation baad mein karenge
+    }
+
+    function updateCategoryDistribution() {
+        // Implementation baad mein karenge
+    }
+
+    function loadRecentBooks() {
+        // Implementation baad mein karenge
+    }
+
+    function searchBooks() {
+        // Implementation baad mein karenge
+    }
+
+    function filterBooks() {
+        // Implementation baad mein karenge
+    }
+
+    function editBook(bookId) {
+        // Implementation baad mein karenge
+        console.log('Edit book:', bookId);
+        showToast('Edit functionality coming soon', 'info');
+    }
+
+    function updateBook(bookId) {
+        // Implementation baad mein karenge
+        console.log('Update book:', bookId);
+    }
+
+    function deleteBook(bookId) {
+        if (confirm('Are you sure you want to delete this book? This action cannot be undone.')) {
+            console.log('Delete book:', bookId);
+            showToast('Delete functionality coming soon', 'info');
+        }
+    }
+
     function updateProfile() {
-      const name = document.getElementById('publisherNameInput').value;
-      document.getElementById('publisherName').textContent = `Welcome, ${name}`;
+        const name = document.getElementById('publisherNameInput').value;
+        document.getElementById('publisherName').textContent = `Welcome, ${name}`;
 
-      if (currentPublisher) {
-        currentPublisher.name = name;
-        localStorage.setItem('currentPublisher', JSON.stringify(currentPublisher));
-      }
+        if (currentPublisher) {
+            currentPublisher.name = name;
+            localStorage.setItem('currentPublisher', JSON.stringify(currentPublisher));
+        }
 
-      showToast('Profile updated successfully!', 'success');
-    }
-
-    // Show section
-    function showSection(sectionId) {
-      document.querySelectorAll('.section').forEach(section => {
-        section.classList.remove('active');
-      });
-
-      document.querySelectorAll('.menu-item').forEach(item => {
-        item.classList.remove('active');
-      });
-
-      document.getElementById(sectionId).classList.add('active');
-      document.querySelector(`.menu-item[onclick="showSection('${sectionId}')"]`).classList.add('active');
-    }
-
-    // Setup section navigation
-    function setupSectionNavigation() {
-      // Handled by onclick attributes
-    }
-
-    // Show toast notification
-    function showToast(message, type = 'success') {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.className = `toast ${type}`;
-      toast.style.display = 'block';
-
-      setTimeout(() => {
-        toast.style.display = 'none';
-      }, 3000);
-    }
-
-    // Logout function
-    function logout() {
-      if (confirm('Are you sure you want to logout?')) {
-        localStorage.removeItem('currentPublisher');
-        window.location.href = '/login';
-      }
+        showToast('Profile updated successfully!', 'success');
     }
 </script>
 </body>
