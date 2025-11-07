@@ -42,7 +42,7 @@ public class Book {
     private LocalDateTime uploadedAt;
 
     // Category relationship - EAGER banao
-    @JsonBackReference("category-books")
+    @JsonIgnoreProperties({"books", "subCategories"})
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;

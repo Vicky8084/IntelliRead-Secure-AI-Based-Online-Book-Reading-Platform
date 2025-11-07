@@ -282,6 +282,6 @@ public class BookService {
 
     // ✅ KEEP: Get books by specific publisher
     public List<Book> findBooksByUserId(int userId) {
-        return bookRepository.findByUser_Id(userId);
+        return bookRepository.findBooksByUserIdWithCategory(userId);
     }
 }

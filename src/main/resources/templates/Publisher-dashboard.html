@@ -179,6 +179,10 @@
           border-left: 4px solid #17a2b8;
         }
 
+        .stat-card.danger {
+          border-left: 4px solid #dc3545;
+        }
+
         .stat-icon {
           width: 50px;
           height: 50px;
@@ -207,6 +211,11 @@
         .stat-card.info .stat-icon {
           background: #e1f5fe;
           color: #17a2b8;
+        }
+
+        .stat-card.danger .stat-icon {
+          background: #ffe6e6;
+          color: #dc3545;
         }
 
         .stat-info h3 {
@@ -285,11 +294,13 @@
           overflow: hidden;
           box-shadow: 0 4px 6px rgba(0,0,0,0.05);
           margin-bottom: 20px;
+          overflow-x: auto;
         }
 
         table {
           width: 100%;
           border-collapse: collapse;
+          min-width: 800px;
         }
 
         th, td {
@@ -709,6 +720,262 @@
         .category-filter-btn:hover {
           background: #f8f9fa;
         }
+
+        /* Review specific styles */
+        .reviews-summary {
+          background: #f8f9fa;
+          padding: 15px;
+          border-radius: 8px;
+          margin-bottom: 20px;
+        }
+
+        .average-rating {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+        }
+
+        .rating-stars-large {
+          font-size: 24px;
+          color: #ffc107;
+        }
+
+        .rating-details {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .rating-details strong {
+          font-size: 1.5rem;
+          color: #333;
+        }
+
+        .review-count {
+          color: #666;
+          font-size: 0.9rem;
+        }
+
+        .no-reviews {
+          text-align: center;
+          padding: 30px;
+          color: #666;
+        }
+
+        .review-item {
+          background: white;
+          transition: all 0.3s ease;
+          border: 1px solid #eee;
+          padding: 15px;
+          margin: 10px 0;
+          border-radius: 8px;
+        }
+
+        .review-item:hover {
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          transform: translateY(-2px);
+        }
+
+        .review-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 10px;
+        }
+
+        .review-rating {
+          color: #ffc107;
+          font-size: 16px;
+        }
+
+        .review-date {
+          color: #666;
+          font-size: 0.9rem;
+        }
+
+        .review-text {
+          color: #333;
+          line-height: 1.5;
+        }
+
+        .rating-display {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .rating-value {
+          color: #666;
+          font-size: 0.9rem;
+        }
+
+        .review-count-badge {
+          background: #4a90e2;
+          color: white;
+          padding: 2px 8px;
+          border-radius: 12px;
+          font-size: 0.75rem;
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+          display: none;
+          background: none;
+          border: none;
+          font-size: 24px;
+          color: white;
+          cursor: pointer;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+          .admin-container {
+            flex-direction: column;
+          }
+
+          .sidebar {
+            width: 100%;
+            position: fixed;
+            top: 70px;
+            left: -100%;
+            height: calc(100vh - 70px);
+            z-index: 100;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+          }
+
+          .sidebar.active {
+            left: 0;
+          }
+
+          .main-content {
+            padding: 20px;
+            width: 100%;
+          }
+
+          .mobile-menu-btn {
+            display: block;
+          }
+
+          .book-detail-view {
+            flex-direction: column;
+            gap: 20px;
+          }
+
+          .book-cover-large {
+            align-self: center;
+          }
+
+          .modal-content {
+            width: 90%;
+            margin: 10% auto;
+            padding: 20px;
+          }
+
+          .analytics-grid,
+          .settings-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .chart-card,
+          .setting-card {
+            min-width: 0;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .header-content {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+          }
+
+          .admin-info {
+            justify-content: center;
+          }
+
+          .header-actions {
+            flex-direction: column;
+          }
+
+          .publisher-stats {
+            grid-template-columns: 1fr;
+          }
+
+          .form-row {
+            flex-direction: column;
+            gap: 15px;
+          }
+
+          .action-buttons {
+            flex-direction: column;
+          }
+
+          .book-actions {
+            flex-direction: column;
+            gap: 5px;
+          }
+
+          .category-filters {
+            justify-content: center;
+          }
+
+          .table-container {
+            border-radius: 5px;
+          }
+
+          table {
+            font-size: 0.9rem;
+          }
+
+          th, td {
+            padding: 10px 8px;
+          }
+
+          .average-rating {
+            flex-direction: column;
+            text-align: center;
+            gap: 10px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .header-left h1 {
+            font-size: 1.5rem;
+          }
+
+          .section-header h1 {
+            font-size: 1.5rem;
+          }
+
+          .main-content {
+            padding: 15px;
+          }
+
+          .stat-card {
+            padding: 15px;
+            flex-direction: column;
+            text-align: center;
+            gap: 10px;
+          }
+
+          .upload-area {
+            padding: 20px;
+          }
+
+          .upload-area i {
+            font-size: 36px;
+          }
+
+          .modal-content {
+            width: 95%;
+            padding: 15px;
+          }
+
+          .book-cover-large img {
+            width: 150px;
+            height: 210px;
+          }
+        }
     </style>
 </head>
 <body>
@@ -718,6 +985,9 @@
 <!-- Header -->
 <header class="admin-header">
     <div class="header-content">
+        <button class="mobile-menu-btn" onclick="toggleSidebar()">
+            <i class='bx bx-menu'></i>
+        </button>
         <div class="header-left">
             <h1>📚 Intelli-Read Publisher</h1>
         </div>
@@ -734,7 +1004,7 @@
 
 <div class="admin-container">
     <!-- Sidebar -->
-    <nav class="sidebar">
+    <nav class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <h2>Publisher Panel</h2>
         </div>
@@ -805,11 +1075,21 @@
 
                 <div class="stat-card info">
                     <div class="stat-icon">
-                        <i class='bx bx-bar-chart'></i>
+                        <i class='bx bx-star'></i>
                     </div>
                     <div class="stat-info">
-                        <h3 id="totalCategories">0</h3>
-                        <p>Categories Used</p>
+                        <h3 id="totalReviews">0</h3>
+                        <p>Total Reviews</p>
+                    </div>
+                </div>
+
+                <div class="stat-card danger">
+                    <div class="stat-icon">
+                        <i class='bx bx-trending-up'></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="averageRating">0</h3>
+                        <p>Avg. Rating</p>
                     </div>
                 </div>
             </div>
@@ -869,6 +1149,8 @@
                         <th>Title</th>
                         <th>Author</th>
                         <th>Category</th>
+                        <th>Reviews</th>
+                        <th>Rating</th>
                         <th>Language</th>
                         <th>Status</th>
                         <th>Date Added</th>
@@ -1053,13 +1335,13 @@
     let books = [];
     let currentPublisher = null;
     let currentUserId = null;
+    let allReviews = [];
 
     // =============================================
     // ✅ USER AUTHENTICATION & ID MANAGEMENT
     // =============================================
 
     function getCurrentUserId() {
-        // ✅ Pehle URL se check karo
         const urlParams = new URLSearchParams(window.location.search);
         let userId = urlParams.get('userId');
 
@@ -1070,7 +1352,6 @@
             return currentUserId;
         }
 
-        // ✅ Fir localStorage se check karo
         userId = localStorage.getItem('currentUserId');
         if (userId) {
             console.log('✅ User ID from localStorage:', userId);
@@ -1167,6 +1448,13 @@
         const editModal = document.getElementById('editBookModal');
         if (editModal) {
             editModal.style.display = 'none';
+        }
+    }
+
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+            sidebar.classList.toggle('active');
         }
     }
 
@@ -1298,40 +1586,46 @@
     }
 
     // =============================================
-    // ✅ CATEGORY MANAGEMENT
+    // ✅ CATEGORY MANAGEMENT FUNCTIONS - UPDATED
     // =============================================
 
     function setDefaultCategories() {
         categories = [
-            { id: 1, categoryName: "Fiction" },
-            { id: 2, categoryName: "Education" },
-            { id: 3, categoryName: "Technology" },
-            { id: 4, categoryName: "Science" },
-            { id: 5, categoryName: "Business" },
-            { id: 6, categoryName: "Biography" },
-            { id: 7, categoryName: "History" },
-            { id: 8, categoryName: "Children" }
+            { id: 1, categoryName: "FICTION", description: "Fiction books" },
+            { id: 2, categoryName: "NON_FICTION", description: "Non-fiction books" },
+            { id: 3, categoryName: "SCIENCE_FICTION", description: "Sci-Fi books" },
+            { id: 4, categoryName: "MYSTERY", description: "Mystery books" },
+            { id: 5, categoryName: "BIOGRAPHY", description: "Biography books" }
         ];
+        console.log('🔄 Using default categories:', categories.length);
         populateCategoryDropdowns();
     }
 
     async function loadCategories() {
         try {
+            console.log('🔄 Loading categories from API...');
             const response = await authFetch(`${API_BASE_URL}/category/apies/findAll`);
+
             if (response.ok) {
                 const categoriesData = await response.json();
-                if (categoriesData.length > 0) {
+                console.log('📥 Categories API Response:', categoriesData);
+
+                if (categoriesData && categoriesData.length > 0) {
                     categories = categoriesData;
+                    console.log('✅ Categories loaded successfully:', categories.length);
                 } else {
+                    console.log('⚠️ No categories found in API response, using defaults');
                     setDefaultCategories();
+                    return;
                 }
                 populateCategoryDropdowns();
                 updateCategoryFilters();
             } else {
+                console.error('❌ Categories API failed with status:', response.status);
                 setDefaultCategories();
             }
         } catch (error) {
-            console.error('Error loading categories:', error);
+            console.error('❌ Error loading categories:', error);
             setDefaultCategories();
         }
     }
@@ -1340,25 +1634,36 @@
         const addBookCategory = document.getElementById('bookCategory');
         const filterCategory = document.getElementById('categoryFilter');
 
+        console.log('🔄 Populating category dropdowns...');
+        console.log('Available categories:', categories);
+
+        // Clear and populate Book Category dropdown
         if (addBookCategory) {
             while (addBookCategory.options.length > 1) {
                 addBookCategory.remove(1);
             }
+
+            categories.forEach(category => {
+                const option = new Option(category.categoryName, category.id);
+                addBookCategory.add(option);
+            });
+
+            console.log('✅ Book category dropdown populated with', categories.length, 'categories');
         }
 
+        // Clear and populate Filter Category dropdown
         if (filterCategory) {
             while (filterCategory.options.length > 1) {
                 filterCategory.remove(1);
             }
+
+            categories.forEach(category => {
+                const option = new Option(category.categoryName, category.id);
+                filterCategory.add(option);
+            });
+
+            console.log('✅ Filter category dropdown populated');
         }
-
-        categories.forEach(category => {
-            const option1 = new Option(category.categoryName, category.id);
-            const option2 = new Option(category.categoryName, category.id);
-
-            if (addBookCategory) addBookCategory.add(option1);
-            if (filterCategory) filterCategory.add(option2);
-        });
     }
 
     // =============================================
@@ -1374,7 +1679,20 @@
             if (response.ok) {
                 const booksData = await response.json();
                 books = booksData;
-                console.log(`✅ Loaded ${books.length} books for user ${currentUserId}`);
+
+                // ✅ DEBUG: Check book categories
+                console.log('📥 Books loaded:', books.length);
+                books.forEach((book, index) => {
+                    console.log(`Book ${index + 1}:`, {
+                        title: book.title,
+                        category: book.category,
+                        categoryId: book.category ? book.category.id : 'No category',
+                        categoryName: book.category ? book.category.categoryName : 'No name'
+                    });
+                });
+
+                // Load reviews for all books
+                await loadAllReviews();
 
                 renderBooksTable();
                 updateDashboardStats();
@@ -1389,6 +1707,51 @@
             console.error('❌ Error loading books:', error);
             showToast('Failed to load books: ' + error.message, 'error');
         }
+    }
+
+    // =============================================
+    // ✅ REVIEW MANAGEMENT FUNCTIONS
+    // =============================================
+
+    async function loadAllReviews() {
+        try {
+            console.log('📝 Loading all reviews...');
+            allReviews = [];
+
+            // Load reviews for each book
+            for (const book of books) {
+                try {
+                    const response = await authFetch(`${API_BASE_URL}/review/apies/book/${book.id}`);
+                    if (response.ok) {
+                        const bookReviews = await response.json();
+                        allReviews.push(...bookReviews);
+                        console.log(`✅ Loaded ${bookReviews.length} reviews for book ${book.id}`);
+                    }
+                } catch (error) {
+                    console.error(`❌ Error loading reviews for book ${book.id}:`, error);
+                }
+            }
+
+            console.log(`✅ Total reviews loaded: ${allReviews.length}`);
+        } catch (error) {
+            console.error('❌ Error loading reviews:', error);
+        }
+    }
+
+    function getBookReviews(bookId) {
+        return allReviews.filter(review => review.bookId === bookId);
+    }
+
+    function calculateBookRatingStats(bookId) {
+        const bookReviews = getBookReviews(bookId);
+        const count = bookReviews.length;
+        const averageRating = count > 0 ?
+            bookReviews.reduce((sum, review) => sum + review.rating, 0) / count : 0;
+
+        return {
+            count,
+            averageRating: parseFloat(averageRating.toFixed(1))
+        };
     }
 
     function updateDashboardStats() {
@@ -1407,11 +1770,29 @@
             }
         });
 
+        // Calculate total reviews and average rating across all books
+        let totalReviews = 0;
+        let totalRating = 0;
+        let booksWithReviews = 0;
+
+        books.forEach(book => {
+            const stats = calculateBookRatingStats(book.id);
+            if (stats.count > 0) {
+                totalReviews += stats.count;
+                totalRating += stats.averageRating;
+                booksWithReviews++;
+            }
+        });
+
+        const averageRating = booksWithReviews > 0 ? (totalRating / booksWithReviews) : 0;
+
         updateStats({
             totalBooks,
             publishedBooks,
             draftBooks,
-            totalCategories: uniqueCategories.size
+            totalCategories: uniqueCategories.size,
+            totalReviews,
+            averageRating: parseFloat(averageRating.toFixed(1))
         });
     }
 
@@ -1420,11 +1801,15 @@
         const publishedBooksElem = document.getElementById('publishedBooks');
         const draftBooksElem = document.getElementById('draftBooks');
         const totalCategoriesElem = document.getElementById('totalCategories');
+        const totalReviewsElem = document.getElementById('totalReviews');
+        const averageRatingElem = document.getElementById('averageRating');
 
         if (totalBooksElem) totalBooksElem.textContent = stats.totalBooks;
         if (publishedBooksElem) publishedBooksElem.textContent = stats.publishedBooks;
         if (draftBooksElem) draftBooksElem.textContent = stats.draftBooks;
         if (totalCategoriesElem) totalCategoriesElem.textContent = stats.totalCategories;
+        if (totalReviewsElem) totalReviewsElem.textContent = stats.totalReviews;
+        if (averageRatingElem) averageRatingElem.textContent = stats.averageRating;
     }
 
     function loadPublisherData() {
@@ -1432,7 +1817,9 @@
             totalBooks: 0,
             publishedBooks: 0,
             draftBooks: 0,
-            totalCategories: 0
+            totalCategories: 0,
+            totalReviews: 0,
+            averageRating: 0
         });
     }
 
@@ -1464,6 +1851,9 @@
                     (book.category.categoryName || book.category) :
                     'Uncategorized';
 
+                // Get review stats for this book
+                const reviewStats = calculateBookRatingStats(book.id);
+
                 html += `
                     <div class="activity-item">
                         <div class="activity-info">
@@ -1471,6 +1861,13 @@
                             <div style="display: flex; gap: 8px; margin-top: 5px;">
                                 <span class="status-badge ${statusClass}">${book.status || 'draft'}</span>
                                 <span class="category-badge">${categoryName}</span>
+                                ${reviewStats.count > 0 ?
+                                    `<span class="rating-display">
+                                        <span class="review-rating">${generateStarRating(reviewStats.averageRating)}</span>
+                                        <span class="rating-value">(${reviewStats.averageRating})</span>
+                                    </span>` :
+                                    '<span style="color: #888; font-size: 0.8rem;">No reviews</span>'
+                                }
                             </div>
                         </div>
                         <span class="activity-time">${date}</span>
@@ -1570,7 +1967,6 @@
     // =============================================
     // ✅ BOOK TABLE & DISPLAY FUNCTIONS
     // =============================================
-
     function renderBooksTable(filteredBooks = null) {
         const booksToRender = filteredBooks || books;
         const tableBody = document.getElementById('bookTableBody');
@@ -1578,7 +1974,7 @@
         if (!tableBody) return;
 
         if (!booksToRender || booksToRender.length === 0) {
-            tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">No books found</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 20px;">No books found</td></tr>';
             return;
         }
 
@@ -1593,9 +1989,30 @@
                 `${API_BASE_URL}/uploads/${book.coverImagePath}` :
                 generatePlaceholderSvg(book.title);
 
-            const categoryName = book.category ?
-                (book.category.categoryName || book.category) :
-                'Uncategorized';
+            // ✅ IMPROVED CATEGORY HANDLING
+            let categoryName = 'Uncategorized';
+            let categoryId = null;
+
+            if (book.category) {
+                // Agar category object hai
+                categoryName = book.category.categoryName || 'Uncategorized';
+                categoryId = book.category.id;
+            } else if (book.categoryId) {
+                // Agar sirf categoryId hai
+                const category = categories.find(cat => cat.id === book.categoryId);
+                categoryName = category ? category.categoryName : `Category ${book.categoryId}`;
+                categoryId = book.categoryId;
+            }
+
+            // Get review stats for this book
+            const reviewStats = calculateBookRatingStats(book.id);
+
+            console.log(`📖 Book "${book.title}":`, {
+                categoryObject: book.category,
+                categoryId: book.categoryId,
+                resolvedCategory: categoryName,
+                reviewStats: reviewStats
+            });
 
             html += `
                 <tr>
@@ -1606,6 +2023,21 @@
                     <td>${book.title || 'Untitled'}</td>
                     <td>${book.author || 'Unknown Author'}</td>
                     <td><span class="category-badge">${categoryName}</span></td>
+                    <td>
+                        ${reviewStats.count > 0 ?
+                            `<span class="review-count-badge">${reviewStats.count}</span>` :
+                            '<span style="color: #888;">0</span>'
+                        }
+                    </td>
+                    <td>
+                        ${reviewStats.count > 0 ?
+                            `<div class="rating-display">
+                                <span class="review-rating">${generateStarRating(reviewStats.averageRating)}</span>
+                                <span class="rating-value">${reviewStats.averageRating}</span>
+                            </div>` :
+                            '<span style="color: #888;">No rating</span>'
+                        }
+                    </td>
                     <td>${book.language || 'English'}</td>
                     <td><span class="status-badge ${statusClass}">${book.status || 'draft'}</span></td>
                     <td>${date}</td>
@@ -1647,20 +2079,18 @@
             submitBtn.disabled = true;
             if (spinner) spinner.style.display = 'inline-block';
 
-            // ✅ CURRENT USER ID USE KARO - HARDCODED NAHI
             if (!currentUserId) {
                 throw new Error('User ID not found. Please login again.');
             }
 
             const formData = new FormData();
 
-            // ✅ CURRENT USER ID HI USE KARO
             const bookData = {
                 title: document.getElementById('bookTitle').value,
                 author: document.getElementById('bookAuthor').value,
                 description: document.getElementById('bookDescription').value,
                 language: document.getElementById('bookLanguage').value,
-                userId: currentUserId, // ✅ YAHI IMPORTANT CHANGE HAI
+                userId: currentUserId,
                 categoryId: document.getElementById('bookCategory').value || null,
                 status: "PENDING"
             };
@@ -1749,12 +2179,24 @@
                     ${book.extractedText ? `<p><strong>Content Preview:</strong> ${book.extractedText.substring(0, 200)}...</p>` : ''}
                 </div>
             </div>
+
+            <!-- ✅ REVIEWS SECTION ADDED -->
+            <div class="reviews-section" style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+                <h3>📝 Reader Reviews</h3>
+                <div id="reviewsContent-${book.id}">
+                    <p>Loading reviews...</p>
+                </div>
+            </div>
+
             <div class="action-buttons" style="margin-top: 20px;">
                 <button class="btn-primary" onclick="closeModal('bookModal')">Close</button>
             </div>
         `;
 
         modal.style.display = 'block';
+
+        // ✅ Load reviews for this book
+        loadBookReviewsForModal(book.id);
     }
 
     function editBook(bookId) {
@@ -1823,7 +2265,6 @@
 
     async function updateBook(bookId) {
         try {
-            // ✅ CURRENT USER ID HI USE KARO
             if (!currentUserId) {
                 throw new Error('User ID not found. Please login again.');
             }
@@ -1833,7 +2274,7 @@
                 author: document.getElementById('editBookAuthor').value,
                 description: document.getElementById('editBookDescription').value,
                 language: document.getElementById('editBookLanguage').value,
-                userId: currentUserId, // ✅ YAHI IMPORTANT CHANGE HAI
+                userId: currentUserId,
                 categoryId: document.getElementById('editBookCategory').value || null
             };
 
@@ -1888,6 +2329,128 @@
         if (modal) {
             modal.style.display = 'none';
         }
+    }
+
+    // =============================================
+    // ✅ REVIEW MANAGEMENT FUNCTIONS
+    // =============================================
+
+    async function loadBookReviewsForModal(bookId) {
+        try {
+            console.log(`📝 Loading reviews for book ${bookId}...`);
+
+            const response = await authFetch(`${API_BASE_URL}/review/apies/book/${bookId}`);
+            const reviewsContent = document.getElementById(`reviewsContent-${bookId}`);
+
+            if (!reviewsContent) return;
+
+            if (response.ok) {
+                const reviews = await response.json();
+                console.log(`✅ Loaded ${reviews.length} reviews for book ${bookId}`);
+                displayReviewsInModal(bookId, reviews);
+            } else {
+                reviewsContent.innerHTML = `
+                    <div class="no-reviews">
+                        <p>❌ Failed to load reviews. Please try again.</p>
+                    </div>
+                `;
+            }
+        } catch (error) {
+            console.error(`❌ Error loading reviews for book ${bookId}:`, error);
+            const reviewsContent = document.getElementById(`reviewsContent-${bookId}`);
+            if (reviewsContent) {
+                reviewsContent.innerHTML = `
+                    <div class="no-reviews">
+                        <p>❌ Error loading reviews: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+    }
+
+    function displayReviewsInModal(bookId, reviews) {
+        const reviewsContent = document.getElementById(`reviewsContent-${bookId}`);
+        if (!reviewsContent) return;
+
+        if (!reviews || reviews.length === 0) {
+            reviewsContent.innerHTML = `
+                <div class="no-reviews">
+                    <p>📭 No reviews yet. Be the first to review this book!</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Calculate average rating
+        const averageRating = calculateAverageRating(reviews);
+        const totalReviews = reviews.length;
+
+        let html = `
+            <div class="reviews-summary">
+                <div class="average-rating">
+                    <div class="rating-stars-large">${generateStarRating(averageRating)}</div>
+                    <div class="rating-details">
+                        <strong>${averageRating.toFixed(1)}</strong> out of 5
+                        <span class="review-count">(${totalReviews} ${totalReviews === 1 ? 'review' : 'reviews'})</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reviews-list" style="margin-top: 20px;">
+                <h4>Recent Reviews</h4>
+        `;
+
+        // Show latest 5 reviews
+        const recentReviews = reviews
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .slice(0, 5);
+
+        recentReviews.forEach(review => {
+            const reviewDate = new Date(review.createdAt).toLocaleDateString();
+            const userName = review.user ? review.user.name : 'Anonymous User';
+
+            html += `
+                <div class="review-item">
+                    <div class="review-header">
+                        <div>
+                            <strong>${userName}</strong>
+                            <div class="review-rating">${generateStarRating(review.rating)}</div>
+                        </div>
+                        <span class="review-date">${reviewDate}</span>
+                    </div>
+                    <div class="review-text">
+                        ${review.reviewText || 'No review text provided.'}
+                    </div>
+                </div>
+            `;
+        });
+
+        if (reviews.length > 5) {
+            html += `
+                <div style="text-align: center; margin-top: 15px;">
+                    <small>+ ${reviews.length - 5} more reviews</small>
+                </div>
+            `;
+        }
+
+        html += `</div>`;
+        reviewsContent.innerHTML = html;
+    }
+
+    function calculateAverageRating(reviews) {
+        if (!reviews || reviews.length === 0) return 0;
+        const total = reviews.reduce((sum, review) => sum + review.rating, 0);
+        return total / reviews.length;
+    }
+
+    function generateStarRating(rating) {
+        const fullStars = Math.floor(rating);
+        const hasHalfStar = rating % 1 >= 0.5;
+        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+        return '⭐'.repeat(fullStars) +
+               (hasHalfStar ? '⭐' : '') +
+               '☆'.repeat(emptyStars);
     }
 
     // =============================================
