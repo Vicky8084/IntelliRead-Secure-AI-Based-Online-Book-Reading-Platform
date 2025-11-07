@@ -46,31 +46,6 @@ public class BookService {
         this.uploadsRoot = FileStorageUtil.ensureDirectory(uploadDir);
     }
 
-    /* Existing addBook that accepts only DTO -- kept for backwards compatibility */
-    public String addBook(BookRequestDTO bookRequestDTO) {
-
-        // ✅ CORRECTED: Use proper method name from repository
-        Optional<Book> bookOptional = bookRepository.findByTitleAndUser_Id(
-                bookRequestDTO.getTitle(), bookRequestDTO.getUserId());
-        if (bookOptional.isPresent()) {
-            throw new BookAlreadyExistException("You have already added a book with this title!");
-        }
-
-        User user = userRepository.findById(bookRequestDTO.getUserId())
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
-
-        Book book = BookConverter.convertBookRequestDtoIntoBook(bookRequestDTO);
-        book.setUser(user);
-        book.setStatus(bookRequestDTO.getStatus());
-        // ✅ ADDED: Handle category assignment
-        if (bookRequestDTO.getCategoryId() != null) {
-            Category category = categoryRepository.findById(bookRequestDTO.getCategoryId()).orElse(null);
-            book.setCategory(category);
-        }
-
-        bookRepository.save(book);
-        return "Book saved Successfully";
-    }
 
     /* --- UPDATED: Complete file upload with text extraction --- */
     public String addBookWithFiles(BookRequestDTO bookRequestDTO,
@@ -216,12 +191,12 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    // ✅ ADDED: Get books by category
+    // ✅ KEEP: Get books by category
     public List<Book> findBooksByCategoryId(int categoryId) {
         return bookRepository.findByCategoryId(categoryId);
     }
 
-    // ✅ ADDED: Get books by category name
+    // ✅ KEEP: Get books by category name
     public List<Book> findBooksByCategoryName(String categoryName) {
         return bookRepository.findByCategoryCategoryName(categoryName);
     }
@@ -305,7 +280,7 @@ public class BookService {
         }
     }
 
-    // ✅ NEW: Get books by specific publisher
+    // ✅ KEEP: Get books by specific publisher
     public List<Book> findBooksByUserId(int userId) {
         return bookRepository.findByUser_Id(userId);
     }

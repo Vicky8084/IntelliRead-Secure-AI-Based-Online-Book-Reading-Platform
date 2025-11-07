@@ -12,7 +12,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -24,9 +23,6 @@ public class LoginService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -59,7 +55,7 @@ public class LoginService {
             User user = optionalUser.get();
             System.out.println("✅ User found: " + user.getEmail() + " | Role: " + user.getRole() + " | Status: " + user.getStatus());
 
-            // ✅ STRICT ROLE VALIDATION - ADD THIS SECTION
+            // ✅ STRICT ROLE VALIDATION
             boolean isAdminEmail = ADMIN_EMAILS.contains(loginRequestDTO.getEmail().toLowerCase());
 
             // Admin emails can ONLY have ADMIN role
@@ -79,32 +75,21 @@ public class LoginService {
             // Check if account is active
             if (user.getStatus() != Status.ACTIVE) {
                 System.out.println("❌ Account not active: " + user.getEmail());
-                return new LoginResponseDTO(null, null, null, 0, null,
-                        user.getRole() == Role.PUBLISHER ?
-                                "Publisher account pending admin approval" : "Account is inactive",
-                        false, null);
+                String message = user.getRole() == Role.PUBLISHER ?
+                        "Publisher account pending admin approval" : "Account is inactive";
+                return new LoginResponseDTO(null, null, null, 0, null, message, false, null);
             }
 
-            if (isAdminEmail) {
-                System.out.println("👑 Admin login detected: " + loginRequestDTO.getEmail());
-                // For admin users, manually verify password
-                if (!passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPasswordHash())) {
-                    System.out.println("❌ Admin password mismatch for: " + loginRequestDTO.getEmail());
-                    return new LoginResponseDTO(null, null, null, 0, null, "Invalid email or password", false, null);
-                }
-                System.out.println("✅ Admin password verified: " + loginRequestDTO.getEmail());
-            } else {
-                // For non-admin users, use Spring Security authentication
-                System.out.println("🔐 Authenticating non-admin user: " + loginRequestDTO.getEmail());
-                try {
-                    Authentication authentication = authenticationManager.authenticate(
-                            new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(), loginRequestDTO.getPassword())
-                    );
-                    System.out.println("✅ Non-admin authentication successful: " + loginRequestDTO.getEmail());
-                } catch (Exception e) {
-                    System.out.println("❌ Non-admin authentication failed: " + e.getMessage());
-                    return new LoginResponseDTO(null, null, null, 0, null, "Invalid email or password", false, null);
-                }
+            // ✅ STANDARDIZED AUTHENTICATION - Use Spring Security for all users
+            System.out.println("🔐 Authenticating user: " + loginRequestDTO.getEmail());
+            try {
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(), loginRequestDTO.getPassword())
+                );
+                System.out.println("✅ Authentication successful: " + loginRequestDTO.getEmail());
+            } catch (Exception e) {
+                System.out.println("❌ Authentication failed: " + e.getMessage());
+                return new LoginResponseDTO(null, null, null, 0, null, "Invalid email or password", false, null);
             }
 
             // Generate JWT Token

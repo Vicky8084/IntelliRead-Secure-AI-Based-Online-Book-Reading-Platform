@@ -23,18 +23,10 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    // Basic book save
-    @PostMapping("/save")
-    public ResponseEntity<String> saveBook(@RequestBody BookRequestDTO bookRequestDTO){
-        try {
-            String response = bookService.addBook(bookRequestDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
-        }
-    }
+    // ✅ REMOVED: Basic book save endpoint (without files)
+    // @PostMapping("/save") - REMOVED
 
-    // File upload endpoint
+    // ✅ KEEP ONLY: File upload endpoint
     @PostMapping("/upload")
     public ResponseEntity<String> uploadBookWithFiles(
             @RequestParam("book") String bookRequestJson,
@@ -78,7 +70,7 @@ public class BookController {
         }
     }
 
-    // ✅ NEW: Get books by user ID
+    // ✅ KEEP: Get books by user ID
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Book>> findBooksByUserId(@PathVariable int userId){
         try {
@@ -89,7 +81,7 @@ public class BookController {
         }
     }
 
-    // ✅ NEW: Get books by category ID
+    // ✅ KEEP: Get books by category ID
     @GetMapping("/category/{categoryId}")
     public ResponseEntity<List<Book>> findBooksByCategoryId(@PathVariable int categoryId){
         try {
@@ -100,7 +92,7 @@ public class BookController {
         }
     }
 
-    // ✅ NEW: Get books by category name
+    // ✅ KEEP: Get books by category name
     @GetMapping("/category/name/{categoryName}")
     public ResponseEntity<List<Book>> findBooksByCategoryName(@PathVariable String categoryName){
         try {

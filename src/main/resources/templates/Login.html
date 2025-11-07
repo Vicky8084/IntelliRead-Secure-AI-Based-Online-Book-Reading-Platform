@@ -196,6 +196,10 @@
             localStorage.setItem('jwtToken', data.token);
             localStorage.setItem('loginTime', new Date().toISOString());
 
+            // ✅ CRITICAL: USER ID LOCALSTORAGE MEIN SAVE KARO
+            localStorage.setItem('currentUserId', data.userId.toString());
+            console.log('💾 User ID stored:', data.userId);
+
             console.log('💾 User data stored in localStorage:', userData);
             console.log('🔑 Token stored:', !!data.token);
 
@@ -213,10 +217,19 @@
             // Show success message and redirect
             alert(successMessage);
 
-            // Use setTimeout to ensure alert is shown before redirect
+            // ✅ CRITICAL: REDIRECT WITH USER ID ADD KARO
             setTimeout(() => {
               let redirectUrl = data.redirectUrl;
-               window.location.href = redirectUrl;
+
+              // ✅ USER ID URL MEIN ADD KARO
+              if (redirectUrl && data.userId) {
+                // Check if URL already has query parameters
+                const separator = redirectUrl.includes('?') ? '&' : '?';
+                redirectUrl += `${separator}userId=${data.userId}`;
+              }
+
+              console.log('🔄 Final redirect URL with User ID:', redirectUrl);
+              window.location.href = redirectUrl;
             }, 100);
 
           } else {

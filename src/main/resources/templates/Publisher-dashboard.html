@@ -1044,10 +1044,6 @@
     </div>
 </div>
 
-
-</script>
-
-<!-- ✅ YEH PURA NAYA SCRIPT ADD KARDO -->
 <script>
     // =============================================
     // ✅ GLOBAL VARIABLES & CONFIGURATION
@@ -1056,47 +1052,54 @@
     let categories = [];
     let books = [];
     let currentPublisher = null;
+    let currentUserId = null;
 
     // =============================================
     // ✅ USER AUTHENTICATION & ID MANAGEMENT
     // =============================================
 
     function getCurrentUserId() {
-        // ✅ URL parameters se user ID lo
+        // ✅ Pehle URL se check karo
         const urlParams = new URLSearchParams(window.location.search);
         let userId = urlParams.get('userId');
 
         if (userId) {
-            console.log('User ID from URL:', userId);
+            console.log('✅ User ID from URL:', userId);
             localStorage.setItem('currentUserId', userId);
-            return parseInt(userId);
+            currentUserId = parseInt(userId);
+            return currentUserId;
         }
 
-        // ✅ Ya localStorage se lo
+        // ✅ Fir localStorage se check karo
         userId = localStorage.getItem('currentUserId');
         if (userId) {
-            console.log('User ID from localStorage:', userId);
-            return parseInt(userId);
+            console.log('✅ User ID from localStorage:', userId);
+            currentUserId = parseInt(userId);
+            return currentUserId;
         }
 
-        // ✅ Fallback - prompt se lo (development ke liye)
-        userId = prompt('Please enter your User ID:', '1');
-        if (userId) {
-            localStorage.setItem('currentUserId', userId);
-            return parseInt(userId);
-        }
-
-        return 1; // Final fallback
+        console.error('❌ No user ID found!');
+        return null;
     }
 
     function initializeUser() {
-        const userId = getCurrentUserId();
+        currentUserId = getCurrentUserId();
         const userIdInput = document.getElementById('userId');
+
         if (userIdInput) {
-            userIdInput.value = userId;
+            userIdInput.value = currentUserId;
         }
-        console.log('Current user ID:', userId);
-        return userId;
+
+        console.log('👤 Current user ID:', currentUserId);
+
+        if (!currentUserId) {
+            showToast('User ID not found. Please login again.', 'error');
+            setTimeout(() => {
+                window.location.href = '/login';
+            }, 3000);
+        }
+
+        return currentUserId;
     }
 
     function initializeUserFromURL() {
@@ -1109,7 +1112,8 @@
                 userIdInput.value = userId;
             }
             localStorage.setItem('currentUserId', userId);
-            console.log('User ID set from URL:', userId);
+            currentUserId = parseInt(userId);
+            console.log('✅ User ID set from URL:', currentUserId);
             return true;
         }
         return false;
@@ -1154,6 +1158,7 @@
             localStorage.removeItem('currentUserId');
             localStorage.removeItem('jwtToken');
             sessionStorage.removeItem('jwtToken');
+            currentUserId = null;
             window.location.href = '/login';
         }
     }
@@ -1362,17 +1367,14 @@
 
     async function loadBooksFromAPI() {
         try {
-            const userIdInput = document.getElementById('userId');
-            const userId = userIdInput ? userIdInput.value : getCurrentUserId();
+            console.log('📚 Loading books for user ID:', currentUserId);
 
-            console.log('Loading books for user ID:', userId);
-
-            const response = await authFetch(`${API_BASE_URL}/book/apies/user/${userId}`);
+            const response = await authFetch(`${API_BASE_URL}/book/apies/user/${currentUserId}`);
 
             if (response.ok) {
                 const booksData = await response.json();
                 books = booksData;
-                console.log(`Loaded ${books.length} books for user ${userId}`);
+                console.log(`✅ Loaded ${books.length} books for user ${currentUserId}`);
 
                 renderBooksTable();
                 updateDashboardStats();
@@ -1380,11 +1382,11 @@
                 updateCategoryDistribution();
                 updateCategoryFilters();
             } else {
-                console.error('Failed to load books, status:', response.status);
+                console.error('❌ Failed to load books, status:', response.status);
                 showToast('Failed to load books', 'error');
             }
         } catch (error) {
-            console.error('Error loading books:', error);
+            console.error('❌ Error loading books:', error);
             showToast('Failed to load books: ' + error.message, 'error');
         }
     }
@@ -1634,7 +1636,7 @@
     }
 
     // =============================================
-    // ✅ BOOK CRUD OPERATIONS
+    // ✅ BOOK EVENT HANDLERS - BACKEND CRUD
     // =============================================
 
     async function addNewBook() {
@@ -1645,21 +1647,25 @@
             submitBtn.disabled = true;
             if (spinner) spinner.style.display = 'inline-block';
 
-            const formData = new FormData();
-            const userIdInput = document.getElementById('userId');
-            const userId = userIdInput ? userIdInput.value : getCurrentUserId();
+            // ✅ CURRENT USER ID USE KARO - HARDCODED NAHI
+            if (!currentUserId) {
+                throw new Error('User ID not found. Please login again.');
+            }
 
+            const formData = new FormData();
+
+            // ✅ CURRENT USER ID HI USE KARO
             const bookData = {
                 title: document.getElementById('bookTitle').value,
                 author: document.getElementById('bookAuthor').value,
                 description: document.getElementById('bookDescription').value,
                 language: document.getElementById('bookLanguage').value,
-                userId: parseInt(userId),
+                userId: currentUserId, // ✅ YAHI IMPORTANT CHANGE HAI
                 categoryId: document.getElementById('bookCategory').value || null,
                 status: "PENDING"
             };
 
-            console.log('Book data to send for user', userId, ':', bookData);
+            console.log('📤 Sending book data for user:', currentUserId, 'Data:', bookData);
 
             formData.append('book', JSON.stringify(bookData));
 
@@ -1700,7 +1706,7 @@
             }, 1500);
 
         } catch (error) {
-            console.error('Error creating book:', error);
+            console.error('❌ Error creating book:', error);
             showToast('Failed to create book: ' + error.message, 'error');
         } finally {
             submitBtn.disabled = false;
@@ -1740,7 +1746,11 @@
                     <p><strong>Description:</strong> ${book.description || 'No description available.'}</p>
                     ${book.fileName ? `<p><strong>File:</strong> ${book.fileName}</p>` : ''}
                     ${book.fileSize ? `<p><strong>File Size:</strong> ${(book.fileSize / 1024 / 1024).toFixed(2)} MB</p>` : ''}
+                    ${book.extractedText ? `<p><strong>Content Preview:</strong> ${book.extractedText.substring(0, 200)}...</p>` : ''}
                 </div>
+            </div>
+            <div class="action-buttons" style="margin-top: 20px;">
+                <button class="btn-primary" onclick="closeModal('bookModal')">Close</button>
             </div>
         `;
 
@@ -1813,15 +1823,17 @@
 
     async function updateBook(bookId) {
         try {
-            const userIdInput = document.getElementById('userId');
-            const userId = userIdInput ? userIdInput.value : getCurrentUserId();
+            // ✅ CURRENT USER ID HI USE KARO
+            if (!currentUserId) {
+                throw new Error('User ID not found. Please login again.');
+            }
 
             const bookData = {
                 title: document.getElementById('editBookTitle').value,
                 author: document.getElementById('editBookAuthor').value,
                 description: document.getElementById('editBookDescription').value,
                 language: document.getElementById('editBookLanguage').value,
-                userId: parseInt(userId),
+                userId: currentUserId, // ✅ YAHI IMPORTANT CHANGE HAI
                 categoryId: document.getElementById('editBookCategory').value || null
             };
 
@@ -1842,7 +1854,7 @@
             closeEditModal();
 
         } catch (error) {
-            console.error('Error updating book:', error);
+            console.error('❌ Error updating book:', error);
             showToast('Failed to update book: ' + error.message, 'error');
         }
     }
@@ -1865,9 +1877,16 @@
                 await loadBooksFromAPI();
 
             } catch (error) {
-                console.error('Error deleting book:', error);
+                console.error('❌ Error deleting book:', error);
                 showToast('Failed to delete book: ' + error.message, 'error');
             }
+        }
+    }
+
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'none';
         }
     }
 
@@ -1959,7 +1978,6 @@
     document.addEventListener('DOMContentLoaded', function() {
         console.log('DOM loaded - initializing dashboard...');
 
-        // ✅ Pehle URL se user ID try karo, fir fallback
         if (!initializeUserFromURL()) {
             initializeUser();
         }
@@ -1970,7 +1988,6 @@
         loadCategories();
         loadBooksFromAPI();
 
-        // ✅ FAVICON FIX
         const favicon = document.querySelector('link[rel="icon"]');
         if (!favicon) {
             const newFavicon = document.createElement('link');
@@ -1980,6 +1997,6 @@
         }
     });
 </script>
+
 </body>
 </html>
-
