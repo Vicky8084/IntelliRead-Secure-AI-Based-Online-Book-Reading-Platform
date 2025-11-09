@@ -88,22 +88,34 @@ public class SessionController {
         ));
     }
 
-    // ✅ Logout - clear server session
+    // ✅ UPDATED Logout - clear server session and redirect to admin login page
     @PostMapping("/logout")
-    public ResponseEntity<Map<String, String>> logout(HttpServletRequest request) {
-        System.out.println("🚪 Clearing server session...");
+    public ResponseEntity<Map<String, Object>> logout(HttpServletRequest request) {
+        try {
+            System.out.println("🚪 Admin logout requested via SessionController");
 
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-            System.out.println("✅ Session invalidated");
-        } else {
-            System.out.println("ℹ️ No active session found");
+            // Session clear karo
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                String userEmail = (String) session.getAttribute("userEmail");
+                session.invalidate();
+                System.out.println("✅ Session invalidated for: " + userEmail);
+            } else {
+                System.out.println("ℹ️ No active session found");
+            }
+
+            // ✅ Return success response with redirect to ADMIN LOGIN PAGE
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "message", "Logged out successfully",
+                    "redirectUrl", "/admin-login"  // ✅ Admin login page redirect info
+            ));
+        } catch (Exception e) {
+            System.out.println("❌ Logout error: " + e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of(
+                    "success", false,
+                    "message", "Logout failed"
+            ));
         }
-
-        return ResponseEntity.ok(Map.of(
-                "message", "Logged out successfully",
-                "success", "true"
-        ));
     }
 }

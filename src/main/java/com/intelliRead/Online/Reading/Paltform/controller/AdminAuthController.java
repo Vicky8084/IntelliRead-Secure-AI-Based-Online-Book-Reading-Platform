@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("/auth/admin")
+@RequestMapping("/api/admin")
 @CrossOrigin(origins = "*")
 public class AdminAuthController {
 
