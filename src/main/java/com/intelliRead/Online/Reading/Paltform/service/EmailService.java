@@ -371,4 +371,70 @@ public class EmailService {
             throw new RuntimeException("Failed to send rejection email", e);
         }
     }
+
+    // 🔹 NEW: Password Reset OTP Email (6-digit OTP)
+    public void sendPasswordResetOTPEmail(User user, String otp) {
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+
+            helper.setFrom(FROM_EMAIL);
+            helper.setTo(user.getEmail());
+            helper.setSubject("🔐 Password Reset OTP - IntelliRead");
+
+            String content = "<html>" +
+                    "<body style='font-family: Arial, sans-serif; color: #333; line-height: 1.6;'>" +
+                    "<div style='max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;'>" +
+                    "<div style='text-align: center; margin-bottom: 30px;'>" +
+                    "<img src='cid:logoImage' width='150' alt='IntelliRead Logo' style='margin-bottom: 20px;'>" +
+                    "<h1 style='color: #2c5aa0; margin-bottom: 10px;'>Password Reset OTP</h1>" +
+                    "<p style='color: #666; font-size: 16px;'>Secure your IntelliRead account</p>" +
+                    "</div>" +
+
+                    "<div style='background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;'>" +
+                    "<h2 style='color: #2c5aa0; margin-bottom: 15px;'>Hello " + user.getName() + ",</h2>" +
+                    "<p style='margin-bottom: 15px;'>We received a request to reset your password for your <strong>IntelliRead</strong> account.</p>" +
+                    "<p style='margin-bottom: 15px;'>Use the OTP below to reset your password:</p>" +
+                    "</div>" +
+
+                    "<div style='text-align: center; margin: 30px 0;'>" +
+                    "<div style='display: inline-block; padding: 20px 40px; background: #2c5aa0; color: white; " +
+                    "border-radius: 10px; font-weight: bold; font-size: 32px; letter-spacing: 8px;'>" +
+                    otp +
+                    "</div>" +
+                    "</div>" +
+
+                    "<div style='background: #fff3cd; padding: 15px; border-radius: 5px; margin-bottom: 20px; border-left: 4px solid #ffc107;'>" +
+                    "<h4 style='color: #856404; margin-bottom: 10px;'>⚠️ Important Security Notice</h4>" +
+                    "<p style='color: #856404; margin-bottom: 5px; font-size: 14px;'>" +
+                    "• This OTP will expire in 10 minutes<br>" +
+                    "• Do not share this OTP with anyone<br>" +
+                    "• If you didn't request this, please secure your account" +
+                    "</p>" +
+                    "</div>" +
+
+                    "<div style='border-top: 1px solid #e0e0e0; padding-top: 20px; margin-top: 20px; text-align: center;'>" +
+                    "<p style='color: #666; margin-bottom: 10px;'>Need help? Contact our support team</p>" +
+                    "<p style='color: #666; margin-bottom: 5px;'>📧 Email: <a href='mailto:noreply.intelliread@gmail.com' style='color: #2c5aa0;'>noreply.intelliread@gmail.com</a></p>" +
+                    "</div>" +
+                    "</div>" +
+                    "</body></html>";
+
+            helper.setText(content, true);
+
+            try {
+                helper.addInline("logoImage", new ClassPathResource("static/images/logo.png"));
+            } catch (Exception e) {
+                System.out.println("Logo image not found, sending email without logo");
+            }
+
+            mailSender.send(mimeMessage);
+            System.out.println("✅ Password reset OTP email sent to: " + user.getEmail());
+
+        } catch (MessagingException e) {
+            System.err.println("❌ Failed to send password reset OTP email to: " + user.getEmail());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to send password reset OTP email", e);
+        }
+    }
 }

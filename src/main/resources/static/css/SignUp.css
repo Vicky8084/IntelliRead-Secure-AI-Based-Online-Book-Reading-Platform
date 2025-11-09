@@ -60,11 +60,11 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: linear-gradient(to left, rgba(235,198,129,0.8), rgba(114,114,223,0.8));
   padding: 10px 30px;
   width: 100%;
   position: sticky;
   top: 0;
-  background: linear-gradient(to left, rgba(235,198,129,0.8), rgba(114,114,223,0.8));
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(230, 17, 17, 0.827);
 }
@@ -255,7 +255,6 @@ header img {
 .main-footer {
   width: 100%;
   text-align: center;
-  background: linear-gradient(to right, rgba(235,198,129,0.8), rgba(114,114,223,0.8));
   color: #fff;
   padding: 20px 0;
   margin-top: auto;

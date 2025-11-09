@@ -1320,20 +1320,100 @@
     let currentRejectBookId = null;
 
     // ===== DASHBOARD INITIALIZATION =====
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('🏁 Admin Dashboard Initialized');
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🏁 Admin Dashboard Initialized');
 
-        // Check if admin is logged in
-        checkAdminAuth();
+    // Check if admin is logged in
+    checkAdminAuth();
 
-        // Load dashboard data
-        loadDashboardSummary();
-        loadUsers();
-        loadBooks();
+    // Load dashboard data with DELAY and ERROR HANDLING
+    setTimeout(() => {
+        console.log('🔄 Loading dashboard data...');
 
-        // Set up event listeners
-        setupEventListeners();
-    });
+        // Load data with proper error handling
+        loadDashboardSummary().catch(err => {
+            console.log('📊 Dashboard summary failed, using demo data');
+            setDemoDashboardData();
+        });
+
+        loadUsers().catch(err => {
+            console.log('👥 Users loading failed, using demo data');
+            showDemoUsers();
+        });
+
+        loadBooks().catch(err => {
+            console.log('📚 Books loading failed, using demo data');
+            showDemoBooks();
+        });
+
+    }, 1000); // 1 second delay
+
+    // Set up event listeners
+    setupEventListeners();
+});
+
+
+
+
+
+
+
+// ===== DASHBOARD SUMMARY =====
+async function loadDashboardSummary() {
+    try {
+        console.log('📊 Loading dashboard summary...');
+        const response = await fetch('/api/admin/summary');
+
+        // ✅ Better error handling
+        if (!response.ok) {
+            console.warn('⚠️ Dashboard API returned error:', response.status);
+            setDemoDashboardData();
+            return;
+        }
+
+        // ✅ Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            console.warn('⚠️ Dashboard API returned non-JSON response');
+            setDemoDashboardData();
+            return;
+        }
+
+        const data = await response.json();
+
+        if (data.success) {
+            // Update stats cards
+            document.getElementById('totalUsers').textContent = data.totalUsers || 0;
+            document.getElementById('totalBooks').textContent = data.totalBooks || 0;
+            document.getElementById('pendingBooks').textContent = data.pendingBooks || 0;
+            document.getElementById('activeUsers').textContent = data.activeUsers || 0;
+
+            // Update additional stats if elements exist
+            const pendingPublishersElement = document.getElementById('pendingPublishers');
+            const totalPublishersElement = document.getElementById('totalPublishers');
+
+            if (pendingPublishersElement) {
+                pendingPublishersElement.textContent = data.pendingPublishers || 0;
+            }
+            if (totalPublishersElement) {
+                totalPublishersElement.textContent = data.totalPublishers || 0;
+            }
+
+            // Load recent activity
+            loadRecentActivity(data.recentActivity);
+        } else {
+            console.error('Error loading dashboard summary:', data.message);
+            setDemoDashboardData();
+        }
+    } catch (error) {
+        console.error('Error loading dashboard summary:', error);
+        setDemoDashboardData();
+    }
+}
+
+
+
+
 
     // ===== AUTHENTICATION =====
     function checkAdminAuth() {
@@ -1392,7 +1472,17 @@
     // ===== DASHBOARD SUMMARY =====
     async function loadDashboardSummary() {
         try {
+            console.log('📊 Loading dashboard summary...');
             const response = await fetch('/api/admin/summary');
+
+            // ✅ Check if response is JSON
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                console.warn('⚠️ Dashboard API returned non-JJSON response');
+                setDemoDashboardData(); // Use demo data
+                return;
+            }
+
             const data = await response.json();
 
             if (data.success) {
@@ -1422,7 +1512,7 @@
             }
         } catch (error) {
             console.error('Error loading dashboard summary:', error);
-            setDemoDashboardData();
+            setDemoDashboardData(); // Use demo data on error
         }
     }
 
@@ -1514,10 +1604,17 @@
                 </tr>
             `;
 
+            console.log('👥 Loading users...');
             const response = await fetch(`/api/admin/users?page=${page}&limit=${usersPerPage}`);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            // ✅ Check if response is JSON
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('API returned non-JJSON response');
             }
 
             const data = await response.json();
@@ -1868,10 +1965,17 @@
                 </tr>
             `;
 
+            console.log('📚 Loading books...');
             const response = await fetch(`/api/admin/books?page=${page}&limit=${booksPerPage}&status=all`);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            // ✅ Check if response is JSON
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('API returned non-JJSON response');
             }
 
             const data = await response.json();

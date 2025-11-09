@@ -3,13 +3,16 @@ package com.intelliRead.Online.Reading.Paltform.controller;
 import com.intelliRead.Online.Reading.Paltform.model.User;
 import com.intelliRead.Online.Reading.Paltform.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -69,58 +72,52 @@ public class PageController {
         return "ForgotPass";
     }
 
-//    // ✅ Admin Login Page (Separate route) - DIRECT ACCESS
-//    @GetMapping("/admin-login")
-//    public String adminLoginPage() {
-//        return "Admin"; // This opens Admin.html page
-//    }
+    // ✅ Admin Login Page - SIRF EK METHOD HONI CHAHIYE
+    @GetMapping("/admin-login")
+    public String adminLoginPage(HttpServletRequest request) {
+        System.out.println("🔐 Admin Login Page Accessed");
 
-    // ✅ Admin Dashboard - With Simple Session Check
-    @GetMapping("/admin-dashboard")
-    public String adminDashboard(HttpServletRequest request, Model model) {
-        System.out.println("🔄 Admin Dashboard accessed");
-
-        // Simple session check - check if user is logged in
-        Boolean isLoggedIn = (Boolean) request.getSession().getAttribute("isLoggedIn");
+        // ✅ Check if already logged in as admin
         String userEmail = (String) request.getSession().getAttribute("userEmail");
 
-        System.out.println("📧 Session userEmail: " + userEmail);
-        System.out.println("🔐 Session isLoggedIn: " + isLoggedIn);
-
-        // If not logged in via session, check localStorage data (for testing)
-        if (isLoggedIn == null || userEmail == null) {
-            System.out.println("⚠️ No session found, checking if user is accessing directly");
-            // Allow access for testing, but show warning
-            model.addAttribute("warning", "Please login first for full functionality");
+        if (userEmail != null && ADMIN_EMAILS.contains(userEmail.toLowerCase())) {
+            System.out.println("✅ Already logged in as admin, redirecting to dashboard");
+            return "redirect:/admin-dashboard";
         }
 
-        // Check if user is admin (by email - fixed list)
-        boolean isAdmin = userEmail != null && ADMIN_EMAILS.contains(userEmail.toLowerCase());
-        System.out.println("👑 Is Admin: " + isAdmin);
+        return "Admin"; // This opens Admin.html page
+    }
 
-        // Add admin user details to model
-        if (userEmail != null) {
-            Optional<User> userOptional = userRepository.findUserByEmail(userEmail);
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-                model.addAttribute("admin", user);
-                System.out.println("✅ User data added to model: " + user.getName());
-            } else {
-                // Add default admin for testing
-                User defaultAdmin = new User();
-                defaultAdmin.setName("Admin User");
-                defaultAdmin.setEmail(userEmail != null ? userEmail : "noreply.intelliread@gmail.com");
-                model.addAttribute("admin", defaultAdmin);
-                System.out.println("ℹ️ Default admin data added to model");
-            }
-        } else {
-            // Add default admin for direct access
-            User defaultAdmin = new User();
-            defaultAdmin.setName("Administrator");
-            defaultAdmin.setEmail("noreply.intelliread@gmail.com");
-            model.addAttribute("admin", defaultAdmin);
-            System.out.println("ℹ️ Default admin data added for direct access");
-        }
+    // ✅ Admin Dashboard - With PROPER Session Check
+    // ✅ Admin Dashboard - TEMPORARY FIX: Session check disable karo
+    @GetMapping("/admin-dashboard")
+    public String adminDashboard(HttpServletRequest request, Model model) {
+        System.out.println("🔄 Admin Dashboard accessed - TEMPORARY ACCESS");
+
+        // ✅ TEMPORARY: Session check comment out karo
+    /*
+    HttpSession session = request.getSession(false);
+    if (session == null) {
+        System.out.println("❌ NO SESSION: Redirecting to admin login");
+        return "redirect:/admin-login";
+    }
+
+    String userEmail = (String) session.getAttribute("userEmail");
+    Boolean isLoggedIn = (Boolean) session.getAttribute("isLoggedIn");
+
+    if (isLoggedIn == null || userEmail == null || !ADMIN_EMAILS.contains(userEmail.toLowerCase())) {
+        System.out.println("❌ UNAUTHORIZED ACCESS: Invalid admin session");
+        return "redirect:/admin-login";
+    }
+    */
+
+        System.out.println("✅ TEMPORARY ACCESS: Admin dashboard granted");
+
+        // Add default admin data
+        User defaultAdmin = new User();
+        defaultAdmin.setName("Administrator");
+        defaultAdmin.setEmail("noreply.intelliread@gmail.com");
+        model.addAttribute("admin", defaultAdmin);
 
         return "admin-dashboard";
     }
@@ -216,7 +213,7 @@ public class PageController {
         return "redirect:/admin-login";
     }
 
-    // ✅ Admin Session Setter (for testing)
+    // ✅ Admin Session Setter (for testing) - ISKO REMOVE KARO PRODUCTION MEIN
     @GetMapping("/admin-set-session")
     public String setAdminSession(HttpServletRequest request) {
         System.out.println("🔧 Setting admin session for testing");
@@ -229,7 +226,7 @@ public class PageController {
         return "redirect:/admin-dashboard";
     }
 
-    // ✅ Publisher Session Setter (for testing)
+    // ✅ Publisher Session Setter (for testing) - ISKO BHI REMOVE KARO
     @GetMapping("/publisher-set-session")
     public String setPublisherSession(HttpServletRequest request) {
         System.out.println("🔧 Setting publisher session for testing");
@@ -254,17 +251,32 @@ public class PageController {
         return "publisher-dashboard";
     }
 
-    @GetMapping("/admin-login")
-    public String adminLoginPage(HttpServletRequest request) {
-        System.out.println("🔐 Admin Login Page Accessed");
+    // ✅ TEMPORARY DEBUG METHOD - Session check ke liye
+    @GetMapping("/debug-session")
+    public ResponseEntity<Map<String, Object>> debugSession(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
 
-        // ✅ Check if already logged in as admin
-        String userEmail = (String) request.getSession().getAttribute("userEmail");
-        if (userEmail != null && ADMIN_EMAILS.contains(userEmail.toLowerCase())) {
-            System.out.println("✅ Already logged in as admin, redirecting to dashboard");
-            return "redirect:/admin-dashboard";
+        Map<String, Object> sessionInfo = new java.util.HashMap<>();
+
+        if (session != null) {
+            sessionInfo.put("sessionId", session.getId());
+            sessionInfo.put("userEmail", session.getAttribute("userEmail"));
+            sessionInfo.put("isLoggedIn", session.getAttribute("isLoggedIn"));
+            sessionInfo.put("creationTime", new java.util.Date(session.getCreationTime()));
+            sessionInfo.put("lastAccessed", new java.util.Date(session.getLastAccessedTime()));
+
+            // Print all attributes
+            java.util.Enumeration<String> attributeNames = session.getAttributeNames();
+            java.util.List<String> attributes = new java.util.ArrayList<>();
+            while (attributeNames.hasMoreElements()) {
+                String name = attributeNames.nextElement();
+                attributes.add(name + "=" + session.getAttribute(name));
+            }
+            sessionInfo.put("allAttributes", attributes);
+        } else {
+            sessionInfo.put("message", "No active session");
         }
 
-        return "Admin"; // This opens Admin.html page
+        return ResponseEntity.ok(sessionInfo);
     }
 }

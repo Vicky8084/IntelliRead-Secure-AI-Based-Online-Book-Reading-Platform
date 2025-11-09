@@ -200,6 +200,13 @@
             localStorage.setItem('currentUserId', data.userId.toString());
             console.log('💾 User ID stored:', data.userId);
 
+            // ✅✅✅ CRITICAL: ADMIN KE LIYE SESSION STORAGE SET KARO
+            if (data.role === 'ADMIN') {
+                sessionStorage.setItem('admin', 'true');
+                sessionStorage.setItem('isAdmin', 'true');
+                console.log('✅ Admin session set in sessionStorage');
+            }
+
             console.log('💾 User data stored in localStorage:', userData);
             console.log('🔑 Token stored:', !!data.token);
 

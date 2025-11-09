@@ -53,9 +53,30 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // ✅ CRITICAL CHANGE: STATELESS se ALWAYS mein change karo
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS) // ✅ YEH CHANGE KARO
+                )
                 .authorizeHttpRequests(authz -> authz
-                        // ✅ TEMPORARY FIX: Sare endpoints ko public kar do
+                        // ✅ Public endpoints
+                        .requestMatchers(
+                                "/",
+                                "/Home",
+                                "/login",
+                                "/Login",
+                                "/signup",
+                                "/SignUp",
+                                "/forgotpassword",
+                                "/ForgotPass",
+                                "/admin-login",
+                                "/auth/**",
+                                "/password/**",
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
+                                "/uploads/**"
+                        ).permitAll()
+                        // ✅ Baaki sab ko permit do testing ke liye
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
