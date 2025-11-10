@@ -1729,62 +1729,60 @@ async function loadDashboardSummary() {
 
     // ===== PUBLISHER APPROVAL =====
     async function approvePublisher(userId) {
-        if (confirm('Are you sure you want to approve this publisher?')) {
-            try {
-                showNotification('Approving publisher...', 'info');
+    if (confirm('Are you sure you want to approve this publisher?')) {
+        try {
+            showNotification('Approving publisher...', 'info');
 
-                const response = await fetch(`/api/admin/publishers/${userId}/approve`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ approve: true })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    showNotification('Publisher approved successfully!', 'success');
-                    loadUsers(currentUserPage);
-                    loadDashboardSummary();
-                } else {
-                    showNotification('Error: ' + data.message, 'error');
+            const response = await fetch(`/api/admin/publishers/${userId}/approve`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
                 }
-            } catch (error) {
-                console.error('Error approving publisher:', error);
-                showNotification('Error approving publisher', 'error');
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                showNotification('Publisher approved successfully!', 'success');
+                loadUsers(currentUserPage);
+                loadDashboardSummary();
+            } else {
+                showNotification('Error: ' + data.message, 'error');
             }
+        } catch (error) {
+            console.error('Error approving publisher:', error);
+            showNotification('Error approving publisher', 'error');
         }
     }
+}
 
     async function rejectPublisher(userId) {
-        if (confirm('Are you sure you want to reject this publisher? This will delete their account.')) {
-            try {
-                showNotification('Rejecting publisher...', 'info');
+    if (confirm('Are you sure you want to reject this publisher? This will delete their account.')) {
+        try {
+            showNotification('Rejecting publisher...', 'info');
 
-                const response = await fetch(`/api/admin/publishers/${userId}/approve`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ approve: false })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    showNotification('Publisher rejected and account removed!', 'success');
-                    loadUsers(currentUserPage);
-                    loadDashboardSummary();
-                } else {
-                    showNotification('Error: ' + data.message, 'error');
+            const response = await fetch(`/api/admin/publishers/${userId}/reject`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
                 }
-            } catch (error) {
-                console.error('Error rejecting publisher:', error);
-                showNotification('Error rejecting publisher', 'error');
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                showNotification('Publisher rejected and account removed!', 'success');
+                loadUsers(currentUserPage);
+                loadDashboardSummary();
+            } else {
+                showNotification('Error: ' + data.message, 'error');
             }
+        } catch (error) {
+            console.error('Error rejecting publisher:', error);
+            showNotification('Error rejecting publisher', 'error');
         }
     }
+}
 
     // ===== USER ACTIONS =====
     async function viewUser(userId) {
@@ -1920,34 +1918,34 @@ async function loadDashboardSummary() {
     }
 
     async function deleteUser(userId) {
-        const user = allUsers.find(u => u._id === userId);
-        if (!user) return;
+    const user = allUsers.find(u => u._id == userId);
+    if (!user) return;
 
-        if (confirm(`Are you sure you want to delete user "${user.fullName}"? This action cannot be undone.`)) {
-            try {
-                showNotification('Deleting user...', 'info');
+    if (confirm(`Are you sure you want to delete user "${user.fullName}"? This action cannot be undone.`)) {
+        try {
+            showNotification('Deleting user...', 'info');
 
-                const response = await fetch(`/api/admin/users/${userId}`, {
-                    method: 'DELETE'
-                });
+            const response = await fetch(`/api/admin/users/${userId}`, {
+                method: 'DELETE'
+            });
 
-                const data = await response.json();
+            const data = await response.json();
 
-                if (data.success) {
-                    showNotification('User deleted successfully!', 'success');
-                    loadUsers(currentUserPage);
-                    loadDashboardSummary();
-                    // Close modal if open
-                    document.getElementById('userModal').style.display = 'none';
-                } else {
-                    showNotification('Error: ' + data.message, 'error');
-                }
-            } catch (error) {
-                console.error('Error deleting user:', error);
-                showNotification('Error deleting user', 'error');
+            if (data.success) {
+                showNotification('User deleted successfully!', 'success');
+                loadUsers(currentUserPage);
+                loadDashboardSummary();
+                document.getElementById('userModal').style.display = 'none';
+            } else {
+                showNotification('Error: ' + data.message, 'error');
             }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            showNotification('Error deleting user', 'error');
         }
     }
+}
+
 
     // ===== BOOK MANAGEMENT =====
     async function loadBooks(page = 1) {
@@ -2107,39 +2105,35 @@ async function loadDashboardSummary() {
 
     // ===== BOOK ACTIONS =====
     async function approveBook(bookId) {
-        if (confirm('Are you sure you want to approve this book?')) {
-            try {
-                showNotification('Approving book...', 'info');
+    if (confirm('Are you sure you want to approve this book?')) {
+        try {
+            showNotification('Approving book...', 'info');
 
-                const response = await fetch(`/api/admin/books/${bookId}/status`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        status: 'approved',
-                        adminNotes: 'Book approved by admin'
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    showNotification('Book approved successfully!', 'success');
-                    loadBooks(currentBookPage);
-                    loadDashboardSummary();
-
-                    // Close modal if open
-                    document.getElementById('bookModal').style.display = 'none';
-                } else {
-                    showNotification('Error: ' + data.message, 'error');
+            const response = await fetch(`/api/admin/books/${bookId}/approve`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
                 }
-            } catch (error) {
-                console.error('Error approving book:', error);
-                showNotification('Error approving book', 'error');
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                showNotification('Book approved successfully!', 'success');
+                loadBooks(currentBookPage);
+                loadDashboardSummary();
+
+                // Close modal if open
+                document.getElementById('bookModal').style.display = 'none';
+            } else {
+                showNotification('Error: ' + data.message, 'error');
             }
+        } catch (error) {
+            console.error('Error approving book:', error);
+            showNotification('Error approving book', 'error');
         }
     }
+}
 
     function showRejectionModal(bookId) {
         currentRejectBookId = bookId;
@@ -2174,18 +2168,16 @@ async function loadDashboardSummary() {
     });
 
     async function rejectBook(bookId, reason) {
+    if (confirm('Are you sure you want to reject this book?')) {
         try {
             showNotification('Rejecting book...', 'info');
 
-            const response = await fetch(`/api/admin/books/${bookId}/status`, {
+            const response = await fetch(`/api/admin/books/${bookId}/reject`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    status: 'rejected',
-                    adminNotes: reason
-                })
+                body: JSON.stringify({ reason: reason })
             });
 
             const data = await response.json();
@@ -2193,6 +2185,7 @@ async function loadDashboardSummary() {
             if (data.success) {
                 showNotification('Book rejected successfully!', 'success');
                 loadBooks(currentBookPage);
+                loadDashboardSummary();
                 closeRejectionModal();
             } else {
                 showNotification('Error: ' + data.message, 'error');
@@ -2202,6 +2195,7 @@ async function loadDashboardSummary() {
             showNotification('Error rejecting book', 'error');
         }
     }
+}
 
     async function viewBook(bookId) {
         try {
@@ -2339,35 +2333,34 @@ async function loadDashboardSummary() {
     }
 
     async function deleteBook(bookId) {
-        const book = allBooks.find(b => b._id === bookId);
-        if (!book) return;
+    const book = allBooks.find(b => b._id == bookId);
+    if (!book) return;
 
-        if (confirm(`Are you sure you want to delete "${book.title}"? This action cannot be undone.`)) {
-            try {
-                showNotification('Deleting book...', 'info');
+    if (confirm(`Are you sure you want to delete "${book.title}"? This action cannot be undone.`)) {
+        try {
+            showNotification('Deleting book...', 'info');
 
-                const response = await fetch(`/api/admin/books/${bookId}`, {
-                    method: 'DELETE'
-                });
+            const response = await fetch(`/api/admin/books/${bookId}`, {
+                method: 'DELETE'
+            });
 
-                const data = await response.json();
+            const data = await response.json();
 
-                if (data.success) {
-                    showNotification('Book deleted successfully!', 'success');
-                    loadBooks(currentBookPage);
-                    loadDashboardSummary();
-                    // Close modal if open
-                    const modal = document.getElementById('bookModal');
-                    if (modal) modal.style.display = 'none';
-                } else {
-                    showNotification('Error: ' + data.message, 'error');
-                }
-            } catch (error) {
-                console.error('Error deleting book:', error);
-                showNotification('Error deleting book', 'error');
+            if (data.success) {
+                showNotification('Book deleted successfully!', 'success');
+                loadBooks(currentBookPage);
+                loadDashboardSummary();
+                const modal = document.getElementById('bookModal');
+                if (modal) modal.style.display = 'none';
+            } else {
+                showNotification('Error: ' + data.message, 'error');
             }
+        } catch (error) {
+            console.error('Error deleting book:', error);
+            showNotification('Error deleting book', 'error');
         }
     }
+}
 
     // ===== SEARCH AND FILTER =====
     function searchUsers() {

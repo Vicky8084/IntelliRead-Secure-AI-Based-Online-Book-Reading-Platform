@@ -132,4 +132,43 @@ public class UserService {
             return "User not found";
         }
     }
+
+    public String approvePublisher(int userId) {
+        try {
+            User user = getUserById(userId);
+            if (user == null) {
+                return "❌ User not found";
+            }
+
+            if (user.getRole() != Role.PUBLISHER) {
+                return "❌ User is not a publisher";
+            }
+
+            user.setStatus(Status.ACTIVE);
+            userRepository.save(user);
+
+            return "✅ Publisher approved successfully";
+        } catch (Exception e) {
+            return "❌ Error approving publisher: " + e.getMessage();
+        }
+    }
+
+    public String rejectPublisher(int userId) {
+        try {
+            User user = getUserById(userId);
+            if (user == null) {
+                return "❌ User not found";
+            }
+
+            if (user.getRole() != Role.PUBLISHER) {
+                return "❌ User is not a publisher";
+            }
+
+            userRepository.delete(user);
+
+            return "✅ Publisher rejected and account removed";
+        } catch (Exception e) {
+            return "❌ Error rejecting publisher: " + e.getMessage();
+        }
+    }
 }

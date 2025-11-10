@@ -25,10 +25,7 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    // ✅ REMOVED: Basic book save endpoint (without files)
-    // @PostMapping("/save") - REMOVED
-
-    // ✅ KEEP ONLY: File upload endpoint
+    // ✅ EXISTING METHODS - YE PEHLE SE HAIN
     @PostMapping("/upload")
     public ResponseEntity<String> uploadBookWithFiles(
             @RequestParam("book") String bookRequestJson,
@@ -125,7 +122,6 @@ public class BookController {
         }
     }
 
-    // BookController.java - Add this method
     @GetMapping("/user-with-categories/{userId}")
     public ResponseEntity<List<BookWithCategoryDTO>> findBooksByUserIdWithCategories(@PathVariable int userId) {
         try {
@@ -148,6 +144,75 @@ public class BookController {
             }).collect(Collectors.toList());
 
             return ResponseEntity.ok(bookDTOs);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // ✅ NEW: Get ALL PUBLISHED books for books page
+    @GetMapping("/published")
+    public ResponseEntity<List<Book>> getAllPublishedBooks() {
+        try {
+            List<Book> allBooks = bookService.findAllBook();
+
+            // Filter only published/approved books
+            List<Book> publishedBooks = allBooks.stream()
+                    .filter(book ->
+                            book.getStatus() != null &&
+                                    (book.getStatus().name().equals("PUBLISHED") ||
+                                            book.getStatus().name().equals("APPROVED") ||
+                                            book.getStatus().name().equals("ACTIVE"))
+                    )
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(publishedBooks);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // ✅ NEW: Get books by category for books page
+    @GetMapping("/published/category/{categoryId}")
+    public ResponseEntity<List<Book>> getPublishedBooksByCategory(@PathVariable int categoryId) {
+        try {
+            List<Book> categoryBooks = bookService.findBooksByCategoryId(categoryId);
+
+            // Filter only published books
+            List<Book> publishedBooks = categoryBooks.stream()
+                    .filter(book ->
+                            book.getStatus() != null &&
+                                    (book.getStatus().name().equals("PUBLISHED") ||
+                                            book.getStatus().name().equals("APPROVED") ||
+                                            book.getStatus().name().equals("ACTIVE"))
+                    )
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(publishedBooks);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // ✅ NEW: Search published books
+    @GetMapping("/published/search")
+    public ResponseEntity<List<Book>> searchPublishedBooks(@RequestParam String query) {
+        try {
+            List<Book> allBooks = bookService.findAllBook();
+
+            List<Book> searchResults = allBooks.stream()
+                    .filter(book ->
+                            (book.getStatus() != null &&
+                                    (book.getStatus().name().equals("PUBLISHED") ||
+                                            book.getStatus().name().equals("APPROVED") ||
+                                            book.getStatus().name().equals("ACTIVE"))) &&
+                                    (book.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                                            book.getAuthor().toLowerCase().contains(query.toLowerCase()) ||
+                                            (book.getCategory() != null &&
+                                                    book.getCategory().getCategoryName().toLowerCase().contains(query.toLowerCase())))
+                    )
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(searchResults);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

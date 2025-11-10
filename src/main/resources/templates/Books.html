@@ -565,6 +565,28 @@
             opacity: 0.7;
         }
 
+        /* ===== LOADING SPINNER ===== */
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* ===== RESPONSIVE DESIGN ===== */
         @media (max-width: 1024px) {
             .main {
@@ -623,7 +645,7 @@
             }
 
             .books-header h1 {
-                font-size: 22px;
+                fontSize: 22px;
             }
 
             .main {
@@ -656,7 +678,7 @@
         <a th:href="@{/Home}"><img th:src="@{/images/logo.png}" alt="Logo"></a>
     </div>
     <div class="nav-buttons">
-        <form class="header-search">
+        <form class="header-search" id="headerSearchForm">
             <input type="text" id="header-search" placeholder="Search books...">
             <button type="submit"><i class='bx bx-search'></i></button>
         </form>
@@ -672,14 +694,8 @@
     <div class="tags-section">
         <h2>Browse by Category</h2>
         <div id="tags" class="tags">
-            <div class="tag highlight">Fiction</div>
-            <div class="tag">Fantasy</div>
-            <div class="tag">Science</div>
-            <div class="tag">History</div>
-            <div class="tag">Romance</div>
-            <div class="tag">Mystery</div>
-            <div class="tag">Horror</div>
-            <div class="tag">Adventure</div>
+            <div class="tag highlight" data-category="all">All Books</div>
+            <!-- Categories will be loaded dynamically -->
         </div>
     </div>
 
@@ -687,133 +703,35 @@
     <div class="books-container">
         <div class="books-header">
             <h1>Discover Amazing Books</h1>
-<!--            <form id="form" class="search-form">-->
-<!--                <input type="text" id="search" placeholder="Search books...">-->
+<!--            <form id="searchForm" class="search-form">-->
+<!--                <input type="text" id="search" placeholder="Search books by title, author...">-->
 <!--                <button type="submit" id="search-btn"><i class='bx bx-search'></i></button>-->
 <!--            </form>-->
         </div>
 
+        <!-- Loading Spinner -->
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner"></div>
+            <p>Loading books...</p>
+        </div>
+
         <main id="main" class="main">
-            <!-- Book 1 -->
-            <div class="book">
-                <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="The Great Gatsby">
-                <div class="book-info">
-                    <h3>The Great Gatsby</h3>
-                    <p>F. Scott Fitzgerald</p>
-                    <span>1925</span>
-                </div>
-                <div class="book-tooltip">
-                    <h4>The Great Gatsby</h4>
-                    <p><strong>Author:</strong> F. Scott Fitzgerald</p>
-                    <p><strong>Published:</strong> 1925</p>
-                    <p><strong>Subjects:</strong> Fiction, Classic, American Literature</p>
-                </div>
-            </div>
-
-            <!-- Book 2 -->
-            <div class="book">
-                <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="To Kill a Mockingbird">
-                <div class="book-info">
-                    <h3>To Kill a Mockingbird</h3>
-                    <p>Harper Lee</p>
-                    <span>1960</span>
-                </div>
-                <div class="book-tooltip">
-                    <h4>To Kill a Mockingbird</h4>
-                    <p><strong>Author:</strong> Harper Lee</p>
-                    <p><strong>Published:</strong> 1960</p>
-                    <p><strong>Subjects:</strong> Fiction, Classic, Social Issues</p>
-                </div>
-            </div>
-
-            <!-- Book 3 -->
-            <div class="book">
-                <img src="https://images.unsplash.com/photo-1621351183012-e2f9972dd9bf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="1984">
-                <div class="book-info">
-                    <h3>1984</h3>
-                    <p>George Orwell</p>
-                    <span>1949</span>
-                </div>
-                <div class="book-tooltip">
-                    <h4>1984</h4>
-                    <p><strong>Author:</strong> George Orwell</p>
-                    <p><strong>Published:</strong> 1949</p>
-                    <p><strong>Subjects:</strong> Fiction, Dystopian, Science Fiction</p>
-                </div>
-            </div>
-
-            <!-- Book 4 -->
-            <div class="book">
-                <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Pride and Prejudice">
-                <div class="book-info">
-                    <h3>Pride and Prejudice</h3>
-                    <p>Jane Austen</p>
-                    <span>1813</span>
-                </div>
-                <div class="book-tooltip">
-                    <h4>Pride and Prejudice</h4>
-                    <p><strong>Author:</strong> Jane Austen</p>
-                    <p><strong>Published:</strong> 1813</p>
-                    <p><strong>Subjects:</strong> Fiction, Romance, Classic</p>
-                </div>
-            </div>
-
-            <!-- Book 5 -->
-            <div class="book">
-                <img src="https://images.unsplash.com/photo-1531901599638-a89bb60971a3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="The Hobbit">
-                <div class="book-info">
-                    <h3>The Hobbit</h3>
-                    <p>J.R.R. Tolkien</p>
-                    <span>1937</span>
-                </div>
-                <div class="book-tooltip">
-                    <h4>The Hobbit</h4>
-                    <p><strong>Author:</strong> J.R.R. Tolkien</p>
-                    <p><strong>Published:</strong> 1937</p>
-                    <p><strong>Subjects:</strong> Fantasy, Adventure, Fiction</p>
-                </div>
-            </div>
-
-            <!-- Book 6 -->
-            <div class="book">
-                <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Harry Potter">
-                <div class="book-info">
-                    <h3>Harry Potter</h3>
-                    <p>J.K. Rowling</p>
-                    <span>1997</span>
-                </div>
-                <div class="book-tooltip">
-                    <h4>Harry Potter</h4>
-                    <p><strong>Author:</strong> J.K. Rowling</p>
-                    <p><strong>Published:</strong> 1997</p>
-                    <p><strong>Subjects:</strong> Fantasy, Fiction, Young Adult</p>
-                </div>
-            </div>
+            <!-- Books will be loaded dynamically from API -->
         </main>
 
         <!-- ===== PAGINATION ===== -->
-<!--        <div class="pagination">-->
-<!--            <button id="prev" disabled>⬅ Prev</button>-->
-<!--            <span>Page 1 of 5</span>-->
-<!--            <button id="next">Next ➡</button>-->
-<!--        </div>-->
+        <div class="pagination" id="pagination">
+            <!-- Pagination will be loaded dynamically -->
+        </div>
     </div>
 </div>
 
 <!-- ===== MODAL POPUP ===== -->
-<div class="modal">
+<div class="modal" id="bookModal">
     <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <div class="modal-body">
-            <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Book Cover" class="modal-cover">
-            <div class="modal-info">
-                <h2>The Great Gatsby</h2>
-                <h4>by F. Scott Fitzgerald</h4>
-                <p><strong>First Published:</strong> 1925</p>
-                <p><strong>Subjects:</strong> Fiction, Classic, American Literature, Romance</p>
-                <p><strong>Description:</strong> A classic novel of the Jazz Age, telling the story of the mysterious millionaire Jay Gatsby and his obsession with the beautiful Daisy Buchanan.</p>
-                <a href="#" class="read-more">📖 Read More</a>
-            </div>
+        <span class="close-btn" id="closeModal">&times;</span>
+        <div class="modal-body" id="modalBody">
+            <!-- Book details will be loaded here -->
         </div>
     </div>
 </div>
@@ -835,660 +753,522 @@
 </footer>
 
 <script>
-    // ===== BOOKS DATABASE =====
-const booksDatabase = [
-    {
-        id: 1,
-        title: "The Great Gatsby",
-        author_name: ["F. Scott Fitzgerald"],
-        cover_i: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-        first_publish_year: 1925,
-        subject: ["Fiction", "Classic", "American Literature", "Romance"],
-        description: "A classic novel of the Jazz Age, telling the story of the mysterious millionaire Jay Gatsby and his obsession with the beautiful Daisy Buchanan."
-    },
-    {
-        id: 2,
-        title: "To Kill a Mockingbird",
-        author_name: ["Harper Lee"],
-        cover_i: "https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-        first_publish_year: 1960,
-        subject: ["Fiction", "Classic", "Southern Gothic", "Social Issues"],
-        description: "A gripping tale of racial injustice and childhood innocence in the American South, seen through the eyes of young Scout Finch."
-    },
-    {
-        id: 3,
-        title: "1984",
-        author_name: ["George Orwell"],
-        cover_i: "https://images.unsplash.com/photo-1621351183012-e2f9972dd9bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-        first_publish_year: 1949,
-        subject: ["Fiction", "Dystopian", "Science Fiction", "Political"],
-        description: "A dystopian social science fiction novel that examines the consequences of totalitarianism, mass surveillance, and repressive regimentation."
-    },
-    {
-        id: 4,
-        title: "Pride and Prejudice",
-        author_name: ["Jane Austen"],
-        cover_i: "https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-        first_publish_year: 1813,
-        subject: ["Fiction", "Romance", "Classic", "British Literature"],
-        description: "A romantic novel of manners that depicts the emotional development of protagonist Elizabeth Bennet."
-    },
-    {
-        id: 5,
-        title: "The Hobbit",
-        author_name: ["J.R.R. Tolkien"],
-        cover_i: "https://images.unsplash.com/photo-1531901599638-a89bb60971a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-        first_publish_year: 1937,
-        subject: ["Fantasy", "Adventure", "Fiction", "Classic"],
-        description: "A fantasy novel about the adventures of hobbit Bilbo Baggins, who is hired as a burglar by a group of dwarves."
-    },
-    {
-        id: 6,
-        title: "Harry Potter and the Philosopher's Stone",
-        author_name: ["J.K. Rowling"],
-        cover_i: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-        first_publish_year: 1997,
-        subject: ["Fantasy", "Fiction", "Young Adult", "Adventure"],
-        description: "The first novel in the Harry Potter series, following Harry Potter, a young wizard who discovers his magical heritage."
-    },
-    {
-        id: 7,
-        title: "The Da Vinci Code",
-        author_name: ["Dan Brown"],
-        cover_i: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-        first_publish_year: 2003,
-        subject: ["Mystery", "Thriller", "Fiction", "Conspiracy"],
-        description: "A mystery thriller novel that follows symbologist Robert Langdon as he investigates a murder in Paris's Louvre Museum."
-    },
-    {
-        id: 8,
-        title: "The Shining",
-        author_name: ["Stephen King"],
-        cover_i: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-        first_publish_year: 1977,
-        subject: ["Horror", "Fiction", "Thriller", "Supernatural"],
-        description: "A horror novel about a family's winter stay at an isolated hotel where a malevolent presence influences the father into violence."
-    },
-    {
-        id: 9,
-        title: "A Brief History of Time",
-        author_name: ["Stephen Hawking"],
-        cover_i: "https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-        first_publish_year: 1988,
-        subject: ["Science", "Physics", "Cosmology", "Non-fiction"],
-        description: "A popular-science book on cosmology that explains complex concepts like space, time, black holes, and the Big Bang."
-    },
-    {
-        id: 10,
-        title: "Sapiens: A Brief History of Humankind",
-        author_name: ["Yuval Noah Harari"],
-        cover_i: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-        first_publish_year: 2011,
-        subject: ["History", "Anthropology", "Non-fiction", "Science"],
-        description: "A book that explores the history and impact of Homo sapiens from the Stone Age to the 21st century."
+    // ===== GLOBAL VARIABLES =====
+    const API_BASE_URL = 'http://localhost:8035';
+    let allBooks = [];
+    let filteredBooks = [];
+    let categories = [];
+    let currentPage = 1;
+    const booksPerPage = 8;
+    let currentCategory = 'all';
+    let currentSearchQuery = '';
+
+    // ===== INITIALIZATION =====
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Initialize the page
+        initializePage();
+        setupEventListeners();
+    });
+
+    // ===== PAGE INITIALIZATION =====
+    async function initializePage() {
+        showLoading(true);
+        try {
+            await loadCategories();
+            await loadBooks();
+            setupCategoryFilters();
+        } catch (error) {
+            console.error('Error initializing page:', error);
+            showError('Failed to load books. Please try again later.');
+        } finally {
+            showLoading(false);
+        }
     }
-];
 
-// ===== GENRE CONFIG =====
-const genres = [
-    { "id": "fiction", "name": "Fiction" },
-    { "id": "fantasy", "name": "Fantasy" },
-    { "id": "science", "name": "Science" },
-    { "id": "history", "name": "History" },
-    { "id": "romance", "name": "Romance" },
-    { "id": "mystery", "name": "Mystery" },
-    { "id": "horror", "name": "Horror" },
-    { "id": "adventure", "name": "Adventure" }
-];
+    // ===== LOAD BOOKS FROM API =====
+    async function loadBooks() {
+        try {
+            console.log('📚 Loading published books from API...');
 
-// ===== GLOBAL VARIABLES =====
-const main = document.getElementById('main');
-const form = document.getElementById('form');
-const search = document.getElementById('search');
-const headerSearch = document.getElementById('header-search');
-const headerSearchForm = document.querySelector('.header-search');
-const tagsEl = document.getElementById('tags');
-const paginationEl = document.createElement('div');
-paginationEl.classList.add('pagination');
-main.insertAdjacentElement('afterend', paginationEl);
+            const response = await fetch(`${API_BASE_URL}/book/apies/published`);
 
-let selectedGenre = [];
-let currentPage = 1;
-const booksPerPage = 6;
-let totalPages = 1;
-let currentQuery = '';
-let filteredBooks = [];
-
-// ===== INITIALIZATION =====
-document.addEventListener('DOMContentLoaded', function() {
-    // Set current year in footer
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Initialize the page
-    setGenre();
-    fetchBooks();
-    setupEventListeners();
-});
-
-// ===== GENRE FILTER =====
-function setGenre() {
-    tagsEl.innerHTML = '';
-    genres.forEach(genre => {
-        const t = document.createElement('div');
-        t.classList.add('tag');
-        t.id = genre.id;
-        t.innerText = genre.name;
-        t.addEventListener('click', () => {
-            if (selectedGenre.includes(genre.id)) {
-                selectedGenre = selectedGenre.filter(id => id !== genre.id);
-            } else {
-                selectedGenre.push(genre.id);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-            highlightSelection();
-            currentPage = 1;
-            fetchBooks();
-        });
-        tagsEl.appendChild(t);
-    });
-}
 
-function highlightSelection() {
-    const tags = document.querySelectorAll('.tag');
-    tags.forEach(tag => tag.classList.remove('highlight'));
-    selectedGenre.forEach(id => {
-        const tag = document.getElementById(id);
-        if (tag) tag.classList.add('highlight');
-    });
-}
+            const booksData = await response.json();
+            console.log('✅ Books loaded successfully:', booksData.length);
 
-// ===== FETCH BOOKS FROM LOCAL DATABASE =====
-function fetchBooks(query = '', page = 1) {
-    currentQuery = query;
+            allBooks = booksData;
+            filteredBooks = [...allBooks];
 
-    // Filter books based on search query and selected genres
-    filteredBooks = booksDatabase.filter(book => {
-        const matchesSearch = !query ||
-            book.title.toLowerCase().includes(query.toLowerCase()) ||
-            book.author_name.some(author => author.toLowerCase().includes(query.toLowerCase()));
+            renderBooks();
+            updatePagination();
 
-        const matchesGenre = selectedGenre.length === 0 ||
-            selectedGenre.some(genre => book.subject.some(subject =>
-                subject.toLowerCase().includes(genre.toLowerCase())));
-
-        return matchesSearch && matchesGenre;
-    });
-
-    // Calculate pagination
-    totalPages = Math.ceil(filteredBooks.length / booksPerPage);
-    const startIndex = (page - 1) * booksPerPage;
-    const endIndex = startIndex + booksPerPage;
-    const paginatedBooks = filteredBooks.slice(startIndex, endIndex);
-
-    if (paginatedBooks.length > 0) {
-        showBooks(paginatedBooks);
-        updatePagination();
-    } else {
-        main.innerHTML = `<h1 class="no-results">No Results Found</h1>`;
-        paginationEl.innerHTML = '';
+        } catch (error) {
+            console.error('❌ Error loading books:', error);
+            showError('Failed to load books from server.');
+        }
     }
-}
 
-// ===== DISPLAY BOOKS WITH HOVER TOOLTIP =====
-function showBooks(books) {
-    main.innerHTML = '';
+    // ===== LOAD CATEGORIES =====
+    async function loadCategories() {
+        try {
+            console.log('📂 Loading categories...');
 
-    books.forEach(book => {
-        const { title, author_name, cover_i, first_publish_year, subject } = book;
+            const response = await fetch(`${API_BASE_URL}/category/apies/findAll`);
 
-        const bookEl = document.createElement('div');
-        bookEl.classList.add('book');
+            if (response.ok) {
+                const categoriesData = await response.json();
+                categories = categoriesData;
+                console.log('✅ Categories loaded:', categories.length);
+            } else {
+                console.warn('⚠️ Could not load categories, using defaults');
+                // Use default categories if API fails
+                categories = [
+                    { id: 1, categoryName: "FICTION" },
+                    { id: 2, categoryName: "NON_FICTION" },
+                    { id: 3, categoryName: "SCIENCE_FICTION" },
+                    { id: 4, categoryName: "MYSTERY" },
+                    { id: 5, categoryName: "BIOGRAPHY" }
+                ];
+            }
+        } catch (error) {
+            console.error('❌ Error loading categories:', error);
+            // Use default categories on error
+            categories = [
+                { id: 1, categoryName: "FICTION" },
+                { id: 2, categoryName: "NON_FICTION" },
+                { id: 3, categoryName: "SCIENCE_FICTION" },
+                { id: 4, categoryName: "MYSTERY" },
+                { id: 5, categoryName: "BIOGRAPHY" }
+            ];
+        }
+    }
 
-        // Main book content
-        bookEl.innerHTML = `
-            <img src="${cover_i}" alt="${title}" onerror="this.src='${generatePlaceholderSvg(title)}'">
-            <div class="book-info">
-                <h3>${title}</h3>
-                <p>${author_name ? author_name.join(', ') : 'Unknown Author'}</p>
-                <span>${first_publish_year || ''}</span>
+    // ===== SETUP CATEGORY FILTERS =====
+    function setupCategoryFilters() {
+        const tagsContainer = document.getElementById('tags');
+
+        // Clear existing tags except "All Books"
+        const allBooksTag = tagsContainer.querySelector('[data-category="all"]');
+        tagsContainer.innerHTML = '';
+        tagsContainer.appendChild(allBooksTag);
+
+        // Add category tags
+        categories.forEach(category => {
+            const tag = document.createElement('div');
+            tag.classList.add('tag');
+            tag.textContent = category.categoryName;
+            tag.dataset.category = category.id;
+            tag.addEventListener('click', () => filterByCategory(category.id));
+            tagsContainer.appendChild(tag);
+        });
+    }
+
+    // ===== FILTER BY CATEGORY =====
+    async function filterByCategory(categoryId) {
+        currentCategory = categoryId;
+        currentPage = 1;
+
+        // Update active tag
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.classList.remove('highlight');
+        });
+        document.querySelector(`[data-category="${categoryId}"]`).classList.add('highlight');
+
+        showLoading(true);
+
+        try {
+            if (categoryId === 'all') {
+                // Load all published books
+                await loadBooks();
+            } else {
+                // Load books by category
+                const response = await fetch(`${API_BASE_URL}/book/apies/published/category/${categoryId}`);
+
+                if (response.ok) {
+                    const categoryBooks = await response.json();
+                    filteredBooks = categoryBooks;
+                    renderBooks();
+                    updatePagination();
+                } else {
+                    throw new Error('Failed to load category books');
+                }
+            }
+        } catch (error) {
+            console.error('Error filtering by category:', error);
+            showError('Failed to load category books.');
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    // ===== SEARCH BOOKS =====
+    async function searchBooks(query) {
+        currentSearchQuery = query;
+        currentPage = 1;
+
+        if (!query.trim()) {
+            // If search is empty, reload all books
+            await loadBooks();
+            return;
+        }
+
+        showLoading(true);
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/book/apies/published/search?query=${encodeURIComponent(query)}`);
+
+            if (response.ok) {
+                const searchResults = await response.json();
+                filteredBooks = searchResults;
+                renderBooks();
+                updatePagination();
+            } else {
+                throw new Error('Search failed');
+            }
+        } catch (error) {
+            console.error('Error searching books:', error);
+            // Fallback: client-side search
+            filteredBooks = allBooks.filter(book =>
+                book.title.toLowerCase().includes(query.toLowerCase()) ||
+                book.author.toLowerCase().includes(query.toLowerCase()) ||
+                (book.category && book.category.categoryName.toLowerCase().includes(query.toLowerCase()))
+            );
+            renderBooks();
+            updatePagination();
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    // ===== RENDER BOOKS =====
+    function renderBooks() {
+        const main = document.getElementById('main');
+
+        if (!filteredBooks || filteredBooks.length === 0) {
+            main.innerHTML = `
+                <div class="no-results">
+                    <h3>No books found</h3>
+                    <p>Try adjusting your search or filter criteria</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Calculate pagination
+        const startIndex = (currentPage - 1) * booksPerPage;
+        const endIndex = startIndex + booksPerPage;
+        const booksToShow = filteredBooks.slice(startIndex, endIndex);
+
+        let html = '';
+
+        booksToShow.forEach(book => {
+            const coverUrl = book.coverImagePath ?
+                `${API_BASE_URL}/uploads/${book.coverImagePath}` :
+                generatePlaceholderSvg(book.title);
+
+            const categoryName = book.category ?
+                book.category.categoryName : 'Uncategorized';
+
+            html += `
+                <div class="book" onclick="showBookDetails(${book.id})">
+                    <img src="${coverUrl}" alt="${book.title}"
+                         onerror="this.src='${generatePlaceholderSvg(book.title)}'">
+                    <div class="book-info">
+                        <h3>${book.title}</h3>
+                        <p>${book.author}</p>
+                        <span>${categoryName}</span>
+                    </div>
+                    <div class="book-tooltip">
+                        <h4>${book.title}</h4>
+                        <p><strong>Author:</strong> ${book.author}</p>
+                        <p><strong>Category:</strong> ${categoryName}</p>
+                        <p><strong>Language:</strong> ${book.language || 'English'}</p>
+                        ${book.description ? `<p>${book.description.substring(0, 100)}...</p>` : ''}
+                    </div>
+                </div>
+            `;
+        });
+
+        main.innerHTML = html;
+    }
+
+    // ===== SHOW BOOK DETAILS =====
+    async function showBookDetails(bookId) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/book/apies/findById/${bookId}`);
+
+            if (response.ok) {
+                const book = await response.json();
+                showBookModal(book);
+            } else {
+                throw new Error('Failed to load book details');
+            }
+        } catch (error) {
+            console.error('Error loading book details:', error);
+            showError('Failed to load book details.');
+        }
+    }
+
+    // ===== SHOW BOOK MODAL =====
+    function showBookModal(book) {
+        const modal = document.getElementById('bookModal');
+        const modalBody = document.getElementById('modalBody');
+
+        const coverUrl = book.coverImagePath ?
+            `${API_BASE_URL}/uploads/${book.coverImagePath}` :
+            generatePlaceholderSvg(book.title);
+
+        const categoryName = book.category ?
+            book.category.categoryName : 'Uncategorized';
+
+        modalBody.innerHTML = `
+            <img src="${coverUrl}" alt="${book.title}" class="modal-cover"
+                 onerror="this.src='${generatePlaceholderSvg(book.title)}'">
+            <div class="modal-info">
+                <h2>${book.title}</h2>
+                <h4>by ${book.author}</h4>
+                <p><strong>Category:</strong> ${categoryName}</p>
+                <p><strong>Language:</strong> ${book.language || 'English'}</p>
+                <p><strong>Status:</strong> ${book.status || 'Published'}</p>
+                ${book.description ? `<p><strong>Description:</strong> ${book.description}</p>` : ''}
+                ${book.uploadedAt ? `<p><strong>Added:</strong> ${new Date(book.uploadedAt).toLocaleDateString()}</p>` : ''}
+
+                <div style="margin-top: 20px;">
+                    <a href="/reader/${book.id}" class="read-more" target="_blank">
+                        📖 Read This Book
+                    </a>
+                    <button class="read-more" onclick="addToReadingList(${book.id})" style="margin-left: 10px;">
+                        ➕ Add to Reading List
+                    </button>
+                </div>
             </div>
         `;
 
-        // Add tooltip div for hover overview
-        const tooltip = document.createElement('div');
-        tooltip.classList.add('book-tooltip');
-        tooltip.innerHTML = `
-            <h4>${title}</h4>
-            <p><strong>Author:</strong> ${author_name ? author_name.join(', ') : 'Unknown'}</p>
-            <p><strong>Published:</strong> ${first_publish_year || 'N/A'}</p>
-            <p><strong>Subjects:</strong> ${subject ? subject.slice(0, 4).join(', ') : 'No subjects available'}</p>
+        modal.classList.add('active');
+    }
+
+    // ===== PAGINATION =====
+    function updatePagination() {
+        const pagination = document.getElementById('pagination');
+        const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
+
+        if (totalPages <= 1) {
+            pagination.innerHTML = '';
+            return;
+        }
+
+        let html = `
+            <button id="prev" ${currentPage === 1 ? 'disabled' : ''}>⬅ Prev</button>
+            <span>Page ${currentPage} of ${totalPages}</span>
+            <button id="next" ${currentPage === totalPages ? 'disabled' : ''}>Next ➡</button>
         `;
-        bookEl.appendChild(tooltip);
 
-        // Click opens modal
-        bookEl.addEventListener('click', () => showBookDetails(book));
+        pagination.innerHTML = html;
 
-        main.appendChild(bookEl);
-    });
-}
-
-function generatePlaceholderSvg(title) {
-    const initials = title ? title.charAt(0).toUpperCase() : 'B';
-    const svg = `
-        <svg width="280" height="320" xmlns="http://www.w3.org/2000/svg">
-            <rect width="100%" height="100%" fill="#667eea"/>
-            <text x="50%" y="50%" font-family="Arial" font-size="48" fill="white"
-                  text-anchor="middle" dy=".3em">${initials}</text>
-        </svg>
-    `;
-    return 'data:image/svg+xml;base64,' + btoa(svg);
-}
-
-// ===== PAGINATION =====
-function updatePagination() {
-    if (totalPages <= 1) {
-        paginationEl.innerHTML = '';
-        return;
-    }
-
-    paginationEl.innerHTML = `
-        <button ${currentPage === 1 ? 'disabled' : ''} id="prev">⬅ Prev</button>
-        <span>Page ${currentPage} of ${totalPages}</span>
-        <button ${currentPage === totalPages ? 'disabled' : ''} id="next">Next ➡</button>
-    `;
-
-    document.getElementById('prev').addEventListener('click', () => {
-        if (currentPage > 1) {
-            currentPage--;
-            fetchBooks(currentQuery, currentPage);
-        }
-    });
-
-    document.getElementById('next').addEventListener('click', () => {
-        if (currentPage < totalPages) {
-            currentPage++;
-            fetchBooks(currentQuery, currentPage);
-        }
-    });
-}
-
-// ===== SEARCH FUNCTIONALITY =====
-function setupEventListeners() {
-    // Main search form submission
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        currentPage = 1;
-        fetchBooks(search.value);
-    });
-
-    // Header search form submission
-    headerSearchForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        currentPage = 1;
-        fetchBooks(headerSearch.value);
-    });
-
-    // Real-time search for main search
-    search.addEventListener('input', () => {
-        currentPage = 1;
-        fetchBooks(search.value);
-    });
-
-    // Real-time search for header search
-    headerSearch.addEventListener('input', () => {
-        currentPage = 1;
-        fetchBooks(headerSearch.value);
-    });
-
-    // Modal close functionality
-    const modal = document.querySelector('.modal');
-    const closeBtn = document.querySelector('.close-btn');
-
-    closeBtn.addEventListener('click', () => {
-        modal.classList.remove('active');
-    });
-
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.classList.remove('active');
-        }
-    });
-
-    // Keyboard navigation
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            modal.classList.remove('active');
-        }
-    });
-}
-
-// ===== BOOK DETAILS MODAL =====
-function showBookDetails(book) {
-    const { title, author_name, cover_i, first_publish_year, subject, description } = book;
-
-    const modal = document.querySelector('.modal');
-    const modalBody = document.querySelector('.modal-body');
-
-    modalBody.innerHTML = `
-        <img src="${cover_i}" alt="${title}" class="modal-cover" onerror="this.src='${generatePlaceholderSvg(title)}'">
-        <div class="modal-info">
-            <h2>${title}</h2>
-            <h4>by ${author_name ? author_name.join(', ') : 'Unknown Author'}</h4>
-            <p><strong>First Published:</strong> ${first_publish_year || 'N/A'}</p>
-            <p><strong>Subjects:</strong> ${subject ? subject.join(', ') : 'No subjects available'}</p>
-            <p><strong>Description:</strong> ${description || 'No description available.'}</p>
-            <a href="#" class="read-more" onclick="addToReadingList(${book.id})">📖 Add to Reading List</a>
-        </div>
-    `;
-
-    modal.classList.add('active');
-}
-
-// ===== READING LIST FUNCTIONALITY =====
-function addToReadingList(bookId) {
-    const book = booksDatabase.find(b => b.id === bookId);
-    if (!book) return;
-
-    // Get current reading list from localStorage
-    let readingList = JSON.parse(localStorage.getItem('readingList')) || [];
-
-    // Check if book is already in reading list
-    if (readingList.some(item => item.id === bookId)) {
-        showAlert('Book is already in your reading list!', 'info');
-        return;
-    }
-
-    // Add book to reading list
-    readingList.push(book);
-    localStorage.setItem('readingList', JSON.stringify(readingList));
-
-    showAlert('Book added to reading list!', 'success');
-
-    // Close modal after adding
-    setTimeout(() => {
-        document.querySelector('.modal').classList.remove('active');
-    }, 1500);
-}
-
-// ===== ALERT SYSTEM =====
-function showAlert(message, type = 'info') {
-    // Create alert container if it doesn't exist
-    let alertContainer = document.getElementById('alertContainer');
-    if (!alertContainer) {
-        alertContainer = document.createElement('div');
-        alertContainer.id = 'alertContainer';
-        alertContainer.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            z-index: 10000;
-            max-width: 300px;
-        `;
-        document.body.appendChild(alertContainer);
-    }
-
-    const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type}`;
-    alertDiv.style.cssText = `
-        background: ${type === 'success' ? '#d4edda' : type === 'error' ? '#f8d7da' : '#d1ecf1'};
-        color: ${type === 'success' ? '#155724' : type === 'error' ? '#721c24' : '#0c5460'};
-        padding: 12px 16px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        border: 1px solid ${type === 'success' ? '#c3e6cb' : type === 'error' ? '#f5c6cb' : '#bee5eb'};
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        animation: slideInRight 0.3s ease-out;
-    `;
-
-    const icon = type === 'success' ? 'bx-check-circle' : type === 'error' ? 'bx-error-circle' : 'bx-info-circle';
-    alertDiv.innerHTML = `
-        <i class="bx ${icon}" style="font-size: 20px;"></i>
-        <span>${message}</span>
-    `;
-
-    alertContainer.appendChild(alertDiv);
-
-    // Auto remove after 5 seconds
-    setTimeout(() => {
-        if (alertDiv.parentNode) {
-            alertDiv.style.animation = 'slideOutRight 0.3s ease-in';
-            setTimeout(() => alertDiv.remove(), 300);
-        }
-    }, 5000);
-}
-
-// Add CSS for animations
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-
-    @keyframes slideOutRight {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(style);
-
-// ===== CATEGORY STATISTICS =====
-function updateCategoryStats() {
-    const categoryStats = {};
-
-    booksDatabase.forEach(book => {
-        book.subject.forEach(subject => {
-            const category = subject.toLowerCase();
-            categoryStats[category] = (categoryStats[category] || 0) + 1;
-        });
-    });
-
-    console.log('Category Statistics:', categoryStats);
-    return categoryStats;
-}
-
-// ===== BOOK RECOMMENDATIONS =====
-function getRecommendedBooks() {
-    // Simple recommendation based on most popular subjects
-    const subjectCount = {};
-    booksDatabase.forEach(book => {
-        book.subject.forEach(subject => {
-            subjectCount[subject] = (subjectCount[subject] || 0) + 1;
-        });
-    });
-
-    const popularSubjects = Object.entries(subjectCount)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 3)
-        .map(([subject]) => subject);
-
-    return booksDatabase.filter(book =>
-        book.subject.some(subject => popularSubjects.includes(subject))
-    ).slice(0, 3);
-}
-
-// ===== EXPORT FUNCTIONALITY =====
-function exportReadingList() {
-    const readingList = JSON.parse(localStorage.getItem('readingList')) || [];
-    if (readingList.length === 0) {
-        showAlert('Your reading list is empty!', 'info');
-        return;
-    }
-
-    const dataStr = JSON.stringify(readingList, null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'intelliread-reading-list.json';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-    showAlert('Reading list exported successfully!', 'success');
-}
-
-// ===== IMPORT FUNCTIONALITY =====
-function importReadingList(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            const importedList = JSON.parse(e.target.result);
-            if (Array.isArray(importedList)) {
-                const currentList = JSON.parse(localStorage.getItem('readingList')) || [];
-                const mergedList = [...currentList, ...importedList.filter(book =>
-                    !currentList.some(item => item.id === book.id)
-                )];
-
-                localStorage.setItem('readingList', JSON.stringify(mergedList));
-                showAlert('Reading list imported successfully!', 'success');
-            } else {
-                showAlert('Invalid file format!', 'error');
-            }
-        } catch (error) {
-            showAlert('Error reading file!', 'error');
-        }
-    };
-    reader.readAsText(file);
-
-    // Reset file input
-    event.target.value = '';
-}
-
-// ===== INITIALIZE RECOMMENDATIONS =====
-function initializeRecommendations() {
-    const recommendedBooks = getRecommendedBooks();
-    console.log('Recommended Books:', recommendedBooks);
-
-    // You can display these in a separate section
-    if (recommendedBooks.length > 0) {
-        const stats = updateCategoryStats();
-        console.log('Library Statistics:', {
-            totalBooks: booksDatabase.length,
-            totalSubjects: Object.keys(stats).length,
-            mostPopularSubject: Object.entries(stats).sort((a, b) => b[1] - a[1])[0]
-        });
-    }
-}
-
-// Call initialization
-initializeRecommendations();
-
-// ===== ENHANCED SEARCH WITH DEBOUNCE =====
-let searchTimeout;
-function debouncedSearch() {
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(() => {
-        currentPage = 1;
-        fetchBooks(search.value);
-    }, 300);
-}
-
-// Add debounced search if you want real-time search
-// search.addEventListener('input', debouncedSearch);
-
-// ===== ACCESSIBILITY FEATURES =====
-function enhanceAccessibility() {
-    // Add keyboard navigation for books
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' && currentPage < totalPages) {
-            currentPage++;
-            fetchBooks(currentQuery, currentPage);
-        } else if (e.key === 'ArrowLeft' && currentPage > 1) {
-            currentPage--;
-            fetchBooks(currentQuery, currentPage);
-        }
-    });
-
-    // Add focus management for modal
-    const modal = document.querySelector('.modal');
-    modal.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            modal.classList.remove('active');
-        }
-    });
-}
-
-// Initialize accessibility features
-enhanceAccessibility();
-
-// ===== PERFORMANCE OPTIMIZATION =====
-// Lazy loading for images
-function initializeLazyLoading() {
-    const images = document.querySelectorAll('img[data-src]');
-
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.removeAttribute('data-src');
-                observer.unobserve(img);
+        document.getElementById('prev').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderBooks();
+                updatePagination();
             }
         });
-    });
 
-    images.forEach(img => imageObserver.observe(img));
-}
-
-// ===== OFFLINE SUPPORT =====
-// Cache books data for offline use
-function cacheBooksData() {
-    if ('caches' in window) {
-        caches.open('books-data').then(cache => {
-            cache.put('/books-data', new Response(JSON.stringify(booksDatabase)));
+        document.getElementById('next').addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderBooks();
+                updatePagination();
+            }
         });
     }
-}
 
-// Initialize caching
-cacheBooksData();
+    // ===== UTILITY FUNCTIONS =====
+    function generatePlaceholderSvg(title) {
+        const initials = title ? title.charAt(0).toUpperCase() : 'B';
+        const svg = `
+            <svg width="280" height="320" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100%" height="100%" fill="#667eea"/>
+                <text x="50%" y="50%" font-family="Arial" font-size="48" fill="white"
+                      text-anchor="middle" dy=".3em">${initials}</text>
+            </svg>
+        `;
+        return 'data:image/svg+xml;base64,' + btoa(svg);
+    }
 
-// ===== PROGRESSIVE WEB APP FEATURES =====
-// Add to home screen prompt
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-    // Prevent the mini-infobar from appearing on mobile
-    e.preventDefault();
-    // Stash the event so it can be triggered later
-    deferredPrompt = e;
+    function showLoading(show) {
+        const spinner = document.getElementById('loadingSpinner');
+        const main = document.getElementById('main');
 
-    // Show install prompt (you can customize this)
-    setTimeout(() => {
-        showAlert('Add Intelli-Read to your home screen for quick access!', 'info');
-    }, 5000);
-});
+        if (spinner) {
+            spinner.style.display = show ? 'block' : 'none';
+        }
+        if (main) {
+            main.style.display = show ? 'none' : 'grid';
+        }
+    }
 
-// ===== SERVICE WORKER REGISTRATION =====
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').then(registration => {
-            console.log('SW registered: ', registration);
-        }).catch(registrationError => {
-            console.log('SW registration failed: ', registrationError);
+    function showError(message) {
+        const main = document.getElementById('main');
+        main.innerHTML = `
+            <div class="no-results">
+                <h3>❌ Error</h3>
+                <p>${message}</p>
+                <button onclick="initializePage()" class="read-more" style="margin-top: 15px;">
+                    Try Again
+                </button>
+            </div>
+        `;
+    }
+
+    function setupEventListeners() {
+        // Search form
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('search');
+
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            searchBooks(searchInput.value);
         });
-    });
-}
+
+        // Header search form
+        const headerSearchForm = document.getElementById('headerSearchForm');
+        const headerSearchInput = document.getElementById('header-search');
+
+        headerSearchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            searchBooks(headerSearchInput.value);
+        });
+
+        // Modal close
+        const closeModal = document.getElementById('closeModal');
+        const modal = document.getElementById('bookModal');
+
+        closeModal.addEventListener('click', () => {
+            modal.classList.remove('active');
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+            }
+        });
+
+        // Keyboard events
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                modal.classList.remove('active');
+            }
+        });
+    }
+
+    // ===== READING LIST FUNCTIONALITY =====
+    function addToReadingList(bookId) {
+        const book = allBooks.find(b => b.id === bookId);
+        if (!book) return;
+
+        let readingList = JSON.parse(localStorage.getItem('readingList')) || [];
+
+        // Check if book already in reading list
+        if (readingList.some(item => item.id === bookId)) {
+            showAlert('Book is already in your reading list!', 'info');
+            return;
+        }
+
+        // Add to reading list
+        readingList.push({
+            id: book.id,
+            title: book.title,
+            author: book.author,
+            coverImagePath: book.coverImagePath,
+            category: book.category
+        });
+
+        localStorage.setItem('readingList', JSON.stringify(readingList));
+        showAlert('Book added to reading list!', 'success');
+    }
+
+    function showAlert(message, type = 'info') {
+        // Create alert container if it doesn't exist
+        let alertContainer = document.getElementById('alertContainer');
+        if (!alertContainer) {
+            alertContainer = document.createElement('div');
+            alertContainer.id = 'alertContainer';
+            alertContainer.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                z-index: 10000;
+                max-width: 300px;
+            `;
+            document.body.appendChild(alertContainer);
+        }
+
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type}`;
+        alertDiv.style.cssText = `
+            background: ${type === 'success' ? '#d4edda' : type === 'error' ? '#f8d7da' : '#d1ecf1'};
+            color: ${type === 'success' ? '#155724' : type === 'error' ? '#721c24' : '#0c5460'};
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid ${type === 'success' ? '#c3e6cb' : type === 'error' ? '#f5c6cb' : '#bee5eb'};
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            animation: slideInRight 0.3s ease-out;
+        `;
+
+        const icon = type === 'success' ? 'bx-check-circle' : type === 'error' ? 'bx-error-circle' : 'bx-info-circle';
+        alertDiv.innerHTML = `
+            <i class="bx ${icon}" style="font-size: 20px;"></i>
+            <span>${message}</span>
+        `;
+
+        alertContainer.appendChild(alertDiv);
+
+        // Auto remove after 3 seconds
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.style.animation = 'slideOutRight 0.3s ease-in';
+                setTimeout(() => alertDiv.remove(), 300);
+            }
+        }, 3000);
+    }
+
+    // Add CSS for animations
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
 </script>
 </body>
 </html>

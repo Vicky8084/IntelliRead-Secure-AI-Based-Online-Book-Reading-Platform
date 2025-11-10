@@ -1,6 +1,7 @@
 package com.intelliRead.Online.Reading.Paltform.service;
 
 import com.intelliRead.Online.Reading.Paltform.converter.BookConverter;
+import com.intelliRead.Online.Reading.Paltform.enums.BookStatus;
 import com.intelliRead.Online.Reading.Paltform.exception.BookAlreadyExistException;
 import com.intelliRead.Online.Reading.Paltform.exception.UserNotFoundException;
 import com.intelliRead.Online.Reading.Paltform.model.Book;
@@ -25,6 +26,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BookService {
@@ -284,4 +286,108 @@ public class BookService {
     public List<Book> findBooksByUserId(int userId) {
         return bookRepository.findBooksByUserIdWithCategory(userId);
     }
+
+    // ✅ NEW: Get only published books
+    public List<Book> findPublishedBooks() {
+        List<Book> allBooks = bookRepository.findAll();
+        return allBooks.stream()
+                .filter(book ->
+                        book.getStatus() != null &&
+                                (book.getStatus().equals(BookStatus.PUBLISHED) ||
+                                        book.getStatus().equals(BookStatus.APPROVED) ||
+                                        book.getStatus().equals(BookStatus.ACTIVE))
+                )
+                .collect(Collectors.toList());
+    }
+
+    // ✅ NEW: Get published books by category
+    public List<Book> findPublishedBooksByCategoryId(int categoryId) {
+        List<Book> categoryBooks = bookRepository.findByCategoryId(categoryId);
+        return categoryBooks.stream()
+                .filter(book ->
+                        book.getStatus() != null &&
+                                (book.getStatus().equals(BookStatus.PUBLISHED) ||
+                                        book.getStatus().equals(BookStatus.APPROVED) ||
+                                        book.getStatus().equals(BookStatus.ACTIVE))
+                )
+                .collect(Collectors.toList());
+    }
+
+    // ✅ NEW: Search published books
+    public List<Book> searchPublishedBooks(String query) {
+        List<Book> allBooks = bookRepository.findAll();
+        return allBooks.stream()
+                .filter(book ->
+                        (book.getStatus() != null &&
+                                (book.getStatus().equals(BookStatus.PUBLISHED) ||
+                                        book.getStatus().equals(BookStatus.APPROVED) ||
+                                        book.getStatus().equals(BookStatus.ACTIVE))) &&
+                                (book.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                                        book.getAuthor().toLowerCase().contains(query.toLowerCase()) ||
+                                        (book.getCategory() != null &&
+                                                book.getCategory().getCategoryName().toLowerCase().contains(query.toLowerCase())))
+                )
+                .collect(Collectors.toList());
+    }
+
+    public String updateBookStatus(int bookId, String status, String adminNotes) {
+        try {
+            Book book = findBookById(bookId);
+            if (book == null) {
+                return "❌ Book not found";
+            }
+
+            // Convert string status to BookStatus enum
+            BookStatus bookStatus;
+            try {
+                bookStatus = BookStatus.valueOf(status.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                return "❌ Invalid status: " + status;
+            }
+
+            book.setStatus(bookStatus);
+            // You can add adminNotes field in Book model if needed
+            bookRepository.save(book);
+
+            return "✅ Book status updated to " + status;
+        } catch (Exception e) {
+            return "❌ Error updating book status: " + e.getMessage();
+        }
+    }
+
+    public String featureBook(int bookId) {
+        try {
+            Book book = findBookById(bookId);
+            if (book == null) {
+                return "❌ Book not found";
+            }
+
+            // Add isFeatured field in Book model if you want this feature
+            // book.setFeatured(true);
+            bookRepository.save(book);
+
+            return "✅ Book featured successfully";
+        } catch (Exception e) {
+            return "❌ Error featuring book: " + e.getMessage();
+        }
+    }
+
+    public String unfeatureBook(int bookId) {
+        try {
+            Book book = findBookById(bookId);
+            if (book == null) {
+                return "❌ Book not found";
+            }
+
+            // book.setFeatured(false);
+            bookRepository.save(book);
+
+            return "✅ Book unfeatured successfully";
+        } catch (Exception e) {
+            return "❌ Error unfeaturing book: " + e.getMessage();
+        }
+    }
+
+
+
 }
