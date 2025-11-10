@@ -63,7 +63,7 @@ function highlightSelection() {
 function fetchBooks(query = '', page = 1) {
   currentQuery = query || selectedGenre.join(' ') || 'bestseller';
   const url = `${searchURL}?q=${currentQuery}&page=${page}`;
-  
+
   fetch(url)
     .then(res => res.json())
     .then(data => {
@@ -173,7 +173,7 @@ function showBookDetails(book) {
   const { title, author_name, cover_i, first_publish_year, subject, key } = book;
 
   modalBody.innerHTML = `
-    <img src="${cover_i ? IMG_URL + cover_i + '-L.jpg' : 'http://via.placeholder.com/250x350'}" 
+    <img src="${cover_i ? IMG_URL + cover_i + '-L.jpg' : 'http://via.placeholder.com/250x350'}"
          alt="${title}" class="modal-cover">
     <div class="modal-info">
       <h2>${title}</h2>

@@ -1,72 +1,1494 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Books | Intelli-Read</title>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/Books.css">
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-    <!-- <script src="/header.js"></script> -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Chakra Petch", sans-serif;
+            text-decoration: none;
+            list-style: none;
+        }
+
+        /* ===== BODY ===== */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        /* Blurred background image + overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url(https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2053&q=80);
+            background-size: cover;
+            background-position: center;
+            filter: blur(5px);
+            z-index: -1;
+            transform: scale(1.05);
+        }
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.15);
+            z-index: -1;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 60px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: linear-gradient(to left, rgba(235,198,129,0.8), rgba(114,114,223,0.8));
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 65px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .header-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 25px;
+            padding: 8px 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header-search input {
+            background: transparent;
+            border: none;
+            color: #000;
+            padding: 5px 10px;
+            width: 200px;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .header-search input::placeholder {
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        .header-search button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .header-search button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .header-search button i {
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+        .btn-loginoutline {
+            width: 60px;
+            height: 60px;
+            border: 2px solid rgb(252, 148, 110);
+            background: transparent;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+        .btn-loginoutline:hover {
+            background: rgb(231, 134, 23);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            width: 100%;
+            padding: 115px 20px 20px;
+        }
+
+        /* ===== CATEGORY TAGS ===== */
+        .tags-section {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .tags-section h2 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid transparent;
+        }
+
+        .tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .tag.highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        /* ===== BOOKS GRID ===== */
+        .books-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.54);
+            box-shadow: 0 6px 15px rgb(220, 155, 15);
+            z-index: 1;
+        }
+
+        .books-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .books-header h1 {
+            font-size: 28px;
+            color: #000;
+            font-weight: 600;
+        }
+
+        .search-form {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 25px;
+            padding: 8px 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .search-form input {
+            background: transparent;
+            border: none;
+            color: #000;
+            padding: 5px 10px;
+            width: 250px;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .search-form input::placeholder {
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        .search-form button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-form button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .search-form button i {
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .main {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .book {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(46, 4, 255, 0.2);
+        }
+
+        .book:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(46, 4, 255, 0.3);
+        }
+
+        .book img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .book-info {
+            padding: 20px;
+        }
+
+        .book-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: #000;
+            line-height: 1.3;
+        }
+
+        .book-info p {
+            color: #000;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        .book-info span {
+            color: #667eea;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* ===== TOOLTIP ===== */
+        .book-tooltip {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 15px;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .book:hover .book-tooltip {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .book-tooltip h4 {
+            margin-bottom: 8px;
+            color: #ff6b6b;
+            font-size: 1.1rem;
+        }
+
+        .book-tooltip p {
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* ===== PAGINATION ===== */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            padding: 30px 0;
+        }
+
+        .pagination button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .pagination button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .pagination span {
+            font-weight: 500;
+            color: #000;
+        }
+
+        /* ===== MODAL ===== */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            color: #000;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #ff4757;
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+        }
+
+        .modal-cover {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            margin: 0 auto 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .modal-info {
+            text-align: center;
+        }
+
+        .modal-info h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .modal-info h4 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #000;
+            opacity: 0.8;
+        }
+
+        .modal-info p {
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            text-align: left;
+            color: #000;
+        }
+
+        .read-more {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .read-more:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* ===== FOOTER ===== */
+        .main-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 60px;
+            background: linear-gradient(to right, rgba(235,198,129,0.8), rgba(114,114,223,0.8));
+            color: #eee;
+            width: 100%;
+            position: relative;
+            z-index: 5;
+            flex-wrap: wrap;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .footer-section p {
+            margin: 5px 0;
+        }
+
+        .footer-section a {
+            color: #eee;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            text-decoration: underline;
+        }
+
+        .team-highlight {
+            color: rgb(206, 232, 10) !important;
+            font-weight: 600;
+        }
+
+        /* ===== NO RESULTS ===== */
+        .no-results {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 50px;
+            font-size: 1.3rem;
+            color: #000;
+            opacity: 0.7;
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1024px) {
+            .main {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 12px 20px;
+            }
+
+            .header-search {
+                display: none;
+            }
+
+            .main-content {
+                padding: 80px 15px 30px;
+            }
+
+            .books-container {
+                padding: 15px;
+            }
+
+            .books-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .search-form {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .search-form input {
+                width: 100%;
+            }
+
+            .main-footer {
+                padding: 15px 20px;
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 70px 10px 20px;
+            }
+
+            .books-container {
+                width: 95%;
+                padding: 10px;
+            }
+
+            .books-header h1 {
+                font-size: 22px;
+            }
+
+            .main {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 15px;
+            }
+
+            .book img {
+                height: 280px;
+            }
+
+            .book-info {
+                padding: 15px;
+            }
+
+            .modal-body {
+                padding: 15px;
+            }
+
+            .modal-cover {
+                max-width: 200px;
+            }
+        }
+    </style>
 </head>
 <body>
-
 <!-- ===== HEADER ===== -->
 <header>
-    <a href="Home.html"><img src="../../../../../Intelli-Read/images/logo.png" alt="IntelliRead Logo" style="height:80px; width:auto;"></a>
+    <div class="logo">
+        <a th:href="@{/Home}"><img th:src="@{/images/logo.png}" alt="Logo"></a>
+    </div>
     <div class="nav-buttons">
-        <!-- Search bar -->
-        <form id="form" class="search-form">
-            <input type="text" id="search" placeholder="Search books...">
-            <button type="submit" id="search-btn"><i class='bx bx-search'></i></button>
+        <form class="header-search">
+            <input type="text" id="header-search" placeholder="Search books...">
+            <button type="submit"><i class='bx bx-search'></i></button>
         </form>
-
-        <button class="btn btn-loginoutline" onclick="window.location.href='/login'">
-            <img src="images/login.png" alt="login-icon" style="height: 50px; width: auto;">
+        <button class="btn btn-loginoutline" title="Login & Signup" onclick="window.location.href='/login'">
+            <img th:src="@{/images/login.png}" alt="login-icon" style="height: 50px; width: auto;">
         </button>
     </div>
-
 </header>
 
 <!-- ===== MAIN CONTENT ===== -->
-<!-- ====== CATEGORY TAGS ====== -->
-<div id="tags" class="tags"></div>
+<div class="main-content">
+    <!-- ====== CATEGORY TAGS ====== -->
+    <div class="tags-section">
+        <h2>Browse by Category</h2>
+        <div id="tags" class="tags">
+            <div class="tag highlight">Fiction</div>
+            <div class="tag">Fantasy</div>
+            <div class="tag">Science</div>
+            <div class="tag">History</div>
+            <div class="tag">Romance</div>
+            <div class="tag">Mystery</div>
+            <div class="tag">Horror</div>
+            <div class="tag">Adventure</div>
+        </div>
+    </div>
 
-<!-- ====== BOOKS LIST ====== -->
-<main id="main" class="main"></main>
+    <!-- ====== BOOKS LIST ====== -->
+    <div class="books-container">
+        <div class="books-header">
+            <h1>Discover Amazing Books</h1>
+<!--            <form id="form" class="search-form">-->
+<!--                <input type="text" id="search" placeholder="Search books...">-->
+<!--                <button type="submit" id="search-btn"><i class='bx bx-search'></i></button>-->
+<!--            </form>-->
+        </div>
+
+        <main id="main" class="main">
+            <!-- Book 1 -->
+            <div class="book">
+                <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="The Great Gatsby">
+                <div class="book-info">
+                    <h3>The Great Gatsby</h3>
+                    <p>F. Scott Fitzgerald</p>
+                    <span>1925</span>
+                </div>
+                <div class="book-tooltip">
+                    <h4>The Great Gatsby</h4>
+                    <p><strong>Author:</strong> F. Scott Fitzgerald</p>
+                    <p><strong>Published:</strong> 1925</p>
+                    <p><strong>Subjects:</strong> Fiction, Classic, American Literature</p>
+                </div>
+            </div>
+
+            <!-- Book 2 -->
+            <div class="book">
+                <img src="https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="To Kill a Mockingbird">
+                <div class="book-info">
+                    <h3>To Kill a Mockingbird</h3>
+                    <p>Harper Lee</p>
+                    <span>1960</span>
+                </div>
+                <div class="book-tooltip">
+                    <h4>To Kill a Mockingbird</h4>
+                    <p><strong>Author:</strong> Harper Lee</p>
+                    <p><strong>Published:</strong> 1960</p>
+                    <p><strong>Subjects:</strong> Fiction, Classic, Social Issues</p>
+                </div>
+            </div>
+
+            <!-- Book 3 -->
+            <div class="book">
+                <img src="https://images.unsplash.com/photo-1621351183012-e2f9972dd9bf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="1984">
+                <div class="book-info">
+                    <h3>1984</h3>
+                    <p>George Orwell</p>
+                    <span>1949</span>
+                </div>
+                <div class="book-tooltip">
+                    <h4>1984</h4>
+                    <p><strong>Author:</strong> George Orwell</p>
+                    <p><strong>Published:</strong> 1949</p>
+                    <p><strong>Subjects:</strong> Fiction, Dystopian, Science Fiction</p>
+                </div>
+            </div>
+
+            <!-- Book 4 -->
+            <div class="book">
+                <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Pride and Prejudice">
+                <div class="book-info">
+                    <h3>Pride and Prejudice</h3>
+                    <p>Jane Austen</p>
+                    <span>1813</span>
+                </div>
+                <div class="book-tooltip">
+                    <h4>Pride and Prejudice</h4>
+                    <p><strong>Author:</strong> Jane Austen</p>
+                    <p><strong>Published:</strong> 1813</p>
+                    <p><strong>Subjects:</strong> Fiction, Romance, Classic</p>
+                </div>
+            </div>
+
+            <!-- Book 5 -->
+            <div class="book">
+                <img src="https://images.unsplash.com/photo-1531901599638-a89bb60971a3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="The Hobbit">
+                <div class="book-info">
+                    <h3>The Hobbit</h3>
+                    <p>J.R.R. Tolkien</p>
+                    <span>1937</span>
+                </div>
+                <div class="book-tooltip">
+                    <h4>The Hobbit</h4>
+                    <p><strong>Author:</strong> J.R.R. Tolkien</p>
+                    <p><strong>Published:</strong> 1937</p>
+                    <p><strong>Subjects:</strong> Fantasy, Adventure, Fiction</p>
+                </div>
+            </div>
+
+            <!-- Book 6 -->
+            <div class="book">
+                <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Harry Potter">
+                <div class="book-info">
+                    <h3>Harry Potter</h3>
+                    <p>J.K. Rowling</p>
+                    <span>1997</span>
+                </div>
+                <div class="book-tooltip">
+                    <h4>Harry Potter</h4>
+                    <p><strong>Author:</strong> J.K. Rowling</p>
+                    <p><strong>Published:</strong> 1997</p>
+                    <p><strong>Subjects:</strong> Fantasy, Fiction, Young Adult</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- ===== PAGINATION ===== -->
+<!--        <div class="pagination">-->
+<!--            <button id="prev" disabled>⬅ Prev</button>-->
+<!--            <span>Page 1 of 5</span>-->
+<!--            <button id="next">Next ➡</button>-->
+<!--        </div>-->
+    </div>
+</div>
+
+<!-- ===== MODAL POPUP ===== -->
+<div class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <div class="modal-body">
+            <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Book Cover" class="modal-cover">
+            <div class="modal-info">
+                <h2>The Great Gatsby</h2>
+                <h4>by F. Scott Fitzgerald</h4>
+                <p><strong>First Published:</strong> 1925</p>
+                <p><strong>Subjects:</strong> Fiction, Classic, American Literature, Romance</p>
+                <p><strong>Description:</strong> A classic novel of the Jazz Age, telling the story of the mysterious millionaire Jay Gatsby and his obsession with the beautiful Daisy Buchanan.</p>
+                <a href="#" class="read-more">📖 Read More</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- ===== FOOTER ===== -->
 <footer class="main-footer" style="font-family: chakra petch;">
     <div class="footer-section">
         <h4>About</h4>
-        <p>Designed and Developed by Team <b style="color: rgb(206, 232, 10); font-size: large;">Rv</b></p>
+        <p>Designed and Developed by Team <b class="team-highlight">Rv</b></p>
     </div>
     <div class="footer-section">
-        <p>&copy; <span>2025</span> Intelli-Read. All Rights Reserved.</p>
+        <p>&copy; <span id="year"></span> Intelli-Read. All Rights Reserved.</p>
         <p><a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a></p>
-    </div>
     </div>
     <div class="footer-section">
         <h4>License</h4>
         <p>Standard License</p>
     </div>
 </footer>
+
 <script>
-    const searchForm = document.querySelector('.search-form');
-  const searchButton = document.querySelector('.search-form button');
-
-  searchButton.addEventListener('click', (e) => {
-    if (window.innerWidth <= 768) {
-      if (!searchForm.classList.contains('active')) {
-        e.preventDefault(); // prevent submit when just expanding
-        searchForm.classList.add('active');
-      }
+    // ===== BOOKS DATABASE =====
+const booksDatabase = [
+    {
+        id: 1,
+        title: "The Great Gatsby",
+        author_name: ["F. Scott Fitzgerald"],
+        cover_i: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+        first_publish_year: 1925,
+        subject: ["Fiction", "Classic", "American Literature", "Romance"],
+        description: "A classic novel of the Jazz Age, telling the story of the mysterious millionaire Jay Gatsby and his obsession with the beautiful Daisy Buchanan."
+    },
+    {
+        id: 2,
+        title: "To Kill a Mockingbird",
+        author_name: ["Harper Lee"],
+        cover_i: "https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+        first_publish_year: 1960,
+        subject: ["Fiction", "Classic", "Southern Gothic", "Social Issues"],
+        description: "A gripping tale of racial injustice and childhood innocence in the American South, seen through the eyes of young Scout Finch."
+    },
+    {
+        id: 3,
+        title: "1984",
+        author_name: ["George Orwell"],
+        cover_i: "https://images.unsplash.com/photo-1621351183012-e2f9972dd9bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+        first_publish_year: 1949,
+        subject: ["Fiction", "Dystopian", "Science Fiction", "Political"],
+        description: "A dystopian social science fiction novel that examines the consequences of totalitarianism, mass surveillance, and repressive regimentation."
+    },
+    {
+        id: 4,
+        title: "Pride and Prejudice",
+        author_name: ["Jane Austen"],
+        cover_i: "https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+        first_publish_year: 1813,
+        subject: ["Fiction", "Romance", "Classic", "British Literature"],
+        description: "A romantic novel of manners that depicts the emotional development of protagonist Elizabeth Bennet."
+    },
+    {
+        id: 5,
+        title: "The Hobbit",
+        author_name: ["J.R.R. Tolkien"],
+        cover_i: "https://images.unsplash.com/photo-1531901599638-a89bb60971a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+        first_publish_year: 1937,
+        subject: ["Fantasy", "Adventure", "Fiction", "Classic"],
+        description: "A fantasy novel about the adventures of hobbit Bilbo Baggins, who is hired as a burglar by a group of dwarves."
+    },
+    {
+        id: 6,
+        title: "Harry Potter and the Philosopher's Stone",
+        author_name: ["J.K. Rowling"],
+        cover_i: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+        first_publish_year: 1997,
+        subject: ["Fantasy", "Fiction", "Young Adult", "Adventure"],
+        description: "The first novel in the Harry Potter series, following Harry Potter, a young wizard who discovers his magical heritage."
+    },
+    {
+        id: 7,
+        title: "The Da Vinci Code",
+        author_name: ["Dan Brown"],
+        cover_i: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+        first_publish_year: 2003,
+        subject: ["Mystery", "Thriller", "Fiction", "Conspiracy"],
+        description: "A mystery thriller novel that follows symbologist Robert Langdon as he investigates a murder in Paris's Louvre Museum."
+    },
+    {
+        id: 8,
+        title: "The Shining",
+        author_name: ["Stephen King"],
+        cover_i: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+        first_publish_year: 1977,
+        subject: ["Horror", "Fiction", "Thriller", "Supernatural"],
+        description: "A horror novel about a family's winter stay at an isolated hotel where a malevolent presence influences the father into violence."
+    },
+    {
+        id: 9,
+        title: "A Brief History of Time",
+        author_name: ["Stephen Hawking"],
+        cover_i: "https://images.unsplash.com/photo-1532012197267-da84d127e765?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+        first_publish_year: 1988,
+        subject: ["Science", "Physics", "Cosmology", "Non-fiction"],
+        description: "A popular-science book on cosmology that explains complex concepts like space, time, black holes, and the Big Bang."
+    },
+    {
+        id: 10,
+        title: "Sapiens: A Brief History of Humankind",
+        author_name: ["Yuval Noah Harari"],
+        cover_i: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+        first_publish_year: 2011,
+        subject: ["History", "Anthropology", "Non-fiction", "Science"],
+        description: "A book that explores the history and impact of Homo sapiens from the Stone Age to the 21st century."
     }
-  });
+];
 
+// ===== GENRE CONFIG =====
+const genres = [
+    { "id": "fiction", "name": "Fiction" },
+    { "id": "fantasy", "name": "Fantasy" },
+    { "id": "science", "name": "Science" },
+    { "id": "history", "name": "History" },
+    { "id": "romance", "name": "Romance" },
+    { "id": "mystery", "name": "Mystery" },
+    { "id": "horror", "name": "Horror" },
+    { "id": "adventure", "name": "Adventure" }
+];
 
+// ===== GLOBAL VARIABLES =====
+const main = document.getElementById('main');
+const form = document.getElementById('form');
+const search = document.getElementById('search');
+const headerSearch = document.getElementById('header-search');
+const headerSearchForm = document.querySelector('.header-search');
+const tagsEl = document.getElementById('tags');
+const paginationEl = document.createElement('div');
+paginationEl.classList.add('pagination');
+main.insertAdjacentElement('afterend', paginationEl);
+
+let selectedGenre = [];
+let currentPage = 1;
+const booksPerPage = 6;
+let totalPages = 1;
+let currentQuery = '';
+let filteredBooks = [];
+
+// ===== INITIALIZATION =====
+document.addEventListener('DOMContentLoaded', function() {
+    // Set current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Initialize the page
+    setGenre();
+    fetchBooks();
+    setupEventListeners();
+});
+
+// ===== GENRE FILTER =====
+function setGenre() {
+    tagsEl.innerHTML = '';
+    genres.forEach(genre => {
+        const t = document.createElement('div');
+        t.classList.add('tag');
+        t.id = genre.id;
+        t.innerText = genre.name;
+        t.addEventListener('click', () => {
+            if (selectedGenre.includes(genre.id)) {
+                selectedGenre = selectedGenre.filter(id => id !== genre.id);
+            } else {
+                selectedGenre.push(genre.id);
+            }
+            highlightSelection();
+            currentPage = 1;
+            fetchBooks();
+        });
+        tagsEl.appendChild(t);
+    });
+}
+
+function highlightSelection() {
+    const tags = document.querySelectorAll('.tag');
+    tags.forEach(tag => tag.classList.remove('highlight'));
+    selectedGenre.forEach(id => {
+        const tag = document.getElementById(id);
+        if (tag) tag.classList.add('highlight');
+    });
+}
+
+// ===== FETCH BOOKS FROM LOCAL DATABASE =====
+function fetchBooks(query = '', page = 1) {
+    currentQuery = query;
+
+    // Filter books based on search query and selected genres
+    filteredBooks = booksDatabase.filter(book => {
+        const matchesSearch = !query ||
+            book.title.toLowerCase().includes(query.toLowerCase()) ||
+            book.author_name.some(author => author.toLowerCase().includes(query.toLowerCase()));
+
+        const matchesGenre = selectedGenre.length === 0 ||
+            selectedGenre.some(genre => book.subject.some(subject =>
+                subject.toLowerCase().includes(genre.toLowerCase())));
+
+        return matchesSearch && matchesGenre;
+    });
+
+    // Calculate pagination
+    totalPages = Math.ceil(filteredBooks.length / booksPerPage);
+    const startIndex = (page - 1) * booksPerPage;
+    const endIndex = startIndex + booksPerPage;
+    const paginatedBooks = filteredBooks.slice(startIndex, endIndex);
+
+    if (paginatedBooks.length > 0) {
+        showBooks(paginatedBooks);
+        updatePagination();
+    } else {
+        main.innerHTML = `<h1 class="no-results">No Results Found</h1>`;
+        paginationEl.innerHTML = '';
+    }
+}
+
+// ===== DISPLAY BOOKS WITH HOVER TOOLTIP =====
+function showBooks(books) {
+    main.innerHTML = '';
+
+    books.forEach(book => {
+        const { title, author_name, cover_i, first_publish_year, subject } = book;
+
+        const bookEl = document.createElement('div');
+        bookEl.classList.add('book');
+
+        // Main book content
+        bookEl.innerHTML = `
+            <img src="${cover_i}" alt="${title}" onerror="this.src='${generatePlaceholderSvg(title)}'">
+            <div class="book-info">
+                <h3>${title}</h3>
+                <p>${author_name ? author_name.join(', ') : 'Unknown Author'}</p>
+                <span>${first_publish_year || ''}</span>
+            </div>
+        `;
+
+        // Add tooltip div for hover overview
+        const tooltip = document.createElement('div');
+        tooltip.classList.add('book-tooltip');
+        tooltip.innerHTML = `
+            <h4>${title}</h4>
+            <p><strong>Author:</strong> ${author_name ? author_name.join(', ') : 'Unknown'}</p>
+            <p><strong>Published:</strong> ${first_publish_year || 'N/A'}</p>
+            <p><strong>Subjects:</strong> ${subject ? subject.slice(0, 4).join(', ') : 'No subjects available'}</p>
+        `;
+        bookEl.appendChild(tooltip);
+
+        // Click opens modal
+        bookEl.addEventListener('click', () => showBookDetails(book));
+
+        main.appendChild(bookEl);
+    });
+}
+
+function generatePlaceholderSvg(title) {
+    const initials = title ? title.charAt(0).toUpperCase() : 'B';
+    const svg = `
+        <svg width="280" height="320" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100%" height="100%" fill="#667eea"/>
+            <text x="50%" y="50%" font-family="Arial" font-size="48" fill="white"
+                  text-anchor="middle" dy=".3em">${initials}</text>
+        </svg>
+    `;
+    return 'data:image/svg+xml;base64,' + btoa(svg);
+}
+
+// ===== PAGINATION =====
+function updatePagination() {
+    if (totalPages <= 1) {
+        paginationEl.innerHTML = '';
+        return;
+    }
+
+    paginationEl.innerHTML = `
+        <button ${currentPage === 1 ? 'disabled' : ''} id="prev">⬅ Prev</button>
+        <span>Page ${currentPage} of ${totalPages}</span>
+        <button ${currentPage === totalPages ? 'disabled' : ''} id="next">Next ➡</button>
+    `;
+
+    document.getElementById('prev').addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            fetchBooks(currentQuery, currentPage);
+        }
+    });
+
+    document.getElementById('next').addEventListener('click', () => {
+        if (currentPage < totalPages) {
+            currentPage++;
+            fetchBooks(currentQuery, currentPage);
+        }
+    });
+}
+
+// ===== SEARCH FUNCTIONALITY =====
+function setupEventListeners() {
+    // Main search form submission
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        currentPage = 1;
+        fetchBooks(search.value);
+    });
+
+    // Header search form submission
+    headerSearchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        currentPage = 1;
+        fetchBooks(headerSearch.value);
+    });
+
+    // Real-time search for main search
+    search.addEventListener('input', () => {
+        currentPage = 1;
+        fetchBooks(search.value);
+    });
+
+    // Real-time search for header search
+    headerSearch.addEventListener('input', () => {
+        currentPage = 1;
+        fetchBooks(headerSearch.value);
+    });
+
+    // Modal close functionality
+    const modal = document.querySelector('.modal');
+    const closeBtn = document.querySelector('.close-btn');
+
+    closeBtn.addEventListener('click', () => {
+        modal.classList.remove('active');
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+        }
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            modal.classList.remove('active');
+        }
+    });
+}
+
+// ===== BOOK DETAILS MODAL =====
+function showBookDetails(book) {
+    const { title, author_name, cover_i, first_publish_year, subject, description } = book;
+
+    const modal = document.querySelector('.modal');
+    const modalBody = document.querySelector('.modal-body');
+
+    modalBody.innerHTML = `
+        <img src="${cover_i}" alt="${title}" class="modal-cover" onerror="this.src='${generatePlaceholderSvg(title)}'">
+        <div class="modal-info">
+            <h2>${title}</h2>
+            <h4>by ${author_name ? author_name.join(', ') : 'Unknown Author'}</h4>
+            <p><strong>First Published:</strong> ${first_publish_year || 'N/A'}</p>
+            <p><strong>Subjects:</strong> ${subject ? subject.join(', ') : 'No subjects available'}</p>
+            <p><strong>Description:</strong> ${description || 'No description available.'}</p>
+            <a href="#" class="read-more" onclick="addToReadingList(${book.id})">📖 Add to Reading List</a>
+        </div>
+    `;
+
+    modal.classList.add('active');
+}
+
+// ===== READING LIST FUNCTIONALITY =====
+function addToReadingList(bookId) {
+    const book = booksDatabase.find(b => b.id === bookId);
+    if (!book) return;
+
+    // Get current reading list from localStorage
+    let readingList = JSON.parse(localStorage.getItem('readingList')) || [];
+
+    // Check if book is already in reading list
+    if (readingList.some(item => item.id === bookId)) {
+        showAlert('Book is already in your reading list!', 'info');
+        return;
+    }
+
+    // Add book to reading list
+    readingList.push(book);
+    localStorage.setItem('readingList', JSON.stringify(readingList));
+
+    showAlert('Book added to reading list!', 'success');
+
+    // Close modal after adding
+    setTimeout(() => {
+        document.querySelector('.modal').classList.remove('active');
+    }, 1500);
+}
+
+// ===== ALERT SYSTEM =====
+function showAlert(message, type = 'info') {
+    // Create alert container if it doesn't exist
+    let alertContainer = document.getElementById('alertContainer');
+    if (!alertContainer) {
+        alertContainer = document.createElement('div');
+        alertContainer.id = 'alertContainer';
+        alertContainer.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 10000;
+            max-width: 300px;
+        `;
+        document.body.appendChild(alertContainer);
+    }
+
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type}`;
+    alertDiv.style.cssText = `
+        background: ${type === 'success' ? '#d4edda' : type === 'error' ? '#f8d7da' : '#d1ecf1'};
+        color: ${type === 'success' ? '#155724' : type === 'error' ? '#721c24' : '#0c5460'};
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        border: 1px solid ${type === 'success' ? '#c3e6cb' : type === 'error' ? '#f5c6cb' : '#bee5eb'};
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        animation: slideInRight 0.3s ease-out;
+    `;
+
+    const icon = type === 'success' ? 'bx-check-circle' : type === 'error' ? 'bx-error-circle' : 'bx-info-circle';
+    alertDiv.innerHTML = `
+        <i class="bx ${icon}" style="font-size: 20px;"></i>
+        <span>${message}</span>
+    `;
+
+    alertContainer.appendChild(alertDiv);
+
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (alertDiv.parentNode) {
+            alertDiv.style.animation = 'slideOutRight 0.3s ease-in';
+            setTimeout(() => alertDiv.remove(), 300);
+        }
+    }, 5000);
+}
+
+// Add CSS for animations
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOutRight {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(style);
+
+// ===== CATEGORY STATISTICS =====
+function updateCategoryStats() {
+    const categoryStats = {};
+
+    booksDatabase.forEach(book => {
+        book.subject.forEach(subject => {
+            const category = subject.toLowerCase();
+            categoryStats[category] = (categoryStats[category] || 0) + 1;
+        });
+    });
+
+    console.log('Category Statistics:', categoryStats);
+    return categoryStats;
+}
+
+// ===== BOOK RECOMMENDATIONS =====
+function getRecommendedBooks() {
+    // Simple recommendation based on most popular subjects
+    const subjectCount = {};
+    booksDatabase.forEach(book => {
+        book.subject.forEach(subject => {
+            subjectCount[subject] = (subjectCount[subject] || 0) + 1;
+        });
+    });
+
+    const popularSubjects = Object.entries(subjectCount)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3)
+        .map(([subject]) => subject);
+
+    return booksDatabase.filter(book =>
+        book.subject.some(subject => popularSubjects.includes(subject))
+    ).slice(0, 3);
+}
+
+// ===== EXPORT FUNCTIONALITY =====
+function exportReadingList() {
+    const readingList = JSON.parse(localStorage.getItem('readingList')) || [];
+    if (readingList.length === 0) {
+        showAlert('Your reading list is empty!', 'info');
+        return;
+    }
+
+    const dataStr = JSON.stringify(readingList, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'intelliread-reading-list.json';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    showAlert('Reading list exported successfully!', 'success');
+}
+
+// ===== IMPORT FUNCTIONALITY =====
+function importReadingList(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const importedList = JSON.parse(e.target.result);
+            if (Array.isArray(importedList)) {
+                const currentList = JSON.parse(localStorage.getItem('readingList')) || [];
+                const mergedList = [...currentList, ...importedList.filter(book =>
+                    !currentList.some(item => item.id === book.id)
+                )];
+
+                localStorage.setItem('readingList', JSON.stringify(mergedList));
+                showAlert('Reading list imported successfully!', 'success');
+            } else {
+                showAlert('Invalid file format!', 'error');
+            }
+        } catch (error) {
+            showAlert('Error reading file!', 'error');
+        }
+    };
+    reader.readAsText(file);
+
+    // Reset file input
+    event.target.value = '';
+}
+
+// ===== INITIALIZE RECOMMENDATIONS =====
+function initializeRecommendations() {
+    const recommendedBooks = getRecommendedBooks();
+    console.log('Recommended Books:', recommendedBooks);
+
+    // You can display these in a separate section
+    if (recommendedBooks.length > 0) {
+        const stats = updateCategoryStats();
+        console.log('Library Statistics:', {
+            totalBooks: booksDatabase.length,
+            totalSubjects: Object.keys(stats).length,
+            mostPopularSubject: Object.entries(stats).sort((a, b) => b[1] - a[1])[0]
+        });
+    }
+}
+
+// Call initialization
+initializeRecommendations();
+
+// ===== ENHANCED SEARCH WITH DEBOUNCE =====
+let searchTimeout;
+function debouncedSearch() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+        currentPage = 1;
+        fetchBooks(search.value);
+    }, 300);
+}
+
+// Add debounced search if you want real-time search
+// search.addEventListener('input', debouncedSearch);
+
+// ===== ACCESSIBILITY FEATURES =====
+function enhanceAccessibility() {
+    // Add keyboard navigation for books
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' && currentPage < totalPages) {
+            currentPage++;
+            fetchBooks(currentQuery, currentPage);
+        } else if (e.key === 'ArrowLeft' && currentPage > 1) {
+            currentPage--;
+            fetchBooks(currentQuery, currentPage);
+        }
+    });
+
+    // Add focus management for modal
+    const modal = document.querySelector('.modal');
+    modal.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            modal.classList.remove('active');
+        }
+    });
+}
+
+// Initialize accessibility features
+enhanceAccessibility();
+
+// ===== PERFORMANCE OPTIMIZATION =====
+// Lazy loading for images
+function initializeLazyLoading() {
+    const images = document.querySelectorAll('img[data-src]');
+
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.removeAttribute('data-src');
+                observer.unobserve(img);
+            }
+        });
+    });
+
+    images.forEach(img => imageObserver.observe(img));
+}
+
+// ===== OFFLINE SUPPORT =====
+// Cache books data for offline use
+function cacheBooksData() {
+    if ('caches' in window) {
+        caches.open('books-data').then(cache => {
+            cache.put('/books-data', new Response(JSON.stringify(booksDatabase)));
+        });
+    }
+}
+
+// Initialize caching
+cacheBooksData();
+
+// ===== PROGRESSIVE WEB APP FEATURES =====
+// Add to home screen prompt
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent the mini-infobar from appearing on mobile
+    e.preventDefault();
+    // Stash the event so it can be triggered later
+    deferredPrompt = e;
+
+    // Show install prompt (you can customize this)
+    setTimeout(() => {
+        showAlert('Add Intelli-Read to your home screen for quick access!', 'info');
+    }, 5000);
+});
+
+// ===== SERVICE WORKER REGISTRATION =====
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').then(registration => {
+            console.log('SW registered: ', registration);
+        }).catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+        });
+    });
+}
 </script>
-<script src="/js/BookScript.js"></script>
 </body>
 </html>
