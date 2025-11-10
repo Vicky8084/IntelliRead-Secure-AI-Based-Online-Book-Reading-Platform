@@ -240,10 +240,11 @@ public class AdminController {
                 ));
             }
 
-            String result = bookService.updateBookStatus(bookId, "REJECTED", "Rejected: " + reason);
+            // Book ko permanently delete karo
+            String result = bookService.rejectBook(bookId, reason);
 
             if (result.startsWith("✅")) {
-                System.out.println("✅ Book rejected: " + bookId);
+                System.out.println("✅ Book rejected and deleted: " + bookId);
                 return ResponseEntity.ok(Map.of("success", true, "message", result));
             } else {
                 System.out.println("❌ Book rejection failed: " + result);
@@ -344,7 +345,7 @@ public class AdminController {
             String result = userService.rejectPublisher(userId);
 
             if (result.startsWith("✅")) {
-                System.out.println("✅ Publisher rejected: " + userId);
+                System.out.println("✅ Publisher rejected and deleted: " + userId);
                 return ResponseEntity.ok(Map.of("success", true, "message", result));
             } else {
                 System.out.println("❌ Publisher rejection failed: " + result);
@@ -599,4 +600,6 @@ public class AdminController {
         if (days < 7) return days + " days ago";
         return "Over a week ago";
     }
+
+
 }

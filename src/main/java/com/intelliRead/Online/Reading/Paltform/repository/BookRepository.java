@@ -1,5 +1,6 @@
 package com.intelliRead.Online.Reading.Paltform.repository;
 
+import com.intelliRead.Online.Reading.Paltform.enums.BookStatus;
 import com.intelliRead.Online.Reading.Paltform.model.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,4 +26,9 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     @Query("SELECT b FROM Book b LEFT JOIN FETCH b.category WHERE b.user.id = :userId")
     List<Book> findBooksByUserIdWithCategory(@Param("userId") int userId);
+
+    List<Book> findByUserId(int userId);
+
+    // Status ke hisaab se books find karne ke liye
+    List<Book> findByStatus(BookStatus status);
 }

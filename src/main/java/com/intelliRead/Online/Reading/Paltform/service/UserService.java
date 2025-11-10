@@ -4,7 +4,9 @@ import com.intelliRead.Online.Reading.Paltform.converter.UserConverter;
 import com.intelliRead.Online.Reading.Paltform.enums.Role;
 import com.intelliRead.Online.Reading.Paltform.enums.Status;
 import com.intelliRead.Online.Reading.Paltform.exception.UserAlreadyExistException;
+import com.intelliRead.Online.Reading.Paltform.model.Book;
 import com.intelliRead.Online.Reading.Paltform.model.User;
+import com.intelliRead.Online.Reading.Paltform.repository.BookRepository;
 import com.intelliRead.Online.Reading.Paltform.repository.UserRepository;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.UserRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +22,20 @@ public class UserService {
     UserRepository userRepository;
     EmailService emailService;
     PasswordEncoder passwordEncoder;
+    BookService bookService;
+    BookRepository bookRepository;
 
     @Autowired
     public UserService(UserRepository userRepository,
                        EmailService emailService,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       BookService bookService,
+                       BookRepository bookRepository) {
         this.userRepository = userRepository;
         this.emailService = emailService;
         this.passwordEncoder = passwordEncoder;
+        this.bookService=bookService;
+        this.bookRepository=bookRepository;
     }
 
     public User addUser(UserRequestDTO dto) {
@@ -164,11 +172,20 @@ public class UserService {
                 return "❌ User is not a publisher";
             }
 
+            // Pehle publisher ki saari books delete karo
+            List<Book> publisherBooks = bookService.findBooksByUserId(userId);
+            for (Book book : publisherBooks) {
+                bookRepository.delete(book);
+            }
+
+            // Phir publisher ko delete karo
             userRepository.delete(user);
 
-            return "✅ Publisher rejected and account removed";
+            return "✅ Publisher rejected and permanently deleted from database along with all their books";
         } catch (Exception e) {
             return "❌ Error rejecting publisher: " + e.getMessage();
         }
     }
+
+
 }

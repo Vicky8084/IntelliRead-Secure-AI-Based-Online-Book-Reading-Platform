@@ -1308,70 +1308,137 @@
 </div>
 
 <script>
-    // Dashboard.js - Admin Dashboard Functionality
+    // ===== GLOBAL VARIABLES =====
+// Store current page states for users and books
+let currentUserPage = 1;
+let currentBookPage = 1;
 
-    // Global variables
-    let currentUserPage = 1;
-    let currentBookPage = 1;
-    const usersPerPage = 10;
-    const booksPerPage = 10;
-    let allUsers = [];
-    let allBooks = [];
-    let currentRejectBookId = null;
+// Define how many items to show per page
+const usersPerPage = 10;
+const booksPerPage = 10;
 
-    // ===== DASHBOARD INITIALIZATION =====
+// Arrays to store all loaded users and books data
+let allUsers = [];
+let allBooks = [];
+
+// Track which book is currently being rejected
+let currentRejectBookId = null;
+
+// ===== DASHBOARD INITIALIZATION =====
+// This runs when the page finishes loading
 document.addEventListener('DOMContentLoaded', function() {
+    // Log initialization message
     console.log('🏁 Admin Dashboard Initialized');
 
-    // Check if admin is logged in
+    // Check if user is properly logged in as admin
     checkAdminAuth();
 
-    // Load dashboard data with DELAY and ERROR HANDLING
+    // Wait 1 second then load all dashboard data
     setTimeout(() => {
         console.log('🔄 Loading dashboard data...');
 
-        // Load data with proper error handling
+        // Load dashboard summary statistics
         loadDashboardSummary().catch(err => {
             console.log('📊 Dashboard summary failed, using demo data');
             setDemoDashboardData();
         });
 
+        // Load users list
         loadUsers().catch(err => {
             console.log('👥 Users loading failed, using demo data');
             showDemoUsers();
         });
 
+        // Load books list
         loadBooks().catch(err => {
             console.log('📚 Books loading failed, using demo data');
             showDemoBooks();
         });
 
-    }, 1000); // 1 second delay
+    }, 1000); // Wait 1 second before loading
 
-    // Set up event listeners
+    // Set up all click handlers and event listeners
     setupEventListeners();
 });
 
+// ===== AUTHENTICATION FUNCTIONS =====
+// Verify admin is logged in before allowing access
+function checkAdminAuth() {
+    // Get admin session data from browser storage
+    const admin = sessionStorage.getItem('admin');
 
+    // If no admin session found, redirect to login page
+    if (!admin) {
+        console.log('❌ No admin session found, redirecting to login...');
+        window.location.href = '/admin';
+        return;
+    }
 
+    // Log successful authentication
+    console.log('✅ Admin authenticated');
+}
 
+// ===== NAVIGATION FUNCTIONS =====
+// Switch between different sections of the dashboard
+function showSection(sectionId) {
+    // Hide all sections first
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        section.classList.remove('active');
+    });
 
+    // Remove active highlight from all menu items
+    const menuItems = document.querySelectorAll('.menu-item');
+    menuItems.forEach(item => {
+        item.classList.remove('active');
+    });
 
+    // Show the selected section
+    const targetSection = document.getElementById(sectionId);
+    if (targetSection) {
+        targetSection.classList.add('active');
+    }
 
-// ===== DASHBOARD SUMMARY =====
+    // Highlight the clicked menu item
+    const targetMenuItem = document.querySelector(`.menu-item[onclick="showSection('${sectionId}')"]`);
+    if (targetMenuItem) {
+        targetMenuItem.classList.add('active');
+    }
+
+    // Load data specific to the selected section
+    switch(sectionId) {
+        case 'dashboard':
+            loadDashboardSummary();
+            break;
+        case 'users':
+            loadUsers();
+            break;
+        case 'books':
+            loadBooks();
+            break;
+        case 'analytics':
+            loadAnalytics();
+            break;
+    }
+}
+
+// ===== DASHBOARD DATA FUNCTIONS =====
+// Load summary statistics for the dashboard
 async function loadDashboardSummary() {
     try {
         console.log('📊 Loading dashboard summary...');
+
+        // Fetch data from server API
         const response = await fetch('/api/admin/summary');
 
-        // ✅ Better error handling
+        // Check if server returned an error
         if (!response.ok) {
             console.warn('⚠️ Dashboard API returned error:', response.status);
             setDemoDashboardData();
             return;
         }
 
-        // ✅ Check if response is JSON
+        // Verify response is JSON format
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
             console.warn('⚠️ Dashboard API returned non-JSON response');
@@ -1379,10 +1446,12 @@ async function loadDashboardSummary() {
             return;
         }
 
+        // Parse the JSON response
         const data = await response.json();
 
+        // Update dashboard with real data if successful
         if (data.success) {
-            // Update stats cards
+            // Update stats cards with actual numbers
             document.getElementById('totalUsers').textContent = data.totalUsers || 0;
             document.getElementById('totalBooks').textContent = data.totalBooks || 0;
             document.getElementById('pendingBooks').textContent = data.pendingBooks || 0;
@@ -1399,7 +1468,7 @@ async function loadDashboardSummary() {
                 totalPublishersElement.textContent = data.totalPublishers || 0;
             }
 
-            // Load recent activity
+            // Load recent activity feed
             loadRecentActivity(data.recentActivity);
         } else {
             console.error('Error loading dashboard summary:', data.message);
@@ -1411,328 +1480,251 @@ async function loadDashboardSummary() {
     }
 }
 
+// Set demo data when real data fails to load
+function setDemoDashboardData() {
+    document.getElementById('totalUsers').textContent = '1,254';
+    document.getElementById('totalBooks').textContent = '567';
+    document.getElementById('pendingBooks').textContent = '23';
+    document.getElementById('activeUsers').textContent = '189';
+    document.getElementById('pendingPublishers').textContent = '5';
+    document.getElementById('totalPublishers').textContent = '47';
+}
 
+// Load recent activity feed
+async function loadRecentActivity(activities = null) {
+    try {
+        const activityList = document.getElementById('recentActivity');
+        if (!activityList) return;
 
-
-
-    // ===== AUTHENTICATION =====
-    function checkAdminAuth() {
-        const admin = sessionStorage.getItem('admin');
-        if (!admin) {
-            console.log('❌ No admin session found, redirecting to login...');
-            window.location.href = '/admin';
-            return;
+        // If no activities provided, fetch from server
+        if (!activities) {
+            const response = await fetch('/api/admin/activities');
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success) {
+                    activities = data.activities;
+                }
+            }
         }
-        console.log('✅ Admin authenticated');
-    }
 
-    // ===== NAVIGATION =====
-    function showSection(sectionId) {
-        // Hide all sections
-        const sections = document.querySelectorAll('.section');
-        sections.forEach(section => {
-            section.classList.remove('active');
+        // Use demo data if no activities from API
+        if (!activities || activities.length === 0) {
+            activities = [
+                {
+                    type: 'user',
+                    message: 'New user registration',
+                    time: 'Just now',
+                    icon: 'bx-user-plus'
+                },
+                {
+                    type: 'book',
+                    message: 'New book pending approval',
+                    time: '5 minutes ago',
+                    icon: 'bx-book-add'
+                },
+                {
+                    type: 'system',
+                    message: 'Publisher account approved',
+                    time: '1 hour ago',
+                    icon: 'bx-user-check'
+                }
+            ];
+        }
+
+        // Clear existing activities
+        activityList.innerHTML = '';
+
+        // Create HTML for each activity item
+        activities.forEach(activity => {
+            const activityItem = document.createElement('div');
+            activityItem.className = 'activity-item';
+
+            activityItem.innerHTML = `
+                <div class="activity-icon ${activity.type}">
+                    <i class='bx ${activity.icon}'></i>
+                </div>
+                <div class="activity-info">
+                    <p>${activity.message}</p>
+                    <span>${activity.time}</span>
+                </div>
+            `;
+
+            activityList.appendChild(activityItem);
         });
-
-        // Remove active class from all menu items
-        const menuItems = document.querySelectorAll('.menu-item');
-        menuItems.forEach(item => {
-            item.classList.remove('active');
-        });
-
-        // Show selected section
-        const targetSection = document.getElementById(sectionId);
-        if (targetSection) {
-            targetSection.classList.add('active');
-        }
-
-        // Activate corresponding menu item
-        const targetMenuItem = document.querySelector(`.menu-item[onclick="showSection('${sectionId}')"]`);
-        if (targetMenuItem) {
-            targetMenuItem.classList.add('active');
-        }
-
-        // Load section-specific data
-        switch(sectionId) {
-            case 'dashboard':
-                loadDashboardSummary();
-                break;
-            case 'users':
-                loadUsers();
-                break;
-            case 'books':
-                loadBooks();
-                break;
-            case 'analytics':
-                loadAnalytics();
-                break;
-        }
+    } catch (error) {
+        console.error('Error loading recent activity:', error);
     }
+}
 
-    // ===== DASHBOARD SUMMARY =====
-    async function loadDashboardSummary() {
-        try {
-            console.log('📊 Loading dashboard summary...');
-            const response = await fetch('/api/admin/summary');
+// ===== USER MANAGEMENT FUNCTIONS =====
+// Load users with pagination
+async function loadUsers(page = 1) {
+    try {
+        // Update current page
+        currentUserPage = page;
 
-            // ✅ Check if response is JSON
-            const contentType = response.headers.get('content-type');
-            if (!contentType || !contentType.includes('application/json')) {
-                console.warn('⚠️ Dashboard API returned non-JJSON response');
-                setDemoDashboardData(); // Use demo data
+        // Show loading state in table
+        const userTableBody = document.getElementById('userTableBody');
+        userTableBody.innerHTML = `
+            <tr>
+                <td colspan="6" class="loading-cell">
+                    <div class="loading-spinner"></div>
+                    Loading users...
+                </td>
+            </tr>
+        `;
+
+        console.log('👥 Loading users...');
+
+        // Fetch users from server API
+        const response = await fetch(`/api/admin/users?page=${page}&limit=${usersPerPage}`);
+
+        // Check for HTTP errors
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Verify response is JSON format
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new Error('API returned non-JSON response');
+        }
+
+        // Parse JSON response
+        const data = await response.json();
+
+        // Process successful response
+        if (data.success) {
+            // Store users globally
+            allUsers = data.users;
+
+            // Clear table body
+            userTableBody.innerHTML = '';
+
+            // Show message if no users found
+            if (data.users.length === 0) {
+                userTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="no-data">
+                            <i class='bx bx-user-x'></i>
+                            <p>No users found</p>
+                        </td>
+                    </tr>
+                `;
                 return;
             }
 
-            const data = await response.json();
+            // Create table row for each user
+            data.users.forEach(user => {
+                const row = document.createElement('tr');
 
-            if (data.success) {
-                // Update stats cards
-                document.getElementById('totalUsers').textContent = data.totalUsers || 0;
-                document.getElementById('totalBooks').textContent = data.totalBooks || 0;
-                document.getElementById('pendingBooks').textContent = data.pendingBooks || 0;
-                document.getElementById('activeUsers').textContent = data.activeUsers || 0;
-
-                // Update additional stats if elements exist
-                const pendingPublishersElement = document.getElementById('pendingPublishers');
-                const totalPublishersElement = document.getElementById('totalPublishers');
-
-                if (pendingPublishersElement) {
-                    pendingPublishersElement.textContent = data.pendingPublishers || 0;
-                }
-                if (totalPublishersElement) {
-                    totalPublishersElement.textContent = data.totalPublishers || 0;
-                }
-
-                // Load recent activity
-                loadRecentActivity(data.recentActivity);
-            } else {
-                console.error('Error loading dashboard summary:', data.message);
-                // Fallback to demo data
-                setDemoDashboardData();
-            }
-        } catch (error) {
-            console.error('Error loading dashboard summary:', error);
-            setDemoDashboardData(); // Use demo data on error
-        }
-    }
-
-    function setDemoDashboardData() {
-        document.getElementById('totalUsers').textContent = '1,254';
-        document.getElementById('totalBooks').textContent = '567';
-        document.getElementById('pendingBooks').textContent = '23';
-        document.getElementById('activeUsers').textContent = '189';
-        document.getElementById('pendingPublishers').textContent = '5';
-        document.getElementById('totalPublishers').textContent = '47';
-    }
-
-    async function loadRecentActivity(activities = null) {
-        try {
-            const activityList = document.getElementById('recentActivity');
-            if (!activityList) return;
-
-            if (!activities) {
-                // Fetch recent activities
-                const response = await fetch('/api/admin/activities');
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success) {
-                        activities = data.activities;
+                // Determine user status and badge styling
+                let statusText, statusClass;
+                if (user.role === 'publisher') {
+                    if (user.isApproved) {
+                        statusText = 'Approved Publisher';
+                        statusClass = 'status-approved';
+                    } else {
+                        statusText = 'Pending Approval';
+                        statusClass = 'status-pending';
                     }
+                } else {
+                    statusText = user.isActive !== false ? 'Active User' : 'Inactive';
+                    statusClass = user.isActive !== false ? 'status-active' : 'status-inactive';
                 }
-            }
 
-            // If no activities from API, use demo data
-            if (!activities || activities.length === 0) {
-                activities = [
-                    {
-                        type: 'user',
-                        message: 'New user registration',
-                        time: 'Just now',
-                        icon: 'bx-user-plus'
-                    },
-                    {
-                        type: 'book',
-                        message: 'New book pending approval',
-                        time: '5 minutes ago',
-                        icon: 'bx-book-add'
-                    },
-                    {
-                        type: 'system',
-                        message: 'Publisher account approved',
-                        time: '1 hour ago',
-                        icon: 'bx-user-check'
-                    }
-                ];
-            }
-
-            activityList.innerHTML = '';
-
-            activities.forEach(activity => {
-                const activityItem = document.createElement('div');
-                activityItem.className = 'activity-item';
-
-                activityItem.innerHTML = `
-                    <div class="activity-icon ${activity.type}">
-                        <i class='bx ${activity.icon}'></i>
-                    </div>
-                    <div class="activity-info">
-                        <p>${activity.message}</p>
-                        <span>${activity.time}</span>
-                    </div>
+                // Create HTML for user row
+                row.innerHTML = `
+                    <td>
+                        <div class="user-avatar">
+                            <i class='bx bx-user'></i>
+                            <span>${user.fullName || 'Unknown User'}</span>
+                        </div>
+                    </td>
+                    <td>${user.email || 'No email'}</td>
+                    <td>
+                        <span class="role-badge ${user.role}">${user.role || 'user'}</span>
+                    </td>
+                    <td>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                    </td>
+                    <td>${user.createdAt ? formatDate(user.createdAt) : 'Unknown'}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-info" onclick="viewUser('${user._id}')" title="View Details">
+                                <i class='bx bx-show'></i> View
+                            </button>
+                            ${user.role === 'publisher' && !user.isApproved ?
+                                `<button class="btn-success" onclick="approvePublisher('${user._id}')" title="Approve Publisher">
+                                    <i class='bx bx-check'></i> Approve
+                                </button>
+                                 <button class="btn-danger" onclick="rejectPublisher('${user._id}')" title="Reject Publisher">
+                                    <i class='bx bx-x'></i> Reject
+                                 </button>` :
+                                `<button class="btn-danger" onclick="deleteUser('${user._id}')" title="Delete User">
+                                    <i class='bx bx-trash'></i> Delete
+                                 </button>`
+                            }
+                        </div>
+                    </td>
                 `;
 
-                activityList.appendChild(activityItem);
+                // Add row to table
+                userTableBody.appendChild(row);
             });
-        } catch (error) {
-            console.error('Error loading recent activity:', error);
+
+            // Update pagination controls
+            updateUserPagination(data.totalPages, page);
+        } else {
+            console.error('Error loading users:', data.message);
+            showNotification('Error loading users: ' + data.message, 'error');
+        }
+    } catch (error) {
+        console.error('Error loading users:', error);
+        showNotification('Network error loading users: ' + error.message, 'error');
+    }
+}
+
+// Update pagination controls for users table
+function updateUserPagination(totalPages, currentPage) {
+    const pagination = document.getElementById('userPagination');
+    if (!pagination) return;
+
+    let paginationHTML = '';
+
+    // Previous button
+    if (currentPage > 1) {
+        paginationHTML += `<button class="page-btn" onclick="loadUsers(${currentPage - 1})">Previous</button>`;
+    }
+
+    // Page number buttons
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === currentPage) {
+            paginationHTML += `<button class="page-btn active">${i}</button>`;
+        } else {
+            paginationHTML += `<button class="page-btn" onclick="loadUsers(${i})">${i}</button>`;
         }
     }
 
-    // ===== USER MANAGEMENT =====
-    async function loadUsers(page = 1) {
-        try {
-            currentUserPage = page;
-
-            // Show loading state
-            const userTableBody = document.getElementById('userTableBody');
-            userTableBody.innerHTML = `
-                <tr>
-                    <td colspan="6" class="loading-cell">
-                        <div class="loading-spinner"></div>
-                        Loading users...
-                    </td>
-                </tr>
-            `;
-
-            console.log('👥 Loading users...');
-            const response = await fetch(`/api/admin/users?page=${page}&limit=${usersPerPage}`);
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            // ✅ Check if response is JSON
-            const contentType = response.headers.get('content-type');
-            if (!contentType || !contentType.includes('application/json')) {
-                throw new Error('API returned non-JJSON response');
-            }
-
-            const data = await response.json();
-
-            if (data.success) {
-                allUsers = data.users;
-                userTableBody.innerHTML = '';
-
-                if (data.users.length === 0) {
-                    userTableBody.innerHTML = `
-                        <tr>
-                            <td colspan="6" class="no-data">
-                                <i class='bx bx-user-x'></i>
-                                <p>No users found</p>
-                            </td>
-                        </tr>
-                    `;
-                    return;
-                }
-
-                data.users.forEach(user => {
-                    const row = document.createElement('tr');
-
-                    // Determine status and badge class
-                    let statusText, statusClass;
-                    if (user.role === 'publisher') {
-                        if (user.isApproved) {
-                            statusText = 'Approved Publisher';
-                            statusClass = 'status-approved';
-                        } else {
-                            statusText = 'Pending Approval';
-                            statusClass = 'status-pending';
-                        }
-                    } else {
-                        statusText = user.isActive !== false ? 'Active User' : 'Inactive';
-                        statusClass = user.isActive !== false ? 'status-active' : 'status-inactive';
-                    }
-
-                    row.innerHTML = `
-                        <td>
-                            <div class="user-avatar">
-                                <i class='bx bx-user'></i>
-                                <span>${user.fullName || 'Unknown User'}</span>
-                            </div>
-                        </td>
-                        <td>${user.email || 'No email'}</td>
-                        <td>
-                            <span class="role-badge ${user.role}">${user.role || 'user'}</span>
-                        </td>
-                        <td>
-                            <span class="status-badge ${statusClass}">${statusText}</span>
-                        </td>
-                        <td>${user.createdAt ? formatDate(user.createdAt) : 'Unknown'}</td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-info" onclick="viewUser('${user._id}')" title="View Details">
-                                    <i class='bx bx-show'></i> View
-                                </button>
-                                ${user.role === 'publisher' && !user.isApproved ?
-                                    `<button class="btn-success" onclick="approvePublisher('${user._id}')" title="Approve Publisher">
-                                        <i class='bx bx-check'></i> Approve
-                                    </button>
-                                     <button class="btn-danger" onclick="rejectPublisher('${user._id}')" title="Reject Publisher">
-                                        <i class='bx bx-x'></i> Reject
-                                     </button>` :
-                                    `<button class="btn-danger" onclick="deleteUser('${user._id}')" title="Delete User">
-                                        <i class='bx bx-trash'></i> Delete
-                                     </button>`
-                                }
-                            </div>
-                        </td>
-                    `;
-                    userTableBody.appendChild(row);
-                });
-
-                // Update pagination
-                updateUserPagination(data.totalPages, page);
-            } else {
-                console.error('Error loading users:', data.message);
-                showNotification('Error loading users: ' + data.message, 'error');
-            }
-        } catch (error) {
-            console.error('Error loading users:', error);
-            showNotification('Network error loading users: ' + error.message, 'error');
-        }
+    // Next button
+    if (currentPage < totalPages) {
+        paginationHTML += `<button class="page-btn" onclick="loadUsers(${currentPage + 1})">Next</button>`;
     }
 
-    function updateUserPagination(totalPages, currentPage) {
-        const pagination = document.getElementById('userPagination');
-        if (!pagination) return;
+    // Update pagination HTML
+    pagination.innerHTML = paginationHTML;
+}
 
-        let paginationHTML = '';
-
-        if (currentPage > 1) {
-            paginationHTML += `<button class="page-btn" onclick="loadUsers(${currentPage - 1})">Previous</button>`;
-        }
-
-        for (let i = 1; i <= totalPages; i++) {
-            if (i === currentPage) {
-                paginationHTML += `<button class="page-btn active">${i}</button>`;
-            } else {
-                paginationHTML += `<button class="page-btn" onclick="loadUsers(${i})">${i}</button>`;
-            }
-        }
-
-        if (currentPage < totalPages) {
-            paginationHTML += `<button class="page-btn" onclick="loadUsers(${currentPage + 1})">Next</button>`;
-        }
-
-        pagination.innerHTML = paginationHTML;
-    }
-
-    // ===== PUBLISHER APPROVAL =====
-    async function approvePublisher(userId) {
+// ===== PUBLISHER APPROVAL FUNCTIONS =====
+// Approve a publisher account
+async function approvePublisher(userId) {
+    // Confirm action with user
     if (confirm('Are you sure you want to approve this publisher?')) {
         try {
+            // Show loading notification
             showNotification('Approving publisher...', 'info');
 
+            // Send approval request to server
             const response = await fetch(`/api/admin/publishers/${userId}/approve`, {
                 method: 'PUT',
                 headers: {
@@ -1740,10 +1732,13 @@ async function loadDashboardSummary() {
                 }
             });
 
+            // Parse response
             const data = await response.json();
 
+            // Handle response
             if (data.success) {
                 showNotification('Publisher approved successfully!', 'success');
+                // Refresh data
                 loadUsers(currentUserPage);
                 loadDashboardSummary();
             } else {
@@ -1756,11 +1751,14 @@ async function loadDashboardSummary() {
     }
 }
 
-    async function rejectPublisher(userId) {
-    if (confirm('Are you sure you want to reject this publisher? This will delete their account.')) {
+// Reject a publisher account
+async function rejectPublisher(userId) {
+    // Show strong warning confirmation
+    if (confirm('⚠️ ARE YOU SURE YOU WANT TO REJECT THIS PUBLISHER?\n\nThis will:\n• Permanently delete the publisher account\n• Delete ALL books uploaded by this publisher\n• This action cannot be undone!')) {
         try {
-            showNotification('Rejecting publisher...', 'info');
+            showNotification('Rejecting publisher and deleting all data...', 'warning');
 
+            // Send rejection request to server
             const response = await fetch(`/api/admin/publishers/${userId}/reject`, {
                 method: 'PUT',
                 headers: {
@@ -1768,347 +1766,390 @@ async function loadDashboardSummary() {
                 }
             });
 
+            // Parse response
             const data = await response.json();
 
+            // Handle response
             if (data.success) {
-                showNotification('Publisher rejected and account removed!', 'success');
+                showNotification('✅ Publisher rejected and all data permanently deleted!', 'success');
+                // Refresh data
                 loadUsers(currentUserPage);
                 loadDashboardSummary();
             } else {
-                showNotification('Error: ' + data.message, 'error');
+                showNotification('❌ Error: ' + data.message, 'error');
             }
         } catch (error) {
             console.error('Error rejecting publisher:', error);
-            showNotification('Error rejecting publisher', 'error');
+            showNotification('❌ Error rejecting publisher', 'error');
         }
     }
 }
 
-    // ===== USER ACTIONS =====
-    async function viewUser(userId) {
-        try {
-            const response = await fetch(`/api/admin/users/${userId}`);
+// ===== USER ACTIONS =====
+// View detailed user information
+async function viewUser(userId) {
+    try {
+        // Fetch user details from server
+        const response = await fetch(`/api/admin/users/${userId}`);
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            if (data.success) {
-                showUserModal(data.user);
-            } else {
-                console.error('Error loading user details:', data.message);
-                showNotification('Error loading user details: ' + data.message, 'error');
-            }
-        } catch (error) {
-            console.error('Error viewing user:', error);
-
-            // Fallback: Try to find user in already loaded data
-            const user = allUsers.find(u => u._id === userId);
-            if (user) {
-                showUserModal(user);
-            } else {
-                showNotification('Error loading user details. Please try again.', 'error');
-            }
+        // Check for HTTP errors
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-    }
 
-    function showUserModal(user) {
-        const modal = document.getElementById('userModal');
-        const userDetails = document.getElementById('userDetails');
+        // Parse response
+        const data = await response.json();
 
-        if (modal && userDetails) {
-            // Format dates properly
-            const joinDate = user.createdAt ? formatDateTime(user.createdAt) : 'Unknown';
-            const lastLogin = user.lastLogin ? formatDateTime(user.lastLogin) : 'Never';
-
-            userDetails.innerHTML = `
-                <div class="user-detail-grid">
-                    <div class="user-detail">
-                        <label>Full Name:</label>
-                        <span>${user.fullName || 'N/A'}</span>
-                    </div>
-                    <div class="user-detail">
-                        <label>Email:</label>
-                        <span>${user.email || 'N/A'}</span>
-                    </div>
-                    <div class="user-detail">
-                        <label>Role:</label>
-                        <span class="role-badge ${user.role || 'user'}">${user.role || 'User'}</span>
-                    </div>
-                    <div class="user-detail">
-                        <label>Status:</label>
-                        <span class="status-badge ${getUserStatusClass(user)}">
-                            ${getUserStatusText(user)}
-                        </span>
-                    </div>
-                    <div class="user-detail">
-                        <label>Account Created:</label>
-                        <span>${joinDate}</span>
-                    </div>
-                    <div class="user-detail">
-                        <label>Last Login:</label>
-                        <span>${lastLogin}</span>
-                    </div>
-                    ${user.role === 'publisher' ? `
-                    <div class="user-detail">
-                        <label>Publisher Status:</label>
-                        <span class="status-badge ${user.isApproved ? 'status-approved' : 'status-pending'}">
-                            ${user.isApproved ? 'Approved' : 'Pending Approval'}
-                        </span>
-                    </div>
-                    ${user.publisherSince ? `
-                    <div class="user-detail">
-                        <label>Publisher Since:</label>
-                        <span>${formatDateTime(user.publisherSince)}</span>
-                    </div>
-                    ` : ''}
-                    ` : ''}
-                    ${user.booksPublished >= 0 ? `
-                    <div class="user-detail">
-                        <label>Books Published:</label>
-                        <span>${user.booksPublished}</span>
-                    </div>
-                    ` : ''}
-                </div>
-                <div class="modal-actions">
-                    ${user.role === 'publisher' && !user.isApproved ? `
-                        <button class="btn-success" onclick="approvePublisher('${user._id}')">
-                            <i class='bx bx-check'></i> Approve Publisher
-                        </button>
-                        <button class="btn-danger" onclick="rejectPublisher('${user._id}')">
-                            <i class='bx bx-x'></i> Reject Publisher
-                        </button>
-                    ` : `
-                        <button class="btn-primary" onclick="editUser('${user._id}')">
-                            <i class='bx bx-edit'></i> Edit User
-                        </button>
-                    `}
-                    <button class="btn-danger" onclick="deleteUser('${user._id}')">
-                        <i class='bx bx-trash'></i> Delete User
-                    </button>
-                </div>
-            `;
-
-            modal.style.display = 'block';
+        // Show user modal if successful
+        if (data.success) {
+            showUserModal(data.user);
         } else {
-            console.error('Modal elements not found');
-            showNotification('Error: Could not open user details', 'error');
+            console.error('Error loading user details:', data.message);
+            showNotification('Error loading user details: ' + data.message, 'error');
+        }
+    } catch (error) {
+        console.error('Error viewing user:', error);
+
+        // Fallback: try to find user in loaded data
+        const user = allUsers.find(u => u._id === userId);
+        if (user) {
+            showUserModal(user);
+        } else {
+            showNotification('Error loading user details. Please try again.', 'error');
         }
     }
+}
 
-    // Helper functions for user status
-    function getUserStatusClass(user) {
-        if (user.role === 'publisher') {
-            return user.isApproved ? 'status-approved' : 'status-pending';
-        }
-        return user.isActive !== false ? 'status-active' : 'status-inactive';
+// Display user details in modal
+function showUserModal(user) {
+    const modal = document.getElementById('userModal');
+    const userDetails = document.getElementById('userDetails');
+
+    if (modal && userDetails) {
+        // Format dates for display
+        const joinDate = user.createdAt ? formatDateTime(user.createdAt) : 'Unknown';
+        const lastLogin = user.lastLogin ? formatDateTime(user.lastLogin) : 'Never';
+
+        // Create user details HTML
+        userDetails.innerHTML = `
+            <div class="user-detail-grid">
+                <div class="user-detail">
+                    <label>Full Name:</label>
+                    <span>${user.fullName || 'N/A'}</span>
+                </div>
+                <div class="user-detail">
+                    <label>Email:</label>
+                    <span>${user.email || 'N/A'}</span>
+                </div>
+                <div class="user-detail">
+                    <label>Role:</label>
+                    <span class="role-badge ${user.role || 'user'}">${user.role || 'User'}</span>
+                </div>
+                <div class="user-detail">
+                    <label>Status:</label>
+                    <span class="status-badge ${getUserStatusClass(user)}">
+                        ${getUserStatusText(user)}
+                    </span>
+                </div>
+                <div class="user-detail">
+                    <label>Account Created:</label>
+                    <span>${joinDate}</span>
+                </div>
+                <div class="user-detail">
+                    <label>Last Login:</label>
+                    <span>${lastLogin}</span>
+                </div>
+                ${user.role === 'publisher' ? `
+                <div class="user-detail">
+                    <label>Publisher Status:</label>
+                    <span class="status-badge ${user.isApproved ? 'status-approved' : 'status-pending'}">
+                        ${user.isApproved ? 'Approved' : 'Pending Approval'}
+                    </span>
+                </div>
+                ${user.publisherSince ? `
+                <div class="user-detail">
+                    <label>Publisher Since:</label>
+                    <span>${formatDateTime(user.publisherSince)}</span>
+                </div>
+                ` : ''}
+                ` : ''}
+                ${user.booksPublished >= 0 ? `
+                <div class="user-detail">
+                    <label>Books Published:</label>
+                    <span>${user.booksPublished}</span>
+                </div>
+                ` : ''}
+            </div>
+            <div class="modal-actions">
+                ${user.role === 'publisher' && !user.isApproved ? `
+                    <button class="btn-success" onclick="approvePublisher('${user._id}')">
+                        <i class='bx bx-check'></i> Approve Publisher
+                    </button>
+                    <button class="btn-danger" onclick="rejectPublisher('${user._id}')">
+                        <i class='bx bx-x'></i> Reject Publisher
+                    </button>
+                ` : `
+                    <button class="btn-primary" onclick="editUser('${user._id}')">
+                        <i class='bx bx-edit'></i> Edit User
+                    </button>
+                `}
+                <button class="btn-danger" onclick="deleteUser('${user._id}')">
+                    <i class='bx bx-trash'></i> Delete User
+                </button>
+            </div>
+        `;
+
+        // Show the modal
+        modal.style.display = 'block';
+    } else {
+        console.error('Modal elements not found');
+        showNotification('Error: Could not open user details', 'error');
     }
+}
 
-    function getUserStatusText(user) {
-        if (user.role === 'publisher') {
-            return user.isApproved ? 'Approved Publisher' : 'Pending Publisher';
-        }
-        return user.isActive !== false ? 'Active User' : 'Inactive User';
+// Helper function to get CSS class for user status
+function getUserStatusClass(user) {
+    if (user.role === 'publisher') {
+        return user.isApproved ? 'status-approved' : 'status-pending';
     }
+    return user.isActive !== false ? 'status-active' : 'status-inactive';
+}
 
-    async function editUser(userId) {
-        showNotification('Edit user functionality coming soon!', 'info');
+// Helper function to get display text for user status
+function getUserStatusText(user) {
+    if (user.role === 'publisher') {
+        return user.isApproved ? 'Approved Publisher' : 'Pending Publisher';
     }
+    return user.isActive !== false ? 'Active User' : 'Inactive User';
+}
 
-    async function deleteUser(userId) {
+// Edit user (placeholder function)
+async function editUser(userId) {
+    showNotification('Edit user functionality coming soon!', 'info');
+}
+
+// Delete user permanently
+async function deleteUser(userId) {
+    // Find user in loaded data
     const user = allUsers.find(u => u._id == userId);
     if (!user) return;
 
-    if (confirm(`Are you sure you want to delete user "${user.fullName}"? This action cannot be undone.`)) {
+    // Show strong warning confirmation
+    if (confirm(`⚠️ ARE YOU SURE YOU WANT TO PERMANENTLY DELETE USER "${user.fullName}"?\n\nThis will:\n• Delete user account permanently\n• Delete all user data\n• This action cannot be undone!`)) {
         try {
-            showNotification('Deleting user...', 'info');
+            showNotification('Deleting user...', 'warning');
 
+            // Send delete request to server
             const response = await fetch(`/api/admin/users/${userId}`, {
                 method: 'DELETE'
             });
 
+            // Parse response
             const data = await response.json();
 
+            // Handle response
             if (data.success) {
-                showNotification('User deleted successfully!', 'success');
+                showNotification('✅ User permanently deleted from database!', 'success');
+                // Refresh data
                 loadUsers(currentUserPage);
                 loadDashboardSummary();
+                // Close modal if open
                 document.getElementById('userModal').style.display = 'none';
             } else {
-                showNotification('Error: ' + data.message, 'error');
+                showNotification('❌ Error: ' + data.message, 'error');
             }
         } catch (error) {
             console.error('Error deleting user:', error);
-            showNotification('Error deleting user', 'error');
+            showNotification('❌ Error deleting user', 'error');
         }
     }
 }
 
+// ===== BOOK MANAGEMENT FUNCTIONS =====
+// Load books with pagination
+async function loadBooks(page = 1) {
+    try {
+        // Update current page
+        currentBookPage = page;
 
-    // ===== BOOK MANAGEMENT =====
-    async function loadBooks(page = 1) {
-        try {
-            currentBookPage = page;
+        // Show loading state in table
+        const bookTableBody = document.getElementById('bookTableBody');
+        bookTableBody.innerHTML = `
+            <tr>
+                <td colspan="7" class="loading-cell">
+                    <div class="loading-spinner"></div>
+                    Loading books...
+                </td>
+            </tr>
+        `;
 
-            // Show loading state
-            const bookTableBody = document.getElementById('bookTableBody');
-            bookTableBody.innerHTML = `
-                <tr>
-                    <td colspan="7" class="loading-cell">
-                        <div class="loading-spinner"></div>
-                        Loading books...
-                    </td>
-                </tr>
-            `;
+        console.log('📚 Loading books...');
 
-            console.log('📚 Loading books...');
-            const response = await fetch(`/api/admin/books?page=${page}&limit=${booksPerPage}&status=all`);
+        // Fetch books from server API
+        const response = await fetch(`/api/admin/books?page=${page}&limit=${booksPerPage}&status=all`);
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+        // Check for HTTP errors
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Verify response is JSON format
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            throw new Error('API returned non-JSON response');
+        }
+
+        // Parse JSON response
+        const data = await response.json();
+
+        // Process successful response
+        if (data.success) {
+            // Store books globally
+            allBooks = data.books;
+
+            // Clear table body
+            bookTableBody.innerHTML = '';
+
+            // Show message if no books found
+            if (data.books.length === 0) {
+                bookTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="no-data">
+                            <i class='bx bx-book-open'></i>
+                            <p>No books found</p>
+                        </td>
+                    </tr>
+                `;
+                return;
             }
 
-            // ✅ Check if response is JSON
-            const contentType = response.headers.get('content-type');
-            if (!contentType || !contentType.includes('application/json')) {
-                throw new Error('API returned non-JJSON response');
-            }
+            // Create table row for each book
+            data.books.forEach(book => {
+                const row = document.createElement('tr');
 
-            const data = await response.json();
-
-            if (data.success) {
-                allBooks = data.books;
-                bookTableBody.innerHTML = '';
-
-                if (data.books.length === 0) {
-                    bookTableBody.innerHTML = `
-                        <tr>
-                            <td colspan="7" class="no-data">
-                                <i class='bx bx-book-open'></i>
-                                <p>No books found</p>
-                            </td>
-                        </tr>
-                    `;
-                    return;
+                // Determine book status and badge styling
+                let statusClass = '';
+                let statusText = book.status ? book.status.charAt(0).toUpperCase() + book.status.slice(1) : 'Unknown';
+                switch(book.status) {
+                    case 'approved':
+                        statusClass = 'status-approved';
+                        break;
+                    case 'pending':
+                        statusClass = 'status-pending';
+                        break;
+                    case 'rejected':
+                        statusClass = 'status-rejected';
+                        break;
+                    default:
+                        statusClass = 'status-pending';
                 }
 
-                data.books.forEach(book => {
-                    const row = document.createElement('tr');
-
-                    // Determine status badge class
-                    let statusClass = '';
-                    let statusText = book.status ? book.status.charAt(0).toUpperCase() + book.status.slice(1) : 'Unknown';
-                    switch(book.status) {
-                        case 'approved':
-                            statusClass = 'status-approved';
-                            break;
-                        case 'pending':
-                            statusClass = 'status-pending';
-                            break;
-                        case 'rejected':
-                            statusClass = 'status-rejected';
-                            break;
-                        default:
-                            statusClass = 'status-pending';
-                    }
-
-                    row.innerHTML = `
-                        <td>
-                            ${book.coverImage ?
-                                `<img src="${book.coverImage}" alt="${book.title}" class="book-cover">` :
-                                '<div class="book-cover-placeholder"><i class="bx bx-book"></i></div>'
+                // Create HTML for book row
+                row.innerHTML = `
+                    <td>
+                        ${book.coverImage ?
+                            `<img src="${book.coverImage}" alt="${book.title}" class="book-cover">` :
+                            '<div class="book-cover-placeholder"><i class="bx bx-book"></i></div>'
+                        }
+                    </td>
+                    <td>
+                        <div class="book-title">
+                            <strong>${book.title || 'Untitled'}</strong>
+                            <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px;">
+                                by ${book.author || 'Unknown Author'}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="category-tag">${book.category || 'Uncategorized'}</span>
+                    </td>
+                    <td>
+                        <div style="font-size: 0.9rem;">
+                            ${book.publisherName || 'Unknown Publisher'}
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                    </td>
+                    <td>${book.createdAt ? formatDate(book.createdAt) : 'Unknown'}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-info" onclick="viewBook('${book._id}')" title="View Details">
+                                <i class='bx bx-show'></i> View
+                            </button>
+                            ${book.status === 'pending' ?
+                                `<button class="btn-success" onclick="approveBook('${book._id}')" title="Approve Book">
+                                    <i class='bx bx-check'></i> Approve
+                                </button>
+                                 <button class="btn-danger" onclick="showRejectionModal('${book._id}')" title="Reject Book">
+                                    <i class='bx bx-x'></i> Reject
+                                 </button>` :
+                                `<button class="btn-warning" onclick="editBook('${book._id}')" title="Edit Book">
+                                    <i class='bx bx-edit'></i> Edit
+                                </button>`
                             }
-                        </td>
-                        <td>
-                            <div class="book-title">
-                                <strong>${book.title || 'Untitled'}</strong>
-                                <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px;">
-                                    by ${book.author || 'Unknown Author'}
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="category-tag">${book.category || 'Uncategorized'}</span>
-                        </td>
-                        <td>
-                            <div style="font-size: 0.9rem;">
-                                ${book.publisherName || 'Unknown Publisher'}
-                            </div>
-                        </td>
-                        <td>
-                            <span class="status-badge ${statusClass}">${statusText}</span>
-                        </td>
-                        <td>${book.createdAt ? formatDate(book.createdAt) : 'Unknown'}</td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-info" onclick="viewBook('${book._id}')" title="View Details">
-                                    <i class='bx bx-show'></i> View
-                                </button>
-                                ${book.status === 'pending' ?
-                                    `<button class="btn-success" onclick="approveBook('${book._id}')" title="Approve Book">
-                                        <i class='bx bx-check'></i> Approve
-                                    </button>
-                                     <button class="btn-danger" onclick="showRejectionModal('${book._id}')" title="Reject Book">
-                                        <i class='bx bx-x'></i> Reject
-                                     </button>` :
-                                    `<button class="btn-warning" onclick="editBook('${book._id}')" title="Edit Book">
-                                        <i class='bx bx-edit'></i> Edit
-                                    </button>`
-                                }
-                                <button class="btn-danger" onclick="deleteBook('${book._id}')" title="Delete Book">
-                                    <i class='bx bx-trash'></i> Delete
-                                </button>
-                            </div>
-                        </td>
-                    `;
-                    bookTableBody.appendChild(row);
-                });
+                            <button class="btn-danger" onclick="deleteBook('${book._id}')" title="Delete Book">
+                                <i class='bx bx-trash'></i> Delete
+                            </button>
+                        </div>
+                    </td>
+                `;
 
-                // Update pagination
-                updateBookPagination(data.totalPages, page);
-            } else {
-                console.error('Error loading books:', data.message);
-                showNotification('Error loading books: ' + data.message, 'error');
-            }
-        } catch (error) {
-            console.error('Error loading books:', error);
-            showNotification('Network error loading books: ' + error.message, 'error');
+                // Add row to table
+                bookTableBody.appendChild(row);
+            });
+
+            // Update pagination controls
+            updateBookPagination(data.totalPages, page);
+        } else {
+            console.error('Error loading books:', data.message);
+            showNotification('Error loading books: ' + data.message, 'error');
+        }
+    } catch (error) {
+        console.error('Error loading books:', error);
+        showNotification('Network error loading books: ' + error.message, 'error');
+    }
+}
+
+// Update pagination controls for books table
+function updateBookPagination(totalPages, currentPage) {
+    const pagination = document.getElementById('bookPagination');
+    if (!pagination) return;
+
+    let paginationHTML = '';
+
+    // Previous button
+    if (currentPage > 1) {
+        paginationHTML += `<button class="page-btn" onclick="loadBooks(${currentPage - 1})">Previous</button>`;
+    }
+
+    // Page number buttons
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === currentPage) {
+            paginationHTML += `<button class="page-btn active">${i}</button>`;
+        } else {
+            paginationHTML += `<button class="page-btn" onclick="loadBooks(${i})">${i}</button>`;
         }
     }
 
-    function updateBookPagination(totalPages, currentPage) {
-        const pagination = document.getElementById('bookPagination');
-        if (!pagination) return;
-
-        let paginationHTML = '';
-
-        if (currentPage > 1) {
-            paginationHTML += `<button class="page-btn" onclick="loadBooks(${currentPage - 1})">Previous</button>`;
-        }
-
-        for (let i = 1; i <= totalPages; i++) {
-            if (i === currentPage) {
-                paginationHTML += `<button class="page-btn active">${i}</button>`;
-            } else {
-                paginationHTML += `<button class="page-btn" onclick="loadBooks(${i})">${i}</button>`;
-            }
-        }
-
-        if (currentPage < totalPages) {
-            paginationHTML += `<button class="page-btn" onclick="loadBooks(${currentPage + 1})">Next</button>`;
-        }
-
-        pagination.innerHTML = paginationHTML;
+    // Next button
+    if (currentPage < totalPages) {
+        paginationHTML += `<button class="page-btn" onclick="loadBooks(${currentPage + 1})">Next</button>`;
     }
 
-    // ===== BOOK ACTIONS =====
-    async function approveBook(bookId) {
+    // Update pagination HTML
+    pagination.innerHTML = paginationHTML;
+}
+
+// ===== BOOK ACTIONS =====
+// Approve a book for publishing
+async function approveBook(bookId) {
+    // Confirm action with user
     if (confirm('Are you sure you want to approve this book?')) {
         try {
             showNotification('Approving book...', 'info');
 
+            // Send approval request to server
             const response = await fetch(`/api/admin/books/${bookId}/approve`, {
                 method: 'PUT',
                 headers: {
@@ -2116,13 +2157,15 @@ async function loadDashboardSummary() {
                 }
             });
 
+            // Parse response
             const data = await response.json();
 
+            // Handle response
             if (data.success) {
                 showNotification('Book approved successfully!', 'success');
+                // Refresh data
                 loadBooks(currentBookPage);
                 loadDashboardSummary();
-
                 // Close modal if open
                 document.getElementById('bookModal').style.display = 'none';
             } else {
@@ -2135,43 +2178,59 @@ async function loadDashboardSummary() {
     }
 }
 
-    function showRejectionModal(bookId) {
-        currentRejectBookId = bookId;
-        const modal = document.getElementById('rejectionModal');
-        if (modal) {
-            modal.style.display = 'block';
-            document.getElementById('rejectionReason').value = '';
-        }
+// Show rejection reason modal
+function showRejectionModal(bookId) {
+    // Store book ID for later use
+    currentRejectBookId = bookId;
+    const modal = document.getElementById('rejectionModal');
+    if (modal) {
+        // Show modal and clear previous reason
+        modal.style.display = 'block';
+        document.getElementById('rejectionReason').value = '';
+    }
+}
+
+// Close rejection modal
+function closeRejectionModal() {
+    const modal = document.getElementById('rejectionModal');
+    if (modal) {
+        // Hide modal and clear stored book ID
+        modal.style.display = 'none';
+        currentRejectBookId = null;
+    }
+}
+
+// Handle rejection form submission
+document.getElementById('rejectionForm').addEventListener('submit', async function(e) {
+    // Prevent default form submission
+    e.preventDefault();
+
+    // Check if we have a book to reject
+    if (!currentRejectBookId) return;
+
+    // Get rejection reason
+    const reason = document.getElementById('rejectionReason').value;
+
+    // Validate reason is provided
+    if (!reason.trim()) {
+        showNotification('Please provide a reason for rejection', 'error');
+        return;
     }
 
-    function closeRejectionModal() {
-        const modal = document.getElementById('rejectionModal');
-        if (modal) {
-            modal.style.display = 'none';
-            currentRejectBookId = null;
-        }
-    }
-
-    // Handle rejection form submission
-    document.getElementById('rejectionForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        if (!currentRejectBookId) return;
-
-        const reason = document.getElementById('rejectionReason').value;
-        if (!reason.trim()) {
-            showNotification('Please provide a reason for rejection', 'error');
-            return;
-        }
-
+    // Final confirmation before permanent deletion
+    if (confirm(`⚠️ FINAL CONFIRMATION:\n\nAre you absolutely sure you want to REJECT and PERMANENTLY DELETE this book?\n\nReason: ${reason}\n\nThis action cannot be undone!`)) {
         await rejectBook(currentRejectBookId, reason);
-    });
+    }
+});
 
-    async function rejectBook(bookId, reason) {
-    if (confirm('Are you sure you want to reject this book?')) {
+// Reject and delete a book
+async function rejectBook(bookId, reason) {
+    // Confirm action with user
+    if (confirm('Are you sure you want to REJECT and PERMANENTLY DELETE this book from database? This action cannot be undone!')) {
         try {
-            showNotification('Rejecting book...', 'info');
+            showNotification('Rejecting and deleting book...', 'warning');
 
+            // Send rejection request to server
             const response = await fetch(`/api/admin/books/${bookId}/reject`, {
                 method: 'PUT',
                 headers: {
@@ -2180,307 +2239,374 @@ async function loadDashboardSummary() {
                 body: JSON.stringify({ reason: reason })
             });
 
+            // Parse response
             const data = await response.json();
 
+            // Handle response
             if (data.success) {
-                showNotification('Book rejected successfully!', 'success');
+                showNotification('✅ Book rejected and permanently deleted from database!', 'success');
+                // Refresh data
                 loadBooks(currentBookPage);
                 loadDashboardSummary();
+                // Close rejection modal
                 closeRejectionModal();
             } else {
-                showNotification('Error: ' + data.message, 'error');
+                showNotification('❌ Error: ' + data.message, 'error');
             }
         } catch (error) {
             console.error('Error rejecting book:', error);
-            showNotification('Error rejecting book', 'error');
+            showNotification('❌ Error rejecting book', 'error');
         }
     }
 }
 
-    async function viewBook(bookId) {
-        try {
-            const response = await fetch(`/api/admin/books/${bookId}`);
+// View detailed book information
+async function viewBook(bookId) {
+    try {
+        // Fetch book details from server
+        const response = await fetch(`/api/admin/books/${bookId}`);
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+        // Check for HTTP errors
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-            const data = await response.json();
+        // Parse response
+        const data = await response.json();
 
-            if (data.success) {
-                showBookModal(data.book);
-            } else {
-                console.error('Error loading book details:', data.message);
-                showNotification('Error loading book details: ' + data.message, 'error');
-            }
-        } catch (error) {
-            console.error('Error viewing book:', error);
+        // Show book modal if successful
+        if (data.success) {
+            showBookModal(data.book);
+        } else {
+            console.error('Error loading book details:', data.message);
+            showNotification('Error loading book details: ' + data.message, 'error');
+        }
+    } catch (error) {
+        console.error('Error viewing book:', error);
 
-            // Fallback: Try to find book in already loaded data
-            const book = allBooks.find(b => b._id === bookId);
-            if (book) {
-                showBookModal(book);
-            } else {
-                showNotification('Error loading book details. Please try again.', 'error');
-            }
+        // Fallback: try to find book in loaded data
+        const book = allBooks.find(b => b._id === bookId);
+        if (book) {
+            showBookModal(book);
+        } else {
+            showNotification('Error loading book details. Please try again.', 'error');
         }
     }
+}
 
-    function showBookModal(book) {
-        const modal = document.getElementById('bookModal');
-        const bookDetails = document.getElementById('bookDetails');
+// Display book details in modal
+function showBookModal(book) {
+    const modal = document.getElementById('bookModal');
+    const bookDetails = document.getElementById('bookDetails');
 
-        if (modal && bookDetails) {
-            const statusText = book.status ? book.status.charAt(0).toUpperCase() + book.status.slice(1) : 'Unknown';
-            const statusClass = book.status ? `status-${book.status}` : 'status-pending';
+    if (modal && bookDetails) {
+        // Format status for display
+        const statusText = book.status ? book.status.charAt(0).toUpperCase() + book.status.slice(1) : 'Unknown';
+        const statusClass = book.status ? `status-${book.status}` : 'status-pending';
 
-            bookDetails.innerHTML = `
-                <div class="book-detail-grid">
-                    <div class="book-cover-large">
-                        ${book.coverImage ?
-                            `<img src="${book.coverImage}" alt="${book.title}" style="max-width: 200px; border-radius: 8px;">` :
-                            '<div class="book-cover-placeholder" style="width: 200px; height: 300px; background: #f8f9fa; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #6c757d; font-size: 3rem;"><i class="bx bx-book"></i></div>'
-                        }
+        // Create book details HTML
+        bookDetails.innerHTML = `
+            <div class="book-detail-grid">
+                <div class="book-cover-large">
+                    ${book.coverImage ?
+                        `<img src="${book.coverImage}" alt="${book.title}" style="max-width: 200px; border-radius: 8px;">` :
+                        '<div class="book-cover-placeholder" style="width: 200px; height: 300px; background: #f8f9fa; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #6c757d; font-size: 3rem;"><i class="bx bx-book"></i></div>'
+                    }
+                </div>
+                <div class="book-info">
+                    <h3>${book.title || 'Untitled'}</h3>
+                    <p class="book-author">by ${book.author || 'Unknown Author'}</p>
+
+                    <div class="book-meta">
+                        <span class="category-tag">${book.category || 'Uncategorized'}</span>
+                        <span class="status-badge ${statusClass}">
+                            ${statusText}
+                        </span>
+                        ${book.isFeatured ? '<span class="featured-badge">Featured</span>' : ''}
                     </div>
-                    <div class="book-info">
-                        <h3>${book.title || 'Untitled'}</h3>
-                        <p class="book-author">by ${book.author || 'Unknown Author'}</p>
 
-                        <div class="book-meta">
-                            <span class="category-tag">${book.category || 'Uncategorized'}</span>
-                            <span class="status-badge ${statusClass}">
-                                ${statusText}
-                            </span>
-                            ${book.isFeatured ? '<span class="featured-badge">Featured</span>' : ''}
+                    <div style="margin: 1rem 0; padding: 1rem; background: #f8f9fa; border-radius: 6px;">
+                        <strong>Publisher:</strong> ${book.publisherName || 'Unknown'}
+                    </div>
+
+                    ${book.description ? `
+                    <div class="book-description">
+                        <h4>Description</h4>
+                        <p>${book.description}</p>
+                    </div>
+                    ` : ''}
+
+                    <div class="book-stats">
+                        <div class="stat">
+                            <label>Language:</label>
+                            <span>${book.language || 'English'}</span>
                         </div>
-
-                        <div style="margin: 1rem 0; padding: 1rem; background: #f8f9fa; border-radius: 6px;">
-                            <strong>Publisher:</strong> ${book.publisherName || 'Unknown'}
+                        <div class="stat">
+                            <label>Submitted:</label>
+                            <span>${book.createdAt ? formatDateTime(book.createdAt) : 'Unknown'}</span>
                         </div>
-
-                        ${book.description ? `
-                        <div class="book-description">
-                            <h4>Description</h4>
-                            <p>${book.description}</p>
+                        ${book.reviewedAt ? `
+                        <div class="stat">
+                            <label>Reviewed:</label>
+                            <span>${formatDateTime(book.reviewedAt)}</span>
                         </div>
                         ` : ''}
-
-                        <div class="book-stats">
-                            <div class="stat">
-                                <label>Language:</label>
-                                <span>${book.language || 'English'}</span>
-                            </div>
-                            <div class="stat">
-                                <label>Submitted:</label>
-                                <span>${book.createdAt ? formatDateTime(book.createdAt) : 'Unknown'}</span>
-                            </div>
-                            ${book.reviewedAt ? `
-                            <div class="stat">
-                                <label>Reviewed:</label>
-                                <span>${formatDateTime(book.reviewedAt)}</span>
-                            </div>
-                            ` : ''}
-                            ${book.adminNotes ? `
-                            <div class="stat">
-                                <label>Admin Notes:</label>
-                                <span style="color: var(--warning);">${book.adminNotes}</span>
-                            </div>
-                            ` : ''}
+                        ${book.adminNotes ? `
+                        <div class="stat">
+                            <label>Admin Notes:</label>
+                            <span style="color: var(--warning);">${book.adminNotes}</span>
                         </div>
+                        ` : ''}
                     </div>
                 </div>
-                <div class="modal-actions">
-                    ${book.status === 'pending' ? `
-                        <button class="btn-success" onclick="approveBook('${book._id}')">
-                            <i class='bx bx-check'></i> Approve
-                        </button>
-                        <button class="btn-danger" onclick="showRejectionModal('${book._id}')">
-                            <i class='bx bx-x'></i> Reject
-                        </button>
-                    ` : ''}
-                    <button class="btn-primary" onclick="editBook('${book._id}')">
-                        <i class='bx bx-edit'></i> Edit
+            </div>
+            <div class="modal-actions">
+                ${book.status === 'pending' ? `
+                    <button class="btn-success" onclick="approveBook('${book._id}')">
+                        <i class='bx bx-check'></i> Approve
                     </button>
-                    ${book.isFeatured ? `
-                        <button class="btn-secondary" onclick="unfeatureBook('${book._id}')">
-                            <i class='bx bx-star'></i> Unfeature
-                        </button>
-                    ` : `
-                        <button class="btn-success" onclick="featureBook('${book._id}')">
-                            <i class='bx bx-star'></i> Feature
-                        </button>
-                    `}
-                    <button class="btn-danger" onclick="deleteBook('${book._id}')">
-                        <i class='bx bx-trash'></i> Delete
+                    <button class="btn-danger" onclick="showRejectionModal('${book._id}')">
+                        <i class='bx bx-x'></i> Reject
                     </button>
-                </div>
-            `;
+                ` : ''}
+                <button class="btn-primary" onclick="editBook('${book._id}')">
+                    <i class='bx bx-edit'></i> Edit
+                </button>
+                ${book.isFeatured ? `
+                    <button class="btn-secondary" onclick="unfeatureBook('${book._id}')">
+                        <i class='bx bx-star'></i> Unfeature
+                    </button>
+                ` : `
+                    <button class="btn-success" onclick="featureBook('${book._id}')">
+                        <i class='bx bx-star'></i> Feature
+                    </button>
+                `}
+                <button class="btn-danger" onclick="deleteBook('${book._id}')">
+                    <i class='bx bx-trash'></i> Delete
+                </button>
+            </div>
+        `;
 
-            modal.style.display = 'block';
-        }
+        // Show the modal
+        modal.style.display = 'block';
     }
+}
 
-    async function editBook(bookId) {
-        showNotification('Edit book functionality coming soon!', 'info');
-    }
+// Edit book (placeholder function)
+async function editBook(bookId) {
+    showNotification('Edit book functionality coming soon!', 'info');
+}
 
-    async function featureBook(bookId) {
-        showNotification('Feature book functionality coming soon!', 'info');
-    }
+// Feature book (placeholder function)
+async function featureBook(bookId) {
+    showNotification('Feature book functionality coming soon!', 'info');
+}
 
-    async function unfeatureBook(bookId) {
-        showNotification('Unfeature book functionality coming soon!', 'info');
-    }
+// Unfeature book (placeholder function)
+async function unfeatureBook(bookId) {
+    showNotification('Unfeature book functionality coming soon!', 'info');
+}
 
-    async function deleteBook(bookId) {
+// Delete book permanently
+async function deleteBook(bookId) {
+    // Find book in loaded data
     const book = allBooks.find(b => b._id == bookId);
     if (!book) return;
 
-    if (confirm(`Are you sure you want to delete "${book.title}"? This action cannot be undone.`)) {
+    // Show strong warning confirmation
+    if (confirm(`⚠️ ARE YOU SURE YOU WANT TO PERMANENTLY DELETE BOOK "${book.title}"?\n\nThis will:\n• Delete book permanently from database\n• Remove all book data\n• This action cannot be undone!`)) {
         try {
-            showNotification('Deleting book...', 'info');
+            showNotification('Deleting book...', 'warning');
 
+            // Send delete request to server
             const response = await fetch(`/api/admin/books/${bookId}`, {
                 method: 'DELETE'
             });
 
+            // Parse response
             const data = await response.json();
 
+            // Handle response
             if (data.success) {
-                showNotification('Book deleted successfully!', 'success');
+                showNotification('✅ Book permanently deleted from database!', 'success');
+                // Refresh data
                 loadBooks(currentBookPage);
                 loadDashboardSummary();
+                // Close modal if open
                 const modal = document.getElementById('bookModal');
                 if (modal) modal.style.display = 'none';
             } else {
-                showNotification('Error: ' + data.message, 'error');
+                showNotification('❌ Error: ' + data.message, 'error');
             }
         } catch (error) {
             console.error('Error deleting book:', error);
-            showNotification('Error deleting book', 'error');
+            showNotification('❌ Error deleting book', 'error');
         }
     }
 }
 
-    // ===== SEARCH AND FILTER =====
-    function searchUsers() {
-        const searchTerm = document.getElementById('userSearch').value.toLowerCase();
-        const rows = document.querySelectorAll('#userTableBody tr');
+// ===== SEARCH AND FILTER FUNCTIONS =====
+// Search through users table
+function searchUsers() {
+    // Get search term and convert to lowercase
+    const searchTerm = document.getElementById('userSearch').value.toLowerCase();
 
-        rows.forEach(row => {
-            const text = row.textContent.toLowerCase();
-            row.style.display = text.includes(searchTerm) ? '' : 'none';
-        });
-    }
+    // Get all user table rows
+    const rows = document.querySelectorAll('#userTableBody tr');
 
-    function searchBooks() {
-        const searchTerm = document.getElementById('bookSearch').value.toLowerCase();
-        const rows = document.querySelectorAll('#bookTableBody tr');
+    // Show/hide rows based on search match
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm) ? '' : 'none';
+    });
+}
 
-        rows.forEach(row => {
-            const text = row.textContent.toLowerCase();
-            row.style.display = text.includes(searchTerm) ? '' : 'none';
-        });
-    }
+// Search through books table
+function searchBooks() {
+    // Get search term and convert to lowercase
+    const searchTerm = document.getElementById('bookSearch').value.toLowerCase();
 
-    function filterBooks() {
-        const statusFilter = document.getElementById('statusFilter').value;
-        const rows = document.querySelectorAll('#bookTableBody tr');
+    // Get all book table rows
+    const rows = document.querySelectorAll('#bookTableBody tr');
 
-        rows.forEach(row => {
-            if (!statusFilter) {
-                row.style.display = '';
-                return;
-            }
+    // Show/hide rows based on search match
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(searchTerm) ? '' : 'none';
+    });
+}
 
-            const statusBadge = row.querySelector('.status-badge');
-            if (statusBadge && statusBadge.textContent.toLowerCase() === statusFilter.toLowerCase()) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
-        });
-    }
+// Filter books by status
+function filterBooks() {
+    // Get selected status filter
+    const statusFilter = document.getElementById('statusFilter').value;
 
-    // ===== ANALYTICS =====
-    async function loadAnalytics() {
-        try {
-            const response = await fetch('/api/admin/analytics');
-            if (response.ok) {
-                const data = await response.json();
-                if (data.success) {
-                    // Update analytics charts here
-                    console.log('Analytics data loaded:', data);
-                }
-            }
-        } catch (error) {
-            console.error('Error loading analytics:', error);
+    // Get all book table rows
+    const rows = document.querySelectorAll('#bookTableBody tr');
+
+    // Show/hide rows based on status filter
+    rows.forEach(row => {
+        // Show all if no filter selected
+        if (!statusFilter) {
+            row.style.display = '';
+            return;
         }
-    }
 
-    // ===== EXPORT FUNCTIONALITY =====
-    async function exportUsers() {
-        try {
-            showNotification('Preparing user export...', 'info');
+        // Find status badge in row
+        const statusBadge = row.querySelector('.status-badge');
 
-            const response = await fetch('/api/admin/users?limit=1000');
+        // Show row if status matches filter
+        if (statusBadge && statusBadge.textContent.toLowerCase() === statusFilter.toLowerCase()) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+// ===== ANALYTICS FUNCTIONS =====
+// Load analytics data
+async function loadAnalytics() {
+    try {
+        // Fetch analytics data from server
+        const response = await fetch('/api/admin/analytics');
+
+        // Process successful response
+        if (response.ok) {
             const data = await response.json();
-
             if (data.success) {
-                // Convert to CSV
-                const csv = convertToCSV(data.users);
-
-                // Download CSV
-                downloadCSV(csv, 'intelliread-users.csv');
-
-                showNotification('Users exported successfully!', 'success');
-            } else {
-                showNotification('Error exporting users: ' + data.message, 'error');
+                // Update analytics charts here
+                console.log('Analytics data loaded:', data);
             }
-        } catch (error) {
-            console.error('Error exporting users:', error);
-            showNotification('Error exporting users', 'error');
         }
+    } catch (error) {
+        console.error('Error loading analytics:', error);
     }
+}
 
-    function convertToCSV(users) {
-        const headers = ['Name', 'Email', 'Role', 'Status', 'Joined Date'];
-        const rows = users.map(user => [
-            user.fullName,
-            user.email,
-            user.role,
-            user.role === 'publisher' ? (user.isApproved ? 'Approved Publisher' : 'Pending Approval') : 'Active User',
-            new Date(user.createdAt).toLocaleDateString()
-        ]);
+// ===== EXPORT FUNCTIONALITY =====
+// Export users to CSV file
+async function exportUsers() {
+    try {
+        showNotification('Preparing user export...', 'info');
 
-        return [headers, ...rows].map(row => row.map(field => `"${field}"`).join(',')).join('\n');
+        // Fetch all users for export
+        const response = await fetch('/api/admin/users?limit=1000');
+        const data = await response.json();
+
+        // Process successful response
+        if (data.success) {
+            // Convert user data to CSV format
+            const csv = convertToCSV(data.users);
+
+            // Download the CSV file
+            downloadCSV(csv, 'intelliread-users.csv');
+
+            showNotification('Users exported successfully!', 'success');
+        } else {
+            showNotification('Error exporting users: ' + data.message, 'error');
+        }
+    } catch (error) {
+        console.error('Error exporting users:', error);
+        showNotification('Error exporting users', 'error');
     }
+}
 
-    function downloadCSV(csv, filename) {
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        a.click();
-        window.URL.revokeObjectURL(url);
-    }
+// Convert user data to CSV format
+function convertToCSV(users) {
+    // Define CSV column headers
+    const headers = ['Name', 'Email', 'Role', 'Status', 'Joined Date'];
 
-    // ===== SETTINGS =====
-    function saveSettings() {
-        showNotification('Settings saved successfully!', 'success');
-    }
+    // Convert each user to a CSV row
+    const rows = users.map(user => [
+        user.fullName,
+        user.email,
+        user.role,
+        user.role === 'publisher' ? (user.isApproved ? 'Approved Publisher' : 'Pending Approval') : 'Active User',
+        new Date(user.createdAt).toLocaleDateString()
+    ]);
 
+    // Combine headers and rows into CSV string
+    return [headers, ...rows].map(row => row.map(field => `"${field}"`).join(',')).join('\n');
+}
 
- // ===== LOGOUT FUNCTIONALITY =====
+// Download CSV file
+function downloadCSV(csv, filename) {
+    // Create file blob
+    const blob = new Blob([csv], { type: 'text/csv' });
+
+    // Create download URL
+    const url = window.URL.createObjectURL(blob);
+
+    // Create invisible download link
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+
+    // Trigger download
+    a.click();
+
+    // Clean up URL
+    window.URL.revokeObjectURL(url);
+}
+
+// ===== SETTINGS FUNCTIONS =====
+// Save settings (placeholder function)
+function saveSettings() {
+    showNotification('Settings saved successfully!', 'success');
+}
+
+// ===== LOGOUT FUNCTIONALITY =====
+// Log out admin user
 async function logout() {
+    // Confirm logout action
     const confirmLogout = confirm('Are you sure you want to logout? You will need to login again to access the admin dashboard.');
 
     if (confirmLogout) {
         try {
             showNotification('Logging out... Please wait.', 'info');
 
-            // ✅ Use SessionController logout
+            // Send logout request to server
             const response = await fetch('/admin/logout', {
                 method: 'POST',
                 headers: {
@@ -2488,6 +2614,7 @@ async function logout() {
                 }
             });
 
+            // Parse response
             const data = await response.json();
 
             // Clear session storage
@@ -2496,12 +2623,13 @@ async function logout() {
 
             console.log('✅ Admin logged out successfully');
 
+            // Handle response
             if (data.success) {
                 showNotification('Logout successful! Redirecting to login page...', 'success');
 
-                // ✅ Redirect to ADMIN LOGIN PAGE after 2 seconds
+                // Redirect to admin login page after delay
                 setTimeout(() => {
-                    window.location.href = '/admin-login';  // ✅ Admin login page pe redirect
+                    window.location.href = '/admin-login';
                 }, 2000);
             } else {
                 showNotification('Logout failed: ' + data.message, 'error');
@@ -2510,156 +2638,174 @@ async function logout() {
         } catch (error) {
             console.error('Logout error:', error);
 
-            // Even if there's an error, clear storage and redirect to admin login
+            // Clear storage even if error occurs
             sessionStorage.removeItem('admin');
             sessionStorage.removeItem('isAdmin');
 
             showNotification('Logout successful! Redirecting to login page...', 'success');
 
+            // Redirect to admin login page
             setTimeout(() => {
-                window.location.href = '/admin-login';  // ✅ Admin login page pe redirect
+                window.location.href = '/admin-login';
             }, 2000);
         }
     }
 }
 
+// ===== NOTIFICATION SYSTEM =====
+// Show notification message to user
+function showNotification(message, type = 'info') {
+    // Remove any existing notifications first
+    const existingNotifications = document.querySelectorAll('.notification');
+    existingNotifications.forEach(notification => {
+        if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+        }
+    });
 
+    // Create new notification element
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class='bx ${getNotificationIcon(type)}'></i>
+            <span>${message}</span>
+        </div>
+    `;
 
-    // ===== NOTIFICATION SYSTEM =====
-    function showNotification(message, type = 'info') {
-        // Remove existing notifications
-        const existingNotifications = document.querySelectorAll('.notification');
-        existingNotifications.forEach(notification => {
+    // Add notification to page
+    document.body.appendChild(notification);
+
+    // Animate notification in
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+
+    // Auto-remove notification after 5 seconds
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
             if (notification.parentNode) {
                 notification.parentNode.removeChild(notification);
             }
+        }, 300);
+    }, 5000);
+}
+
+// Get appropriate icon for notification type
+function getNotificationIcon(type) {
+    // Define icons for each notification type
+    const icons = {
+        'success': 'bx-check-circle',
+        'error': 'bx-error-circle',
+        'warning': 'bx-error',
+        'info': 'bx-info-circle'
+    };
+
+    // Return icon or default info icon
+    return icons[type] || 'bx-info-circle';
+}
+
+// ===== EVENT LISTENERS SETUP =====
+// Set up all event listeners for the application
+function setupEventListeners() {
+    // Close modals when clicking X button
+    const closeButtons = document.querySelectorAll('.close');
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const modal = this.closest('.modal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
         });
+    });
 
-        const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.innerHTML = `
-            <div class="notification-content">
-                <i class='bx ${getNotificationIcon(type)}'></i>
-                <span>${message}</span>
-            </div>
-        `;
-
-        document.body.appendChild(notification);
-
-        // Add show class after a delay for animation
-        setTimeout(() => {
-            notification.classList.add('show');
-        }, 100);
-
-        // Auto remove after 5 seconds
-        setTimeout(() => {
-            notification.classList.remove('show');
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.parentNode.removeChild(notification);
-                }
-            }, 300);
-        }, 5000);
-    }
-
-    function getNotificationIcon(type) {
-        const icons = {
-            'success': 'bx-check-circle',
-            'error': 'bx-error-circle',
-            'warning': 'bx-error',
-            'info': 'bx-info-circle'
-        };
-        return icons[type] || 'bx-info-circle';
-    }
-
-    // ===== EVENT LISTENERS SETUP =====
-    function setupEventListeners() {
-        // Close modals when clicking X
-        const closeButtons = document.querySelectorAll('.close');
-        closeButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const modal = this.closest('.modal');
-                if (modal) {
-                    modal.style.display = 'none';
-                }
-            });
+    // Close modals when clicking outside modal content
+    window.addEventListener('click', function(event) {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
         });
+    });
 
-        // Close modals when clicking outside
-        window.addEventListener('click', function(event) {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
-        });
+    // Search debouncing for better performance
+    let searchTimeout;
+    const userSearch = document.getElementById('userSearch');
+    const bookSearch = document.getElementById('bookSearch');
 
-        // Search debouncing
-        let searchTimeout;
-        const userSearch = document.getElementById('userSearch');
-        const bookSearch = document.getElementById('bookSearch');
-
-        if (userSearch) {
-            userSearch.addEventListener('input', function() {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(searchUsers, 300);
-            });
-        }
-
-        if (bookSearch) {
-            bookSearch.addEventListener('input', function() {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(searchBooks, 300);
-            });
-        }
-    }
-
-    // ===== UTILITY FUNCTIONS =====
-    function formatDate(dateString) {
-        if (!dateString) return 'Unknown';
-        return new Date(dateString).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
+    // Add debounced search for users
+    if (userSearch) {
+        userSearch.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(searchUsers, 300);
         });
     }
 
-    function formatDateTime(dateString) {
-        if (!dateString) return 'Unknown';
-        return new Date(dateString).toLocaleString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
+    // Add debounced search for books
+    if (bookSearch) {
+        bookSearch.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(searchBooks, 300);
         });
     }
+}
 
-    // Export functions for global access
-    window.showSection = showSection;
-    window.loadUsers = loadUsers;
-    window.loadBooks = loadBooks;
-    window.searchUsers = searchUsers;
-    window.searchBooks = searchBooks;
-    window.filterBooks = filterBooks;
-    window.approvePublisher = approvePublisher;
-    window.rejectPublisher = rejectPublisher;
-    window.viewUser = viewUser;
-    window.editUser = editUser;
-    window.deleteUser = deleteUser;
-    window.approveBook = approveBook;
-    window.showRejectionModal = showRejectionModal;
-    window.closeRejectionModal = closeRejectionModal;
-    window.rejectBook = rejectBook;
-    window.viewBook = viewBook;
-    window.editBook = editBook;
-    window.featureBook = featureBook;
-    window.unfeatureBook = unfeatureBook;
-    window.deleteBook = deleteBook;
-    window.exportUsers = exportUsers;
-    window.saveSettings = saveSettings;
-    window.logout = logout;
+// ===== UTILITY FUNCTIONS =====
+// Format date to readable string (e.g., "Jan 1, 2023")
+function formatDate(dateString) {
+    // Return 'Unknown' if no date provided
+    if (!dateString) return 'Unknown';
+
+    // Format date using browser locale
+    return new Date(dateString).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+}
+
+// Format date and time to readable string (e.g., "Jan 1, 2023, 2:30 PM")
+function formatDateTime(dateString) {
+    // Return 'Unknown' if no date provided
+    if (!dateString) return 'Unknown';
+
+    // Format date and time using browser locale
+    return new Date(dateString).toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+// ===== GLOBAL FUNCTION EXPORTS =====
+// Make functions available globally for HTML onclick attributes
+window.showSection = showSection;
+window.loadUsers = loadUsers;
+window.loadBooks = loadBooks;
+window.searchUsers = searchUsers;
+window.searchBooks = searchBooks;
+window.filterBooks = filterBooks;
+window.approvePublisher = approvePublisher;
+window.rejectPublisher = rejectPublisher;
+window.viewUser = viewUser;
+window.editUser = editUser;
+window.deleteUser = deleteUser;
+window.approveBook = approveBook;
+window.showRejectionModal = showRejectionModal;
+window.closeRejectionModal = closeRejectionModal;
+window.rejectBook = rejectBook;
+window.viewBook = viewBook;
+window.editBook = editBook;
+window.featureBook = featureBook;
+window.unfeatureBook = unfeatureBook;
+window.deleteBook = deleteBook;
+window.exportUsers = exportUsers;
+window.saveSettings = saveSettings;
+window.logout = logout;
 </script>
 </body>
 </html>

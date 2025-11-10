@@ -34,6 +34,7 @@ public class BookService {
     BookRepository bookRepository;
     UserRepository userRepository;
     CategoryRepository categoryRepository;
+    EmailService emailService;
 
     private final Path uploadsRoot;
 
@@ -41,11 +42,13 @@ public class BookService {
     public BookService(BookRepository bookRepository,
                        UserRepository userRepository,
                        CategoryRepository categoryRepository,
+                       EmailService emailService,
                        @Value("${file.upload-dir:uploads}") String uploadDir) throws IOException {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.uploadsRoot = FileStorageUtil.ensureDirectory(uploadDir);
+        this.emailService=emailService;
     }
 
 
@@ -389,5 +392,41 @@ public class BookService {
     }
 
 
+    public String rejectBook(int bookId, String rejectionReason) {
+        try {
+            Book book = findBookById(bookId);
+            if (book == null) {
+                return "❌ Book not found";
+            }
+
+            // Book ka publisher nikaalo
+            User publisher = book.getUser();
+            if (publisher == null) {
+                // Agar publisher nahi mila to bhi book delete karo
+                bookRepository.delete(book);
+                return "✅ Book rejected and deleted (publisher not found)";
+            }
+
+            String bookTitle = book.getTitle();
+
+            // Pehle book delete karo
+            bookRepository.delete(book);
+
+            // Phir publisher ko rejection email bhejo
+            try {
+                emailService.sendBookRejectionEmail(publisher, book, rejectionReason);
+                System.out.println("✅ Rejection email sent to publisher: " + publisher.getEmail());
+            } catch (Exception emailError) {
+                System.err.println("❌ Failed to send rejection email, but book was deleted: " + emailError.getMessage());
+                // Email fail hone par bhi process continue rahega
+            }
+
+            return "✅ Book '" + bookTitle + "' rejected and permanently deleted. Rejection email sent to publisher.";
+
+        } catch (Exception e) {
+            return "❌ Error rejecting book: " + e.getMessage();
+        }
+
+    }
 
 }

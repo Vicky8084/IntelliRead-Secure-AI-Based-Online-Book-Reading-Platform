@@ -1,5 +1,6 @@
 package com.intelliRead.Online.Reading.Paltform.service;
 
+import com.intelliRead.Online.Reading.Paltform.model.Book;
 import com.intelliRead.Online.Reading.Paltform.model.User;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -435,6 +436,91 @@ public class EmailService {
             System.err.println("❌ Failed to send password reset OTP email to: " + user.getEmail());
             e.printStackTrace();
             throw new RuntimeException("Failed to send password reset OTP email", e);
+        }
+    }
+
+    // 🔹 NEW: Book Rejection Email to Publisher
+    public void sendBookRejectionEmail(User publisher, Book book, String rejectionReason) {
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+
+            helper.setFrom(FROM_EMAIL);
+            helper.setTo(publisher.getEmail());
+            helper.setSubject("❌ Book Submission Rejected - IntelliRead");
+
+            String content = "<html>" +
+                    "<body style='font-family: Arial, sans-serif; color: #333; line-height: 1.6;'>" +
+                    "<div style='max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;'>" +
+                    "<div style='text-align: center; margin-bottom: 30px;'>" +
+                    "<img src='cid:logoImage' width='150' alt='IntelliRead Logo' style='margin-bottom: 20px;'>" +
+                    "<h1 style='color: #dc3545; margin-bottom: 10px;'>Book Submission Rejected</h1>" +
+                    "<p style='color: #666; font-size: 16px;'>Important update about your book submission</p>" +
+                    "</div>" +
+
+                    "<div style='background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;'>" +
+                    "<h2 style='color: #dc3545; margin-bottom: 15px;'>Hello " + publisher.getName() + ",</h2>" +
+                    "<p style='margin-bottom: 15px;'>We regret to inform you that your book submission has been <strong>rejected</strong> by our admin team.</p>" +
+                    "</div>" +
+
+                    "<div style='background: #f8d7da; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #dc3545;'>" +
+                    "<h3 style='color: #721c24; margin-bottom: 15px;'>📖 Book Details</h3>" +
+                    "<p style='color: #721c24; margin-bottom: 8px;'><strong>Title:</strong> " + book.getTitle() + "</p>" +
+                    "<p style='color: #721c24; margin-bottom: 8px;'><strong>Author:</strong> " + book.getAuthor() + "</p>" +
+                    "<p style='color: #721c24; margin-bottom: 8px;'><strong>Category:</strong> " + (book.getCategory() != null ? book.getCategory().getCategoryName() : "Not specified") + "</p>" +
+                    "<p style='color: #721c24; margin-bottom: 8px;'><strong>Submitted On:</strong> " + (book.getUploadedAt() != null ? book.getUploadedAt().toLocalDate().toString() : "Unknown") + "</p>" +
+                    "</div>" +
+
+                    "<div style='background: #fff3cd; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ffc107;'>" +
+                    "<h3 style='color: #856404; margin-bottom: 15px;'>📝 Rejection Reason</h3>" +
+                    "<p style='color: #856404; margin-bottom: 15px; font-style: italic;'>" +
+                    (rejectionReason != null && !rejectionReason.trim().isEmpty() ?
+                            "\"" + rejectionReason + "\"" : "No specific reason provided") +
+                    "</p>" +
+                    "</div>" +
+
+                    "<div style='background: #d1ecf1; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #17a2b8;'>" +
+                    "<h3 style='color: #0c5460; margin-bottom: 15px;'>💡 Next Steps</h3>" +
+                    "<p style='color: #0c5460; margin-bottom: 10px;'>" +
+                    "• Review the rejection reason carefully<br>" +
+                    "• Make necessary improvements to your book<br>" +
+                    "• Ensure your content follows our guidelines<br>" +
+                    "• You can submit a new version of the book<br>" +
+                    "• Contact support if you need clarification" +
+                    "</p>" +
+                    "</div>" +
+
+                    "<div style='text-align: center; margin: 30px 0;'>" +
+                    "<a href='http://localhost:8035/publisher-dashboard' " +
+                    "style='display: inline-block; padding: 12px 30px; background: #17a2b8; color: white; " +
+                    "text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px;'>" +
+                    "Go to Publisher Dashboard" +
+                    "</a>" +
+                    "</div>" +
+
+                    "<div style='border-top: 1px solid #e0e0e0; padding-top: 20px; margin-top: 20px; text-align: center;'>" +
+                    "<p style='color: #666; margin-bottom: 10px;'>Need clarification or have questions?</p>" +
+                    "<p style='color: #666; margin-bottom: 5px;'>📧 Email: <a href='mailto:noreply.intelliread@gmail.com' style='color: #2c5aa0;'>noreply.intelliread@gmail.com</a></p>" +
+                    "<p style='color: #999; font-size: 12px; margin-top: 20px;'>This is an automated message. Please do not reply to this email.</p>" +
+                    "</div>" +
+                    "</div>" +
+                    "</body></html>";
+
+            helper.setText(content, true);
+
+            try {
+                helper.addInline("logoImage", new ClassPathResource("static/images/logo.png"));
+            } catch (Exception e) {
+                System.out.println("Logo image not found, sending email without logo");
+            }
+
+            mailSender.send(mimeMessage);
+            System.out.println("✅ Book rejection email sent to publisher: " + publisher.getEmail());
+
+        } catch (MessagingException e) {
+            System.err.println("❌ Failed to send book rejection email to: " + publisher.getEmail());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to send book rejection email", e);
         }
     }
 }
