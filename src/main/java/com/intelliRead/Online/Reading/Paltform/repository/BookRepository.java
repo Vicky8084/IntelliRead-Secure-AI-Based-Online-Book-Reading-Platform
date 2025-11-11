@@ -28,7 +28,7 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     List<Book> findBooksByUserIdWithCategory(@Param("userId") int userId);
 
     List<Book> findByUserId(int userId);
-
+    int countByUserId(int userId);
     // Status ke hisaab se books find karne ke liye
     List<Book> findByStatus(BookStatus status);
 }

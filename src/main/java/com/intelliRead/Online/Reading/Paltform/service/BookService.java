@@ -429,4 +429,15 @@ public class BookService {
 
     }
 
+    // ✅ NEW: Get books count by user ID (avoids lazy loading issues)
+    public int getBooksCountByUserId(int userId) {
+        try {
+            // Use repository method to count books directly
+            return bookRepository.countByUserId(userId);
+        } catch (Exception e) {
+            System.out.println("❌ Error counting books for user " + userId + ": " + e.getMessage());
+            return 0;
+        }
+    }
+
 }

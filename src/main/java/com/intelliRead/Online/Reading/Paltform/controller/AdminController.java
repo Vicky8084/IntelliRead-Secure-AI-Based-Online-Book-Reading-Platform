@@ -66,14 +66,27 @@ public class AdminController {
     }
 
     // ✅ DASHBOARD SUMMARY - WORKING
+    // ✅ DEBUG: Dashboard Summary with detailed logging
     @GetMapping("/summary")
     public ResponseEntity<?> getDashboardSummary() {
         try {
             System.out.println("📊 Admin Dashboard Summary API called");
 
+            // Get real data from database
             List<User> allUsers = userService.getAllUser();
             List<Book> allBooks = bookService.findAllBook();
 
+            // ✅ DEBUG: Print all users with their roles and status
+            System.out.println("=== ALL USERS DEBUG ===");
+            allUsers.forEach(user -> {
+                System.out.println("👤 User: " + user.getName() +
+                        " | Email: " + user.getEmail() +
+                        " | Role: " + (user.getRole() != null ? user.getRole().name() : "NULL") +
+                        " | Status: " + (user.getStatus() != null ? user.getStatus().name() : "NULL"));
+            });
+            System.out.println("=== END DEBUG ===");
+
+            // Calculate statistics
             long totalUsers = allUsers.size();
             long totalBooks = allBooks.size();
             long pendingBooks = allBooks.stream()
@@ -85,15 +98,34 @@ public class AdminController {
                             user.getStatus().name().equals("ACTIVE"))
                     .count();
 
+            // Publisher statistics - FIXED LOGIC
             long totalPublishers = allUsers.stream()
-                    .filter(user -> user.getRole() != null &&
-                            user.getRole().name().equals("PUBLISHER"))
+                    .filter(user -> {
+                        boolean isPublisher = user.getRole() != null &&
+                                (user.getRole().name().equals("PUBLISHER") ||
+                                        user.getRole().name().equals("publisher"));
+                        if (isPublisher) {
+                            System.out.println("✅ Found Publisher: " + user.getName() + " | Status: " +
+                                    (user.getStatus() != null ? user.getStatus().name() : "NULL"));
+                        }
+                        return isPublisher;
+                    })
                     .count();
+
             long pendingPublishers = allUsers.stream()
-                    .filter(user -> user.getRole() != null &&
-                            user.getRole().name().equals("PUBLISHER") &&
-                            user.getStatus() != null &&
-                            user.getStatus().name().equals("PENDING"))
+                    .filter(user -> {
+                        boolean isPendingPublisher = user.getRole() != null &&
+                                (user.getRole().name().equals("PUBLISHER") ||
+                                        user.getRole().name().equals("publisher")) &&
+                                user.getStatus() != null &&
+                                (user.getStatus().name().equals("PENDING") ||
+                                        user.getStatus().name().equals("INACTIVE"));
+
+                        if (isPendingPublisher) {
+                            System.out.println("⏳ Pending Publisher: " + user.getName() + " | Status: " + user.getStatus().name());
+                        }
+                        return isPendingPublisher;
+                    })
                     .count();
 
             Map<String, Object> summary = new HashMap<>();
@@ -105,13 +137,21 @@ public class AdminController {
             summary.put("pendingPublishers", pendingPublishers);
             summary.put("success", true);
 
-            System.out.println("✅ Dashboard summary sent successfully");
+            System.out.println("📊 Dashboard Summary:");
+            System.out.println("   👥 Total Users: " + totalUsers);
+            System.out.println("   📚 Total Books: " + totalBooks);
+            System.out.println("   ⏳ Pending Books: " + pendingBooks);
+            System.out.println("   🔥 Active Users: " + activeUsers);
+            System.out.println("   👑 Total Publishers: " + totalPublishers);
+            System.out.println("   ⏳ Pending Publishers: " + pendingPublishers);
+
             return ResponseEntity.ok(summary);
         } catch (Exception e) {
             System.out.println("❌ Dashboard error: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.badRequest().body(Map.of(
                     "success", false,
-                    "message", "Error loading dashboard"
+                    "message", "Error loading dashboard: " + e.getMessage()
             ));
         }
     }
@@ -476,19 +516,40 @@ public class AdminController {
     }
 
     // ✅ REST OF THE METHODS...
+    // ✅ FIXED: Get Single User Details
+    // ✅ FIXED: Get Single User Details (Lazy Loading Issue Resolved)
     @GetMapping("/users/{userId}")
-    public ResponseEntity<?> getUserDetails(@PathVariable int userId) {
+    public ResponseEntity<?> getUserDetails(@PathVariable String userId) {
         try {
             System.out.println("👤 Get User Details API called - User ID: " + userId);
 
-            User user = userService.getUserById(userId);
+            // ✅ Convert string to integer safely
+            int userIdInt;
+            try {
+                userIdInt = Integer.parseInt(userId);
+            } catch (NumberFormatException e) {
+                return ResponseEntity.badRequest().body(Map.of(
+                        "success", false,
+                        "message", "Invalid user ID format"
+                ));
+            }
+
+            // ✅ Use UserService method that handles lazy loading properly
+            User user = userService.getUserById(userIdInt);
             if (user == null) {
                 return ResponseEntity.notFound().build();
             }
 
             Map<String, Object> safeUser = convertUserToSafeMap(user);
-            safeUser.put("booksPublished", user.getBookList() != null ? user.getBookList().size() : 0);
+
+            // ✅ FIX: Don't access lazy-loaded collections directly
+            // Instead, use a separate query to get books count
+            int booksCount = bookService.getBooksCountByUserId(userIdInt);
+            safeUser.put("booksPublished", booksCount);
+
             safeUser.put("accountStatus", user.getStatus() != null ? user.getStatus().name() : "UNKNOWN");
+            safeUser.put("lastLogin", "Recently"); // You can add last login field if available
+            safeUser.put("publisherSince", user.getCreatedDate()); // Use created date as publisher since
 
             Map<String, Object> response = new HashMap<>();
             response.put("user", safeUser);
@@ -498,9 +559,10 @@ public class AdminController {
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             System.out.println("❌ User details error: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.badRequest().body(Map.of(
                     "success", false,
-                    "message", "Error loading user details"
+                    "message", "Error loading user details: " + e.getMessage()
             ));
         }
     }

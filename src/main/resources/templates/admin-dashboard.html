@@ -1598,80 +1598,8 @@ async function loadUsers(page = 1) {
             // Store users globally
             allUsers = data.users;
 
-            // Clear table body
-            userTableBody.innerHTML = '';
-
-            // Show message if no users found
-            if (data.users.length === 0) {
-                userTableBody.innerHTML = `
-                    <tr>
-                        <td colspan="6" class="no-data">
-                            <i class='bx bx-user-x'></i>
-                            <p>No users found</p>
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-
-            // Create table row for each user
-            data.users.forEach(user => {
-                const row = document.createElement('tr');
-
-                // Determine user status and badge styling
-                let statusText, statusClass;
-                if (user.role === 'publisher') {
-                    if (user.isApproved) {
-                        statusText = 'Approved Publisher';
-                        statusClass = 'status-approved';
-                    } else {
-                        statusText = 'Pending Approval';
-                        statusClass = 'status-pending';
-                    }
-                } else {
-                    statusText = user.isActive !== false ? 'Active User' : 'Inactive';
-                    statusClass = user.isActive !== false ? 'status-active' : 'status-inactive';
-                }
-
-                // Create HTML for user row
-                row.innerHTML = `
-                    <td>
-                        <div class="user-avatar">
-                            <i class='bx bx-user'></i>
-                            <span>${user.fullName || 'Unknown User'}</span>
-                        </div>
-                    </td>
-                    <td>${user.email || 'No email'}</td>
-                    <td>
-                        <span class="role-badge ${user.role}">${user.role || 'user'}</span>
-                    </td>
-                    <td>
-                        <span class="status-badge ${statusClass}">${statusText}</span>
-                    </td>
-                    <td>${user.createdAt ? formatDate(user.createdAt) : 'Unknown'}</td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="btn-info" onclick="viewUser('${user._id}')" title="View Details">
-                                <i class='bx bx-show'></i> View
-                            </button>
-                            ${user.role === 'publisher' && !user.isApproved ?
-                                `<button class="btn-success" onclick="approvePublisher('${user._id}')" title="Approve Publisher">
-                                    <i class='bx bx-check'></i> Approve
-                                </button>
-                                 <button class="btn-danger" onclick="rejectPublisher('${user._id}')" title="Reject Publisher">
-                                    <i class='bx bx-x'></i> Reject
-                                 </button>` :
-                                `<button class="btn-danger" onclick="deleteUser('${user._id}')" title="Delete User">
-                                    <i class='bx bx-trash'></i> Delete
-                                 </button>`
-                            }
-                        </div>
-                    </td>
-                `;
-
-                // Add row to table
-                userTableBody.appendChild(row);
-            });
+            // ✅ YAHAN PE displayUsers FUNCTION CALL KARO
+            displayUsers(allUsers);
 
             // Update pagination controls
             updateUserPagination(data.totalPages, page);
@@ -1683,6 +1611,101 @@ async function loadUsers(page = 1) {
         console.error('Error loading users:', error);
         showNotification('Network error loading users: ' + error.message, 'error');
     }
+}
+
+
+// ✅ NEW: Display Users in Table (Extracted from loadUsers)
+function displayUsers(users) {
+    const userTableBody = document.getElementById('userTableBody');
+    if (!userTableBody) {
+        console.error('User table body not found');
+        return;
+    }
+
+    // Clear table body
+    userTableBody.innerHTML = '';
+
+    // Show message if no users found
+    if (!users || users.length === 0) {
+        userTableBody.innerHTML = `
+            <tr>
+                <td colspan="6" class="no-data">
+                    <i class='bx bx-user-x'></i>
+                    <p>No users found</p>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    // Create table row for each user
+    users.forEach(user => {
+        try {
+            const row = document.createElement('tr');
+
+            // ✅ IMPROVED: Safe data access with fallbacks
+            const userName = user.fullName || user.name || 'Unknown User';
+            const userEmail = user.email || 'No email';
+            const userRole = user.role || 'user';
+            const userCreatedAt = user.createdAt || new Date().toISOString();
+
+            // Determine user status and badge styling
+            let statusText, statusClass;
+            if (userRole === 'publisher' || userRole === 'PUBLISHER') {
+                if (user.isApproved) {
+                    statusText = 'Approved Publisher';
+                    statusClass = 'status-approved';
+                } else {
+                    statusText = 'Pending Approval';
+                    statusClass = 'status-pending';
+                }
+            } else {
+                statusText = user.isActive !== false ? 'Active User' : 'Inactive';
+                statusClass = user.isActive !== false ? 'status-active' : 'status-inactive';
+            }
+
+            // ✅ IMPROVED: Create HTML for user row with better error handling
+            row.innerHTML = `
+                <td>
+                    <div class="user-avatar">
+                        <i class='bx bx-user'></i>
+                        <span>${userName}</span>
+                    </div>
+                </td>
+                <td>${userEmail}</td>
+                <td>
+                    <span class="role-badge ${userRole.toLowerCase()}">${userRole}</span>
+                </td>
+                <td>
+                    <span class="status-badge ${statusClass}">${statusText}</span>
+                </td>
+                <td>${formatDate(userCreatedAt)}</td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn-info" onclick="viewUser('${user._id}')" title="View Details">
+                            <i class='bx bx-show'></i> View
+                        </button>
+                        ${(userRole === 'publisher' || userRole === 'PUBLISHER') && !user.isApproved ?
+                            `<button class="btn-success" onclick="approvePublisher('${user._id}')" title="Approve Publisher">
+                                <i class='bx bx-check'></i> Approve
+                            </button>
+                             <button class="btn-danger" onclick="rejectPublisher('${user._id}')" title="Reject Publisher">
+                                <i class='bx bx-x'></i> Reject
+                             </button>` :
+                            `<button class="btn-danger" onclick="deleteUser('${user._id}')" title="Delete User">
+                                <i class='bx bx-trash'></i> Delete
+                             </button>`
+                        }
+                    </div>
+                </td>
+            `;
+
+            // Add row to table
+            userTableBody.appendChild(row);
+        } catch (error) {
+            console.error('Error rendering user row:', error, user);
+        }
+    });
 }
 
 // Update pagination controls for users table
@@ -1786,21 +1809,19 @@ async function rejectPublisher(userId) {
 }
 
 // ===== USER ACTIONS =====
-// View detailed user information
 async function viewUser(userId) {
     try {
-        // Fetch user details from server
+        console.log('👤 Viewing user:', userId);
+
+        // ✅ Ensure userId is properly passed
         const response = await fetch(`/api/admin/users/${userId}`);
 
-        // Check for HTTP errors
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        // Parse response
         const data = await response.json();
 
-        // Show user modal if successful
         if (data.success) {
             showUserModal(data.user);
         } else {
@@ -1810,8 +1831,8 @@ async function viewUser(userId) {
     } catch (error) {
         console.error('Error viewing user:', error);
 
-        // Fallback: try to find user in loaded data
-        const user = allUsers.find(u => u._id === userId);
+        // ✅ Fallback: Try to find user in already loaded data
+        const user = allUsers.find(u => u._id == userId);
         if (user) {
             showUserModal(user);
         } else {
@@ -1825,17 +1846,38 @@ function showUserModal(user) {
     const modal = document.getElementById('userModal');
     const userDetails = document.getElementById('userDetails');
 
-    if (modal && userDetails) {
-        // Format dates for display
+    if (!modal || !userDetails) {
+        console.error('Modal elements not found');
+        showNotification('Error: Could not open user details', 'error');
+        return;
+    }
+
+    try {
+        // Format dates properly
         const joinDate = user.createdAt ? formatDateTime(user.createdAt) : 'Unknown';
         const lastLogin = user.lastLogin ? formatDateTime(user.lastLogin) : 'Never';
+        const publisherSince = user.publisherSince ? formatDateTime(user.publisherSince) : 'Not applicable';
 
-        // Create user details HTML
+        // Determine status and badge class
+        let statusText, statusClass;
+        if (user.role === 'publisher' || user.role === 'PUBLISHER') {
+            if (user.isApproved) {
+                statusText = 'Approved Publisher';
+                statusClass = 'status-approved';
+            } else {
+                statusText = 'Pending Approval';
+                statusClass = 'status-pending';
+            }
+        } else {
+            statusText = user.isActive !== false ? 'Active User' : 'Inactive';
+            statusClass = user.isActive !== false ? 'status-active' : 'status-inactive';
+        }
+
         userDetails.innerHTML = `
             <div class="user-detail-grid">
                 <div class="user-detail">
                     <label>Full Name:</label>
-                    <span>${user.fullName || 'N/A'}</span>
+                    <span>${user.fullName || user.name || 'N/A'}</span>
                 </div>
                 <div class="user-detail">
                     <label>Email:</label>
@@ -1843,13 +1885,13 @@ function showUserModal(user) {
                 </div>
                 <div class="user-detail">
                     <label>Role:</label>
-                    <span class="role-badge ${user.role || 'user'}">${user.role || 'User'}</span>
+                    <span class="role-badge ${(user.role || 'user').toLowerCase()}">
+                        ${user.role || 'User'}
+                    </span>
                 </div>
                 <div class="user-detail">
                     <label>Status:</label>
-                    <span class="status-badge ${getUserStatusClass(user)}">
-                        ${getUserStatusText(user)}
-                    </span>
+                    <span class="status-badge ${statusClass}">${statusText}</span>
                 </div>
                 <div class="user-detail">
                     <label>Account Created:</label>
@@ -1859,29 +1901,29 @@ function showUserModal(user) {
                     <label>Last Login:</label>
                     <span>${lastLogin}</span>
                 </div>
-                ${user.role === 'publisher' ? `
+                ${(user.role === 'publisher' || user.role === 'PUBLISHER') ? `
                 <div class="user-detail">
                     <label>Publisher Status:</label>
                     <span class="status-badge ${user.isApproved ? 'status-approved' : 'status-pending'}">
                         ${user.isApproved ? 'Approved' : 'Pending Approval'}
                     </span>
                 </div>
-                ${user.publisherSince ? `
                 <div class="user-detail">
                     <label>Publisher Since:</label>
-                    <span>${formatDateTime(user.publisherSince)}</span>
+                    <span>${publisherSince}</span>
                 </div>
                 ` : ''}
-                ` : ''}
-                ${user.booksPublished >= 0 ? `
                 <div class="user-detail">
                     <label>Books Published:</label>
-                    <span>${user.booksPublished}</span>
+                    <span>${user.booksPublished || 0}</span>
                 </div>
-                ` : ''}
+                <div class="user-detail">
+                    <label>Preferred Language:</label>
+                    <span>${user.preferredLanguage || 'English'}</span>
+                </div>
             </div>
             <div class="modal-actions">
-                ${user.role === 'publisher' && !user.isApproved ? `
+                ${(user.role === 'publisher' || user.role === 'PUBLISHER') && !user.isApproved ? `
                     <button class="btn-success" onclick="approvePublisher('${user._id}')">
                         <i class='bx bx-check'></i> Approve Publisher
                     </button>
@@ -1899,13 +1941,20 @@ function showUserModal(user) {
             </div>
         `;
 
-        // Show the modal
         modal.style.display = 'block';
-    } else {
-        console.error('Modal elements not found');
-        showNotification('Error: Could not open user details', 'error');
+    } catch (error) {
+        console.error('Error displaying user modal:', error);
+        userDetails.innerHTML = `
+            <div class="no-data">
+                <i class='bx bx-error'></i>
+                <p>Error loading user details</p>
+                <p style="font-size: 0.9rem; color: var(--gray);">${error.message}</p>
+            </div>
+        `;
+        modal.style.display = 'block';
     }
 }
+
 
 // Helper function to get CSS class for user status
 function getUserStatusClass(user) {
@@ -1929,39 +1978,45 @@ async function editUser(userId) {
 }
 
 // Delete user permanently
+// ===== DELETE USER =====
 async function deleteUser(userId) {
-    // Find user in loaded data
-    const user = allUsers.find(u => u._id == userId);
-    if (!user) return;
+    try {
+        const user = allUsers.find(u => u._id == userId);
+        if (!user) {
+            showNotification('User not found', 'error');
+            return;
+        }
 
-    // Show strong warning confirmation
-    if (confirm(`⚠️ ARE YOU SURE YOU WANT TO PERMANENTLY DELETE USER "${user.fullName}"?\n\nThis will:\n• Delete user account permanently\n• Delete all user data\n• This action cannot be undone!`)) {
-        try {
+        if (confirm(`⚠️ ARE YOU SURE YOU WANT TO PERMANENTLY DELETE USER "${user.fullName || user.name}"?\n\nThis will:\n• Delete user account permanently\n• Delete all user data\n• This action cannot be undone!`)) {
             showNotification('Deleting user...', 'warning');
 
-            // Send delete request to server
             const response = await fetch(`/api/admin/users/${userId}`, {
                 method: 'DELETE'
             });
 
-            // Parse response
+            // ✅ Better response handling
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+            }
+
             const data = await response.json();
 
-            // Handle response
             if (data.success) {
                 showNotification('✅ User permanently deleted from database!', 'success');
-                // Refresh data
                 loadUsers(currentUserPage);
                 loadDashboardSummary();
+
                 // Close modal if open
-                document.getElementById('userModal').style.display = 'none';
+                const modal = document.getElementById('userModal');
+                if (modal) modal.style.display = 'none';
             } else {
                 showNotification('❌ Error: ' + data.message, 'error');
             }
-        } catch (error) {
-            console.error('Error deleting user:', error);
-            showNotification('❌ Error deleting user', 'error');
         }
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        showNotification('❌ Error deleting user: ' + error.message, 'error');
     }
 }
 
@@ -2768,17 +2823,24 @@ function formatDate(dateString) {
 
 // Format date and time to readable string (e.g., "Jan 1, 2023, 2:30 PM")
 function formatDateTime(dateString) {
-    // Return 'Unknown' if no date provided
     if (!dateString) return 'Unknown';
 
-    // Format date and time using browser locale
-    return new Date(dateString).toLocaleString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
+    try {
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) {
+            return 'Invalid Date';
+        }
+        return date.toLocaleString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    } catch (error) {
+        console.error('Error formatting date:', error);
+        return 'Date Error';
+    }
 }
 
 // ===== GLOBAL FUNCTION EXPORTS =====
