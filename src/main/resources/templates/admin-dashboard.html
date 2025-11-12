@@ -911,6 +911,98 @@
           font-size: 1.2rem;
         }
 
+        /* Loading Overlay */
+        .loading-overlay {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0,0,0,0.7);
+          z-index: 9999;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+          color: white;
+        }
+
+        .loading-overlay.active {
+          display: flex;
+        }
+
+        .loading-overlay .spinner {
+          width: 50px;
+          height: 50px;
+          border: 5px solid #f3f3f3;
+          border-top: 5px solid var(--primary);
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+          margin-bottom: 15px;
+        }
+
+        /* Logout Confirmation Modal */
+        .logout-modal {
+          background: white;
+          border-radius: 12px;
+          padding: 2rem;
+          text-align: center;
+          width: 400px;
+          max-width: 90%;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .logout-modal h2 {
+          color: var(--dark);
+          margin-bottom: 1rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+        }
+
+        .logout-modal p {
+          color: var(--gray);
+          margin-bottom: 2rem;
+          font-size: 1.1rem;
+        }
+
+        .logout-modal-actions {
+          display: flex;
+          gap: 1rem;
+          justify-content: center;
+        }
+
+        .logout-modal .btn {
+          padding: 12px 24px;
+          border: none;
+          border-radius: 8px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          min-width: 120px;
+        }
+
+        .logout-modal .btn-confirm {
+          background: linear-gradient(135deg, #dc3545, #e83e8c);
+          color: white;
+        }
+
+        .logout-modal .btn-confirm:hover {
+          background: linear-gradient(135deg, #c82333, #d91a7a);
+          transform: translateY(-2px);
+        }
+
+        .logout-modal .btn-cancel {
+          background: var(--border);
+          color: var(--dark);
+        }
+
+        .logout-modal .btn-cancel:hover {
+          background: #dee2e6;
+          transform: translateY(-2px);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
           .sidebar {
@@ -958,38 +1050,20 @@
           .modal-actions {
             flex-direction: column;
           }
-        }
 
-        /* Logout message styles */
-        #logoutMessageContainer {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 8px;
-            color: white;
-            font-weight: bold;
-            z-index: 10000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            max-width: 300px;
-            text-align: center;
-            display: none;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+          .logout-modal-actions {
+            flex-direction: column;
+          }
         }
     </style>
 </head>
 <body>
+<!-- Global Loading Overlay -->
+<div class="loading-overlay" id="globalLoading">
+    <div class="spinner"></div>
+    <p>Processing your request...</p>
+</div>
+
 <!-- Header -->
 <header class="admin-header">
     <div class="header-content">
@@ -999,7 +1073,7 @@
         <div class="header-right">
             <div class="admin-info">
                 <span>Welcome, Admin</span>
-                <button class="logout-btn" onclick="logout()">
+                <button class="logout-btn" onclick="showLogoutConfirmation()">
                     <i class='bx bx-log-out'></i> Logout
                 </button>
             </div>
@@ -1307,6 +1381,20 @@
     </div>
 </div>
 
+<!-- Logout Confirmation Modal -->
+<div id="logoutModal" class="modal">
+    <div class="modal-content">
+        <div class="logout-modal">
+            <h2><i class='bx bx-log-out'></i> Confirm Logout</h2>
+            <p>Are you sure you want to log out from this session?</p>
+            <div class="logout-modal-actions">
+                <button class="btn btn-confirm" onclick="confirmLogout()">Yes, Logout</button>
+                <button class="btn btn-cancel" onclick="closeLogoutModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     // ===== GLOBAL VARIABLES =====
     // Store current page states for users and books
@@ -1314,8 +1402,8 @@
     let currentBookPage = 1;
 
     // Define how many items to show per page
-    const usersPerPage = 10;
-    const booksPerPage = 10;
+    const usersPerPage = 6;
+    const booksPerPage = 6;
 
     // Arrays to store all loaded users and books data
     let allUsers = [];
@@ -1577,6 +1665,7 @@
             console.log('👥 Loading users...');
 
             // Fetch users from server API
+            //const response = await fetch(`/api/admin/users?page=${page}&limit=${usersPerPage}`);
             const response = await fetch(`/api/admin/users?page=${page}&limit=${usersPerPage}`);
 
             // Check for HTTP errors
@@ -2041,6 +2130,8 @@
             console.log('📚 Loading books...');
 
             // Fetch books from server API
+            //const response = await fetch(`/api/admin/books?page=${page}&limit=${booksPerPage}&status=all`);
+            //const response = await fetch(`/api/admin/books?page=${page}&limit=${booksPerPage}&status=all`);
             const response = await fetch(`/api/admin/books?page=${page}&limit=${booksPerPage}&status=all`);
 
             // Check for HTTP errors
@@ -2652,58 +2743,84 @@
     }
 
     // ===== LOGOUT FUNCTIONALITY =====
-    // Log out admin user
-    async function logout() {
-        // Confirm logout action
-        const confirmLogout = confirm('Are you sure you want to logout? You will need to login again to access the admin dashboard.');
+    // Show logout confirmation modal
+    function showLogoutConfirmation() {
+        const modal = document.getElementById('logoutModal');
+        if (modal) {
+            modal.style.display = 'block';
+        }
+    }
 
-        if (confirmLogout) {
-            try {
-                showNotification('Logging out... Please wait.', 'info');
+    // Close logout modal
+    function closeLogoutModal() {
+        const modal = document.getElementById('logoutModal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
 
-                // Send logout request to server
-                const response = await fetch('/admin/logout', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
+    // Confirm and process logout
+    async function confirmLogout() {
+        try {
+            // Show loading overlay
+            showLoading(true);
 
-                // Parse response
-                const data = await response.json();
+            // Close logout modal
+            closeLogoutModal();
 
-                // Clear session storage
-                sessionStorage.removeItem('admin');
-                sessionStorage.removeItem('isAdmin');
+            // Show processing notification
+            showNotification('Processing logout...', 'info');
 
-                console.log('✅ Admin logged out successfully');
+            // Simulate logout process (replace with actual API call)
+            setTimeout(async () => {
+                try {
+                    // Send logout request to server
+                    const response = await fetch('/admin/logout', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
 
-                // Handle response
-                if (data.success) {
+                    // Clear session storage regardless of response
+                    sessionStorage.removeItem('admin');
+                    sessionStorage.removeItem('isAdmin');
+
+                    // Hide loading overlay
+                    showLoading(false);
+
+                    // Show success message
                     showNotification('Logout successful! Redirecting to login page...', 'success');
 
                     // Redirect to admin login page after delay
                     setTimeout(() => {
                         window.location.href = '/admin-login';
                     }, 2000);
-                } else {
-                    showNotification('Logout failed: ' + data.message, 'error');
+
+                } catch (error) {
+                    console.error('Logout error:', error);
+
+                    // Hide loading overlay
+                    showLoading(false);
+
+                    // Clear storage even if error occurs
+                    sessionStorage.removeItem('admin');
+                    sessionStorage.removeItem('isAdmin');
+
+                    // Show success message anyway
+                    showNotification('Logout successful! Redirecting to login page...', 'success');
+
+                    // Redirect to admin login page
+                    setTimeout(() => {
+                        window.location.href = '/admin-login';
+                    }, 2000);
                 }
+            }, 1500); // Simulate processing time
 
-            } catch (error) {
-                console.error('Logout error:', error);
-
-                // Clear storage even if error occurs
-                sessionStorage.removeItem('admin');
-                sessionStorage.removeItem('isAdmin');
-
-                showNotification('Logout successful! Redirecting to login page...', 'success');
-
-                // Redirect to admin login page
-                setTimeout(() => {
-                    window.location.href = '/admin-login';
-                }, 2000);
-            }
+        } catch (error) {
+            console.error('Error during logout:', error);
+            showLoading(false);
+            showNotification('Error during logout process', 'error');
         }
     }
 
@@ -2759,6 +2876,18 @@
 
         // Return icon or default info icon
         return icons[type] || 'bx-info-circle';
+    }
+
+    // Show/hide global loading overlay
+    function showLoading(show) {
+        const loadingOverlay = document.getElementById('globalLoading');
+        if (loadingOverlay) {
+            if (show) {
+                loadingOverlay.classList.add('active');
+            } else {
+                loadingOverlay.classList.remove('active');
+            }
+        }
     }
 
     // ===== EVENT LISTENERS SETUP =====
@@ -2867,7 +2996,9 @@
     window.deleteBook = deleteBook;
     window.exportUsers = exportUsers;
     window.saveSettings = saveSettings;
-    window.logout = logout;
+    window.showLogoutConfirmation = showLogoutConfirmation;
+    window.closeLogoutModal = closeLogoutModal;
+    window.confirmLogout = confirmLogout;
 </script>
 </body>
 </html>

@@ -16,6 +16,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Category {
 
     @Id
@@ -42,5 +43,6 @@ public class Category {
     // ✅ Books - ignore to prevent recursion
     @JsonIgnore
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"category", "user"})
     private List<Book> books = new ArrayList<>();
 }

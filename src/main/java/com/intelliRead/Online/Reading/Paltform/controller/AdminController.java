@@ -5,6 +5,7 @@ import com.intelliRead.Online.Reading.Paltform.model.User;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.AdminRequestDTO;
 import com.intelliRead.Online.Reading.Paltform.service.AdminService;
 import com.intelliRead.Online.Reading.Paltform.service.BookService;
+import com.intelliRead.Online.Reading.Paltform.service.EmailService;
 import com.intelliRead.Online.Reading.Paltform.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,9 @@ public class AdminController {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private EmailService emailService; // ✅ EMAIL SERVICE ADDED
 
     // ✅ EXISTING METHODS - UNCHANGED
     @PostMapping("/register")
@@ -66,7 +70,6 @@ public class AdminController {
     }
 
     // ✅ DASHBOARD SUMMARY - WORKING
-    // ✅ DEBUG: Dashboard Summary with detailed logging
     @GetMapping("/summary")
     public ResponseEntity<?> getDashboardSummary() {
         try {
@@ -160,7 +163,7 @@ public class AdminController {
     @GetMapping("/users")
     public ResponseEntity<?> getUsers(
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int limit) {
+            @RequestParam(defaultValue = "6") int limit) {
         try {
             System.out.println("👥 Admin Users API called - Page: " + page + ", Limit: " + limit);
 
@@ -199,7 +202,7 @@ public class AdminController {
     @GetMapping("/books")
     public ResponseEntity<?> getBooks(
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int limit,
+            @RequestParam(defaultValue = "6") int limit,
             @RequestParam(defaultValue = "all") String status) {
         try {
             System.out.println("📚 Admin Books API called - Page: " + page + ", Limit: " + limit + ", Status: " + status);
@@ -242,7 +245,7 @@ public class AdminController {
         }
     }
 
-    // ✅ APPROVE BOOK - NEW WORKING METHOD
+    // ✅ APPROVE BOOK - UPDATED WITH EMAIL
     @PutMapping("/books/{bookId}/approve")
     public ResponseEntity<?> approveBook(@PathVariable int bookId) {
         try {
@@ -252,6 +255,22 @@ public class AdminController {
 
             if (result.startsWith("✅")) {
                 System.out.println("✅ Book approved: " + bookId);
+
+                // ✅ SEND BOOK APPROVAL EMAIL TO PUBLISHER
+                try {
+                    Book approvedBook = bookService.findBookById(bookId);
+                    if (approvedBook != null && approvedBook.getUser() != null) {
+                        User publisher = approvedBook.getUser();
+                        emailService.sendBookApprovalEmail(publisher, approvedBook);
+                        System.out.println("✅ Book approval email sent to publisher: " + publisher.getEmail());
+                    } else {
+                        System.out.println("⚠️ Could not send approval email - Book or Publisher not found");
+                    }
+                } catch (Exception emailException) {
+                    System.err.println("❌ Failed to send book approval email: " + emailException.getMessage());
+                    // Continue even if email fails
+                }
+
                 return ResponseEntity.ok(Map.of("success", true, "message", result));
             } else {
                 System.out.println("❌ Book approval failed: " + result);
@@ -266,7 +285,7 @@ public class AdminController {
         }
     }
 
-    // ✅ REJECT BOOK - NEW WORKING METHOD
+    // ✅ REJECT BOOK - UPDATED WITH EMAIL
     @PutMapping("/books/{bookId}/reject")
     public ResponseEntity<?> rejectBook(@PathVariable int bookId, @RequestBody Map<String, String> request) {
         try {
@@ -280,11 +299,27 @@ public class AdminController {
                 ));
             }
 
+            // Get book details before deletion for email
+            Book bookToReject = bookService.findBookById(bookId);
+            User publisher = bookToReject != null ? bookToReject.getUser() : null;
+
             // Book ko permanently delete karo
             String result = bookService.rejectBook(bookId, reason);
 
             if (result.startsWith("✅")) {
                 System.out.println("✅ Book rejected and deleted: " + bookId);
+
+                // ✅ SEND BOOK REJECTION EMAIL TO PUBLISHER
+                if (bookToReject != null && publisher != null) {
+                    try {
+                        emailService.sendBookRejectionEmail(publisher, bookToReject, reason);
+                        System.out.println("✅ Book rejection email sent to publisher: " + publisher.getEmail());
+                    } catch (Exception emailException) {
+                        System.err.println("❌ Failed to send rejection email: " + emailException.getMessage());
+                        // Continue even if email fails
+                    }
+                }
+
                 return ResponseEntity.ok(Map.of("success", true, "message", result));
             } else {
                 System.out.println("❌ Book rejection failed: " + result);
@@ -352,7 +387,7 @@ public class AdminController {
         }
     }
 
-    // ✅ APPROVE PUBLISHER - WORKING
+    // ✅ APPROVE PUBLISHER - UPDATED WITH EMAIL
     @PutMapping("/publishers/{userId}/approve")
     public ResponseEntity<?> approvePublisher(@PathVariable int userId) {
         try {
@@ -362,6 +397,19 @@ public class AdminController {
 
             if (result.startsWith("✅")) {
                 System.out.println("✅ Publisher approved: " + userId);
+
+                // ✅ SEND PUBLISHER APPROVAL EMAIL
+                try {
+                    User approvedPublisher = userService.getUserById(userId);
+                    if (approvedPublisher != null) {
+                        emailService.sendPublisherApprovalEmail(approvedPublisher);
+                        System.out.println("✅ Publisher approval email sent to: " + approvedPublisher.getEmail());
+                    }
+                } catch (Exception emailException) {
+                    System.err.println("❌ Failed to send publisher approval email: " + emailException.getMessage());
+                    // Continue even if email fails
+                }
+
                 return ResponseEntity.ok(Map.of("success", true, "message", result));
             } else {
                 System.out.println("❌ Publisher approval failed: " + result);
@@ -515,9 +563,7 @@ public class AdminController {
         return safeBook;
     }
 
-    // ✅ REST OF THE METHODS...
     // ✅ FIXED: Get Single User Details
-    // ✅ FIXED: Get Single User Details (Lazy Loading Issue Resolved)
     @GetMapping("/users/{userId}")
     public ResponseEntity<?> getUserDetails(@PathVariable String userId) {
         try {
@@ -662,6 +708,4 @@ public class AdminController {
         if (days < 7) return days + " days ago";
         return "Over a week ago";
     }
-
-
 }

@@ -790,55 +790,68 @@
 
     // ===== LOAD BOOKS FROM API =====
     async function loadBooks() {
-        try {
-            console.log('📚 Loading published books from API...');
+    try {
+        console.log('📚 Loading published books from API...');
 
-            const response = await fetch(`${API_BASE_URL}/book/apies/published`);
+        const response = await fetch(`${API_BASE_URL}/book/apies/published`);
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const booksData = await response.json();
-            console.log('✅ Books loaded successfully:', booksData.length);
-
-            allBooks = booksData;
-            filteredBooks = [...allBooks];
-
-            renderBooks();
-            updatePagination();
-
-        } catch (error) {
-            console.error('❌ Error loading books:', error);
-            showError('Failed to load books from server.');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
+
+        const booksData = await response.json();
+        console.log('✅ Books loaded successfully:', booksData.length);
+
+        // ✅ FIX: Hibernate proxy objects handle karo
+        allBooks = booksData.map(book => ({
+            id: book.id,
+            title: book.title,
+            author: book.author,
+            description: book.description,
+            language: book.language,
+            coverImagePath: book.coverImagePath,
+            status: book.status,
+            uploadedAt: book.uploadedAt,
+            category: book.category ? {
+                id: book.category.id,
+                categoryName: book.category.categoryName
+            } : null
+        }));
+
+        filteredBooks = [...allBooks];
+
+        renderBooks();
+        updatePagination();
+
+    } catch (error) {
+        console.error('❌ Error loading books:', error);
+        showError('Failed to load books from server.');
     }
+}
 
     // ===== LOAD CATEGORIES =====
     async function loadCategories() {
-        try {
-            console.log('📂 Loading categories...');
+    try {
+        console.log('📂 Loading categories...');
 
-            const response = await fetch(`${API_BASE_URL}/category/apies/findAll`);
+        const response = await fetch(`${API_BASE_URL}/category/apies/findAll`);
 
-            if (response.ok) {
-                const categoriesData = await response.json();
-                categories = categoriesData;
-                console.log('✅ Categories loaded:', categories.length);
-            } else {
-                console.warn('⚠️ Could not load categories, using defaults');
-                // Use default categories if API fails
-                categories = [
-                    { id: 1, categoryName: "FICTION" },
-                    { id: 2, categoryName: "NON_FICTION" },
-                    { id: 3, categoryName: "SCIENCE_FICTION" },
-                    { id: 4, categoryName: "MYSTERY" },
-                    { id: 5, categoryName: "BIOGRAPHY" }
-                ];
-            }
-        } catch (error) {
-            console.error('❌ Error loading categories:', error);
-            // Use default categories on error
+        if (response.ok) {
+            const categoriesData = await response.json();
+
+            // ✅ FIX: Hibernate proxy objects ko handle karo
+            categories = categoriesData.map(cat => ({
+                id: cat.id,
+                categoryName: cat.categoryName,
+                description: cat.description
+                // books list ko include mat karo - circular reference avoid karo
+            }));
+
+            console.log('✅ Categories loaded:', categories.length);
+            console.log('📝 Categories data:', categories);
+        } else {
+            console.warn('⚠️ Could not load categories, using defaults');
+            // Use default categories if API fails
             categories = [
                 { id: 1, categoryName: "FICTION" },
                 { id: 2, categoryName: "NON_FICTION" },
@@ -847,65 +860,107 @@
                 { id: 5, categoryName: "BIOGRAPHY" }
             ];
         }
+    } catch (error) {
+        console.error('❌ Error loading categories:', error);
+        // Use default categories on error
+        categories = [
+            { id: 1, categoryName: "FICTION" },
+            { id: 2, categoryName: "NON_FICTION" },
+            { id: 3, categoryName: "SCIENCE_FICTION" },
+            { id: 4, categoryName: "MYSTERY" },
+            { id: 5, categoryName: "BIOGRAPHY" }
+        ];
     }
+}
 
     // ===== SETUP CATEGORY FILTERS =====
     function setupCategoryFilters() {
-        const tagsContainer = document.getElementById('tags');
+    const tagsContainer = document.getElementById('tags');
 
-        // Clear existing tags except "All Books"
-        const allBooksTag = tagsContainer.querySelector('[data-category="all"]');
-        tagsContainer.innerHTML = '';
-        tagsContainer.appendChild(allBooksTag);
+    // Clear existing tags except "All Books"
+    const allBooksTag = tagsContainer.querySelector('[data-category="all"]');
+    tagsContainer.innerHTML = '';
+    tagsContainer.appendChild(allBooksTag);
 
-        // Add category tags
-        categories.forEach(category => {
-            const tag = document.createElement('div');
-            tag.classList.add('tag');
-            tag.textContent = category.categoryName;
-            tag.dataset.category = category.id;
-            tag.addEventListener('click', () => filterByCategory(category.id));
-            tagsContainer.appendChild(tag);
-        });
-    }
+    // Add category tags
+    categories.forEach(category => {
+        const tag = document.createElement('div');
+        tag.classList.add('tag');
+        tag.textContent = category.categoryName;
+        tag.dataset.category = category.id;
+        tag.addEventListener('click', () => filterByCategory(category.id));
+        tagsContainer.appendChild(tag);
+    });
+
+    // ✅ FIX: "All Books" pe click event add karo
+    allBooksTag.addEventListener('click', () => filterByCategory('all'));
+}
+
 
     // ===== FILTER BY CATEGORY =====
     async function filterByCategory(categoryId) {
-        currentCategory = categoryId;
-        currentPage = 1;
+    currentCategory = categoryId;
+    currentPage = 1;
 
-        // Update active tag
-        document.querySelectorAll('.tag').forEach(tag => {
-            tag.classList.remove('highlight');
-        });
-        document.querySelector(`[data-category="${categoryId}"]`).classList.add('highlight');
+    // Update active tag
+    document.querySelectorAll('.tag').forEach(tag => {
+        tag.classList.remove('highlight');
+    });
 
-        showLoading(true);
-
-        try {
-            if (categoryId === 'all') {
-                // Load all published books
-                await loadBooks();
-            } else {
-                // Load books by category
-                const response = await fetch(`${API_BASE_URL}/book/apies/published/category/${categoryId}`);
-
-                if (response.ok) {
-                    const categoryBooks = await response.json();
-                    filteredBooks = categoryBooks;
-                    renderBooks();
-                    updatePagination();
-                } else {
-                    throw new Error('Failed to load category books');
-                }
-            }
-        } catch (error) {
-            console.error('Error filtering by category:', error);
-            showError('Failed to load category books.');
-        } finally {
-            showLoading(false);
-        }
+    const activeTag = document.querySelector(`[data-category="${categoryId}"]`);
+    if (activeTag) {
+        activeTag.classList.add('highlight');
     }
+
+    showLoading(true);
+
+    try {
+        if (categoryId === 'all') {
+            // Load all published books
+            await loadBooks();
+        } else {
+            // Load books by category - PROPER ERROR HANDLING
+            console.log(`📚 Loading books for category: ${categoryId}`);
+
+            const response = await fetch(`${API_BASE_URL}/book/apies/published/category/${categoryId}`);
+
+            if (response.ok) {
+                const categoryBooks = await response.json();
+                console.log(`✅ Category books loaded: ${categoryBooks.length} books`);
+
+                // ✅ FIX: Hibernate proxy objects handle karo
+                filteredBooks = categoryBooks.map(book => ({
+                    id: book.id,
+                    title: book.title,
+                    author: book.author,
+                    description: book.description,
+                    language: book.language,
+                    coverImagePath: book.coverImagePath,
+                    status: book.status,
+                    uploadedAt: book.uploadedAt,
+                    category: book.category ? {
+                        id: book.category.id,
+                        categoryName: book.category.categoryName
+                    } : null
+                }));
+
+                renderBooks();
+                updatePagination();
+            } else {
+                console.error(`❌ Category API failed with status: ${response.status}`);
+                throw new Error('Failed to load category books');
+            }
+        }
+    } catch (error) {
+        console.error('Error filtering by category:', error);
+        showError('Failed to load category books. Showing all books instead.');
+
+        // Fallback: show all books
+        await loadBooks();
+    } finally {
+        showLoading(false);
+    }
+}
 
     // ===== SEARCH BOOKS =====
     async function searchBooks(query) {

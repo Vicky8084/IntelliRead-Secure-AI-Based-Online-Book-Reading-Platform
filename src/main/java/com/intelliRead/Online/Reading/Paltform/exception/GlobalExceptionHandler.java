@@ -33,13 +33,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
-    // ✅ ADDED: Review exceptions
     @ExceptionHandler(ReviewAlreadyExistException.class)
     public ResponseEntity<String> handleReviewAlreadyExistsException(ReviewAlreadyExistException ex){
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
-    // ✅ ADDED: Suggestion exceptions
     @ExceptionHandler(SuggestionAlreadyExistException.class)
     public ResponseEntity<String> handleSuggestionAlreadyExistsException(SuggestionAlreadyExistException ex){
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
