@@ -11,7 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -70,13 +73,79 @@ public class BookController {
     }
 
     // ✅ KEEP: Get books by user ID
+    // ✅ COMPLETELY REPLACE THIS METHOD IN BookController.java
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Book>> findBooksByUserId(@PathVariable int userId){
+    public ResponseEntity<?> findBooksByUserId(@PathVariable int userId){
         try {
+            System.out.println("📚 Fetching books for user ID: " + userId);
+
             List<Book> books = bookService.findBooksByUserId(userId);
-            return ResponseEntity.ok(books);
+            System.out.println("✅ Found " + books.size() + " books");
+
+            // Manual mapping to avoid ALL proxy issues
+            List<Map<String, Object>> bookResponses = new ArrayList<>();
+
+            for (Book book : books) {
+                try {
+                    Map<String, Object> response = new HashMap<>();
+                    response.put("id", book.getId());
+                    response.put("title", book.getTitle() != null ? book.getTitle() : "Untitled");
+                    response.put("author", book.getAuthor() != null ? book.getAuthor() : "Unknown Author");
+                    response.put("description", book.getDescription());
+                    response.put("language", book.getLanguage() != null ? book.getLanguage() : "English");
+                    response.put("status", book.getStatus() != null ? book.getStatus().name() : "PENDING");
+                    response.put("fileName", book.getFileName());
+                    response.put("fileSize", book.getFileSize());
+                    response.put("coverImagePath", book.getCoverImagePath());
+                    response.put("extractedText", book.getExtractedText());
+                    response.put("uploadedAt", book.getUploadedAt());
+                    response.put("fileType", book.getFileType());
+                    response.put("filePath", book.getFilePath());
+
+                    // SAFELY handle category - avoid proxy completely
+                    if (book.getCategory() != null) {
+                        try {
+                            Map<String, Object> categoryMap = new HashMap<>();
+                            // Direct field access - no method calls on proxy
+                            categoryMap.put("id", book.getCategory().getId());
+                            categoryMap.put("categoryName", book.getCategory().getCategoryName());
+                            response.put("category", categoryMap);
+                        } catch (Exception e) {
+                            System.out.println("⚠️ Error processing category for book " + book.getId());
+                            response.put("category", null);
+                        }
+                    } else {
+                        response.put("category", null);
+                    }
+
+                    // SAFELY handle user - only ID
+                    if (book.getUser() != null) {
+                        try {
+                            response.put("userId", book.getUser().getId());
+                        } catch (Exception e) {
+                            response.put("userId", userId);
+                        }
+                    } else {
+                        response.put("userId", userId);
+                    }
+
+                    bookResponses.add(response);
+                    System.out.println("✅ Processed book: " + book.getTitle());
+
+                } catch (Exception bookError) {
+                    System.out.println("❌ Error processing book: " + bookError.getMessage());
+                    // Continue with next book
+                }
+            }
+
+            System.out.println("🎯 Successfully processed " + bookResponses.size() + " books");
+            return ResponseEntity.ok(bookResponses);
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            System.out.println("❌ CRITICAL ERROR in findBooksByUserId: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error fetching books: " + e.getMessage());
         }
     }
 
