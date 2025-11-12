@@ -28,7 +28,7 @@ public class SecurityConfig {
 
     @Autowired
     public SecurityConfig(CustomUserDetailsService userDetailsService,
-                          JwtUtil jwtUtil){
+                          JwtUtil jwtUtil) {
         this.userDetailsService = userDetailsService;
         this.jwtUtil = jwtUtil;
     }
