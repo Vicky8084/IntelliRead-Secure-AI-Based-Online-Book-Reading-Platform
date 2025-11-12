@@ -1182,45 +1182,36 @@
     }
 
     function setupEventListeners() {
-        // Search form
-        const searchForm = document.getElementById('searchForm');
-        const searchInput = document.getElementById('search');
+    // Header search form - SIRF YEH WALA USE KARO
+    const headerSearchForm = document.getElementById('headerSearchForm');
+    const headerSearchInput = document.getElementById('header-search');
 
-        searchForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            searchBooks(searchInput.value);
-        });
+    headerSearchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        searchBooks(headerSearchInput.value);
+    });
 
-        // Header search form
-        const headerSearchForm = document.getElementById('headerSearchForm');
-        const headerSearchInput = document.getElementById('header-search');
+    // Modal close
+    const closeModal = document.getElementById('closeModal');
+    const modal = document.getElementById('bookModal');
 
-        headerSearchForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            searchBooks(headerSearchInput.value);
-        });
+    closeModal.addEventListener('click', () => {
+        modal.classList.remove('active');
+    });
 
-        // Modal close
-        const closeModal = document.getElementById('closeModal');
-        const modal = document.getElementById('bookModal');
-
-        closeModal.addEventListener('click', () => {
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
             modal.classList.remove('active');
-        });
+        }
+    });
 
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('active');
-            }
-        });
-
-        // Keyboard events
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                modal.classList.remove('active');
-            }
-        });
-    }
+    // Keyboard events
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            modal.classList.remove('active');
+        }
+    });
+}
 
     // ===== READING LIST FUNCTIONALITY =====
     function addToReadingList(bookId) {
