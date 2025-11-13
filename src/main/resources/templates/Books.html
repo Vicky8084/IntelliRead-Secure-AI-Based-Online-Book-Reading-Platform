@@ -1094,14 +1094,15 @@
                 ${book.description ? `<p><strong>Description:</strong> ${book.description}</p>` : ''}
                 ${book.uploadedAt ? `<p><strong>Added:</strong> ${new Date(book.uploadedAt).toLocaleDateString()}</p>` : ''}
 
-                <div style="margin-top: 20px;">
-                    <a href="/reader/${book.id}" class="read-more" target="_blank">
-                        📖 Read This Book
-                    </a>
-                    <button class="read-more" onclick="addToReadingList(${book.id})" style="margin-left: 10px;">
-                        ➕ Add to Reading List
-                    </button>
-                </div>
+<div style="margin-top: 20px;">
+    <a href="/login" class="read-more">
+        📖 Read This Book
+    </a>
+    <a href="/login" class="read-more" style="margin-left: 10px;">
+        ➕ Add to Reading List
+    </a>
+</div>
+
             </div>
         `;
 
