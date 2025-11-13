@@ -34,7 +34,6 @@
             list-style: none;
         }
 
-        /* ===== BODY ===== */
         body {
             display: flex;
             flex-direction: column;
@@ -45,7 +44,6 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
-        /* Blurred background image + overlay */
         body::before {
             content: "";
             position: fixed;
@@ -72,7 +70,6 @@
             z-index: -1;
         }
 
-        /* Header */
         header {
             display: flex;
             justify-content: space-between;
@@ -116,7 +113,6 @@
             align-items: center;
         }
 
-        /* User Menu - IMPROVED */
         .user-menu {
             position: relative;
             display: flex;
@@ -226,17 +222,14 @@
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* ===== MAIN CONTENT ===== */
         .main-content {
             display: flex;
             flex: 1;
             width: 100%;
             padding-top: 90px;
             min-height: calc(100vh - 90px - 120px);
-
         }
 
-        /* Sidebar Styles - PERFECT (No Changes) */
         .sidebar {
             width: 300px;
             background: linear-gradient(165deg, rgba(235,198,129,0.95) 0%, rgba(114,114,223,0.95) 100%);
@@ -278,26 +271,6 @@
         @keyframes shimmer {
             0%, 100% { opacity: 0.5; }
             50% { opacity: 1; }
-        }
-
-        .sidebar-logo h1 {
-            font-size: 26px;
-            font-weight: 800;
-            text-align: center;
-            color: #2d3748;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15);
-            letter-spacing: 1.5px;
-            background: linear-gradient(135deg, #2d3748 0%, #4a5568 50%, #2d3748 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            background-size: 200% 100%;
-            animation: gradientShift 3s ease-in-out infinite;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
         }
 
         .nav-links {
@@ -422,13 +395,10 @@
             -webkit-text-fill-color: #4cc9f0;
         }
 
-        /* Dashboard Main Content - IMPROVED */
         .dashboard-main {
             flex: 1;
             padding: 2rem;
             overflow-y: auto;
-            width: 190%;
-            margin-left: 300px;
             background: rgba(255, 255, 255, 0.92);
             border-radius: 30px 0 0 0;
             box-shadow: -8px 0 40px rgba(46, 4, 255, 0.15);
@@ -437,7 +407,36 @@
             border: 2px solid rgba(255, 255, 255, 0.5);
         }
 
-        /* Dashboard Header - IMPROVED */
+        .dashboard-main.dashboard-page {
+            width: 150%;
+            margin-left: 300px;
+        }
+
+        .dashboard-main.library-page {
+            width: auto;
+            margin-left: 300px;
+        }
+
+        .dashboard-main.history-page {
+            width: 130%;
+            margin-left: 300px;
+        }
+
+        .dashboard-main.reviews-page {
+            width: 120%;
+            margin-left: 300px;
+        }
+
+        .dashboard-main.suggestions-page {
+            width: 110%;
+            margin-left: 300px;
+        }
+
+        .dashboard-main.settings-page {
+            width: 100%;
+            margin-left: 300px;
+        }
+
         .dashboard-header {
             display: flex;
             justify-content: space-between;
@@ -461,65 +460,6 @@
             text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .dashboard-user-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 15px 25px;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            transition: var(--transition);
-            border: 2px solid transparent;
-        }
-
-        .dashboard-user-info:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.2);
-            border-color: rgba(102, 126, 234, 0.3);
-        }
-
-        .dashboard-user-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-            transition: var(--transition);
-        }
-
-        .dashboard-user-info:hover .dashboard-user-avatar {
-            transform: scale(1.1) rotate(10deg);
-        }
-
-        .user-details {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .user-name {
-            font-weight: 700;
-            color: #2d3748;
-            font-size: 1.1rem;
-        }
-
-        .user-role {
-            color: var(--primary);
-            font-weight: 600;
-            font-size: 0.9rem;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* Stats Cards - IMPROVED */
         .stats-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -615,7 +555,6 @@
             font-weight: 600;
         }
 
-        /* Content Sections - IMPROVED */
         .content-section {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 250, 0.95) 100%);
             border-radius: 20px;
@@ -668,7 +607,6 @@
             box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
         }
 
-        /* Books Grid - IMPROVED */
         .books-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -733,7 +671,6 @@
             font-weight: 600;
         }
 
-        /* Activity List - IMPROVED */
         .activity-list {
             list-style: none;
         }
@@ -794,7 +731,57 @@
             font-weight: 600;
         }
 
-        /* Footer - PERFECT (No Changes) */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: var(--light-gray);
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        .loading-spinner {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         .main-footer {
             display: flex;
             justify-content: space-between;
@@ -865,7 +852,6 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        /* Scrollbar Styling */
         .sidebar::-webkit-scrollbar,
         .dashboard-main::-webkit-scrollbar {
             width: 8px;
@@ -892,13 +878,17 @@
             background: linear-gradient(135deg, rgba(235,198,129,1), rgba(114,114,223,1));
         }
 
-        /* Responsive Design */
         @media (max-width: 1200px) {
             .sidebar {
                 width: 280px;
             }
 
-            .dashboard-main {
+            .dashboard-main.dashboard-page,
+            .dashboard-main.library-page,
+            .dashboard-main.history-page,
+            .dashboard-main.reviews-page,
+            .dashboard-main.suggestions-page,
+            .dashboard-main.settings-page {
                 margin-left: 280px;
             }
 
@@ -917,9 +907,15 @@
                 border-bottom: 4px solid rgba(255, 255, 255, 0.4);
             }
 
-            .dashboard-main {
+            .dashboard-main.dashboard-page,
+            .dashboard-main.library-page,
+            .dashboard-main.history-page,
+            .dashboard-main.reviews-page,
+            .dashboard-main.suggestions-page,
+            .dashboard-main.settings-page {
                 margin-left: 0;
                 border-radius: 0;
+                width: 100% !important;
             }
 
             .nav-links {
@@ -1016,23 +1012,15 @@
 
 <body>
 
-<!-- Loading Spinner -->
 <div class="loading-spinner" id="loadingSpinner">
     <div class="spinner"></div>
 </div>
 
-<!-- ===== HEADER ===== -->
 <header>
     <div class="logo">
-        <a href="Home.html"><img src="../images/logo.png" alt="Logo"></a>
+        <a href="bookscreen"><img src="../images/logo.png" alt="Logo"></a>
     </div>
     <div class="nav-buttons">
-<!--        <form class="header-search" id="headerSearchForm">-->
-<!--            <input type="text" id="header-search" placeholder="Search books...">-->
-<!--            <button type="submit"><i class='bx bx-search'></i></button>-->
-<!--        </form>-->
-
-        <!-- User Menu -->
         <div class="user-menu" id="userMenu">
             <div class="user-avatar">
                 <i class='bx bx-user'></i>
@@ -1048,226 +1036,447 @@
     </div>
 </header>
 
-<!-- ===== MAIN CONTENT ===== -->
 <div class="main-content">
     <div class="dashboard-container">
-        <!-- Sidebar -->
         <div class="sidebar">
-<!--            <div class="logo">-->
-<!--                <i class='bx bx-book-reader'></i>-->
-<!--                <a href="Home.html"><img src="../images/logo.png" alt="Logo"></a>-->
-<!--            </div>-->
+            <div class="sidebar-logo">
+            </div>
             <ul class="nav-links">
-                <li class="active"><a href="#"><i class='bx bx-home'></i> Dashboard</a></li>
-                <li><a href="#"><i class='bx bx-book'></i> My Library</a></li>
-                <li><a href="#"><i class='bx bx-history'></i> Reading History</a></li>
-                <li><a href="#"><i class='bx bx-star'></i> Reviews</a></li>
-                <li><a href="#"><i class='bx bx-bulb'></i> Suggestions</a></li>
-                <li><a href="#"><i class='bx bx-cog'></i> Settings</a></li>
+                <li class="active"><a href="#" data-page="dashboard"><i class='bx bx-home'></i> Dashboard</a></li>
+                <li><a href="#" data-page="my-library"><i class='bx bx-book'></i> My Library</a></li>
+                <li><a href="#" data-page="reading-history"><i class='bx bx-history'></i> Reading History</a></li>
+                <li><a href="#" data-page="reviews"><i class='bx bx-star'></i> Reviews</a></li>
+                <li><a href="#" data-page="suggestions"><i class='bx bx-bulb'></i> Suggestions</a></li>
+                <li><a href="#" data-page="settings"><i class='bx bx-cog'></i> Settings</a></li>
             </ul>
         </div>
 
-        <!-- Main Content -->
-        <div class="dashboard-main">
-            <div class="header">
-                <h2>User Dashboard</h2><br>
-<!--                <div class="user-info">-->
-<!--                    <div class="user-avatar" id="dashboardUserAvatar">JS</div>-->
-<!--                    <div>-->
-<!--                        <div class="user-name" id="dashboardUserName">John Smith</div>-->
-<!--                        <div class="user-role" id="dashboardUserRole">Reader</div>-->
-<!--                    </div>-->
-<!--                </div>-->
-            </div>
+        <div class="dashboard-main dashboard-page" id="dashboard-main">
+            <div id="dashboard-page" class="page-content active">
+                <div class="dashboard-header">
+                    <h2>User Dashboard</h2>
+                </div>
 
-            <!-- Stats Cards -->
-            <div class="stats-container">
-                <div class="stat-card stat-1">
-                    <div class="stat-icon">
-                        <i class='bx bx-book'></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>24</h3>
-                        <p>Books Read</p>
-                    </div>
-                </div>
-                <div class="stat-card stat-2">
-                    <div class="stat-icon">
-                        <i class='bx bx-time'></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>36h</h3>
-                        <p>Reading Time</p>
-                    </div>
-                </div>
-                <div class="stat-card stat-3">
-                    <div class="stat-icon">
-                        <i class='bx bx-star'></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>18</h3>
-                        <p>Reviews Written</p>
-                    </div>
-                </div>
-                <div class="stat-card stat-4">
-                    <div class="stat-icon">
-                        <i class='bx bx-trophy'></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3>5</h3>
-                        <p>Achievements</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Currently Reading Section -->
-            <div class="content-section">
-                <div class="section-header">
-                    <h3>Currently Reading</h3>
-                    <a href="#" class="view-all">View All</a>
-                </div>
-                <div class="books-grid">
-                    <div class="book-card">
-                        <div class="book-cover">
+                <div class="stats-container">
+                    <div class="stat-card stat-1">
+                        <div class="stat-icon">
                             <i class='bx bx-book'></i>
                         </div>
-                        <div class="book-info">
-                            <div class="book-title">The Silent Patient</div>
-                            <div class="book-author">Alex Michaelides</div>
-                            <div class="book-meta">
-                                <span>65% read</span>
-                                <span>Fiction</span>
-                            </div>
+                        <div class="stat-info">
+                            <h3 id="booksReadCount">0</h3>
+                            <p>Books Read</p>
                         </div>
                     </div>
-                    <div class="book-card">
-                        <div class="book-cover">
-                            <i class='bx bx-book'></i>
+                    <div class="stat-card stat-2">
+                        <div class="stat-icon">
+                            <i class='bx bx-time'></i>
                         </div>
-                        <div class="book-info">
-                            <div class="book-title">Atomic Habits</div>
-                            <div class="book-author">James Clear</div>
-                            <div class="book-meta">
-                                <span>42% read</span>
-                                <span>Self-help</span>
-                            </div>
+                        <div class="stat-info">
+                            <h3 id="readingTime">0h</h3>
+                            <p>Reading Time</p>
                         </div>
                     </div>
-                    <div class="book-card">
-                        <div class="book-cover">
-                            <i class='bx bx-book'></i>
-                        </div>
-                        <div class="book-info">
-                            <div class="book-title">Project Hail Mary</div>
-                            <div class="book-author">Andy Weir</div>
-                            <div class="book-meta">
-                                <span>28% read</span>
-                                <span>Sci-fi</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recently Added Section -->
-            <div class="content-section">
-                <div class="section-header">
-                    <h3>Recently Added</h3>
-                    <a href="#" class="view-all">View All</a>
-                </div>
-                <div class="books-grid">
-                    <div class="book-card">
-                        <div class="book-cover">
-                            <i class='bx bx-book'></i>
-                        </div>
-                        <div class="book-info">
-                            <div class="book-title">Klara and the Sun</div>
-                            <div class="book-author">Kazuo Ishiguro</div>
-                            <div class="book-meta">
-                                <span>Not started</span>
-                                <span>Fiction</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="book-card">
-                        <div class="book-cover">
-                            <i class='bx bx-book'></i>
-                        </div>
-                        <div class="book-info">
-                            <div class="book-title">The Midnight Library</div>
-                            <div class="book-author">Matt Haig</div>
-                            <div class="book-meta">
-                                <span>Not started</span>
-                                <span>Fiction</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="book-card">
-                        <div class="book-cover">
-                            <i class='bx bx-book'></i>
-                        </div>
-                        <div class="book-info">
-                            <div class="book-title">Dune</div>
-                            <div class="book-author">Frank Herbert</div>
-                            <div class="book-meta">
-                                <span>Not started</span>
-                                <span>Sci-fi</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recent Activity Section -->
-            <div class="content-section">
-                <div class="section-header">
-                    <h3>Recent Activity</h3>
-                    <a href="#" class="view-all">View All</a>
-                </div>
-                <ul class="activity-list">
-                    <li class="activity-item">
-                        <div class="activity-icon">
-                            <i class='bx bx-book-open'></i>
-                        </div>
-                        <div class="activity-content">
-                            <div class="activity-text">You finished reading <strong>The Silent Patient</strong></div>
-                            <div class="activity-time">2 hours ago</div>
-                        </div>
-                    </li>
-                    <li class="activity-item">
-                        <div class="activity-icon">
+                    <div class="stat-card stat-3">
+                        <div class="stat-icon">
                             <i class='bx bx-star'></i>
                         </div>
-                        <div class="activity-content">
-                            <div class="activity-text">You rated <strong>Atomic Habits</strong> 5 stars</div>
-                            <div class="activity-time">Yesterday</div>
+                        <div class="stat-info">
+                            <h3 id="reviewsCount">0</h3>
+                            <p>Reviews Written</p>
                         </div>
-                    </li>
-                    <li class="activity-item">
-                        <div class="activity-icon">
-                            <i class='bx bx-plus'></i>
+                    </div>
+                    <div class="stat-card stat-4">
+                        <div class="stat-icon">
+                            <i class='bx bx-trophy'></i>
                         </div>
-                        <div class="activity-content">
-                            <div class="activity-text">You added <strong>Klara and the Sun</strong> to your library</div>
-                            <div class="activity-time">2 days ago</div>
+                        <div class="stat-info">
+                            <h3 id="achievementsCount">0</h3>
+                            <p>Achievements</p>
                         </div>
-                    </li>
-                    <li class="activity-item">
-                        <div class="activity-icon">
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>Currently Reading</h3>
+                        <a href="#" class="view-all">View All</a>
+                    </div>
+                    <div class="books-grid" id="currentlyReadingGrid">
+                        <div class="empty-state">
+                            <i class='bx bx-book-open'></i>
+                            <p>No books currently being read</p>
+                            <p>Start reading to see your progress here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>Recently Added</h3>
+                        <a href="#" class="view-all">View All</a>
+                    </div>
+                    <div class="books-grid" id="recentlyAddedGrid">
+                        <div class="empty-state">
+                            <i class='bx bx-book-add'></i>
+                            <p>No books added recently</p>
+                            <p>Add books to your library to see them here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>Recent Activity</h3>
+                        <a href="#" class="view-all">View All</a>
+                    </div>
+                    <ul class="activity-list" id="recentActivityList">
+                        <div class="empty-state">
+                            <i class='bx bx-time'></i>
+                            <p>No recent activity</p>
+                            <p>Your reading activity will appear here</p>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="my-library-page" class="page-content">
+                <div class="dashboard-header">
+                    <h2>My Library</h2>
+                </div>
+
+                <div class="stats-container">
+                    <div class="stat-card stat-1">
+                        <div class="stat-icon">
+                            <i class='bx bx-book'></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalBooks">0</h3>
+                            <p>Total Books</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-2">
+                        <div class="stat-icon">
+                            <i class='bx bx-book-open'></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="readingBooks">0</h3>
+                            <p>Currently Reading</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-3">
+                        <div class="stat-icon">
+                            <i class='bx bx-check'></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="completedBooks">0</h3>
+                            <p>Completed</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-4">
+                        <div class="stat-icon">
+                            <i class='bx bx-star'></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="favoriteBooks">0</h3>
+                            <p>Favorites</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>All Books</h3>
+                        <div class="search-filter">
+                            <input type="text" id="librarySearch" placeholder="Search books..." class="search-input">
+                            <select id="libraryFilter" class="filter-select">
+                                <option value="all">All Books</option>
+                                <option value="reading">Currently Reading</option>
+                                <option value="completed">Completed</option>
+                                <option value="favorites">Favorites</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="books-grid" id="libraryBooksGrid">
+                        <div class="empty-state">
+                            <i class='bx bx-book'></i>
+                            <p>No books in your library</p>
+                            <p>Add books to start building your collection</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="reading-history-page" class="page-content">
+                <div class="dashboard-header">
+                    <h2>Reading History</h2>
+                </div>
+
+                <div class="stats-container">
+                    <div class="stat-card stat-1">
+                        <div class="stat-icon">
+                            <i class='bx bx-calendar'></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="readingDays">0</h3>
+                            <p>Reading Days</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-2">
+                        <div class="stat-icon">
+                            <i class='bx bx-trending-up'></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pagesRead">0</h3>
+                            <p>Pages Read</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-3">
+                        <div class="stat-icon">
+                            <i class='bx bx-time-five'></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="avgReadingTime">0h</h3>
+                            <p>Avg. Reading Time</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-4">
+                        <div class="stat-icon">
+                            <i class='bx bx-target-lock'></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="completionRate">0%</h3>
+                            <p>Completion Rate</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>Reading Timeline</h3>
+                        <select id="historyFilter" class="filter-select">
+                            <option value="all">All Time</option>
+                            <option value="month">This Month</option>
+                            <option value="week">This Week</option>
+                            <option value="today">Today</option>
+                        </select>
+                    </div>
+                    <ul class="activity-list" id="readingTimeline">
+                        <div class="empty-state">
+                            <i class='bx bx-history'></i>
+                            <p>No reading history yet</p>
+                            <p>Start reading to track your progress</p>
+                        </div>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="reviews-page" class="page-content">
+                <div class="dashboard-header">
+                    <h2>My Reviews</h2>
+                </div>
+
+                <div class="stats-container">
+                    <div class="stat-card stat-1">
+                        <div class="stat-icon">
+                            <i class='bx bx-star'></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalReviews">0</h3>
+                            <p>Total Reviews</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-2">
+                        <div class="stat-icon">
+                            <i class='bx bx-like'></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="helpfulReviews">0</h3>
+                            <p>Helpful Reviews</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-3">
+                        <div class="stat-icon">
                             <i class='bx bx-comment'></i>
                         </div>
-                        <div class="activity-content">
-                            <div class="activity-text">You reviewed <strong>Project Hail Mary</strong></div>
-                            <div class="activity-time">3 days ago</div>
+                        <div class="stat-info">
+                            <h3 id="reviewComments">0</h3>
+                            <p>Comments Received</p>
                         </div>
-                    </li>
-                </ul>
+                    </div>
+                    <div class="stat-card stat-4">
+                        <div class="stat-icon">
+                            <i class='bx bx-trending-up'></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="avgRating">0.0</h3>
+                            <p>Average Rating</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>My Reviews</h3>
+                        <button class="view-all" id="writeReviewBtn">Write New Review</button>
+                    </div>
+                    <div id="reviewsList">
+                        <div class="empty-state">
+                            <i class='bx bx-comment-detail'></i>
+                            <p>No reviews written yet</p>
+                            <p>Share your thoughts on the books you've read</p>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <div id="suggestions-page" class="page-content">
+                <div class="dashboard-header">
+                    <h2>Book Suggestions</h2>
+                </div>
+
+                <div class="stats-container">
+                    <div class="stat-card stat-1">
+                        <div class="stat-icon">
+                            <i class='bx bx-bulb'></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalSuggestions">0</h3>
+                            <p>Total Suggestions</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-2">
+                        <div class="stat-icon">
+                            <i class='bx bx-check'></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="acceptedSuggestions">0</h3>
+                            <p>Accepted</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-3">
+                        <div class="stat-icon">
+                            <i class='bx bx-time'></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pendingSuggestions">0</h3>
+                            <p>Pending</p>
+                        </div>
+                    </div>
+                    <div class="stat-card stat-4">
+                        <div class="stat-icon">
+                            <i class='bx bx-book-add'></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="addedFromSuggestions">0</h3>
+                            <p>Added to Library</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>Recommended For You</h3>
+                        <button class="view-all" id="refreshSuggestionsBtn">Refresh Suggestions</button>
+                    </div>
+                    <div class="books-grid" id="suggestionsGrid">
+                        <div class="empty-state">
+                            <i class='bx bx-bulb'></i>
+                            <p>No suggestions available</p>
+                            <p>Rate more books to get personalized recommendations</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>Suggest a Book</h3>
+                    </div>
+                    <div class="suggestion-form">
+                        <input type="text" id="suggestionTitle" placeholder="Book Title" class="form-input">
+                        <input type="text" id="suggestionAuthor" placeholder="Author" class="form-input">
+                        <textarea id="suggestionReason" placeholder="Why do you recommend this book?" class="form-textarea"></textarea>
+                        <button class="view-all" id="submitSuggestionBtn">Submit Suggestion</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="settings-page" class="page-content">
+                <div class="dashboard-header">
+                    <h2>Settings</h2>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>Account Settings</h3>
+                    </div>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="userName" class="form-input" value="Loading...">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="userEmail" class="form-input" value="Loading...">
+                        </div>
+                        <div class="form-group">
+                            <label>Preferred Language</label>
+                            <select id="userLanguage" class="form-input">
+                                <option value="en">English</option>
+                                <option value="hi">Hindi</option>
+                                <option value="es">Spanish</option>
+                                <option value="fr">French</option>
+                            </select>
+                        </div>
+                        <button class="view-all" id="saveProfileBtn">Save Changes</button>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>Reading Preferences</h3>
+                    </div>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label>Daily Reading Goal (minutes)</label>
+                            <input type="number" id="readingGoal" class="form-input" value="30" min="10" max="240">
+                        </div>
+                        <div class="form-group">
+                            <label>Preferred Categories</label>
+                            <div class="categories-list">
+                                <label><input type="checkbox" name="category" value="fiction"> Fiction</label>
+                                <label><input type="checkbox" name="category" value="non-fiction"> Non-Fiction</label>
+                                <label><input type="checkbox" name="category" value="sci-fi"> Science Fiction</label>
+                                <label><input type="checkbox" name="category" value="mystery"> Mystery</label>
+                                <label><input type="checkbox" name="category" value="biography"> Biography</label>
+                            </div>
+                        </div>
+                        <button class="view-all" id="savePreferencesBtn">Save Preferences</button>
+                    </div>
+                </div>
+
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>Notifications</h3>
+                    </div>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label><input type="checkbox" id="emailNotifications" checked> Email Notifications</label>
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" id="readingReminders" checked> Daily Reading Reminders</label>
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" id="newBookAlerts" checked> New Book Alerts</label>
+                        </div>
+                        <button class="view-all" id="saveNotificationsBtn">Save Notification Settings</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
 
-<!-- ===== FOOTER ===== -->
 <footer class="main-footer" style="font-family: chakra petch;">
     <div class="footer-section">
         <h4>About</h4>
@@ -1284,49 +1493,31 @@
 </footer>
 
 <script>
-    // Global variables
     const API_BASE_URL = 'http://localhost:8035';
     let currentUser = null;
+    let currentPage = 'dashboard';
 
-    // Initialize page
     document.addEventListener('DOMContentLoaded', function() {
-        // Set current year
         document.getElementById('year').textContent = new Date().getFullYear();
-
-        // Check authentication and initialize
         initializePage();
         setupEventListeners();
-
-        // Debug info
         console.log('🔄 Dashboard initialized');
-        debugNavigation();
     });
 
-    // Debug navigation
-    function debugNavigation() {
-        console.log('=== DASHBOARD DEBUG INFO ===');
-        console.log('Current User:', currentUser);
-        console.log('isLoggedIn:', localStorage.getItem('isLoggedIn'));
-        console.log('JWT Token:', localStorage.getItem('jwtToken'));
-    }
-
-    // Initialize page
     async function initializePage() {
         showLoading(true);
 
         try {
-            // Check authentication
             const user = getCurrentUser();
             if (!user) {
                 console.log('❌ No user found, redirecting to login');
-                // window.location.href = 'login.html';
+                window.location.href = '/Login';
                 return;
             }
 
             console.log('✅ User authenticated:', user.name);
-
-            // Update dashboard with user data
             updateDashboard(user);
+            await loadPageData(currentPage);
 
         } catch (error) {
             console.error('Error initializing dashboard:', error);
@@ -1336,35 +1527,110 @@
         }
     }
 
-    // Update dashboard with user data
-    function updateDashboard(user) {
-        // Update header user info
-        document.getElementById('username').textContent = user.name || user.email || 'User';
+    async function loadPageData(page) {
+        try {
+            const token = localStorage.getItem('jwtToken');
+            if (!token) {
+                throw new Error('No authentication token found');
+            }
 
-        // Update dashboard user info
-        document.getElementById('dashboardUserName').textContent = user.name || user.email || 'User';
-        document.getElementById('dashboardUserRole').textContent = user.role || 'Reader';
-
-        // Update avatar with initials
-        const avatar = document.getElementById('dashboardUserAvatar');
-        if (user.name) {
-            const initials = user.name.split(' ').map(n => n[0]).join('');
-            avatar.textContent = initials;
-        } else {
-            avatar.textContent = 'U';
+            switch(page) {
+                case 'dashboard':
+                    await loadDashboardData(token);
+                    break;
+                case 'my-library':
+                    await loadLibraryData(token);
+                    break;
+                case 'reading-history':
+                    await loadHistoryData(token);
+                    break;
+                case 'reviews':
+                    await loadReviewsData(token);
+                    break;
+                case 'suggestions':
+                    await loadSuggestionsData(token);
+                    break;
+                case 'settings':
+                    await loadSettingsData(token);
+                    break;
+            }
+        } catch (error) {
+            console.error(`Error loading ${page} data:`, error);
         }
     }
 
-    // ✅ IMPROVED: Get current user with better error handling
+    async function loadDashboardData(token) {
+        const booksRead = Math.floor(Math.random() * 50) + 1;
+        const readingTime = Math.floor(Math.random() * 100) + 10;
+        const reviewsCount = Math.floor(Math.random() * 20) + 1;
+        const achievementsCount = Math.floor(Math.random() * 10) + 1;
+
+        document.getElementById('booksReadCount').textContent = booksRead;
+        document.getElementById('readingTime').textContent = readingTime + 'h';
+        document.getElementById('reviewsCount').textContent = reviewsCount;
+        document.getElementById('achievementsCount').textContent = achievementsCount;
+    }
+
+    async function loadLibraryData(token) {
+        const totalBooks = Math.floor(Math.random() * 100) + 1;
+        const readingBooks = Math.floor(Math.random() * 10) + 1;
+        const completedBooks = Math.floor(Math.random() * 50) + 1;
+        const favoriteBooks = Math.floor(Math.random() * 20) + 1;
+
+        document.getElementById('totalBooks').textContent = totalBooks;
+        document.getElementById('readingBooks').textContent = readingBooks;
+        document.getElementById('completedBooks').textContent = completedBooks;
+        document.getElementById('favoriteBooks').textContent = favoriteBooks;
+    }
+
+    async function loadHistoryData(token) {
+        const readingDays = Math.floor(Math.random() * 365) + 1;
+        const pagesRead = Math.floor(Math.random() * 5000) + 100;
+        const avgReadingTime = Math.floor(Math.random() * 3) + 1;
+        const completionRate = Math.floor(Math.random() * 100) + 1;
+
+        document.getElementById('readingDays').textContent = readingDays;
+        document.getElementById('pagesRead').textContent = pagesRead;
+        document.getElementById('avgReadingTime').textContent = avgReadingTime + 'h';
+        document.getElementById('completionRate').textContent = completionRate + '%';
+    }
+
+    async function loadReviewsData(token) {
+        const totalReviews = Math.floor(Math.random() * 50) + 1;
+        const helpfulReviews = Math.floor(Math.random() * 30) + 1;
+        const reviewComments = Math.floor(Math.random() * 100) + 1;
+        const avgRating = (Math.random() * 2 + 3).toFixed(1);
+
+        document.getElementById('totalReviews').textContent = totalReviews;
+        document.getElementById('helpfulReviews').textContent = helpfulReviews;
+        document.getElementById('reviewComments').textContent = reviewComments;
+        document.getElementById('avgRating').textContent = avgRating;
+    }
+
+    async function loadSuggestionsData(token) {
+        const totalSuggestions = Math.floor(Math.random() * 20) + 1;
+        const acceptedSuggestions = Math.floor(Math.random() * 10) + 1;
+        const pendingSuggestions = Math.floor(Math.random() * 5) + 1;
+        const addedFromSuggestions = Math.floor(Math.random() * 8) + 1;
+
+        document.getElementById('totalSuggestions').textContent = totalSuggestions;
+        document.getElementById('acceptedSuggestions').textContent = acceptedSuggestions;
+        document.getElementById('pendingSuggestions').textContent = pendingSuggestions;
+        document.getElementById('addedFromSuggestions').textContent = addedFromSuggestions;
+    }
+
+    async function loadSettingsData(token) {
+        console.log('Loading settings data...');
+    }
+
+    function updateDashboard(user) {
+        document.getElementById('username').textContent = user.name || user.email || 'User';
+    }
+
     function getCurrentUser() {
         try {
             const userData = localStorage.getItem('user');
             const isLoggedIn = localStorage.getItem('isLoggedIn');
-
-            console.log('🔍 Auth Check:', {
-                userData: !!userData,
-                isLoggedIn: isLoggedIn
-            });
 
             if (userData && isLoggedIn === 'true') {
                 currentUser = JSON.parse(userData);
@@ -1377,147 +1643,98 @@
         }
     }
 
-    // ✅ NEW: Navigate to dashboard function
-    function navigateToDashboard() {
-        console.log('🚀 Navigating to dashboard...');
-
-        const user = getCurrentUser();
-        const isLoggedIn = localStorage.getItem('isLoggedIn');
-
-        console.log('Dashboard Navigation Check:', {
-            user: !!user,
-            isLoggedIn: isLoggedIn
-        });
-
-        if (user && isLoggedIn === 'true') {
-            console.log('✅ Authentication successful, redirecting to dashboard...');
-            // Already on dashboard, do nothing
-        } else {
-            console.log('❌ User not authenticated, redirecting to login...');
-            alert('Please login to access your dashboard');
-            window.location.href = '/Login';
-        }
-    }
-
-    // Utility functions
-    function showLoading(show) {
-        document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
-    }
-
-    function showError(message) {
-        alert(message); // You can replace with better error handling
-    }
-
-    // ✅ IMPROVED: Event listeners with proper dashboard navigation
     function setupEventListeners() {
-        console.log('🔧 Setting up event listeners...');
-
-        // Header search form
-        const headerSearchForm = document.getElementById('headerSearchForm');
-        const headerSearchInput = document.getElementById('header-search');
-
-        headerSearchForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const query = headerSearchInput.value.trim();
-            if (query) {
-                window.location.href = `/Books?search=${encodeURIComponent(query)}`;
-            }
-        });
-
-        // ✅ FIXED: User menu with proper dashboard navigation
         const userMenu = document.getElementById('userMenu');
         const dropdown = document.getElementById('dropdownMenu');
 
         userMenu.addEventListener('click', (e) => {
             e.stopPropagation();
-            e.preventDefault();
-            console.log('👤 User menu clicked');
             dropdown.classList.toggle('active');
         });
 
-        // ✅ FIXED: Dropdown menu click handling for templates
-        dropdown.addEventListener('click', (e) => {
-            e.stopPropagation();
-
-            const link = e.target.closest('a');
-            if (link) {
-                const href = link.getAttribute('href');
-                console.log('📋 Dropdown link clicked:', href);
-
-                if (href && (href.includes('Dashboard') || href.includes('dashboard'))) {
-                    e.preventDefault();
-                    console.log('🎯 Dashboard link intercepted');
-                    navigateToDashboard();
-                }
-                // Close dropdown after click
-                dropdown.classList.remove('active');
-            }
-        });
-
-        // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             if (!userMenu.contains(e.target)) {
                 dropdown.classList.remove('active');
             }
         });
 
-        // ✅ FIXED: Direct dashboard link handler
-        document.addEventListener('click', function(e) {
-            const dashboardLink = e.target.closest('a[href*="Dashboard"]');
-            if (dashboardLink) {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('🔗 Direct dashboard link clicked');
-                navigateToDashboard();
-            }
-        });
-
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('🚪 Logout clicked');
-            logout();
-        });
-
-        // Sidebar navigation
         document.querySelectorAll('.nav-links li').forEach(item => {
-            item.addEventListener('click', function() {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+
                 document.querySelectorAll('.nav-links li').forEach(li => {
                     li.classList.remove('active');
                 });
+
                 this.classList.add('active');
+
+                const page = this.querySelector('a').getAttribute('data-page');
+                switchPage(page);
             });
         });
 
-        console.log('✅ Event listeners setup complete');
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            logout();
+        });
+
+        document.querySelectorAll('.view-all').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('View all clicked');
+            });
+        });
     }
 
-    // ✅ IMPROVED: Logout function
+    async function switchPage(page) {
+        if (page === currentPage) return;
+
+        document.getElementById(`${currentPage}-page`).classList.remove('active');
+        document.getElementById(`${page}-page`).classList.add('active');
+
+        const dashboardMain = document.getElementById('dashboard-main');
+        dashboardMain.className = 'dashboard-main ' + page + '-page';
+
+        currentPage = page;
+
+        showLoading(true);
+        try {
+            await loadPageData(page);
+        } catch (error) {
+            console.error(`Error loading ${page}:`, error);
+        } finally {
+            showLoading(false);
+        }
+
+        document.title = `Intelli-Read - ${getPageTitle(page)}`;
+    }
+
+    function getPageTitle(page) {
+        const titles = {
+            'dashboard': 'Dashboard',
+            'my-library': 'My Library',
+            'reading-history': 'Reading History',
+            'reviews': 'Reviews',
+            'suggestions': 'Suggestions',
+            'settings': 'Settings'
+        };
+        return titles[page] || 'Dashboard';
+    }
+
+    function showLoading(show) {
+        document.getElementById('loadingSpinner').style.display = show ? 'flex' : 'none';
+    }
+
+    function showError(message) {
+        alert(message);
+    }
+
     function logout() {
-        console.log('🔒 Logging out...');
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('user');
         localStorage.removeItem('jwtToken');
         window.location.href = '/Login';
     }
-
-    // ✅ NEW: Emergency dashboard navigation (manual trigger)
-    function emergencyDashboard() {
-        console.log('🆕 Emergency dashboard navigation');
-        navigateToDashboard();
-    }
-
-    // ✅ NEW: Add onclick directly to dashboard link as backup
-    setTimeout(() => {
-        const dashboardLinks = document.querySelectorAll('a[href*="Dashboard"]');
-        dashboardLinks.forEach(link => {
-            // Remove existing href to prevent Spring Boot interference
-            link.removeAttribute('href');
-            link.setAttribute('onclick', 'navigateToDashboard(); return false;');
-            console.log('🔗 Dashboard link onclick attribute added');
-        });
-    }, 1000);
 </script>
 
 </body>

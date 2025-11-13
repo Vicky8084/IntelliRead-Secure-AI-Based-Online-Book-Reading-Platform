@@ -6,8 +6,6 @@
     <title>Books | Intelli-Read</title>
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-
     <style>
         * {
             margin: 0;
@@ -320,6 +318,306 @@
             transform: scale(1.3);
         }
 
+        /* ===== CATEGORY TAGS ===== */
+        .tags-section {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .tags-section h2 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid transparent;
+        }
+
+        .tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .tag.highlight {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        /* ===== BOOKS GRID ===== */
+        .books-container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.54);
+            box-shadow: 0 6px 15px rgb(220, 155, 15);
+            z-index: 1;
+        }
+
+        .books-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .books-header h1 {
+            font-size: 28px;
+            color: #000;
+            font-weight: 600;
+        }
+
+        .main {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 25px;
+        }
+
+        .book {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 8px 25px rgba(46, 4, 255, 0.2);
+        }
+
+        .book:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(46, 4, 255, 0.3);
+        }
+
+        .book img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .book-info {
+            padding: 20px;
+        }
+
+        .book-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: #000;
+            line-height: 1.3;
+        }
+
+        .book-info p {
+            color: #000;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        .book-info span {
+            color: #667eea;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* ===== TOOLTIP ===== */
+        .book-tooltip {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 15px;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .book:hover .book-tooltip {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .book-tooltip h4 {
+            margin-bottom: 8px;
+            color: #ff6b6b;
+            font-size: 1.1rem;
+        }
+
+        .book-tooltip p {
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* ===== PAGINATION ===== */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            padding: 30px 0;
+        }
+
+        .pagination button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .pagination button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .pagination span {
+            font-weight: 500;
+            color: #000;
+        }
+
+        /* ===== MODAL ===== */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            color: #000;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #ff4757;
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+        }
+
+        .modal-cover {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            margin: 0 auto 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .modal-info {
+            text-align: center;
+        }
+
+        .modal-info h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #000;
+        }
+
+        .modal-info h4 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #000;
+            opacity: 0.8;
+        }
+
+        .modal-info p {
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            text-align: left;
+            color: #000;
+        }
+
+        .read-more {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .read-more:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
         /* User Menu */
         .user-menu {
             position: relative;
@@ -448,6 +746,38 @@
             font-weight: 600;
         }
 
+        /* ===== NO RESULTS ===== */
+        .no-results {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 50px;
+            font-size: 1.3rem;
+            color: #000;
+            opacity: 0.7;
+        }
+
+        /* ===== LOADING SPINNER ===== */
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* Loading Spinner */
         .loading-spinner {
             display: none;
@@ -467,15 +797,21 @@
             animation: spin 1s linear infinite;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1024px) {
+            .main {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             header {
                 padding: 12px 20px;
+            }
+
+            .header-search {
+                display: none;
             }
 
             .main-content {
@@ -502,15 +838,65 @@
             .slider-btn.left { left: -15px; }
             .slider-btn.right { right: -15px; }
 
+            .books-container {
+                padding: 15px;
+            }
+
+            .books-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .main {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+
             .main-footer {
                 padding: 15px 20px;
                 flex-direction: column;
                 text-align: center;
             }
         }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 70px 10px 20px;
+            }
+
+            .books-container {
+                width: 95%;
+                padding: 10px;
+            }
+
+            .books-header h1 {
+                font-size: 22px;
+            }
+
+            .main {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .book img {
+                height: 280px;
+            }
+
+            .book-info {
+                padding: 15px;
+            }
+
+            .modal-body {
+                padding: 15px;
+            }
+
+            .modal-cover {
+                max-width: 200px;
+            }
+        }
     </style>
 </head>
-
 <body>
 
 <!-- Loading Spinner -->
@@ -521,7 +907,7 @@
 <!-- ===== HEADER ===== -->
 <header>
     <div class="logo">
-        <a href="Home.html"><img src="../images/logo.png" alt="Logo"></a>
+        <a href="bookscreen"><img src="../images/logo.png" alt="Logo"></a>
     </div>
     <div class="nav-buttons">
         <form class="header-search" id="headerSearchForm">
@@ -572,6 +958,47 @@
             <!-- Dot indicators will be dynamically added here -->
         </div>
     </section>
+
+    <!-- ====== CATEGORY TAGS ====== -->
+    <div class="tags-section">
+        <h2>Browse by Category</h2>
+        <div id="tags" class="tags">
+            <div class="tag highlight" data-category="all">All Books</div>
+            <!-- Categories will be loaded dynamically -->
+        </div>
+    </div>
+
+    <!-- ====== BOOKS LIST ====== -->
+    <div class="books-container">
+        <div class="books-header">
+            <h1>Discover Amazing Books</h1>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div class="loading-spinner" id="loadingBooksSpinner">
+            <div class="spinner"></div>
+            <p>Loading books...</p>
+        </div>
+
+        <main id="main" class="main">
+            <!-- Books will be loaded dynamically from API -->
+        </main>
+
+        <!-- ===== PAGINATION ===== -->
+        <div class="pagination" id="pagination">
+            <!-- Pagination will be loaded dynamically -->
+        </div>
+    </div>
+</div>
+
+<!-- ===== MODAL POPUP ===== -->
+<div class="modal" id="bookModal">
+    <div class="modal-content">
+        <span class="close-btn" id="closeModal">&times;</span>
+        <div class="modal-body" id="modalBody">
+            <!-- Book details will be loaded here -->
+        </div>
+    </div>
 </div>
 
 <!-- ===== FOOTER ===== -->
@@ -591,43 +1018,31 @@
 </footer>
 
 <script>
-    // Global variables
+    // ===== GLOBAL VARIABLES =====
     const API_BASE_URL = 'http://localhost:8035';
+    let allBooks = [];
+    let filteredBooks = [];
+    let categories = [];
+    let currentPage = 1;
+    const booksPerPage = 15;
+    let currentCategory = 'all';
+    let currentSearchQuery = '';
     let currentUser = null;
-    let allPublishedBooks = [];
     let currentSlide = 0;
 
-    // Initialize page
+    // ===== INITIALIZATION =====
     document.addEventListener('DOMContentLoaded', function() {
-        // Set current year
+        // Set current year in footer
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        // Check authentication and initialize
+        // Initialize the page
         initializePage();
         setupEventListeners();
-
-        // Debug info
-        console.log('🔄 Page initialized');
-        debugNavigation();
     });
 
-    // Debug navigation
-    function debugNavigation() {
-        console.log('=== DEBUG INFO ===');
-        console.log('Current User:', currentUser);
-        console.log('isLoggedIn:', localStorage.getItem('isLoggedIn'));
-        console.log('JWT Token:', localStorage.getItem('jwtToken'));
-
-        // Check dashboard link
-        const dashboardLink = document.querySelector('a[href*="Dashboard"]');
-        console.log('Dashboard Link Found:', !!dashboardLink);
-        console.log('Dashboard Link Href:', dashboardLink ? dashboardLink.href : 'Not found');
-    }
-
-    // Initialize page
+    // ===== PAGE INITIALIZATION =====
     async function initializePage() {
         showLoading(true);
-
         try {
             // Check authentication
             const user = getCurrentUser();
@@ -639,64 +1054,382 @@
 
             console.log('✅ User authenticated:', user.name);
 
-            // Load REAL published books from API
-            await loadPublishedBooks();
+            await loadCategories();
+            await loadBooks();
+            setupCategoryFilters();
 
             // Initialize slider with real books
             initializeSlider();
 
         } catch (error) {
             console.error('Error initializing page:', error);
-            showError('Failed to load books. Please try again.');
+            showError('Failed to load books. Please try again later.');
         } finally {
             showLoading(false);
         }
     }
 
-    // Load REAL published books from API
-    async function loadPublishedBooks() {
-        try {
-            console.log('📚 Loading published books from API...');
+    // ===== LOAD BOOKS FROM API =====
+    async function loadBooks() {
+    try {
+        console.log('📚 Loading published books from API...');
 
-            const response = await fetch(`${API_BASE_URL}/book/apies/published`);
+        const response = await fetch(`${API_BASE_URL}/book/apies/published`);
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-            const booksData = await response.json();
-            console.log('✅ Books loaded successfully:', booksData.length);
+        const booksData = await response.json();
+        console.log('✅ Books loaded successfully:', booksData.length);
 
-            // Process books data
-            allPublishedBooks = booksData.map(book => ({
-                id: book.id,
-                title: book.title,
-                author: book.author,
-                description: book.description,
-                language: book.language,
-                coverImagePath: book.coverImagePath,
-                status: book.status,
-                uploadedAt: book.uploadedAt,
-                category: book.category ? {
-                    id: book.category.id,
-                    categoryName: book.category.categoryName
-                } : null
+        // ✅ FIX: Hibernate proxy objects handle karo
+        allBooks = booksData.map(book => ({
+            id: book.id,
+            title: book.title,
+            author: book.author,
+            description: book.description,
+            language: book.language,
+            coverImagePath: book.coverImagePath,
+            status: book.status,
+            uploadedAt: book.uploadedAt,
+            category: book.category ? {
+                id: book.category.id,
+                categoryName: book.category.categoryName
+            } : null
+        }));
+
+        filteredBooks = [...allBooks];
+
+        renderBooks();
+        updatePagination();
+
+    } catch (error) {
+        console.error('❌ Error loading books:', error);
+        showError('Failed to load books from server.');
+    }
+}
+
+    // ===== LOAD CATEGORIES =====
+    async function loadCategories() {
+    try {
+        console.log('📂 Loading categories...');
+
+        const response = await fetch(`${API_BASE_URL}/category/apies/findAll`);
+
+        if (response.ok) {
+            const categoriesData = await response.json();
+
+            // ✅ FIX: Hibernate proxy objects ko handle karo
+            categories = categoriesData.map(cat => ({
+                id: cat.id,
+                categoryName: cat.categoryName,
+                description: cat.description
+                // books list ko include mat karo - circular reference avoid karo
             }));
 
-            console.log('📖 Processed books:', allPublishedBooks.length);
+            console.log('✅ Categories loaded:', categories.length);
+            console.log('📝 Categories data:', categories);
+        } else {
+            console.warn('⚠️ Could not load categories, using defaults');
+            // Use default categories if API fails
+            categories = [
+                { id: 1, categoryName: "FICTION" },
+                { id: 2, categoryName: "NON_FICTION" },
+                { id: 3, categoryName: "SCIENCE_FICTION" },
+                { id: 4, categoryName: "MYSTERY" },
+                { id: 5, categoryName: "BIOGRAPHY" }
+            ];
+        }
+    } catch (error) {
+        console.error('❌ Error loading categories:', error);
+        // Use default categories on error
+        categories = [
+            { id: 1, categoryName: "FICTION" },
+            { id: 2, categoryName: "NON_FICTION" },
+            { id: 3, categoryName: "SCIENCE_FICTION" },
+            { id: 4, categoryName: "MYSTERY" },
+            { id: 5, categoryName: "BIOGRAPHY" }
+        ];
+    }
+}
 
+    // ===== SETUP CATEGORY FILTERS =====
+    function setupCategoryFilters() {
+    const tagsContainer = document.getElementById('tags');
+
+    // Clear existing tags except "All Books"
+    const allBooksTag = tagsContainer.querySelector('[data-category="all"]');
+    tagsContainer.innerHTML = '';
+    tagsContainer.appendChild(allBooksTag);
+
+    // Add category tags
+    categories.forEach(category => {
+        const tag = document.createElement('div');
+        tag.classList.add('tag');
+        tag.textContent = category.categoryName;
+        tag.dataset.category = category.id;
+        tag.addEventListener('click', () => filterByCategory(category.id));
+        tagsContainer.appendChild(tag);
+    });
+
+    // ✅ FIX: "All Books" pe click event add karo
+    allBooksTag.addEventListener('click', () => filterByCategory('all'));
+}
+
+    // ===== FILTER BY CATEGORY =====
+    async function filterByCategory(categoryId) {
+    currentCategory = categoryId;
+    currentPage = 1;
+
+    // Update active tag
+    document.querySelectorAll('.tag').forEach(tag => {
+        tag.classList.remove('highlight');
+    });
+
+    const activeTag = document.querySelector(`[data-category="${categoryId}"]`);
+    if (activeTag) {
+        activeTag.classList.add('highlight');
+    }
+
+    showLoading(true);
+
+    try {
+        if (categoryId === 'all') {
+            // Load all published books
+            await loadBooks();
+        } else {
+            // Load books by category - PROPER ERROR HANDLING
+            console.log(`📚 Loading books for category: ${categoryId}`);
+
+            const response = await fetch(`${API_BASE_URL}/book/apies/published/category/${categoryId}`);
+
+            if (response.ok) {
+                const categoryBooks = await response.json();
+                console.log(`✅ Category books loaded: ${categoryBooks.length} books`);
+
+                // ✅ FIX: Hibernate proxy objects handle karo
+                filteredBooks = categoryBooks.map(book => ({
+                    id: book.id,
+                    title: book.title,
+                    author: book.author,
+                    description: book.description,
+                    language: book.language,
+                    coverImagePath: book.coverImagePath,
+                    status: book.status,
+                    uploadedAt: book.uploadedAt,
+                    category: book.category ? {
+                        id: book.category.id,
+                        categoryName: book.category.categoryName
+                    } : null
+                }));
+
+                renderBooks();
+                updatePagination();
+            } else {
+                console.error(`❌ Category API failed with status: ${response.status}`);
+                throw new Error('Failed to load category books');
+            }
+        }
+    } catch (error) {
+        console.error('Error filtering by category:', error);
+        showError('Failed to load category books. Showing all books instead.');
+
+        // Fallback: show all books
+        await loadBooks();
+    } finally {
+        showLoading(false);
+    }
+}
+
+    // ===== SEARCH BOOKS =====
+    async function searchBooks(query) {
+        currentSearchQuery = query;
+        currentPage = 1;
+
+        if (!query.trim()) {
+            // If search is empty, reload all books
+            await loadBooks();
+            return;
+        }
+
+        showLoading(true);
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/book/apies/published/search?query=${encodeURIComponent(query)}`);
+
+            if (response.ok) {
+                const searchResults = await response.json();
+                filteredBooks = searchResults;
+                renderBooks();
+                updatePagination();
+            } else {
+                throw new Error('Search failed');
+            }
         } catch (error) {
-            console.error('❌ Error loading books:', error);
-            // Fallback to empty array
-            allPublishedBooks = [];
+            console.error('Error searching books:', error);
+            // Fallback: client-side search
+            filteredBooks = allBooks.filter(book =>
+                book.title.toLowerCase().includes(query.toLowerCase()) ||
+                book.author.toLowerCase().includes(query.toLowerCase()) ||
+                (book.category && book.category.categoryName.toLowerCase().includes(query.toLowerCase()))
+            );
+            renderBooks();
+            updatePagination();
+        } finally {
+            showLoading(false);
         }
     }
 
+    // ===== RENDER BOOKS =====
+    function renderBooks() {
+        const main = document.getElementById('main');
+
+        if (!filteredBooks || filteredBooks.length === 0) {
+            main.innerHTML = `
+                <div class="no-results">
+                    <h3>No books found</h3>
+                    <p>Try adjusting your search or filter criteria</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Calculate pagination
+        const startIndex = (currentPage - 1) * booksPerPage;
+        const endIndex = startIndex + booksPerPage;
+        const booksToShow = filteredBooks.slice(startIndex, endIndex);
+
+        let html = '';
+
+        booksToShow.forEach(book => {
+            const coverUrl = book.coverImagePath ?
+                `${API_BASE_URL}/uploads/${book.coverImagePath}` :
+                generatePlaceholderSvg(book.title);
+
+            const categoryName = book.category ?
+                book.category.categoryName : 'Uncategorized';
+
+            html += `
+                <div class="book" onclick="showBookDetails(${book.id})">
+                    <img src="${coverUrl}" alt="${book.title}"
+                         onerror="this.src='${generatePlaceholderSvg(book.title)}'">
+                    <div class="book-info">
+                        <h3>${book.title}</h3>
+                        <p>${book.author}</p>
+                        <span>${categoryName}</span>
+                    </div>
+                    <div class="book-tooltip">
+                        <h4>${book.title}</h4>
+                        <p><strong>Author:</strong> ${book.author}</p>
+                        <p><strong>Category:</strong> ${categoryName}</p>
+                        <p><strong>Language:</strong> ${book.language || 'English'}</p>
+                        ${book.description ? `<p>${book.description.substring(0, 100)}...</p>` : ''}
+                    </div>
+                </div>
+            `;
+        });
+
+        main.innerHTML = html;
+    }
+
+    // ===== SHOW BOOK DETAILS =====
+    async function showBookDetails(bookId) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/book/apies/findById/${bookId}`);
+
+            if (response.ok) {
+                const book = await response.json();
+                showBookModal(book);
+            } else {
+                throw new Error('Failed to load book details');
+            }
+        } catch (error) {
+            console.error('Error loading book details:', error);
+            showError('Failed to load book details.');
+        }
+    }
+
+    // ===== SHOW BOOK MODAL =====
+    function showBookModal(book) {
+        const modal = document.getElementById('bookModal');
+        const modalBody = document.getElementById('modalBody');
+
+        const coverUrl = book.coverImagePath ?
+            `${API_BASE_URL}/uploads/${book.coverImagePath}` :
+            generatePlaceholderSvg(book.title);
+
+        const categoryName = book.category ?
+            book.category.categoryName : 'Uncategorized';
+
+        modalBody.innerHTML = `
+            <img src="${coverUrl}" alt="${book.title}" class="modal-cover"
+                 onerror="this.src='${generatePlaceholderSvg(book.title)}'">
+            <div class="modal-info">
+                <h2>${book.title}</h2>
+                <h4>by ${book.author}</h4>
+                <p><strong>Category:</strong> ${categoryName}</p>
+                <p><strong>Language:</strong> ${book.language || 'English'}</p>
+                <p><strong>Status:</strong> ${book.status || 'Published'}</p>
+                ${book.description ? `<p><strong>Description:</strong> ${book.description}</p>` : ''}
+                ${book.uploadedAt ? `<p><strong>Added:</strong> ${new Date(book.uploadedAt).toLocaleDateString()}</p>` : ''}
+
+<div style="margin-top: 20px;">
+    <a href="/login" class="read-more">
+        📖 Read This Book
+    </a>
+    <a href="/login" class="read-more" style="margin-left: 10px;">
+        ➕ Add to Reading List
+    </a>
+</div>
+
+            </div>
+        `;
+
+        modal.classList.add('active');
+    }
+
+    // ===== PAGINATION =====
+    function updatePagination() {
+        const pagination = document.getElementById('pagination');
+        const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
+
+        if (totalPages <= 1) {
+            pagination.innerHTML = '';
+            return;
+        }
+
+        let html = `
+            <button id="prev" ${currentPage === 1 ? 'disabled' : ''}>⬅ Prev</button>
+            <span>Page ${currentPage} of ${totalPages}</span>
+            <button id="next" ${currentPage === totalPages ? 'disabled' : ''}>Next ➡</button>
+        `;
+
+        pagination.innerHTML = html;
+
+        document.getElementById('prev').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderBooks();
+                updatePagination();
+            }
+        });
+
+        document.getElementById('next').addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderBooks();
+                updatePagination();
+            }
+        });
+    }
+
+    // ===== RECOMMENDED SLIDER FUNCTIONS =====
     // Initialize slider with REAL books
     function initializeSlider() {
         const slider = document.getElementById('recommendedSlider');
 
-        if (allPublishedBooks.length === 0) {
+        if (allBooks.length === 0) {
             slider.innerHTML = `
                 <div style="text-align: center; padding: 40px; width: 100%; color: #666;">
                     <p style="font-size: 1.1rem;">
@@ -709,7 +1442,7 @@
         }
 
         // Create book cards with REAL data
-        slider.innerHTML = allPublishedBooks.map(book => {
+        slider.innerHTML = allBooks.map(book => {
             const coverUrl = book.coverImagePath ?
                 `${API_BASE_URL}/uploads/${book.coverImagePath}` :
                 generatePlaceholderSvg(book.title);
@@ -735,7 +1468,7 @@
     function updateDots() {
         const dotsContainer = document.getElementById('dotsContainer');
         const booksPerSlide = 4;
-        const totalSlides = Math.ceil(allPublishedBooks.length / booksPerSlide);
+        const totalSlides = Math.ceil(allBooks.length / booksPerSlide);
 
         dotsContainer.innerHTML = Array.from({length: totalSlides}, (_, i) => `
             <div class="dot ${i === currentSlide ? 'active' : ''}"
@@ -757,11 +1490,11 @@
         updateDots();
     }
 
-    // Utility functions
+    // ===== UTILITY FUNCTIONS =====
     function generatePlaceholderSvg(title) {
         const initials = title ? title.charAt(0).toUpperCase() : 'B';
         const svg = `
-            <svg width="200" height="250" xmlns="http://www.w3.org/2000/svg">
+            <svg width="280" height="320" xmlns="http://www.w3.org/2000/svg">
                 <rect width="100%" height="100%" fill="#667eea"/>
                 <text x="50%" y="50%" font-family="Arial" font-size="48" fill="white"
                       text-anchor="middle" dy=".3em">${initials}</text>
@@ -771,11 +1504,32 @@
     }
 
     function showLoading(show) {
-        document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
+        const spinner = document.getElementById('loadingSpinner');
+        const booksSpinner = document.getElementById('loadingBooksSpinner');
+        const main = document.getElementById('main');
+
+        if (spinner) {
+            spinner.style.display = show ? 'block' : 'none';
+        }
+        if (booksSpinner) {
+            booksSpinner.style.display = show ? 'block' : 'none';
+        }
+        if (main) {
+            main.style.display = show ? 'none' : 'grid';
+        }
     }
 
     function showError(message) {
-        alert(message); // You can replace with better error handling
+        const main = document.getElementById('main');
+        main.innerHTML = `
+            <div class="no-results">
+                <h3>❌ Error</h3>
+                <p>${message}</p>
+                <button onclick="initializePage()" class="read-more" style="margin-top: 15px;">
+                    Try Again
+                </button>
+            </div>
+        `;
     }
 
     // ✅ IMPROVED: Get current user with better error handling
@@ -827,12 +1581,6 @@
     }
 }
 
-    function showBookDetails(bookId) {
-        // Implement book details modal or redirect
-        console.log('Showing details for book:', bookId);
-        window.location.href = `/book-details.html?id=${bookId}`;
-    }
-
     // ✅ IMPROVED: Event listeners with proper dashboard navigation
     function setupEventListeners() {
     console.log('🔧 Setting up event listeners...');
@@ -843,10 +1591,7 @@
 
     headerSearchForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const query = headerSearchInput.value.trim();
-        if (query) {
-            window.location.href = `/Books?search=${encodeURIComponent(query)}`;
-        }
+        searchBooks(headerSearchInput.value);
     });
 
     // Slider navigation
@@ -857,9 +1602,30 @@
     });
 
     document.getElementById('slideRight').addEventListener('click', () => {
-        const totalSlides = Math.ceil(allPublishedBooks.length / 4);
+        const totalSlides = Math.ceil(allBooks.length / 4);
         if (currentSlide < totalSlides - 1) {
             goToSlide(currentSlide + 1);
+        }
+    });
+
+    // Modal close
+    const closeModal = document.getElementById('closeModal');
+    const modal = document.getElementById('bookModal');
+
+    closeModal.addEventListener('click', () => {
+        modal.classList.remove('active');
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+        }
+    });
+
+    // Keyboard events
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            modal.classList.remove('active');
         }
     });
 
@@ -947,8 +1713,6 @@
         console.log('🔗 Dashboard link onclick attribute added');
     });
 }, 1000);
-
 </script>
-
 </body>
 </html>

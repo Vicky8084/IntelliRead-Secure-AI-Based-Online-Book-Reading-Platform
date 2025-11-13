@@ -281,7 +281,7 @@
 
         .main {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(5, 1fr); /* ✅ CHANGE: 5 columns */
             gap: 25px;
         }
 
@@ -590,7 +590,7 @@
         /* ===== RESPONSIVE DESIGN ===== */
         @media (max-width: 1024px) {
             .main {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                grid-template-columns: repeat(4, 1fr); /* ✅ CHANGE: 4 columns for tablet */
                 gap: 20px;
             }
         }
@@ -627,6 +627,11 @@
                 width: 100%;
             }
 
+            .main {
+                grid-template-columns: repeat(3, 1fr); /* ✅ CHANGE: 3 columns for mobile */
+                gap: 15px;
+            }
+
             .main-footer {
                 padding: 15px 20px;
                 flex-direction: column;
@@ -645,12 +650,12 @@
             }
 
             .books-header h1 {
-                fontSize: 22px;
+                font-size: 22px;
             }
 
             .main {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-                gap: 15px;
+                grid-template-columns: repeat(2, 1fr); /* ✅ CHANGE: 2 columns for small mobile */
+                gap: 10px;
             }
 
             .book img {
@@ -703,10 +708,6 @@
     <div class="books-container">
         <div class="books-header">
             <h1>Discover Amazing Books</h1>
-<!--            <form id="searchForm" class="search-form">-->
-<!--                <input type="text" id="search" placeholder="Search books by title, author...">-->
-<!--                <button type="submit" id="search-btn"><i class='bx bx-search'></i></button>-->
-<!--            </form>-->
         </div>
 
         <!-- Loading Spinner -->
@@ -759,7 +760,7 @@
     let filteredBooks = [];
     let categories = [];
     let currentPage = 1;
-    const booksPerPage = 8;
+    const booksPerPage = 15; // ✅ CHANGE: 8 se 15
     let currentCategory = 'all';
     let currentSearchQuery = '';
 
