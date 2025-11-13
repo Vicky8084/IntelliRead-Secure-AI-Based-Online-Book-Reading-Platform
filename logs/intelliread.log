@@ -162618,3 +162618,2177 @@
             on u2_0.id=rl1_0.user_id 
     where
         b1_0.id=?
+2025-11-14 00:51:38 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-14 00:51:38 - Graceful shutdown complete
+2025-11-14 00:51:38 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-14 00:51:38 - HikariPool-1 - Shutdown initiated...
+2025-11-14 00:51:38 - HikariPool-1 - Shutdown completed.
+2025-11-14 00:51:40 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 30249 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-14 00:51:40 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-14 00:51:40 - No active profile set, falling back to 1 default profile: "default"
+2025-11-14 00:51:40 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-14 00:51:41 - Finished Spring Data repository scanning in 36 ms. Found 8 JPA repository interfaces.
+2025-11-14 00:51:41 - Tomcat initialized with port 8035 (http)
+2025-11-14 00:51:41 - Starting service [Tomcat]
+2025-11-14 00:51:41 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-14 00:51:41 - Initializing Spring embedded WebApplicationContext
+2025-11-14 00:51:41 - Root WebApplicationContext: initialization completed in 816 ms
+2025-11-14 00:51:41 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-14 00:51:41 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-14 00:51:41 - HHH000026: Second-level cache disabled
+2025-11-14 00:51:41 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-14 00:51:41 - HikariPool-1 - Starting...
+2025-11-14 00:51:41 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3ff8a3ad
+2025-11-14 00:51:41 - HikariPool-1 - Start completed.
+2025-11-14 00:51:41 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-14 00:51:41 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-14 00:51:41 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-14 00:51:42 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-14 00:51:42 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-14 00:51:42 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-14 00:51:42 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-14 00:51:43 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-14 00:51:46 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-14 00:51:46 - Started OnlineReadingPaltformApplication in 5.858 seconds (process running for 6.151)
+2025-11-14 00:51:46 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 00:51:46 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 00:51:46 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-14 00:51:46 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 00:51:46 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 00:51:46 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-14 00:51:46 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 00:51:46 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 00:51:46 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-14 00:51:46 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 00:51:46 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 00:51:46 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-14 00:51:46 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 00:51:46 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 00:51:46 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-14 00:51:46 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-14 00:51:51 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-14 00:51:51 - Initializing Servlet 'dispatcherServlet'
+2025-11-14 00:51:51 - Completed initialization in 2 ms
+2025-11-14 00:51:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0
+2025-11-14 00:51:52 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-14 00:51:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-14 00:51:52 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-14 00:51:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-14 00:51:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-14 00:51:52 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-14 00:51:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-14 00:51:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-14 00:51:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-14 00:51:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:52 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 00:51:54 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status,
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u2_0.id,
+        u2_0.created_date,
+        u2_0.email,
+        u2_0.name,
+        u2_0.password_hash,
+        u2_0.preferred_language,
+        u2_0.role,
+        u2_0.status 
+    from
+        book b1_0 
+    left join
+        category c1_0 
+            on c1_0.id=b1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=b1_0.user_id 
+    left join
+        review rl1_0 
+            on b1_0.id=rl1_0.book_id 
+    left join
+        users u2_0 
+            on u2_0.id=rl1_0.user_id 
+    where
+        b1_0.id=?
+2025-11-14 00:51:56 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status,
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u2_0.id,
+        u2_0.created_date,
+        u2_0.email,
+        u2_0.name,
+        u2_0.password_hash,
+        u2_0.preferred_language,
+        u2_0.role,
+        u2_0.status 
+    from
+        book b1_0 
+    left join
+        category c1_0 
+            on c1_0.id=b1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=b1_0.user_id 
+    left join
+        review rl1_0 
+            on b1_0.id=rl1_0.book_id 
+    left join
+        users u2_0 
+            on u2_0.id=rl1_0.user_id 
+    where
+        b1_0.id=?
+2025-11-14 00:52:47 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status,
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u2_0.id,
+        u2_0.created_date,
+        u2_0.email,
+        u2_0.name,
+        u2_0.password_hash,
+        u2_0.preferred_language,
+        u2_0.role,
+        u2_0.status 
+    from
+        book b1_0 
+    left join
+        category c1_0 
+            on c1_0.id=b1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=b1_0.user_id 
+    left join
+        review rl1_0 
+            on b1_0.id=rl1_0.book_id 
+    left join
+        users u2_0 
+            on u2_0.id=rl1_0.user_id 
+    where
+        b1_0.id=?
+2025-11-14 00:52:49 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status,
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u2_0.id,
+        u2_0.created_date,
+        u2_0.email,
+        u2_0.name,
+        u2_0.password_hash,
+        u2_0.preferred_language,
+        u2_0.role,
+        u2_0.status 
+    from
+        book b1_0 
+    left join
+        category c1_0 
+            on c1_0.id=b1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=b1_0.user_id 
+    left join
+        review rl1_0 
+            on b1_0.id=rl1_0.book_id 
+    left join
+        users u2_0 
+            on u2_0.id=rl1_0.user_id 
+    where
+        b1_0.id=?
+2025-11-14 01:00:29 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-14 01:00:29 - Graceful shutdown complete
+2025-11-14 01:00:29 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-14 01:00:29 - HikariPool-1 - Shutdown initiated...
+2025-11-14 01:00:29 - HikariPool-1 - Shutdown completed.
+2025-11-14 01:00:30 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 30359 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-14 01:00:30 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-14 01:00:30 - No active profile set, falling back to 1 default profile: "default"
+2025-11-14 01:00:30 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-14 01:00:30 - Finished Spring Data repository scanning in 45 ms. Found 8 JPA repository interfaces.
+2025-11-14 01:00:31 - Tomcat initialized with port 8035 (http)
+2025-11-14 01:00:31 - Starting service [Tomcat]
+2025-11-14 01:00:31 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-14 01:00:31 - Initializing Spring embedded WebApplicationContext
+2025-11-14 01:00:31 - Root WebApplicationContext: initialization completed in 839 ms
+2025-11-14 01:00:31 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-14 01:00:31 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-14 01:00:31 - HHH000026: Second-level cache disabled
+2025-11-14 01:00:31 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-14 01:00:31 - HikariPool-1 - Starting...
+2025-11-14 01:00:31 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1ba35152
+2025-11-14 01:00:31 - HikariPool-1 - Start completed.
+2025-11-14 01:00:31 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-14 01:00:31 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-14 01:00:31 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-14 01:00:32 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-14 01:00:32 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-14 01:00:32 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-14 01:00:32 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-14 01:00:32 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-14 01:00:36 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-14 01:00:36 - Started OnlineReadingPaltformApplication in 6.476 seconds (process running for 6.733)
+2025-11-14 01:00:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 01:00:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 01:00:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-14 01:00:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 01:00:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 01:00:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-14 01:00:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 01:00:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 01:00:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-14 01:00:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 01:00:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 01:00:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-14 01:00:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 01:00:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-14 01:00:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-14 01:00:37 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-14 01:00:40 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-14 01:00:40 - Initializing Servlet 'dispatcherServlet'
+2025-11-14 01:00:40 - Completed initialization in 5 ms
+2025-11-14 01:00:41 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0
+2025-11-14 01:00:41 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-14 01:00:41 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-14 01:00:41 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-14 01:00:41 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-14 01:00:41 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-14 01:00:41 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-14 01:00:41 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-14 01:00:41 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-14 01:00:41 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-14 01:00:41 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:41 - 
+    select
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        review rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    where
+        rl1_0.book_id=?
+2025-11-14 01:00:42 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status,
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u2_0.id,
+        u2_0.created_date,
+        u2_0.email,
+        u2_0.name,
+        u2_0.password_hash,
+        u2_0.preferred_language,
+        u2_0.role,
+        u2_0.status 
+    from
+        book b1_0 
+    left join
+        category c1_0 
+            on c1_0.id=b1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=b1_0.user_id 
+    left join
+        review rl1_0 
+            on b1_0.id=rl1_0.book_id 
+    left join
+        users u2_0 
+            on u2_0.id=rl1_0.user_id 
+    where
+        b1_0.id=?
+2025-11-14 01:00:44 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status,
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u2_0.id,
+        u2_0.created_date,
+        u2_0.email,
+        u2_0.name,
+        u2_0.password_hash,
+        u2_0.preferred_language,
+        u2_0.role,
+        u2_0.status 
+    from
+        book b1_0 
+    left join
+        category c1_0 
+            on c1_0.id=b1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=b1_0.user_id 
+    left join
+        review rl1_0 
+            on b1_0.id=rl1_0.book_id 
+    left join
+        users u2_0 
+            on u2_0.id=rl1_0.user_id 
+    where
+        b1_0.id=?
+2025-11-14 01:00:44 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status,
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u2_0.id,
+        u2_0.created_date,
+        u2_0.email,
+        u2_0.name,
+        u2_0.password_hash,
+        u2_0.preferred_language,
+        u2_0.role,
+        u2_0.status 
+    from
+        book b1_0 
+    left join
+        category c1_0 
+            on c1_0.id=b1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=b1_0.user_id 
+    left join
+        review rl1_0 
+            on b1_0.id=rl1_0.book_id 
+    left join
+        users u2_0 
+            on u2_0.id=rl1_0.user_id 
+    where
+        b1_0.id=?
+2025-11-14 01:00:44 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status,
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u2_0.id,
+        u2_0.created_date,
+        u2_0.email,
+        u2_0.name,
+        u2_0.password_hash,
+        u2_0.preferred_language,
+        u2_0.role,
+        u2_0.status 
+    from
+        book b1_0 
+    left join
+        category c1_0 
+            on c1_0.id=b1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=b1_0.user_id 
+    left join
+        review rl1_0 
+            on b1_0.id=rl1_0.book_id 
+    left join
+        users u2_0 
+            on u2_0.id=rl1_0.user_id 
+    where
+        b1_0.id=?
+2025-11-14 01:00:44 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status,
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u2_0.id,
+        u2_0.created_date,
+        u2_0.email,
+        u2_0.name,
+        u2_0.password_hash,
+        u2_0.preferred_language,
+        u2_0.role,
+        u2_0.status 
+    from
+        book b1_0 
+    left join
+        category c1_0 
+            on c1_0.id=b1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=b1_0.user_id 
+    left join
+        review rl1_0 
+            on b1_0.id=rl1_0.book_id 
+    left join
+        users u2_0 
+            on u2_0.id=rl1_0.user_id 
+    where
+        b1_0.id=?
+2025-11-14 01:01:44 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status,
+        rl1_0.book_id,
+        rl1_0.id,
+        rl1_0.created_at,
+        rl1_0.rating,
+        rl1_0.review_text,
+        u2_0.id,
+        u2_0.created_date,
+        u2_0.email,
+        u2_0.name,
+        u2_0.password_hash,
+        u2_0.preferred_language,
+        u2_0.role,
+        u2_0.status 
+    from
+        book b1_0 
+    left join
+        category c1_0 
+            on c1_0.id=b1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=b1_0.user_id 
+    left join
+        review rl1_0 
+            on b1_0.id=rl1_0.book_id 
+    left join
+        users u2_0 
+            on u2_0.id=rl1_0.user_id 
+    where
+        b1_0.id=?

@@ -84,12 +84,20 @@
         .pdf-frame-container {
             flex: 1;
             position: relative;
+            overflow-y: auto;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         #pdfFrame {
             width: 100%;
             height: 100%;
             border: none;
+            pointer-events: auto;
         }
 
         .pdf-controls {
@@ -98,13 +106,14 @@
             border-top: 1px solid #ddd;
             display: flex;
             justify-content: center;
-            gap: 15px;
+            align-items: center;
+            gap: 20px;
         }
 
         .page-nav {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
         }
 
         .nav-btn {
@@ -129,6 +138,33 @@
         .nav-btn:disabled {
             background: #ccc;
             cursor: not-allowed;
+        }
+
+        .page-info {
+            font-weight: 500;
+            color: #333;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .progress-container {
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
         }
 
         .ai-sidebar {
@@ -252,6 +288,12 @@
             padding: 15px;
             background: #f8f9fa;
             border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .stat-value {
@@ -264,6 +306,19 @@
         .stat-label {
             font-size: 0.85rem;
             color: #666;
+        }
+
+        .stat-trend {
+            font-size: 0.75rem;
+            margin-top: 5px;
+        }
+
+        .trend-up {
+            color: #28a745;
+        }
+
+        .trend-down {
+            color: #dc3545;
         }
 
         .loading {
@@ -319,43 +374,29 @@
             color: white;
         }
 
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .reader-container {
-                flex-direction: column;
-                height: auto;
-            }
-
-            .pdf-viewer {
-                height: 70vh;
-            }
-
-            .ai-sidebar {
-                height: auto;
-            }
+        /* Progress Notification */
+        .progress-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #28a745;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
         }
 
-        /* Custom PDF viewer styling to hide controls */
-        .pdf-viewer {
-            position: relative;
+        .progress-notification.show {
+            transform: translateX(0);
         }
 
-        /* Hide PDF toolbar and controls */
-        .pdf-viewer iframe {
-            pointer-events: auto;
-        }
-
-        /* Disable context menu on PDF */
-        .pdf-viewer iframe {
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -khtml-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        /* Custom scrollbar for PDF viewer */
+        /* Custom PDF viewer styling */
         .pdf-frame-container::-webkit-scrollbar {
             width: 8px;
         }
@@ -373,13 +414,91 @@
         .pdf-frame-container::-webkit-scrollbar-thumb:hover {
             background: #764ba2;
         }
+
+        /* PDF content styling */
+        .pdf-content {
+            padding: 40px;
+            line-height: 1.8;
+            font-family: 'Georgia', serif;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .pdf-content h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 15px;
+        }
+
+        .pdf-content h2 {
+            color: #34495e;
+            margin: 25px 0 15px 0;
+            font-size: 1.6rem;
+        }
+
+        .pdf-content p {
+            margin-bottom: 20px;
+            text-align: justify;
+            font-size: 1.1rem;
+        }
+
+        .pdf-content .page-number {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .reader-container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .pdf-viewer {
+                height: 70vh;
+            }
+
+            .ai-sidebar {
+                height: auto;
+            }
+
+            .pdf-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .pdf-content {
+                padding: 20px;
+            }
+
+            .pdf-content h1 {
+                font-size: 1.8rem;
+            }
+        }
     </style>
 </head>
 <body>
+<!-- Progress Notification -->
+<div class="progress-notification" id="progressNotification">
+    <i class='bx bx-check-circle' style="font-size: 1.5rem;"></i>
+    <div>
+        <strong>Progress Saved!</strong>
+        <div style="font-size: 0.85rem;" id="notificationMessage">Your reading progress has been updated</div>
+    </div>
+</div>
+
 <!-- Header -->
 <div class="reader-header">
     <div class="logo">Intelli-Read</div>
-    <div class="book-title" id="bookTitle">A Teacher's Lot</div>
+    <div class="book-title" id="bookTitle">Loading Book...</div>
 
     <!-- AI Status Indicator -->
     <div class="ai-status" id="aiStatus">
@@ -402,34 +521,29 @@
 <div class="reader-container">
     <!-- PDF Viewer -->
     <div class="pdf-viewer">
-        <div class="pdf-frame-container">
-            <!-- PDF will be displayed here -->
-            <div id="pdfContent" style="padding: 30px; height: 100%; overflow-y: auto; background: white; font-family: Arial, sans-serif;">
-                <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #667eea;">
-                    <h2 style="color: #333; margin-bottom: 10px;">A Teacher's Lot</h2>
-                    <h4 style="color: #666; margin-bottom: 20px;">by Unknown Author</h4>
-                </div>
-                <div style="line-height: 1.8; color: #444; font-size: 16px; white-space: pre-wrap; max-width: 800px; margin: 0 auto;">
-                    <p><strong>Which name was basically a 'Freezing Works Town,' and many of our school parents worked at the Mataura works so I thought it would be good to see where Daddy worked. All the class were bundled into cars and away we went. I actually thought we were going to see the secondary processes but that didn't happen. Our guide took us straight to the slaughtering area. A 'Judas' sheep with a metal collar ID had been trained to run up the chute and the other sheep would follow. Judas was let out a side door for a handful of sheep-nuts whilst the other poor creatures were tipped onto their backs and 'gaaawshhh!' (that's supposed to be a slashing noise) The demise of the cattle was a little more humane with a quick stun to the brain with a captive bolt pistol, before the cut and slash bit. If any ex-pupils read this, it may make you feel better to know I still occasionally have nightmares over the whole process.</strong></p>
-
-                    <p>I considered it my duty to play rugby for the local Wyndham team and did so accordingly. Before our first match the coach said to me, "When their first-five gets the ball I want you to hit him so hard that he doesn't get up for the rest of the game." I thought wearing ties in Cheviot was serious enough, but training to become an assassin was a bit over the top. After three games I was the recipient of a broken nose, (not bleeding, broken and bleeding) two games later I was carted off to hospital to have my ear sewn back on. Was Mike Tyson living in Edendale? With our second daughter now well on the way it was time to hang.</p>
-
-                    <p style="margin-top: 40px; text-align: center; color: #667eea; font-weight: bold;">12 / 45</p>
-                    <p style="text-align: center; color: #28a745; font-weight: bold;">100%</p>
-                </div>
-            </div>
+        <div class="pdf-frame-container" id="pdfContainer">
+            <iframe id="pdfFrame" width="100%" height="100%"></iframe>
         </div>
 
-        <!-- Simple page navigation (hidden as requested) -->
-        <div class="pdf-controls" style="display: none;">
+        <!-- Pagination Controls -->
+        <div class="pdf-controls">
             <div class="page-nav">
                 <button class="nav-btn" onclick="previousPage()" id="prevBtn">
                     <i class='bx bx-chevron-left'></i>
                 </button>
-                <span id="pageInfo">Page 12 of 45</span>
+                <span class="page-info" id="pageInfo">Page 1 of 1</span>
                 <button class="nav-btn" onclick="nextPage()" id="nextBtn">
                     <i class='bx bx-chevron-right'></i>
                 </button>
+            </div>
+
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                </div>
+                <div style="text-align: center; font-size: 0.8rem; color: #666; margin-top: 5px;">
+                    <span id="progressText">0% Complete</span>
+                </div>
             </div>
         </div>
     </div>
@@ -440,10 +554,10 @@
         <div class="ai-section">
             <h3><i class='bx bx-book'></i> Book Information</h3>
             <div id="bookInfo">
-                <p><strong>Author:</strong> Unknown Author</p>
-                <p><strong>Language:</strong> English</p>
-                <p><strong>Format:</strong> Text</p>
-                <p><strong>Description:</strong> A personal narrative about teaching experiences and life in a small town with freezing works.</p>
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    Loading book info...
+                </div>
             </div>
         </div>
 
@@ -451,9 +565,9 @@
         <div class="ai-section">
             <h3><i class='bx bx-brain'></i> AI Chapter Summary</h3>
             <div id="chapterSummary">
-                <div class="chapter-summary">
-                    <p>The author recounts two significant experiences from their teaching career. First, they organized a field trip for their class to visit the local freezing works where many parents worked. The visit took an unexpected turn when the guide took them directly to the slaughtering area, where they witnessed the process of sheep and cattle being slaughtered. The author notes they still have nightmares about this experience.</p>
-                    <p>Second, the author describes their brief rugby career with the local Wyndham team, where the coach encouraged aggressive play. After sustaining multiple injuries including a broken nose and a torn ear requiring hospital treatment, and with a second child on the way, the author decided to quit playing rugby.</p>
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    Generating AI summary...
                 </div>
             </div>
         </div>
@@ -462,12 +576,7 @@
         <div class="ai-section">
             <h3><i class='bx bx-star'></i> Key Points</h3>
             <ul class="key-points" id="keyPoints">
-                <li>Field trip to freezing works revealed unexpected slaughter process</li>
-                <li>Use of "Judas sheep" to lead other sheep to slaughter</li>
-                <li>Author still has nightmares about the experience</li>
-                <li>Brief rugby career with aggressive coaching style</li>
-                <li>Sustained serious injuries including broken nose and torn ear</li>
-                <li>Decision to quit rugby with second child on the way</li>
+                <li>Loading key points...</li>
             </ul>
         </div>
 
@@ -488,20 +597,47 @@
             <h3><i class='bx bx-stats'></i> Reading Analytics</h3>
             <div class="reading-stats" id="readingStats">
                 <div class="stat-item">
-                    <div class="stat-value" id="timeSpent">12m</div>
+                    <div class="stat-value" id="timeSpent">0m</div>
                     <div class="stat-label">Time Spent</div>
+                    <div class="stat-trend trend-up" id="timeTrend"></div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value" id="pagesRead">12</div>
+                    <div class="stat-value" id="pagesRead">0</div>
                     <div class="stat-label">Pages Read</div>
+                    <div class="stat-trend trend-up" id="pagesTrend"></div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value" id="readingSpeed">60</div>
+                    <div class="stat-value" id="readingSpeed">0</div>
                     <div class="stat-label">Pages/Hour</div>
+                    <div class="stat-trend trend-up" id="speedTrend"></div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value" id="completion">27%</div>
+                    <div class="stat-value" id="completion">0%</div>
                     <div class="stat-label">Completion</div>
+                    <div class="stat-trend trend-up" id="completionTrend"></div>
+                </div>
+            </div>
+
+            <!-- Additional Analytics -->
+            <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                <h4 style="margin-bottom: 10px; color: #333;">Session Summary</h4>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.9rem;">
+                    <div>
+                        <strong>Session Start:</strong>
+                        <span id="sessionStart">--:--</span>
+                    </div>
+                    <div>
+                        <strong>Current Streak:</strong>
+                        <span id="currentStreak">0 days</span>
+                    </div>
+                    <div>
+                        <strong>Words Read:</strong>
+                        <span id="wordsRead">0</span>
+                    </div>
+                    <div>
+                        <strong>Avg Focus:</strong>
+                        <span id="avgFocus">0%</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -511,10 +647,15 @@
 <script>
     const API_BASE_URL = 'http://localhost:8035';
     let currentBook = null;
-    let currentPage = 12;
-    let totalPages = 45;
+    let currentPage = 1;
+    let totalPages = 1;
     let startTime = new Date();
-    let pagesRead = 12;
+    let pagesRead = 0;
+    let totalReadingTime = 0;
+    let autoSaveInterval;
+    let sessionWordsRead = 0;
+    let readingStreak = 0;
+    let pdfDocument = null;
 
     // Initialize reader
     document.addEventListener('DOMContentLoaded', function() {
@@ -526,40 +667,49 @@
         const bookId = urlParams.get('bookId');
 
         if (!bookId) {
-            // Use mock data for demonstration
-            loadMockData();
+            alert('No book specified!');
             return;
         }
 
+        // Debug file paths
+        await debugFilePaths(bookId);
+
         // AI Health Check
         await checkAIHealth();
+
         await loadBookData(bookId);
         await loadAISummary(bookId);
         startReadingTimer();
+        startAutoSave();
+        updateSessionStartTime();
     }
 
-    // Load mock data for demonstration
-    function loadMockData() {
-        console.log("📚 Loading mock book data for demonstration");
+    // Debug function
+    async function debugFilePaths(bookId) {
+        try {
+            console.log("🔍 Starting file path debug for book ID:", bookId);
 
-        // Set book info
-        document.getElementById('bookTitle').textContent = "A Teacher's Lot";
-
-        // Set reading stats
-        document.getElementById('timeSpent').textContent = '12m';
-        document.getElementById('pagesRead').textContent = '12';
-        document.getElementById('readingSpeed').textContent = '60';
-        document.getElementById('completion').textContent = '27%';
-
-        // Start reading timer
-        startReadingTimer();
+            const response = await fetch(`${API_BASE_URL}/book/apies/findById/${bookId}`);
+            if (response.ok) {
+                const book = await response.json();
+                console.log("🔍 FILE PATH DEBUG:");
+                console.log("📁 File Path:", book.filePath);
+                console.log("📄 File Name:", book.fileName);
+                console.log("🔤 File Type:", book.fileType);
+                console.log("📖 Has Extracted Text:", book.extractedText ? 'Yes' : 'No');
+                console.log("📚 Book Title:", book.title);
+                console.log("👤 Book Author:", book.author);
+            }
+        } catch (error) {
+            console.error("❌ Debug error:", error);
+        }
     }
 
     async function loadBookData(bookId) {
         try {
             console.log("📚 Loading book data for ID: " + bookId);
 
-            // First get book info
+            // Get book info first
             const infoResponse = await fetch(`${API_BASE_URL}/reader/${bookId}/info`);
             if (!infoResponse.ok) {
                 throw new Error('Failed to load book info');
@@ -577,11 +727,11 @@
                 ${currentBook.description ? `<p><strong>Description:</strong> ${currentBook.description.substring(0, 150)}...</p>` : ''}
             `;
 
-            // Try to load content
-            await tryLoadContent(bookId);
+            // Load previous progress
+            await loadPreviousProgress(bookId);
 
-            // Set page info
-            updatePageInfo();
+            // Try to load PDF first, then fallback to text
+            await tryLoadPDF(bookId);
 
             console.log("✅ Book data loaded successfully");
 
@@ -595,19 +745,25 @@
         }
     }
 
-    // Try to load content
-    async function tryLoadContent(bookId) {
+    // Load previous reading progress
+    async function loadPreviousProgress(bookId) {
         try {
-            // For PDF files
-            if (currentBook.fileType && currentBook.fileType.toLowerCase() === 'pdf') {
-                await tryLoadPDF(bookId);
-            } else {
-                // For text files or other formats
-                await tryLoadTextContent(bookId);
+            const user = getCurrentUser();
+            if (!user) return;
+
+            const response = await fetch(`${API_BASE_URL}/progress/user/${user.id}/book/${bookId}`);
+            if (response.ok) {
+                const progress = await response.json();
+                if (progress.currentPage) {
+                    currentPage = progress.currentPage;
+                    totalPages = progress.totalPages;
+                    totalReadingTime = progress.readingTimeMinutes || 0;
+                    updatePageInfo();
+                    showNotification(`Resumed from page ${currentPage}`, 'info');
+                }
             }
         } catch (error) {
-            console.error("❌ Content loading failed:", error);
-            showTextContent("Unable to load book content. Please try again later.");
+            console.log('No previous progress found or error loading progress');
         }
     }
 
@@ -630,13 +786,14 @@
 
             const blobUrl = URL.createObjectURL(pdfBlob);
 
-            // Create a more controlled PDF viewer without toolbar
-            const pdfContainer = document.getElementById('pdfContent');
-            pdfContainer.innerHTML = `
-                <iframe src="${blobUrl}#toolbar=0&navpanes=0" width="100%" height="100%" style="border: none;"></iframe>
-            `;
+            // Load PDF with disabled toolbar and controls
+            document.getElementById('pdfFrame').src = blobUrl + '#toolbar=0&navpanes=0&scrollbar=0';
 
             console.log("✅ PDF loaded successfully via blob URL");
+
+            // Set total pages (you might need to get this from the PDF metadata)
+            totalPages = 45; // This should come from PDF metadata or book info
+            updatePageInfo();
 
         } catch (pdfError) {
             console.error("❌ PDF loading failed:", pdfError);
@@ -647,7 +804,7 @@
     // Try to load text content
     async function tryLoadTextContent(bookId) {
         try {
-            console.log("🔄 Loading text content...");
+            console.log("🔄 Falling back to text mode...");
             const textResponse = await fetch(`${API_BASE_URL}/reader/${bookId}?mode=text`);
 
             if (textResponse.ok) {
@@ -665,21 +822,25 @@
 
     // Show text content
     function showTextContent(content) {
-        const pdfContainer = document.getElementById('pdfContent');
+        const pdfContainer = document.getElementById('pdfContainer');
         pdfContainer.innerHTML = `
-            <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #667eea;">
-                <h2 style="color: #333; margin-bottom: 10px;">${currentBook ? currentBook.title : "A Teacher's Lot"}</h2>
-                <h4 style="color: #666; margin-bottom: 20px;">by ${currentBook ? currentBook.author : "Unknown Author"}</h4>
-            </div>
-            <div style="line-height: 1.8; color: #444; font-size: 16px; white-space: pre-wrap; max-width: 800px; margin: 0 auto;">
-                ${content || 'No text content available for this book.'}
+            <div class="pdf-content">
+                <h1>${currentBook.title}</h1>
+                <h4 style="text-align: center; color: #666; margin-bottom: 30px;">by ${currentBook.author}</h4>
+                <div style="line-height: 1.8; color: #444; white-space: pre-wrap;">
+                    ${content || 'No text content available for this book.'}
+                </div>
+                <div class="page-number">Page ${currentPage} of ${totalPages}</div>
             </div>
         `;
+
+        // Hide PDF controls since we're showing text
+        document.querySelector('.pdf-controls').style.display = 'none';
     }
 
     // Show error content
     function showErrorContent() {
-        const pdfContainer = document.getElementById('pdfContent');
+        const pdfContainer = document.getElementById('pdfContainer');
         pdfContainer.innerHTML = `
             <div style="padding: 50px; text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: white;">
                 <div style="font-size: 4rem; color: #ff6b6b; margin-bottom: 20px;">❌</div>
@@ -692,8 +853,244 @@
                 </button>
             </div>
         `;
+
+        document.querySelector('.pdf-controls').style.display = 'none';
     }
 
+    // Pagination functions
+    function previousPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            pagesRead++;
+            updatePageInfo();
+            updateAnalytics();
+
+            // For PDF, we need to handle page navigation differently
+            // This would require PDF.js integration for proper page navigation
+            autoSaveProgress();
+        }
+    }
+
+    function nextPage() {
+        if (currentPage < totalPages) {
+            currentPage++;
+            pagesRead++;
+            updatePageInfo();
+            updateAnalytics();
+
+            // Check if book completed
+            if (currentPage === totalPages) {
+                showNotification('Book completed! Congratulations!', 'success');
+                updateReadingStreak();
+            }
+
+            autoSaveProgress();
+        }
+    }
+
+    function updatePageInfo() {
+        document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
+        document.getElementById('prevBtn').disabled = currentPage <= 1;
+        document.getElementById('nextBtn').disabled = currentPage >= totalPages;
+
+        // Update progress
+        const completion = Math.round((currentPage / totalPages) * 100);
+        document.getElementById('progressText').textContent = `${completion}% Complete`;
+        document.getElementById('progressFill').style.width = `${completion}%`;
+        document.getElementById('completion').textContent = `${completion}%`;
+    }
+
+    // Update all analytics
+    function updateAnalytics() {
+        const now = new Date();
+        const minutes = Math.floor((now - startTime) / 60000);
+
+        // Update basic stats
+        document.getElementById('timeSpent').textContent = `${totalReadingTime + minutes}m`;
+        document.getElementById('pagesRead').textContent = currentPage;
+
+        // Calculate reading speed
+        if (minutes > 0) {
+            const pagesPerHour = Math.round((pagesRead / minutes) * 60);
+            document.getElementById('readingSpeed').textContent = pagesPerHour;
+        }
+
+        // Update session words (estimate ~250 words per page)
+        sessionWordsRead = currentPage * 250;
+        document.getElementById('wordsRead').textContent = sessionWordsRead.toLocaleString();
+
+        // Update trends (simulated)
+        updateTrends();
+    }
+
+    // Update trend indicators
+    function updateTrends() {
+        const trends = document.querySelectorAll('.stat-trend');
+        trends.forEach(trend => {
+            const randomChange = Math.random() > 0.3 ? '+' + Math.floor(Math.random() * 10) : '-' + Math.floor(Math.random() * 5);
+            trend.textContent = randomChange + ' from avg';
+            trend.className = 'stat-trend ' + (randomChange.startsWith('+') ? 'trend-up' : 'trend-down');
+        });
+    }
+
+    // Start auto-save interval
+    function startAutoSave() {
+        autoSaveInterval = setInterval(() => {
+            autoSaveProgress();
+        }, 30000); // Auto-save every 30 seconds
+    }
+
+    // Auto-save progress
+    function autoSaveProgress() {
+        const user = getCurrentUser();
+        if (!user) return;
+
+        // Update reading time
+        const now = new Date();
+        const additionalMinutes = Math.floor((now - startTime) / 60000);
+        totalReadingTime += additionalMinutes;
+        startTime = now;
+
+        saveProgressToServer(false); // Silent save
+    }
+
+    // Manual save progress
+    async function saveProgress() {
+        const result = await saveProgressToServer(true);
+        if (result) {
+            showNotification('Progress saved successfully!', 'success');
+        }
+    }
+
+    // Save progress to server
+    async function saveProgressToServer(showNotification = true) {
+        const user = getCurrentUser();
+        if (!user) {
+            if (showNotification) {
+                showNotification('Please log in to save your progress.', 'warning');
+            }
+            return false;
+        }
+
+        try {
+            const now = new Date();
+            const additionalMinutes = Math.floor((now - startTime) / 60000);
+            totalReadingTime += additionalMinutes;
+            startTime = now;
+
+            const response = await fetch(`${API_BASE_URL}/progress/update`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: user.id,
+                    bookId: getBookIdFromURL(),
+                    currentPage: currentPage,
+                    totalPages: totalPages,
+                    readingTimeMinutes: totalReadingTime
+                })
+            });
+
+            if (response.ok) {
+                console.log('✅ Progress saved successfully');
+                return true;
+            } else {
+                throw new Error('Failed to save progress');
+            }
+        } catch (error) {
+            console.error('Error saving progress:', error);
+            if (showNotification) {
+                showNotification('Error saving progress', 'error');
+            }
+            return false;
+        }
+    }
+
+    // Update reading streak
+    function updateReadingStreak() {
+        const lastReadDate = localStorage.getItem('lastReadDate');
+        const today = new Date().toDateString();
+
+        if (lastReadDate !== today) {
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+
+            if (lastReadDate === yesterday.toDateString()) {
+                readingStreak++;
+            } else {
+                readingStreak = 1;
+            }
+
+            localStorage.setItem('lastReadDate', today);
+            localStorage.setItem('readingStreak', readingStreak.toString());
+            document.getElementById('currentStreak').textContent = `${readingStreak} days`;
+        }
+    }
+
+    // Show notification
+    function showNotification(message, type = 'info') {
+        const notification = document.getElementById('progressNotification');
+        const messageElement = document.getElementById('notificationMessage');
+
+        // Set message and style based on type
+        messageElement.textContent = message;
+
+        if (type === 'success') {
+            notification.style.background = '#28a745';
+        } else if (type === 'error') {
+            notification.style.background = '#dc3545';
+        } else if (type === 'warning') {
+            notification.style.background = '#ffc107';
+            notification.style.color = '#856404';
+        } else {
+            notification.style.background = '#667eea';
+        }
+
+        // Show notification
+        notification.classList.add('show');
+
+        // Hide after 3 seconds
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+
+    // Update session start time
+    function updateSessionStartTime() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('sessionStart').textContent = timeString;
+
+        // Load reading streak
+        const savedStreak = localStorage.getItem('readingStreak');
+        if (savedStreak) {
+            readingStreak = parseInt(savedStreak);
+            document.getElementById('currentStreak').textContent = `${readingStreak} days`;
+        }
+
+        // Set average focus (simulated)
+        document.getElementById('avgFocus').textContent = '85%';
+    }
+
+    // Start reading timer
+    function startReadingTimer() {
+        setInterval(() => {
+            updateAnalytics();
+        }, 60000); // Update every minute
+    }
+
+    // Close reader
+    function closeReader() {
+        // Auto-save before closing
+        saveProgressToServer(false);
+
+        if (confirm('Are you sure you want to close the reader? Your progress has been saved.')) {
+            window.close();
+        }
+    }
+
+    // Existing functions for AI features
     async function loadAISummary(bookId) {
         try {
             const response = await fetch(`${API_BASE_URL}/ai/summary/book/${bookId}`);
@@ -717,31 +1114,16 @@
             }
         } catch (error) {
             console.error('Error loading AI summary:', error);
-            // Fallback to mock data
-            loadMockAIData();
+            // Fallback to loading state
+            document.getElementById('chapterSummary').innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    Failed to load AI summary
+                </div>
+            `;
         }
     }
 
-    // Mock data fallback
-    function loadMockAIData() {
-        document.getElementById('chapterSummary').innerHTML = `
-            <div class="chapter-summary">
-                <p>The author recounts two significant experiences from their teaching career. First, they organized a field trip for their class to visit the local freezing works where many parents worked. The visit took an unexpected turn when the guide took them directly to the slaughtering area, where they witnessed the process of sheep and cattle being slaughtered. The author notes they still have nightmares about this experience.</p>
-                <p>Second, the author describes their brief rugby career with the local Wyndham team, where the coach encouraged aggressive play. After sustaining multiple injuries including a broken nose and a torn ear requiring hospital treatment, and with a second child on the way, the author decided to quit playing rugby.</p>
-            </div>
-        `;
-
-        document.getElementById('keyPoints').innerHTML = `
-            <li>Field trip to freezing works revealed unexpected slaughter process</li>
-            <li>Use of "Judas sheep" to lead other sheep to slaughter</li>
-            <li>Author still has nightmares about the experience</li>
-            <li>Brief rugby career with aggressive coaching style</li>
-            <li>Sustained serious injuries including broken nose and torn ear</li>
-            <li>Decision to quit rugby with second child on the way</li>
-        `;
-    }
-
-    // AI Health Check
     async function checkAIHealth() {
         try {
             const response = await fetch(`${API_BASE_URL}/ai/health`);
@@ -818,87 +1200,6 @@
         }
     }
 
-    function updatePageInfo() {
-        document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
-        document.getElementById('prevBtn').disabled = currentPage <= 1;
-        document.getElementById('nextBtn').disabled = currentPage >= totalPages;
-
-        // Update completion percentage
-        const completion = Math.round((currentPage / totalPages) * 100);
-        document.getElementById('completion').textContent = `${completion}%`;
-        document.getElementById('pagesRead').textContent = currentPage;
-    }
-
-    function previousPage() {
-        if (currentPage > 1) {
-            currentPage--;
-            updatePageInfo();
-            pagesRead++;
-        }
-    }
-
-    function nextPage() {
-        if (currentPage < totalPages) {
-            currentPage++;
-            updatePageInfo();
-            pagesRead++;
-        }
-    }
-
-    function startReadingTimer() {
-        setInterval(() => {
-            const now = new Date();
-            const minutes = Math.floor((now - startTime) / 60000);
-            document.getElementById('timeSpent').textContent = `${minutes}m`;
-
-            // Calculate reading speed
-            if (minutes > 0) {
-                const pagesPerHour = Math.round((pagesRead / minutes) * 60);
-                document.getElementById('readingSpeed').textContent = pagesPerHour;
-            }
-        }, 60000); // Update every minute
-    }
-
-    async function saveProgress() {
-        const user = getCurrentUser();
-        if (!user) {
-            alert('Please log in to save your progress.');
-            return;
-        }
-
-        try {
-            const response = await fetch(`${API_BASE_URL}/progress/update`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    userId: user.id,
-                    bookId: getBookIdFromURL(),
-                    currentPage: currentPage,
-                    totalPages: totalPages,
-                    readingTimeMinutes: Math.floor((new Date() - startTime) / 60000)
-                })
-            });
-
-            if (response.ok) {
-                alert('Progress saved successfully!');
-            } else {
-                throw new Error('Failed to save progress');
-            }
-        } catch (error) {
-            console.error('Error saving progress:', error);
-            alert('Error saving progress');
-        }
-    }
-
-    function closeReader() {
-        if (confirm('Are you sure you want to close the reader? Your progress will be saved automatically.')) {
-            saveProgress();
-            window.close();
-        }
-    }
-
     function getBookIdFromURL() {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get('bookId');
@@ -917,6 +1218,24 @@
             return null;
         }
     }
+
+    // PDF frame error handling
+    document.getElementById('pdfFrame').addEventListener('load', function() {
+        console.log("✅ PDF frame loaded successfully");
+    });
+
+    document.getElementById('pdfFrame').addEventListener('error', function(e) {
+        console.error("❌ PDF frame loading error:", e);
+        // Auto fallback to text mode
+        const bookId = getBookIdFromURL();
+        tryLoadTextContent(bookId);
+    });
+
+    // Clean up on page unload
+    window.addEventListener('beforeunload', function() {
+        saveProgressToServer(false);
+        clearInterval(autoSaveInterval);
+    });
 </script>
 
 </body>
