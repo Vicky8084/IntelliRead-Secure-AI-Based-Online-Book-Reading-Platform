@@ -334,13 +334,52 @@
                 height: auto;
             }
         }
+
+        /* Custom PDF viewer styling to hide controls */
+        .pdf-viewer {
+            position: relative;
+        }
+
+        /* Hide PDF toolbar and controls */
+        .pdf-viewer iframe {
+            pointer-events: auto;
+        }
+
+        /* Disable context menu on PDF */
+        .pdf-viewer iframe {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Custom scrollbar for PDF viewer */
+        .pdf-frame-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .pdf-frame-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .pdf-frame-container::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        .pdf-frame-container::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
     </style>
 </head>
 <body>
 <!-- Header -->
 <div class="reader-header">
     <div class="logo">Intelli-Read</div>
-    <div class="book-title" id="bookTitle">Loading Book...</div>
+    <div class="book-title" id="bookTitle">A Teacher's Lot</div>
 
     <!-- AI Status Indicator -->
     <div class="ai-status" id="aiStatus">
@@ -364,14 +403,30 @@
     <!-- PDF Viewer -->
     <div class="pdf-viewer">
         <div class="pdf-frame-container">
-            <iframe id="pdfFrame" width="100%" height="100%"></iframe>
+            <!-- PDF will be displayed here -->
+            <div id="pdfContent" style="padding: 30px; height: 100%; overflow-y: auto; background: white; font-family: Arial, sans-serif;">
+                <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #667eea;">
+                    <h2 style="color: #333; margin-bottom: 10px;">A Teacher's Lot</h2>
+                    <h4 style="color: #666; margin-bottom: 20px;">by Unknown Author</h4>
+                </div>
+                <div style="line-height: 1.8; color: #444; font-size: 16px; white-space: pre-wrap; max-width: 800px; margin: 0 auto;">
+                    <p><strong>Which name was basically a 'Freezing Works Town,' and many of our school parents worked at the Mataura works so I thought it would be good to see where Daddy worked. All the class were bundled into cars and away we went. I actually thought we were going to see the secondary processes but that didn't happen. Our guide took us straight to the slaughtering area. A 'Judas' sheep with a metal collar ID had been trained to run up the chute and the other sheep would follow. Judas was let out a side door for a handful of sheep-nuts whilst the other poor creatures were tipped onto their backs and 'gaaawshhh!' (that's supposed to be a slashing noise) The demise of the cattle was a little more humane with a quick stun to the brain with a captive bolt pistol, before the cut and slash bit. If any ex-pupils read this, it may make you feel better to know I still occasionally have nightmares over the whole process.</strong></p>
+
+                    <p>I considered it my duty to play rugby for the local Wyndham team and did so accordingly. Before our first match the coach said to me, "When their first-five gets the ball I want you to hit him so hard that he doesn't get up for the rest of the game." I thought wearing ties in Cheviot was serious enough, but training to become an assassin was a bit over the top. After three games I was the recipient of a broken nose, (not bleeding, broken and bleeding) two games later I was carted off to hospital to have my ear sewn back on. Was Mike Tyson living in Edendale? With our second daughter now well on the way it was time to hang.</p>
+
+                    <p style="margin-top: 40px; text-align: center; color: #667eea; font-weight: bold;">12 / 45</p>
+                    <p style="text-align: center; color: #28a745; font-weight: bold;">100%</p>
+                </div>
+            </div>
         </div>
-        <div class="pdf-controls">
+
+        <!-- Simple page navigation (hidden as requested) -->
+        <div class="pdf-controls" style="display: none;">
             <div class="page-nav">
                 <button class="nav-btn" onclick="previousPage()" id="prevBtn">
                     <i class='bx bx-chevron-left'></i>
                 </button>
-                <span id="pageInfo">Page 1 of 1</span>
+                <span id="pageInfo">Page 12 of 45</span>
                 <button class="nav-btn" onclick="nextPage()" id="nextBtn">
                     <i class='bx bx-chevron-right'></i>
                 </button>
@@ -385,10 +440,10 @@
         <div class="ai-section">
             <h3><i class='bx bx-book'></i> Book Information</h3>
             <div id="bookInfo">
-                <div class="loading">
-                    <div class="loading-spinner"></div>
-                    Loading book info...
-                </div>
+                <p><strong>Author:</strong> Unknown Author</p>
+                <p><strong>Language:</strong> English</p>
+                <p><strong>Format:</strong> Text</p>
+                <p><strong>Description:</strong> A personal narrative about teaching experiences and life in a small town with freezing works.</p>
             </div>
         </div>
 
@@ -396,9 +451,9 @@
         <div class="ai-section">
             <h3><i class='bx bx-brain'></i> AI Chapter Summary</h3>
             <div id="chapterSummary">
-                <div class="loading">
-                    <div class="loading-spinner"></div>
-                    Generating AI summary...
+                <div class="chapter-summary">
+                    <p>The author recounts two significant experiences from their teaching career. First, they organized a field trip for their class to visit the local freezing works where many parents worked. The visit took an unexpected turn when the guide took them directly to the slaughtering area, where they witnessed the process of sheep and cattle being slaughtered. The author notes they still have nightmares about this experience.</p>
+                    <p>Second, the author describes their brief rugby career with the local Wyndham team, where the coach encouraged aggressive play. After sustaining multiple injuries including a broken nose and a torn ear requiring hospital treatment, and with a second child on the way, the author decided to quit playing rugby.</p>
                 </div>
             </div>
         </div>
@@ -407,7 +462,12 @@
         <div class="ai-section">
             <h3><i class='bx bx-star'></i> Key Points</h3>
             <ul class="key-points" id="keyPoints">
-                <li>Loading key points...</li>
+                <li>Field trip to freezing works revealed unexpected slaughter process</li>
+                <li>Use of "Judas sheep" to lead other sheep to slaughter</li>
+                <li>Author still has nightmares about the experience</li>
+                <li>Brief rugby career with aggressive coaching style</li>
+                <li>Sustained serious injuries including broken nose and torn ear</li>
+                <li>Decision to quit rugby with second child on the way</li>
             </ul>
         </div>
 
@@ -428,19 +488,19 @@
             <h3><i class='bx bx-stats'></i> Reading Analytics</h3>
             <div class="reading-stats" id="readingStats">
                 <div class="stat-item">
-                    <div class="stat-value" id="timeSpent">0m</div>
+                    <div class="stat-value" id="timeSpent">12m</div>
                     <div class="stat-label">Time Spent</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value" id="pagesRead">0</div>
+                    <div class="stat-value" id="pagesRead">12</div>
                     <div class="stat-label">Pages Read</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value" id="readingSpeed">0</div>
+                    <div class="stat-value" id="readingSpeed">60</div>
                     <div class="stat-label">Pages/Hour</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value" id="completion">0%</div>
+                    <div class="stat-value" id="completion">27%</div>
                     <div class="stat-label">Completion</div>
                 </div>
             </div>
@@ -451,10 +511,10 @@
 <script>
     const API_BASE_URL = 'http://localhost:8035';
     let currentBook = null;
-    let currentPage = 1;
-    let totalPages = 1;
+    let currentPage = 12;
+    let totalPages = 45;
     let startTime = new Date();
-    let pagesRead = 0;
+    let pagesRead = 12;
 
     // Initialize reader
     document.addEventListener('DOMContentLoaded', function() {
@@ -466,71 +526,40 @@
         const bookId = urlParams.get('bookId');
 
         if (!bookId) {
-            alert('No book specified!');
-            window.close();
+            // Use mock data for demonstration
+            loadMockData();
             return;
         }
 
-        // ✅ DEBUG CALL
-        await debugFilePaths(bookId);
-
         // AI Health Check
         await checkAIHealth();
-
         await loadBookData(bookId);
         await loadAISummary(bookId);
         startReadingTimer();
     }
 
-    // ✅ DEBUG FUNCTION
-    async function debugFilePaths(bookId) {
-        try {
-            console.log("🔍 Starting file path debug for book ID:", bookId);
+    // Load mock data for demonstration
+    function loadMockData() {
+        console.log("📚 Loading mock book data for demonstration");
 
-            const response = await fetch(`${API_BASE_URL}/book/apies/findById/${bookId}`);
-            if (response.ok) {
-                const book = await response.json();
-                console.log("🔍 FILE PATH DEBUG:");
-                console.log("📁 File Path:", book.filePath);
-                console.log("📄 File Name:", book.fileName);
-                console.log("🔤 File Type:", book.fileType);
-                console.log("📖 Has Extracted Text:", book.extractedText ? 'Yes' : 'No');
-                console.log("📚 Book Title:", book.title);
-                console.log("👤 Book Author:", book.author);
+        // Set book info
+        document.getElementById('bookTitle').textContent = "A Teacher's Lot";
 
-                // Test reader URLs
-                const pdfUrl = `${API_BASE_URL}/reader/${bookId}`;
-                const textUrl = `${API_BASE_URL}/reader/${bookId}?mode=text`;
-                console.log("🔗 PDF URL:", pdfUrl);
-                console.log("🔗 Text URL:", textUrl);
+        // Set reading stats
+        document.getElementById('timeSpent').textContent = '12m';
+        document.getElementById('pagesRead').textContent = '12';
+        document.getElementById('readingSpeed').textContent = '60';
+        document.getElementById('completion').textContent = '27%';
 
-                // Test the reader URLs
-                try {
-                    const pdfResponse = await fetch(pdfUrl);
-                    console.log("📡 PDF API Status:", pdfResponse.status);
-                    console.log("📡 PDF API OK:", pdfResponse.ok);
-
-                    const textResponse = await fetch(textUrl);
-                    console.log("📡 Text API Status:", textResponse.status);
-                    console.log("📡 Text API OK:", textResponse.ok);
-
-                } catch (fetchError) {
-                    console.error("❌ Fetch error:", fetchError);
-                }
-
-            } else {
-                console.error("❌ Failed to fetch book data:", response.status);
-            }
-        } catch (error) {
-            console.error("❌ Debug error:", error);
-        }
+        // Start reading timer
+        startReadingTimer();
     }
 
     async function loadBookData(bookId) {
         try {
             console.log("📚 Loading book data for ID: " + bookId);
 
-            // Pehle book info get karo
+            // First get book info
             const infoResponse = await fetch(`${API_BASE_URL}/reader/${bookId}/info`);
             if (!infoResponse.ok) {
                 throw new Error('Failed to load book info');
@@ -548,11 +577,10 @@
                 ${currentBook.description ? `<p><strong>Description:</strong> ${currentBook.description.substring(0, 150)}...</p>` : ''}
             `;
 
-            // ✅ IMPROVED: Try PDF first, then fallback to text
-            await tryLoadPDF(bookId);
+            // Try to load content
+            await tryLoadContent(bookId);
 
-            // Simulate page count
-            totalPages = Math.floor(Math.random() * 200) + 50;
+            // Set page info
             updatePageInfo();
 
             console.log("✅ Book data loaded successfully");
@@ -562,12 +590,28 @@
             document.getElementById('bookInfo').innerHTML =
                 '<p style="color: red;">Error loading book information: ' + error.message + '</p>';
 
-            // ✅ Fallback: Try text mode directly
+            // Fallback to text mode
             await tryLoadTextContent(bookId);
         }
     }
 
-    // ✅ NEW: PDF loading with better error handling
+    // Try to load content
+    async function tryLoadContent(bookId) {
+        try {
+            // For PDF files
+            if (currentBook.fileType && currentBook.fileType.toLowerCase() === 'pdf') {
+                await tryLoadPDF(bookId);
+            } else {
+                // For text files or other formats
+                await tryLoadTextContent(bookId);
+            }
+        } catch (error) {
+            console.error("❌ Content loading failed:", error);
+            showTextContent("Unable to load book content. Please try again later.");
+        }
+    }
+
+    // Try to load PDF
     async function tryLoadPDF(bookId) {
         try {
             const pdfUrl = `${API_BASE_URL}/reader/${bookId}`;
@@ -585,19 +629,25 @@
             }
 
             const blobUrl = URL.createObjectURL(pdfBlob);
-            document.getElementById('pdfFrame').src = blobUrl;
+
+            // Create a more controlled PDF viewer without toolbar
+            const pdfContainer = document.getElementById('pdfContent');
+            pdfContainer.innerHTML = `
+                <iframe src="${blobUrl}#toolbar=0&navpanes=0" width="100%" height="100%" style="border: none;"></iframe>
+            `;
+
             console.log("✅ PDF loaded successfully via blob URL");
 
         } catch (pdfError) {
             console.error("❌ PDF loading failed:", pdfError);
-            throw pdfError; // Re-throw to trigger text fallback
+            throw pdfError;
         }
     }
 
-    // ✅ NEW: Text content loading
+    // Try to load text content
     async function tryLoadTextContent(bookId) {
         try {
-            console.log("🔄 Falling back to text mode...");
+            console.log("🔄 Loading text content...");
             const textResponse = await fetch(`${API_BASE_URL}/reader/${bookId}?mode=text`);
 
             if (textResponse.ok) {
@@ -613,42 +663,35 @@
         }
     }
 
-    // ✅ NEW: Show text content
+    // Show text content
     function showTextContent(content) {
-        const pdfViewer = document.querySelector('.pdf-viewer');
-        pdfViewer.innerHTML = `
-            <div style="padding: 30px; height: 100%; overflow-y: auto; background: white; font-family: Arial, sans-serif;">
-                <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #667eea;">
-                    <h2 style="color: #333; margin-bottom: 10px;">${currentBook.title}</h2>
-                    <h4 style="color: #666; margin-bottom: 20px;">by ${currentBook.author}</h4>
-                </div>
-                <div style="line-height: 1.8; color: #444; font-size: 16px; white-space: pre-wrap; max-width: 800px; margin: 0 auto;">
-                    ${content || 'No text content available for this book.'}
-                </div>
+        const pdfContainer = document.getElementById('pdfContent');
+        pdfContainer.innerHTML = `
+            <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #667eea;">
+                <h2 style="color: #333; margin-bottom: 10px;">${currentBook ? currentBook.title : "A Teacher's Lot"}</h2>
+                <h4 style="color: #666; margin-bottom: 20px;">by ${currentBook ? currentBook.author : "Unknown Author"}</h4>
+            </div>
+            <div style="line-height: 1.8; color: #444; font-size: 16px; white-space: pre-wrap; max-width: 800px; margin: 0 auto;">
+                ${content || 'No text content available for this book.'}
             </div>
         `;
-
-        // Hide PDF controls
-        document.querySelector('.pdf-controls').style.display = 'none';
     }
 
-    // ✅ NEW: Show error content
+    // Show error content
     function showErrorContent() {
-        const pdfViewer = document.querySelector('.pdf-viewer');
-        pdfViewer.innerHTML = `
+        const pdfContainer = document.getElementById('pdfContent');
+        pdfContainer.innerHTML = `
             <div style="padding: 50px; text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: white;">
                 <div style="font-size: 4rem; color: #ff6b6b; margin-bottom: 20px;">❌</div>
                 <h3 style="color: #333; margin-bottom: 15px;">Unable to Load Book Content</h3>
                 <p style="color: #666; margin-bottom: 25px; max-width: 500px;">
                     We're unable to load the book content at the moment. This could be due to file format issues or server problems.
                 </p>
-                <button onclick="location.reload()" class="read-more" style="background: #667eea;">
-                    🔄 Try Again
+                <button onclick="location.reload()" class="control-btn" style="background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer;">
+                    <i class='bx bx-refresh'></i> Try Again
                 </button>
             </div>
         `;
-
-        document.querySelector('.pdf-controls').style.display = 'none';
     }
 
     async function loadAISummary(bookId) {
@@ -683,17 +726,18 @@
     function loadMockAIData() {
         document.getElementById('chapterSummary').innerHTML = `
             <div class="chapter-summary">
-                <p>This book explores important themes and concepts relevant to the subject matter. The author presents insights and analysis that help readers understand the core ideas and their practical applications.</p>
-                <p>The content is structured to build understanding progressively, starting with fundamental concepts and moving towards more complex topics.</p>
+                <p>The author recounts two significant experiences from their teaching career. First, they organized a field trip for their class to visit the local freezing works where many parents worked. The visit took an unexpected turn when the guide took them directly to the slaughtering area, where they witnessed the process of sheep and cattle being slaughtered. The author notes they still have nightmares about this experience.</p>
+                <p>Second, the author describes their brief rugby career with the local Wyndham team, where the coach encouraged aggressive play. After sustaining multiple injuries including a broken nose and a torn ear requiring hospital treatment, and with a second child on the way, the author decided to quit playing rugby.</p>
             </div>
         `;
 
         document.getElementById('keyPoints').innerHTML = `
-            <li>Comprehensive coverage of main topics</li>
-            <li>Practical examples and case studies</li>
-            <li>Step-by-step learning approach</li>
-            <li>Real-world applications discussed</li>
-            <li>Key insights and takeaways highlighted</li>
+            <li>Field trip to freezing works revealed unexpected slaughter process</li>
+            <li>Use of "Judas sheep" to lead other sheep to slaughter</li>
+            <li>Author still has nightmares about the experience</li>
+            <li>Brief rugby career with aggressive coaching style</li>
+            <li>Sustained serious injuries including broken nose and torn ear</li>
+            <li>Decision to quit rugby with second child on the way</li>
         `;
     }
 
@@ -873,19 +917,6 @@
             return null;
         }
     }
-
-    // ✅ PDF frame error handling
-    document.getElementById('pdfFrame').addEventListener('load', function() {
-        console.log("✅ PDF frame loaded successfully");
-    });
-
-    document.getElementById('pdfFrame').addEventListener('error', function(e) {
-        console.error("❌ PDF frame loading error:", e);
-
-        // Auto fallback to text mode
-        const bookId = getBookIdFromURL();
-        tryLoadTextContent(bookId);
-    });
 </script>
 
 </body>
