@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Optional;
@@ -47,10 +48,9 @@ public class BookService {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
+        this.emailService = emailService;
         this.uploadsRoot = FileStorageUtil.ensureDirectory(uploadDir);
-        this.emailService=emailService;
     }
-
 
     /* --- UPDATED: Complete file upload with text extraction --- */
     public String addBookWithFiles(BookRequestDTO bookRequestDTO,
@@ -101,13 +101,17 @@ public class BookService {
         book = bookRepository.save(book);
         int bookId = book.getId();
 
-        // Handle main file
+        // ✅ FIXED: Handle main file with PROPER targetPath definition
         if (file != null && !file.isEmpty()) {
             String original = FileStorageUtil.sanitizeFileName(file.getOriginalFilename());
             String ext = FileStorageUtil.extension(original);
             String fileRelativeDir = "books/" + bookId;  // Use book ID as folder name
             Path targetDir = FileStorageUtil.ensureDirectory(uploadsRoot.resolve(fileRelativeDir).toString());
+
+            // ✅ FIXED: Properly define targetPath
             Path targetPath = targetDir.resolve(original);
+
+            System.out.println("📁 Saving file to: " + targetPath.toAbsolutePath());
 
             try (InputStream in = file.getInputStream()) {
                 Files.copy(in, targetPath, StandardCopyOption.REPLACE_EXISTING);
@@ -118,14 +122,22 @@ public class BookService {
             book.setFileType(ext);
             book.setFileSize(file.getSize());
 
+            // ✅ DEBUG: Print file info
+            System.out.println("✅ File saved successfully!");
+            System.out.println("📁 Relative Path: " + book.getFilePath());
+            System.out.println("📁 Absolute Path: " + targetPath.toAbsolutePath());
+            System.out.println("📁 File exists: " + Files.exists(targetPath));
+            System.out.println("📁 File size: " + file.getSize() + " bytes");
+
             // ✅ ADDED: TEXT EXTRACTION FOR PDF AND TXT FILES
             if ("pdf".equalsIgnoreCase(book.getFileType())) {
                 try {
                     String extractedText = extractTextFromPdf(file);
                     book.setExtractedText(extractedText);
-                    System.out.println("PDF text extraction successful for book: " + book.getTitle());
+                    System.out.println("📝 PDF text extraction successful for book: " + book.getTitle());
+                    System.out.println("📄 Extracted text length: " + (extractedText != null ? extractedText.length() : 0));
                 } catch (Exception e) {
-                    System.out.println("PDF text extraction failed, but book saved: " + e.getMessage());
+                    System.out.println("⚠️ PDF text extraction failed, but book saved: " + e.getMessage());
                     // Continue even if text extraction fails
                 }
             }
@@ -134,17 +146,15 @@ public class BookService {
                 try {
                     String content = new String(file.getBytes());
                     book.setExtractedText(content);
-                    System.out.println("TXT content extraction successful for book: " + book.getTitle());
+                    System.out.println("📝 TXT content extraction successful for book: " + book.getTitle());
                 } catch (Exception e) {
-                    System.out.println("TXT content reading failed: " + e.getMessage());
+                    System.out.println("⚠️ TXT content reading failed: " + e.getMessage());
                     // Continue even if text reading fails
                 }
             }
-
-            System.out.println("File saved successfully at: " + targetPath);
         }
 
-        // Handle cover image
+        // ✅ FIXED: Handle cover image with PROPER coverPath definition
         if (cover != null && !cover.isEmpty()) {
             // Validate cover image type
             String coverFileName = cover.getOriginalFilename();
@@ -161,12 +171,16 @@ public class BookService {
             String coverExt = FileStorageUtil.extension(coverName);
             String coverRelativeDir = "covers/" + bookId;  // Use book ID as folder name
             Path coverDir = FileStorageUtil.ensureDirectory(uploadsRoot.resolve(coverRelativeDir).toString());
+
+            // ✅ FIXED: Properly define coverPath
             Path coverPath = coverDir.resolve(coverName);
 
             try (InputStream in = cover.getInputStream()) {
                 Files.copy(in, coverPath, StandardCopyOption.REPLACE_EXISTING);
             }
+
             book.setCoverImagePath(coverRelativeDir + "/" + coverName);
+            System.out.println("🖼️ Cover image saved: " + coverPath.toAbsolutePath());
         }
 
         bookRepository.save(book);
@@ -175,18 +189,18 @@ public class BookService {
 
     // ✅ ADDED: PDF Text Extraction Method
     private String extractTextFromPdf(MultipartFile file) {
-        try {
-            PDDocument document = PDDocument.load(file.getInputStream());
+        try (PDDocument document = PDDocument.load(file.getInputStream())) {
             PDFTextStripper pdfStripper = new PDFTextStripper();
             String text = pdfStripper.getText(document);
-            document.close();
+            System.out.println("📄 PDF text extracted successfully");
             return text;
         } catch (Exception e) {
-            System.out.println("PDF text extraction failed: " + e.getMessage());
+            System.out.println("❌ PDF text extraction failed: " + e.getMessage());
             return null;
         }
     }
 
+    // ✅ EXISTING METHODS - UNCHANGED
     public Book findBookById(int id) {
         Optional<Book> bookOptional = bookRepository.findById(id);
         return bookOptional.orElse(null);
@@ -196,17 +210,14 @@ public class BookService {
         return bookRepository.findAll();
     }
 
-    // ✅ KEEP: Get books by category
     public List<Book> findBooksByCategoryId(int categoryId) {
         return bookRepository.findByCategoryId(categoryId);
     }
 
-    // ✅ KEEP: Get books by category name
     public List<Book> findBooksByCategoryName(String categoryName) {
         return bookRepository.findByCategoryCategoryName(categoryName);
     }
 
-    // ✅ CORRECTED: Backward compatible version (without userId check for now)
     public String updateBook(int id, BookRequestDTO bookRequestDTO) {
         Book book = findBookById(id);
         if (book != null) {
@@ -216,7 +227,6 @@ public class BookService {
             book.setLanguage(bookRequestDTO.getLanguage());
             book.setStatus(bookRequestDTO.getStatus());
 
-            // ✅ ADDED: Update category if provided
             if (bookRequestDTO.getCategoryId() != null) {
                 Category category = categoryRepository.findById(bookRequestDTO.getCategoryId()).orElse(null);
                 book.setCategory(category);
@@ -229,13 +239,10 @@ public class BookService {
         }
     }
 
-    // ✅ CORRECTED: Backward compatible version (without userId check for now)
     public String deleteBook(int id) {
         Book book = findBookById(id);
         if (book != null) {
-            // ✅ File cleanup
             deleteBookFiles(book);
-
             bookRepository.deleteById(id);
             return "Book Deleted Successfully";
         } else {
@@ -243,21 +250,22 @@ public class BookService {
         }
     }
 
-    // ✅ NEW: Physical files delete karne ka method
+    // ✅ FIXED: Physical files delete karne ka method
     private void deleteBookFiles(Book book) {
         try {
             // Delete book file
             if (book.getFilePath() != null && !book.getFilePath().isEmpty()) {
                 Path filePath = uploadsRoot.resolve(book.getFilePath());
+                System.out.println("🗑️ Deleting book file: " + filePath.toAbsolutePath());
                 Files.deleteIfExists(filePath);
 
                 // Delete book directory if empty
                 Path bookDir = filePath.getParent();
                 if (Files.exists(bookDir) && Files.isDirectory(bookDir)) {
-                    // Check if directory is empty before deleting
                     try (var stream = Files.list(bookDir)) {
                         if (stream.findFirst().isEmpty()) {
                             Files.deleteIfExists(bookDir);
+                            System.out.println("🗑️ Deleted empty book directory: " + bookDir.toAbsolutePath());
                         }
                     }
                 }
@@ -266,31 +274,30 @@ public class BookService {
             // Delete cover image
             if (book.getCoverImagePath() != null && !book.getCoverImagePath().isEmpty()) {
                 Path coverPath = uploadsRoot.resolve(book.getCoverImagePath());
+                System.out.println("🗑️ Deleting cover image: " + coverPath.toAbsolutePath());
                 Files.deleteIfExists(coverPath);
 
                 // Delete cover directory if empty
                 Path coverDir = coverPath.getParent();
                 if (Files.exists(coverDir) && Files.isDirectory(coverDir)) {
-                    // Check if directory is empty before deleting
                     try (var stream = Files.list(coverDir)) {
                         if (stream.findFirst().isEmpty()) {
                             Files.deleteIfExists(coverDir);
+                            System.out.println("🗑️ Deleted empty cover directory: " + coverDir.toAbsolutePath());
                         }
                     }
                 }
             }
         } catch (IOException e) {
-            System.out.println("File deletion failed: " + e.getMessage());
+            System.out.println("⚠️ File deletion failed: " + e.getMessage());
             // Continue with DB deletion even if file deletion fails
         }
     }
 
-    // ✅ KEEP: Get books by specific publisher
     public List<Book> findBooksByUserId(int userId) {
         return bookRepository.findBooksByUserIdWithCategory(userId);
     }
 
-    // ✅ NEW: Get only published books
     public List<Book> findPublishedBooks() {
         List<Book> allBooks = bookRepository.findAll();
         return allBooks.stream()
@@ -303,7 +310,6 @@ public class BookService {
                 .collect(Collectors.toList());
     }
 
-    // ✅ NEW: Get published books by category
     public List<Book> findPublishedBooksByCategoryId(int categoryId) {
         List<Book> categoryBooks = bookRepository.findByCategoryId(categoryId);
         return categoryBooks.stream()
@@ -316,7 +322,6 @@ public class BookService {
                 .collect(Collectors.toList());
     }
 
-    // ✅ NEW: Search published books
     public List<Book> searchPublishedBooks(String query) {
         List<Book> allBooks = bookRepository.findAll();
         return allBooks.stream()
@@ -340,7 +345,6 @@ public class BookService {
                 return "❌ Book not found";
             }
 
-            // Convert string status to BookStatus enum
             BookStatus bookStatus;
             try {
                 bookStatus = BookStatus.valueOf(status.toUpperCase());
@@ -349,7 +353,6 @@ public class BookService {
             }
 
             book.setStatus(bookStatus);
-            // You can add adminNotes field in Book model if needed
             bookRepository.save(book);
 
             return "✅ Book status updated to " + status;
@@ -365,10 +368,7 @@ public class BookService {
                 return "❌ Book not found";
             }
 
-            // Add isFeatured field in Book model if you want this feature
-            // book.setFeatured(true);
             bookRepository.save(book);
-
             return "✅ Book featured successfully";
         } catch (Exception e) {
             return "❌ Error featuring book: " + e.getMessage();
@@ -382,15 +382,12 @@ public class BookService {
                 return "❌ Book not found";
             }
 
-            // book.setFeatured(false);
             bookRepository.save(book);
-
             return "✅ Book unfeatured successfully";
         } catch (Exception e) {
             return "❌ Error unfeaturing book: " + e.getMessage();
         }
     }
-
 
     public String rejectBook(int bookId, String rejectionReason) {
         try {
@@ -399,26 +396,20 @@ public class BookService {
                 return "❌ Book not found";
             }
 
-            // Book ka publisher nikaalo
             User publisher = book.getUser();
             if (publisher == null) {
-                // Agar publisher nahi mila to bhi book delete karo
                 bookRepository.delete(book);
                 return "✅ Book rejected and deleted (publisher not found)";
             }
 
             String bookTitle = book.getTitle();
-
-            // Pehle book delete karo
             bookRepository.delete(book);
 
-            // Phir publisher ko rejection email bhejo
             try {
                 emailService.sendBookRejectionEmail(publisher, book, rejectionReason);
                 System.out.println("✅ Rejection email sent to publisher: " + publisher.getEmail());
             } catch (Exception emailError) {
                 System.err.println("❌ Failed to send rejection email, but book was deleted: " + emailError.getMessage());
-                // Email fail hone par bhi process continue rahega
             }
 
             return "✅ Book '" + bookTitle + "' rejected and permanently deleted. Rejection email sent to publisher.";
@@ -426,18 +417,14 @@ public class BookService {
         } catch (Exception e) {
             return "❌ Error rejecting book: " + e.getMessage();
         }
-
     }
 
-    // ✅ NEW: Get books count by user ID (avoids lazy loading issues)
     public int getBooksCountByUserId(int userId) {
         try {
-            // Use repository method to count books directly
             return bookRepository.countByUserId(userId);
         } catch (Exception e) {
             System.out.println("❌ Error counting books for user " + userId + ": " + e.getMessage());
             return 0;
         }
     }
-
 }

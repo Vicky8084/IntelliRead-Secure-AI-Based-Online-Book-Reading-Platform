@@ -53,12 +53,11 @@ public class SecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
-                // ✅ CRITICAL CHANGE: STATELESS se ALWAYS mein change karo
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS) // ✅ YEH CHANGE KARO
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 )
                 .authorizeHttpRequests(authz -> authz
-                        // ✅ Public endpoints
+                        // ✅ PUBLIC ENDPOINTS - READER KO BHI ADD KARO
                         .requestMatchers(
                                 "/",
                                 "/Home",
@@ -74,9 +73,15 @@ public class SecurityConfig {
                                 "/css/**",
                                 "/js/**",
                                 "/images/**",
-                                "/uploads/**"
+                                "/uploads/**",
+                                "/book-reader",
+                                "/book-reader.html",
+                                "/reader/**",           // ✅ READER ENDPOINTS
+                                "/book/apies/**",       // ✅ BOOK APIs
+                                "/ai/**",               // ✅ AI ENDPOINTS
+                                "/category/**"          // ✅ CATEGORY ENDPOINTS
                         ).permitAll()
-                        // ✅ Baaki sab ko permit do testing ke liye
+                        // ✅ TEMPORARY: Sabko allow karo testing ke liye
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

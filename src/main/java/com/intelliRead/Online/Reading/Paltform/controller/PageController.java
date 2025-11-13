@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
 import java.util.List;
@@ -278,5 +279,38 @@ public class PageController {
         }
 
         return ResponseEntity.ok(sessionInfo);
+    }
+
+    // ✅ Book Reader Page - Custom PDF Reader with AI
+    @GetMapping("/book-reader")
+    public String bookReaderPage(@RequestParam("bookId") int bookId,
+                                 HttpServletRequest request,
+                                 Model model) {
+        System.out.println("📖 Book Reader accessed for book ID: " + bookId);
+
+        // Check session
+        Boolean isLoggedIn = (Boolean) request.getSession().getAttribute("isLoggedIn");
+        String userEmail = (String) request.getSession().getAttribute("userEmail");
+
+        if (isLoggedIn == null || userEmail == null) {
+            System.out.println("⚠️ No session found for book reader");
+            model.addAttribute("warning", "Please login first for full functionality");
+        }
+
+        // Get user data
+        if (userEmail != null) {
+            Optional<User> userOptional = userRepository.findUserByEmail(userEmail);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                model.addAttribute("user", user);
+                System.out.println("✅ User data added to model: " + user.getName());
+            }
+        }
+
+        // Add bookId to model
+        model.addAttribute("bookId", bookId);
+        System.out.println("✅ Book ID added to model: " + bookId);
+
+        return "book-reader"; // This will return book-reader.html from templates folder
     }
 }

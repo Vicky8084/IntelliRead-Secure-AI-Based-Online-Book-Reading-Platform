@@ -611,6 +611,8 @@
             margin-top: 20px;
             transition: all 0.3s ease;
             font-weight: 500;
+            border: none;
+            cursor: pointer;
         }
 
         .read-more:hover {
@@ -795,6 +797,43 @@
             border-top: 5px solid #667eea;
             border-radius: 50%;
             animation: spin 1s linear infinite;
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+            max-width: 300px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .notification.success {
+            background: #28a745;
+        }
+
+        .notification.error {
+            background: #dc3545;
+        }
+
+        .notification.info {
+            background: #17a2b8;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
         }
 
         /* ===== RESPONSIVE DESIGN ===== */
@@ -1351,7 +1390,7 @@
     }
 
     // ===== SHOW BOOK MODAL =====
-    function showBookModal(book) {
+    async function showBookModal(book) {
         const modal = document.getElementById('bookModal');
         const modalBody = document.getElementById('modalBody');
 
@@ -1361,6 +1400,9 @@
 
         const categoryName = book.category ?
             book.category.categoryName : 'Uncategorized';
+
+        // Check if book is already in reading list
+        const isInReadingList = await checkBookInReadingList(book.id);
 
         modalBody.innerHTML = `
             <img src="${coverUrl}" alt="${book.title}" class="modal-cover"
@@ -1374,19 +1416,101 @@
                 ${book.description ? `<p><strong>Description:</strong> ${book.description}</p>` : ''}
                 ${book.uploadedAt ? `<p><strong>Added:</strong> ${new Date(book.uploadedAt).toLocaleDateString()}</p>` : ''}
 
-<div style="margin-top: 20px;">
-    <a href="/login" class="read-more">
-        📖 Read This Book
-    </a>
-    <a href="/login" class="read-more" style="margin-left: 10px;">
-        ➕ Add to Reading List
-    </a>
-</div>
-
+                <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button onclick="openBookReader(${book.id})" class="read-more">
+                        📖 Read This Book
+                    </button>
+                    <button onclick="addToReadingList(${book.id})"
+                            class="read-more"
+                            style="background: ${isInReadingList ? '#28a745' : '#6c757d'};"
+                            id="readingListBtn${book.id}">
+                        ${isInReadingList ? '✓ In Reading List' : '+ Add to Reading List'}
+                    </button>
+                </div>
             </div>
         `;
 
         modal.classList.add('active');
+    }
+
+    // ===== READING LIST FUNCTIONS =====
+    async function addToReadingList(bookId) {
+        try {
+            const user = getCurrentUser();
+            if (!user) {
+                showNotification('Please login to add books to reading list', 'error');
+                window.location.href = '/Login';
+                return;
+            }
+
+            const response = await fetch(`${API_BASE_URL}/reading/add`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: user.id,
+                    bookId: bookId
+                })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                showNotification('✅ Book added to reading list!', 'success');
+                // Update button text
+                const button = document.getElementById(`readingListBtn${bookId}`);
+                if (button) {
+                    button.textContent = '✓ In Reading List';
+                    button.style.background = '#28a745';
+                }
+            } else {
+                showNotification(result.error || 'Failed to add to reading list', 'error');
+            }
+        } catch (error) {
+            console.error('Error adding to reading list:', error);
+            showNotification('Error adding to reading list', 'error');
+        }
+    }
+
+    async function checkBookInReadingList(bookId) {
+        try {
+            const user = getCurrentUser();
+            if (!user) return false;
+
+            const response = await fetch(`${API_BASE_URL}/reading/check?userId=${user.id}&bookId=${bookId}`);
+            const result = await response.json();
+
+            return result.inReadingList || false;
+        } catch (error) {
+            console.error('Error checking reading list:', error);
+            return false;
+        }
+    }
+
+    // ===== BOOK READING FUNCTIONS =====
+    function openBookReader(bookId) {
+        const readerUrl = `/book-reader?bookId=${bookId}`;
+        window.open(readerUrl, '_blank', 'width=1400,height=800,resizable=yes,scrollbars=yes');
+    }
+
+    // ===== NOTIFICATION FUNCTION =====
+    function showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
     }
 
     // ===== PAGINATION =====
@@ -1576,7 +1700,7 @@
 
     } else {
         console.log('❌ User not authenticated, redirecting to login...');
-        alert('Please login to access your dashboard');
+        showNotification('Please login to access your dashboard', 'error');
         window.location.href = '/Login';
     }
 }
@@ -1694,7 +1818,10 @@
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('user');
     localStorage.removeItem('jwtToken');
-    window.location.href = '/Login';
+    showNotification('Logged out successfully', 'info');
+    setTimeout(() => {
+        window.location.href = '/Login';
+    }, 1000);
 }
 
     // ✅ NEW: Emergency dashboard navigation (manual trigger)
