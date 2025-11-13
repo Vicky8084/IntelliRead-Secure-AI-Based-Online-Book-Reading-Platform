@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelli-Read - User Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4bb543;
+            --warning: #ffcc00;
+            --danger: #dc3545;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Chakra Petch", sans-serif;
+            text-decoration: none;
+            list-style: none;
+        }
+
+        /* ===== BODY ===== */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+            overflow-y: auto;
+            padding-bottom: 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* Blurred background image + overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url(https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2053&q=80);
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px) brightness(0.9);
+            z-index: -2;
+            transform: scale(1.05);
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.4) 0%, rgba(118, 75, 162, 0.4) 100%);
+            z-index: -1;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 60px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: linear-gradient(135deg, rgba(235,198,129,0.95) 0%, rgba(114,114,223,0.95) 100%);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            height: 90px;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+        }
+
+        .logo img {
+            height: 70px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+            transition: var(--transition);
+        }
+
+        .logo:hover img {
+            transform: rotate(-5deg) scale(1.05);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        /* User Menu - IMPROVED */
+        .user-menu {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            padding: 12px 20px;
+            border-radius: 50px;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 2px solid transparent;
+        }
+
+        .user-menu:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: var(--transition);
+        }
+
+        .user-menu:hover .user-avatar {
+            transform: scale(1.1);
+        }
+
+        .user-avatar i {
+            font-size: 1.4rem;
+            color: white;
+        }
+
+        .welcome-text {
+            font-size: 1rem;
+            color: #2d3748;
+            font-weight: 700;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 15px 0;
+            min-width: 220px;
+            margin-top: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            animation: fadeIn 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            z-index: 1001;
+        }
+
+        .dropdown.active {
+            display: block;
+        }
+
+        .dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 20px;
+            color: #2d3748;
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 600;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .dropdown a:last-child {
+            border-bottom: none;
+        }
+
+        .dropdown a:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(76, 201, 240, 0.1) 100%);
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .dropdown a i {
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            display: flex;
+            flex: 1;
+            width: 100%;
+            padding-top: 90px;
+            min-height: calc(100vh - 90px - 120px);
+
+        }
+
+        /* Sidebar Styles - PERFECT (No Changes) */
+        .sidebar {
+            width: 300px;
+            background: linear-gradient(165deg, rgba(235,198,129,0.95) 0%, rgba(114,114,223,0.95) 100%);
+            color: white;
+            padding: 30px 0;
+            transition: var(--transition);
+            box-shadow: 8px 0 40px rgba(0, 0, 0, 0.15);
+            z-index: 999;
+            position: fixed;
+            top: 90px;
+            left: 0;
+            height: calc(100vh - 90px - 120px);
+            overflow-y: auto;
+            backdrop-filter: blur(20px);
+            border-right: 4px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 30px 30px;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.4);
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .sidebar-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #fff, transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .sidebar-logo h1 {
+            font-size: 26px;
+            font-weight: 800;
+            text-align: center;
+            color: #2d3748;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.15);
+            letter-spacing: 1.5px;
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 50%, #2d3748 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% 100%;
+            animation: gradientShift 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0 20px;
+        }
+
+        .nav-links li {
+            padding: 16px 24px;
+            margin: 10px 0;
+            transition: var(--transition);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .nav-links li::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .nav-links li:hover::before {
+            left: 100%;
+        }
+
+        .nav-links li:hover {
+            background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.3) 100%);
+            transform: translateX(12px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-links li.active {
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.25) 0%, rgba(76, 201, 240, 0.25) 100%);
+            border-left: 6px solid var(--accent);
+            box-shadow: 0 8px 30px rgba(76, 201, 240, 0.4);
+            transform: translateX(8px);
+            border-color: rgba(76, 201, 240, 0.3);
+        }
+
+        .nav-links li.active::after {
+            content: '';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 20px var(--accent);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translateY(-50%) scale(1);
+                box-shadow: 0 0 0 0 rgba(76, 201, 240, 0.7);
+            }
+            50% {
+                transform: translateY(-50%) scale(1.2);
+            }
+            70% {
+                box-shadow: 0 0 0 12px rgba(76, 201, 240, 0);
+            }
+            100% {
+                transform: translateY(-50%) scale(1);
+                box-shadow: 0 0 0 0 rgba(76, 201, 240, 0);
+            }
+        }
+
+        .nav-links a {
+            color: #2d3748;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 2;
+            transition: var(--transition);
+        }
+
+        .nav-links li:hover a {
+            color: #1a202c;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+        }
+
+        .nav-links li.active a {
+            color: #1a202c;
+            font-weight: 800;
+        }
+
+        .nav-links i {
+            margin-right: 18px;
+            font-size: 22px;
+            width: 26px;
+            text-align: center;
+            transition: var(--transition);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .nav-links li:hover i {
+            transform: scale(1.15) rotate(5deg);
+            -webkit-text-fill-color: #667eea;
+        }
+
+        .nav-links li.active i {
+            transform: scale(1.15);
+            -webkit-text-fill-color: #4cc9f0;
+        }
+
+        /* Dashboard Main Content - IMPROVED */
+        .dashboard-main {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            width: 190%;
+            margin-left: 300px;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 30px 0 0 0;
+            box-shadow: -8px 0 40px rgba(46, 4, 255, 0.15);
+            min-height: calc(100vh - 90px - 120px);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* Dashboard Header - IMPROVED */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 250, 0.95) 100%);
+            border-radius: 20px;
+            box-shadow: var(--box-shadow);
+            border: 2px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .dashboard-header h2 {
+            font-weight: 800;
+            color: #2d3748;
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .dashboard-user-info:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .dashboard-user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            transition: var(--transition);
+        }
+
+        .dashboard-user-info:hover .dashboard-user-avatar {
+            transform: scale(1.1) rotate(10deg);
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 700;
+            color: #2d3748;
+            font-size: 1.1rem;
+        }
+
+        .user-role {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Stats Cards - IMPROVED */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 250, 0.95) 100%);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--box-shadow);
+            display: flex;
+            align-items: center;
+            transition: var(--transition);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .stat-card:hover::before {
+            transform: translateX(100%);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-color: rgba(102, 126, 234, 0.2);
+        }
+
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 28px;
+            transition: var(--transition);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: scale(1.1);
+        }
+
+        .stat-1 .stat-icon {
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.15) 0%, rgba(67, 97, 238, 0.3) 100%);
+            color: var(--primary);
+        }
+
+        .stat-2 .stat-icon {
+            background: linear-gradient(135deg, rgba(76, 201, 240, 0.15) 0%, rgba(76, 201, 240, 0.3) 100%);
+            color: var(--accent);
+        }
+
+        .stat-3 .stat-icon {
+            background: linear-gradient(135deg, rgba(75, 181, 67, 0.15) 0%, rgba(75, 181, 67, 0.3) 100%);
+            color: var(--success);
+        }
+
+        .stat-4 .stat-icon {
+            background: linear-gradient(135deg, rgba(255, 204, 0, 0.15) 0%, rgba(255, 204, 0, 0.3) 100%);
+            color: var(--warning);
+        }
+
+        .stat-info h3 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, #2d3748, #4a5568);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-info p {
+            color: var(--gray);
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        /* Content Sections - IMPROVED */
+        .content-section {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 249, 250, 0.95) 100%);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--box-shadow);
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .content-section:hover {
+            border-color: rgba(102, 126, 234, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(67, 97, 238, 0.1);
+        }
+
+        .section-header h3 {
+            font-weight: 800;
+            font-size: 1.4rem;
+            background: linear-gradient(135deg, #2d3748, #4a5568);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .view-all {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 8px 18px;
+            border-radius: 20px;
+            background: rgba(102, 126, 234, 0.1);
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .view-all:hover {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Books Grid - IMPROVED */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .book-card {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            cursor: pointer;
+            background: white;
+            border: 2px solid transparent;
+        }
+
+        .book-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .book-cover {
+            height: 180px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .book-cover i {
+            font-size: 42px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+        }
+
+        .book-info {
+            padding: 18px;
+            background: white;
+        }
+
+        .book-title {
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #2d3748;
+            font-size: 1rem;
+            line-height: 1.3;
+        }
+
+        .book-author {
+            color: var(--primary);
+            font-size: 13px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .book-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--gray);
+            font-weight: 600;
+        }
+
+        /* Activity List - IMPROVED */
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            display: flex;
+            padding: 18px 0;
+            border-bottom: 1px solid rgba(67, 97, 238, 0.1);
+            transition: var(--transition);
+            border-radius: 12px;
+            margin: 3px 0;
+            padding-left: 15px;
+        }
+
+        .activity-item:hover {
+            background: rgba(102, 126, 234, 0.05);
+            transform: translateX(5px);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.15) 0%, rgba(67, 97, 238, 0.3) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 18px;
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #2d3748;
+            line-height: 1.4;
+        }
+
+        .activity-text strong {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: var(--gray);
+            font-weight: 600;
+        }
+
+        /* Footer - PERFECT (No Changes) */
+        .main-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 60px;
+            background: linear-gradient(135deg, rgba(235,198,129,0.95) 0%, rgba(114,114,223,0.95) 100%);
+            color: #2d3748;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 998;
+            flex-wrap: wrap;
+            height: 120px;
+            backdrop-filter: blur(20px);
+            border-top: 3px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            margin: 10px 0;
+            transition: var(--transition);
+        }
+
+        .footer-section:hover {
+            transform: translateY(-3px);
+        }
+
+        .footer-section h4 {
+            margin-bottom: 15px;
+            font-size: 20px;
+            color: #2d3748;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-section p {
+            margin: 8px 0;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .footer-section a {
+            color: #2d3748;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
+        .footer-section a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: var(--primary);
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+
+        .team-highlight {
+            background: linear-gradient(135deg, #d35400, #e67e22);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Scrollbar Styling */
+        .sidebar::-webkit-scrollbar,
+        .dashboard-main::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-track,
+        .dashboard-main::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, rgba(235,198,129,0.8), rgba(114,114,223,0.8));
+            border-radius: 10px;
+        }
+
+        .dashboard-main::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 10px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover,
+        .dashboard-main::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, rgba(235,198,129,1), rgba(114,114,223,1));
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .sidebar {
+                width: 280px;
+            }
+
+            .dashboard-main {
+                margin-left: 280px;
+            }
+
+            .stats-container {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                top: 0;
+                border-right: none;
+                border-bottom: 4px solid rgba(255, 255, 255, 0.4);
+            }
+
+            .dashboard-main {
+                margin-left: 0;
+                border-radius: 0;
+            }
+
+            .nav-links {
+                display: flex;
+                overflow-x: auto;
+                padding: 15px 20px;
+            }
+
+            .nav-links li {
+                flex-shrink: 0;
+                margin: 0 8px;
+            }
+
+            .nav-links li:hover {
+                transform: translateY(-5px);
+            }
+
+            .nav-links li.active {
+                transform: translateY(-3px);
+            }
+
+            .main-footer {
+                position: relative;
+                height: auto;
+            }
+
+            body {
+                padding-bottom: 0;
+            }
+
+            .main-content {
+                min-height: calc(100vh - 90px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 12px 20px;
+            }
+
+            .main-content {
+                padding-top: 90px;
+            }
+
+            .dashboard-main {
+                padding: 25px;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .books-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 15px;
+            }
+
+            .main-footer {
+                padding: 20px;
+                flex-direction: column;
+                text-align: center;
+                height: auto;
+                gap: 15px;
+            }
+
+            .footer-section {
+                min-width: 100%;
+            }
+
+            .dashboard-header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-header {
+                padding: 20px;
+            }
+
+            .main-footer {
+                padding: 15px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<!-- Loading Spinner -->
+<div class="loading-spinner" id="loadingSpinner">
+    <div class="spinner"></div>
+</div>
+
+<!-- ===== HEADER ===== -->
+<header>
+    <div class="logo">
+        <a href="Home.html"><img src="../images/logo.png" alt="Logo"></a>
+    </div>
+    <div class="nav-buttons">
+<!--        <form class="header-search" id="headerSearchForm">-->
+<!--            <input type="text" id="header-search" placeholder="Search books...">-->
+<!--            <button type="submit"><i class='bx bx-search'></i></button>-->
+<!--        </form>-->
+
+        <!-- User Menu -->
+        <div class="user-menu" id="userMenu">
+            <div class="user-avatar">
+                <i class='bx bx-user'></i>
+            </div>
+            <div class="welcome-text">Welcome, <span id="username">Guest</span></div>
+            <div class="dropdown" id="dropdownMenu">
+                <a href="../User-Dashboard.html"><i class='bx bx-grid-alt'></i> Dashboard</a>
+                <a href="reading-list.html"><i class='bx bx-book-bookmark'></i> Reading List</a>
+                <a href="downloads.html"><i class='bx bx-download'></i> Downloads</a>
+                <a href="#" id="logoutBtn"><i class='bx bx-log-out'></i> Logout</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="main-content">
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+<!--            <div class="logo">-->
+<!--                <i class='bx bx-book-reader'></i>-->
+<!--                <a href="Home.html"><img src="../images/logo.png" alt="Logo"></a>-->
+<!--            </div>-->
+            <ul class="nav-links">
+                <li class="active"><a href="#"><i class='bx bx-home'></i> Dashboard</a></li>
+                <li><a href="#"><i class='bx bx-book'></i> My Library</a></li>
+                <li><a href="#"><i class='bx bx-history'></i> Reading History</a></li>
+                <li><a href="#"><i class='bx bx-star'></i> Reviews</a></li>
+                <li><a href="#"><i class='bx bx-bulb'></i> Suggestions</a></li>
+                <li><a href="#"><i class='bx bx-cog'></i> Settings</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="dashboard-main">
+            <div class="header">
+                <h2>User Dashboard</h2><br>
+<!--                <div class="user-info">-->
+<!--                    <div class="user-avatar" id="dashboardUserAvatar">JS</div>-->
+<!--                    <div>-->
+<!--                        <div class="user-name" id="dashboardUserName">John Smith</div>-->
+<!--                        <div class="user-role" id="dashboardUserRole">Reader</div>-->
+<!--                    </div>-->
+<!--                </div>-->
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-container">
+                <div class="stat-card stat-1">
+                    <div class="stat-icon">
+                        <i class='bx bx-book'></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>24</h3>
+                        <p>Books Read</p>
+                    </div>
+                </div>
+                <div class="stat-card stat-2">
+                    <div class="stat-icon">
+                        <i class='bx bx-time'></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>36h</h3>
+                        <p>Reading Time</p>
+                    </div>
+                </div>
+                <div class="stat-card stat-3">
+                    <div class="stat-icon">
+                        <i class='bx bx-star'></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>18</h3>
+                        <p>Reviews Written</p>
+                    </div>
+                </div>
+                <div class="stat-card stat-4">
+                    <div class="stat-icon">
+                        <i class='bx bx-trophy'></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>5</h3>
+                        <p>Achievements</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Currently Reading Section -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h3>Currently Reading</h3>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+                <div class="books-grid">
+                    <div class="book-card">
+                        <div class="book-cover">
+                            <i class='bx bx-book'></i>
+                        </div>
+                        <div class="book-info">
+                            <div class="book-title">The Silent Patient</div>
+                            <div class="book-author">Alex Michaelides</div>
+                            <div class="book-meta">
+                                <span>65% read</span>
+                                <span>Fiction</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="book-card">
+                        <div class="book-cover">
+                            <i class='bx bx-book'></i>
+                        </div>
+                        <div class="book-info">
+                            <div class="book-title">Atomic Habits</div>
+                            <div class="book-author">James Clear</div>
+                            <div class="book-meta">
+                                <span>42% read</span>
+                                <span>Self-help</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="book-card">
+                        <div class="book-cover">
+                            <i class='bx bx-book'></i>
+                        </div>
+                        <div class="book-info">
+                            <div class="book-title">Project Hail Mary</div>
+                            <div class="book-author">Andy Weir</div>
+                            <div class="book-meta">
+                                <span>28% read</span>
+                                <span>Sci-fi</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recently Added Section -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h3>Recently Added</h3>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+                <div class="books-grid">
+                    <div class="book-card">
+                        <div class="book-cover">
+                            <i class='bx bx-book'></i>
+                        </div>
+                        <div class="book-info">
+                            <div class="book-title">Klara and the Sun</div>
+                            <div class="book-author">Kazuo Ishiguro</div>
+                            <div class="book-meta">
+                                <span>Not started</span>
+                                <span>Fiction</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="book-card">
+                        <div class="book-cover">
+                            <i class='bx bx-book'></i>
+                        </div>
+                        <div class="book-info">
+                            <div class="book-title">The Midnight Library</div>
+                            <div class="book-author">Matt Haig</div>
+                            <div class="book-meta">
+                                <span>Not started</span>
+                                <span>Fiction</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="book-card">
+                        <div class="book-cover">
+                            <i class='bx bx-book'></i>
+                        </div>
+                        <div class="book-info">
+                            <div class="book-title">Dune</div>
+                            <div class="book-author">Frank Herbert</div>
+                            <div class="book-meta">
+                                <span>Not started</span>
+                                <span>Sci-fi</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity Section -->
+            <div class="content-section">
+                <div class="section-header">
+                    <h3>Recent Activity</h3>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+                <ul class="activity-list">
+                    <li class="activity-item">
+                        <div class="activity-icon">
+                            <i class='bx bx-book-open'></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">You finished reading <strong>The Silent Patient</strong></div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon">
+                            <i class='bx bx-star'></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">You rated <strong>Atomic Habits</strong> 5 stars</div>
+                            <div class="activity-time">Yesterday</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon">
+                            <i class='bx bx-plus'></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">You added <strong>Klara and the Sun</strong> to your library</div>
+                            <div class="activity-time">2 days ago</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon">
+                            <i class='bx bx-comment'></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">You reviewed <strong>Project Hail Mary</strong></div>
+                            <div class="activity-time">3 days ago</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="main-footer" style="font-family: chakra petch;">
+    <div class="footer-section">
+        <h4>About</h4>
+        <p>Designed and Developed by Team <b class="team-highlight">Rv</b></p>
+    </div>
+    <div class="footer-section">
+        <p>&copy; <span id="year"></span> Intelli-Read. All Rights Reserved.</p>
+        <p><a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a></p>
+    </div>
+    <div class="footer-section">
+        <h4>License</h4>
+        <p>Standard License</p>
+    </div>
+</footer>
+
+<script>
+    // Global variables
+    const API_BASE_URL = 'http://localhost:8035';
+    let currentUser = null;
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Check authentication and initialize
+        initializePage();
+        setupEventListeners();
+
+        // Debug info
+        console.log('🔄 Dashboard initialized');
+        debugNavigation();
+    });
+
+    // Debug navigation
+    function debugNavigation() {
+        console.log('=== DASHBOARD DEBUG INFO ===');
+        console.log('Current User:', currentUser);
+        console.log('isLoggedIn:', localStorage.getItem('isLoggedIn'));
+        console.log('JWT Token:', localStorage.getItem('jwtToken'));
+    }
+
+    // Initialize page
+    async function initializePage() {
+        showLoading(true);
+
+        try {
+            // Check authentication
+            const user = getCurrentUser();
+            if (!user) {
+                console.log('❌ No user found, redirecting to login');
+                // window.location.href = 'login.html';
+                return;
+            }
+
+            console.log('✅ User authenticated:', user.name);
+
+            // Update dashboard with user data
+            updateDashboard(user);
+
+        } catch (error) {
+            console.error('Error initializing dashboard:', error);
+            showError('Failed to load dashboard. Please try again.');
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    // Update dashboard with user data
+    function updateDashboard(user) {
+        // Update header user info
+        document.getElementById('username').textContent = user.name || user.email || 'User';
+
+        // Update dashboard user info
+        document.getElementById('dashboardUserName').textContent = user.name || user.email || 'User';
+        document.getElementById('dashboardUserRole').textContent = user.role || 'Reader';
+
+        // Update avatar with initials
+        const avatar = document.getElementById('dashboardUserAvatar');
+        if (user.name) {
+            const initials = user.name.split(' ').map(n => n[0]).join('');
+            avatar.textContent = initials;
+        } else {
+            avatar.textContent = 'U';
+        }
+    }
+
+    // ✅ IMPROVED: Get current user with better error handling
+    function getCurrentUser() {
+        try {
+            const userData = localStorage.getItem('user');
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+            console.log('🔍 Auth Check:', {
+                userData: !!userData,
+                isLoggedIn: isLoggedIn
+            });
+
+            if (userData && isLoggedIn === 'true') {
+                currentUser = JSON.parse(userData);
+                return currentUser;
+            }
+            return null;
+        } catch (error) {
+            console.error('Error getting user:', error);
+            return null;
+        }
+    }
+
+    // ✅ NEW: Navigate to dashboard function
+    function navigateToDashboard() {
+        console.log('🚀 Navigating to dashboard...');
+
+        const user = getCurrentUser();
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+        console.log('Dashboard Navigation Check:', {
+            user: !!user,
+            isLoggedIn: isLoggedIn
+        });
+
+        if (user && isLoggedIn === 'true') {
+            console.log('✅ Authentication successful, redirecting to dashboard...');
+            // Already on dashboard, do nothing
+        } else {
+            console.log('❌ User not authenticated, redirecting to login...');
+            alert('Please login to access your dashboard');
+            window.location.href = '/Login';
+        }
+    }
+
+    // Utility functions
+    function showLoading(show) {
+        document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
+    }
+
+    function showError(message) {
+        alert(message); // You can replace with better error handling
+    }
+
+    // ✅ IMPROVED: Event listeners with proper dashboard navigation
+    function setupEventListeners() {
+        console.log('🔧 Setting up event listeners...');
+
+        // Header search form
+        const headerSearchForm = document.getElementById('headerSearchForm');
+        const headerSearchInput = document.getElementById('header-search');
+
+        headerSearchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const query = headerSearchInput.value.trim();
+            if (query) {
+                window.location.href = `/Books?search=${encodeURIComponent(query)}`;
+            }
+        });
+
+        // ✅ FIXED: User menu with proper dashboard navigation
+        const userMenu = document.getElementById('userMenu');
+        const dropdown = document.getElementById('dropdownMenu');
+
+        userMenu.addEventListener('click', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            console.log('👤 User menu clicked');
+            dropdown.classList.toggle('active');
+        });
+
+        // ✅ FIXED: Dropdown menu click handling for templates
+        dropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+
+            const link = e.target.closest('a');
+            if (link) {
+                const href = link.getAttribute('href');
+                console.log('📋 Dropdown link clicked:', href);
+
+                if (href && (href.includes('Dashboard') || href.includes('dashboard'))) {
+                    e.preventDefault();
+                    console.log('🎯 Dashboard link intercepted');
+                    navigateToDashboard();
+                }
+                // Close dropdown after click
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userMenu.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // ✅ FIXED: Direct dashboard link handler
+        document.addEventListener('click', function(e) {
+            const dashboardLink = e.target.closest('a[href*="Dashboard"]');
+            if (dashboardLink) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('🔗 Direct dashboard link clicked');
+                navigateToDashboard();
+            }
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('🚪 Logout clicked');
+            logout();
+        });
+
+        // Sidebar navigation
+        document.querySelectorAll('.nav-links li').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-links li').forEach(li => {
+                    li.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+
+        console.log('✅ Event listeners setup complete');
+    }
+
+    // ✅ IMPROVED: Logout function
+    function logout() {
+        console.log('🔒 Logging out...');
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('user');
+        localStorage.removeItem('jwtToken');
+        window.location.href = '/Login';
+    }
+
+    // ✅ NEW: Emergency dashboard navigation (manual trigger)
+    function emergencyDashboard() {
+        console.log('🆕 Emergency dashboard navigation');
+        navigateToDashboard();
+    }
+
+    // ✅ NEW: Add onclick directly to dashboard link as backup
+    setTimeout(() => {
+        const dashboardLinks = document.querySelectorAll('a[href*="Dashboard"]');
+        dashboardLinks.forEach(link => {
+            // Remove existing href to prevent Spring Boot interference
+            link.removeAttribute('href');
+            link.setAttribute('onclick', 'navigateToDashboard(); return false;');
+            console.log('🔗 Dashboard link onclick attribute added');
+        });
+    }, 1000);
+</script>
+
+</body>
+</html>

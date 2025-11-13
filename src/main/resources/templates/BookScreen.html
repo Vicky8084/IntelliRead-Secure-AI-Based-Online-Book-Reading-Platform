@@ -536,7 +536,7 @@
             </div>
             <div class="welcome-text">Welcome, <span id="username">Guest</span></div>
             <div class="dropdown" id="dropdownMenu">
-                <a href="dashboard.html"><i class='bx bx-grid-alt'></i> Dashboard</a>
+                <a href="../User-Dashboard.html"><i class='bx bx-grid-alt'></i> Dashboard</a>
                 <a href="reading-list.html"><i class='bx bx-book-bookmark'></i> Reading List</a>
                 <a href="downloads.html"><i class='bx bx-download'></i> Downloads</a>
                 <a href="#" id="logoutBtn"><i class='bx bx-log-out'></i> Logout</a>
@@ -605,7 +605,24 @@
         // Check authentication and initialize
         initializePage();
         setupEventListeners();
+
+        // Debug info
+        console.log('🔄 Page initialized');
+        debugNavigation();
     });
+
+    // Debug navigation
+    function debugNavigation() {
+        console.log('=== DEBUG INFO ===');
+        console.log('Current User:', currentUser);
+        console.log('isLoggedIn:', localStorage.getItem('isLoggedIn'));
+        console.log('JWT Token:', localStorage.getItem('jwtToken'));
+
+        // Check dashboard link
+        const dashboardLink = document.querySelector('a[href*="Dashboard"]');
+        console.log('Dashboard Link Found:', !!dashboardLink);
+        console.log('Dashboard Link Href:', dashboardLink ? dashboardLink.href : 'Not found');
+    }
 
     // Initialize page
     async function initializePage() {
@@ -614,7 +631,13 @@
         try {
             // Check authentication
             const user = getCurrentUser();
-            if (!user) return;
+            if (!user) {
+                console.log('❌ No user found, redirecting to login');
+                // window.location.href = 'login.html';
+                return;
+            }
+
+            console.log('✅ User authenticated:', user.name);
 
             // Load REAL published books from API
             await loadPublishedBooks();
@@ -755,15 +778,54 @@
         alert(message); // You can replace with better error handling
     }
 
+    // ✅ IMPROVED: Get current user with better error handling
     function getCurrentUser() {
+    try {
         const userData = localStorage.getItem('user');
-        if (userData) {
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+        console.log('🔍 Auth Check:', {
+            userData: !!userData,
+            isLoggedIn: isLoggedIn
+        });
+
+        if (userData && isLoggedIn === 'true') {
             currentUser = JSON.parse(userData);
             document.getElementById('username').textContent = currentUser.name || currentUser.email || 'User';
             return currentUser;
         }
         return null;
+    } catch (error) {
+        console.error('Error getting user:', error);
+        return null;
     }
+}
+
+    // ✅ NEW: Navigate to dashboard function
+    function navigateToDashboard() {
+    console.log('🚀 Navigating to dashboard...');
+
+    const user = getCurrentUser();
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+    console.log('Dashboard Navigation Check:', {
+        user: !!user,
+        isLoggedIn: isLoggedIn
+    });
+
+    if (user && isLoggedIn === 'true') {
+        console.log('✅ Authentication successful, redirecting to dashboard...');
+
+        // ✅ CORRECT: Templates folder ke liye direct URL
+        // Spring Boot automatically templates folder se serve karta hai
+        window.location.href = '/User-Dashboard';
+
+    } else {
+        console.log('❌ User not authenticated, redirecting to login...');
+        alert('Please login to access your dashboard');
+        window.location.href = '/Login';
+    }
+}
 
     function showBookDetails(bookId) {
         // Implement book details modal or redirect
@@ -771,61 +833,122 @@
         window.location.href = `/book-details.html?id=${bookId}`;
     }
 
-    // Event listeners
+    // ✅ IMPROVED: Event listeners with proper dashboard navigation
     function setupEventListeners() {
-        // Header search form
-        const headerSearchForm = document.getElementById('headerSearchForm');
-        const headerSearchInput = document.getElementById('header-search');
+    console.log('🔧 Setting up event listeners...');
 
-        headerSearchForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const query = headerSearchInput.value.trim();
-            if (query) {
-                // Implement search functionality
-                window.location.href = `/books.html?search=${encodeURIComponent(query)}`;
+    // Header search form
+    const headerSearchForm = document.getElementById('headerSearchForm');
+    const headerSearchInput = document.getElementById('header-search');
+
+    headerSearchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const query = headerSearchInput.value.trim();
+        if (query) {
+            window.location.href = `/Books?search=${encodeURIComponent(query)}`;
+        }
+    });
+
+    // Slider navigation
+    document.getElementById('slideLeft').addEventListener('click', () => {
+        if (currentSlide > 0) {
+            goToSlide(currentSlide - 1);
+        }
+    });
+
+    document.getElementById('slideRight').addEventListener('click', () => {
+        const totalSlides = Math.ceil(allPublishedBooks.length / 4);
+        if (currentSlide < totalSlides - 1) {
+            goToSlide(currentSlide + 1);
+        }
+    });
+
+    // ✅ FIXED: User menu with proper dashboard navigation
+    const userMenu = document.getElementById('userMenu');
+    const dropdown = document.getElementById('dropdownMenu');
+
+    userMenu.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        console.log('👤 User menu clicked');
+        dropdown.classList.toggle('active');
+    });
+
+    // ✅ FIXED: Dropdown menu click handling for templates
+    dropdown.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        const link = e.target.closest('a');
+        if (link) {
+            const href = link.getAttribute('href');
+            console.log('📋 Dropdown link clicked:', href);
+
+            if (href && (href.includes('Dashboard') || href.includes('dashboard'))) {
+                e.preventDefault();
+                console.log('🎯 Dashboard link intercepted');
+                navigateToDashboard();
             }
-        });
-
-        // Slider navigation
-        document.getElementById('slideLeft').addEventListener('click', () => {
-            if (currentSlide > 0) {
-                goToSlide(currentSlide - 1);
-            }
-        });
-
-        document.getElementById('slideRight').addEventListener('click', () => {
-            const totalSlides = Math.ceil(allPublishedBooks.length / 4);
-            if (currentSlide < totalSlides - 1) {
-                goToSlide(currentSlide + 1);
-            }
-        });
-
-        // User menu
-        const userMenu = document.getElementById('userMenu');
-        const dropdown = document.getElementById('dropdownMenu');
-
-        userMenu.addEventListener('click', (e) => {
-            e.stopPropagation();
-            dropdown.classList.toggle('active');
-        });
-
-        document.addEventListener('click', () => {
+            // Close dropdown after click
             dropdown.classList.remove('active');
-        });
+        }
+    });
 
-        // Logout
-        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!userMenu.contains(e.target)) {
+            dropdown.classList.remove('active');
+        }
+    });
+
+    // ✅ FIXED: Direct dashboard link handler
+    document.addEventListener('click', function(e) {
+        const dashboardLink = e.target.closest('a[href*="Dashboard"]');
+        if (dashboardLink) {
             e.preventDefault();
-            logout();
-        });
-    }
+            e.stopPropagation();
+            console.log('🔗 Direct dashboard link clicked');
+            navigateToDashboard();
+        }
+    });
 
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('🚪 Logout clicked');
+        logout();
+    });
+
+    console.log('✅ Event listeners setup complete');
+}
+
+    // ✅ IMPROVED: Logout function
     function logout() {
-        localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('user');
-        localStorage.removeItem('jwtToken');
-        window.location.href = '/login';
-    }
+    console.log('🔒 Logging out...');
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('user');
+    localStorage.removeItem('jwtToken');
+    window.location.href = '/Login';
+}
+
+    // ✅ NEW: Emergency dashboard navigation (manual trigger)
+    function emergencyDashboard() {
+    console.log('🆕 Emergency dashboard navigation');
+    navigateToDashboard();
+}
+
+    // ✅ NEW: Add onclick directly to dashboard link as backup
+   setTimeout(() => {
+    const dashboardLinks = document.querySelectorAll('a[href*="Dashboard"]');
+    dashboardLinks.forEach(link => {
+        // Remove existing href to prevent Spring Boot interference
+        link.removeAttribute('href');
+        link.setAttribute('onclick', 'navigateToDashboard(); return false;');
+        console.log('🔗 Dashboard link onclick attribute added');
+    });
+}, 1000);
+
 </script>
+
 </body>
 </html>
