@@ -103,10 +103,6 @@
             transition: var(--transition);
         }
 
-        .logo:hover img {
-            transform: rotate(-5deg) scale(1.05);
-        }
-
         .nav-buttons {
             display: flex;
             gap: 20px;
@@ -1027,10 +1023,7 @@
             </div>
             <div class="welcome-text">Welcome, <span id="username">Guest</span></div>
             <div class="dropdown" id="dropdownMenu">
-                <a href="../User-Dashboard.html"><i class='bx bx-grid-alt'></i> Dashboard</a>
-                <a href="reading-list.html"><i class='bx bx-book-bookmark'></i> Reading List</a>
-                <a href="downloads.html"><i class='bx bx-download'></i> Downloads</a>
-                <a href="#" id="logoutBtn"><i class='bx bx-log-out'></i> Logout</a>
+                <a href="/bookscreen"><i class='bx bx-b'></i> Back to Book</a>
             </div>
         </div>
     </div>
@@ -1412,7 +1405,7 @@
                     <div class="settings-form">
                         <div class="form-group">
                             <label>Full Name</label>
-                            <input type="text" id="userName" class="form-input" value="Loading...">
+                            <input type="text" id="userFullName" class="form-input" value="Loading...">
                         </div>
                         <div class="form-group">
                             <label>Email</label>
@@ -1671,11 +1664,6 @@
                 const page = this.querySelector('a').getAttribute('data-page');
                 switchPage(page);
             });
-        });
-
-        document.getElementById('logoutBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            logout();
         });
 
         document.querySelectorAll('.view-all').forEach(button => {
