@@ -2,6 +2,7 @@ package com.intelliRead.Online.Reading.Paltform.controller;
 
 import com.intelliRead.Online.Reading.Paltform.model.Review;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.ReviewRequestDTO;
+import com.intelliRead.Online.Reading.Paltform.responseDTO.ReviewResponseDTO;
 import com.intelliRead.Online.Reading.Paltform.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/review/apies")
+@CrossOrigin(origins = "*") // ✅ ADD THIS LINE
 public class ReviewController {
     ReviewService reviewService;
 
@@ -20,12 +22,15 @@ public class ReviewController {
         this.reviewService = reviewService;
     }
 
-    @PostMapping("/save")
+    // ✅ CHANGE THIS METHOD - Add @RequestBody annotation
+    @PostMapping("/add")
     public ResponseEntity<String> saveReview(@RequestBody ReviewRequestDTO reviewRequestDTO){
         try {
+            System.out.println("📝 Received review request: " + reviewRequestDTO);
             String response = reviewService.saveReview(reviewRequestDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (Exception e) {
+            System.out.println("❌ Error saving review: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
         }
     }
@@ -71,6 +76,43 @@ public class ReviewController {
             return ResponseEntity.ok(reviews);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // ✅ NEW: Get all reviews for publisher's books
+    @GetMapping("/publisher/{publisherId}/reviews")
+    public ResponseEntity<List<ReviewResponseDTO>> getReviewsForPublisher(@PathVariable int publisherId){
+        try {
+            List<ReviewResponseDTO> reviews = reviewService.findReviewsForPublisherBooks(publisherId);
+            return ResponseEntity.ok(reviews);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    // ✅ NEW: Get reviews for specific book with publisher validation
+    @GetMapping("/publisher/{publisherId}/book/{bookId}/reviews")
+    public ResponseEntity<?> getReviewsForBookByPublisher(
+            @PathVariable int publisherId,
+            @PathVariable int bookId){
+        try {
+            List<ReviewResponseDTO> reviews = reviewService.findReviewsForBookByPublisher(bookId, publisherId);
+            return ResponseEntity.ok(reviews);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
+        }
+    }
+
+    // ✅ NEW: Get rating statistics for a book
+    @GetMapping("/publisher/{publisherId}/book/{bookId}/stats")
+    public ResponseEntity<?> getBookRatingStats(
+            @PathVariable int publisherId,
+            @PathVariable int bookId){
+        try {
+            ReviewService.BookRatingStats stats = reviewService.getBookRatingStats(bookId, publisherId);
+            return ResponseEntity.ok(stats);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
         }
     }
 

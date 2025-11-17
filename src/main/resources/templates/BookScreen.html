@@ -1071,6 +1071,8 @@
 
     // ===== INITIALIZATION =====
     document.addEventListener('DOMContentLoaded', function() {
+        console.log('🚀 BookScreen page loaded');
+
         // Set current year in footer
         document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -1083,95 +1085,218 @@
     async function initializePage() {
         showLoading(true);
         try {
-            // Check authentication
-            const user = getCurrentUser();
-            if (!user) {
-                console.log('❌ No user found, redirecting to login');
-                // window.location.href = 'login.html';
-                return;
-            }
+            console.log('🔄 Initializing page...');
 
-            console.log('✅ User authenticated:', user.name);
+            // ✅ FIX: Get user with proper ID handling
+            const user = await getCurrentUser();
+
+            if (!user) {
+                console.log('⚠️ User not authenticated, allowing limited access');
+                showNotification('Please login for full functionality', 'info');
+                // Continue loading books even if not logged in
+            } else {
+                console.log('✅ User authenticated:', user);
+            }
 
             await loadCategories();
             await loadBooks();
             setupCategoryFilters();
-
-            // Initialize slider with real books
             initializeSlider();
 
+            console.log('✅ Page initialization completed');
+
         } catch (error) {
-            console.error('Error initializing page:', error);
+            console.error('❌ Error initializing page:', error);
             showError('Failed to load books. Please try again later.');
         } finally {
             showLoading(false);
         }
     }
 
+    // ===== GET CURRENT USER =====
+    async function getCurrentUser() {
+        try {
+            const userData = localStorage.getItem('user');
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const currentUserId = localStorage.getItem('currentUserId');
+
+            console.log('🔍 User Check:', {
+                userData: !!userData,
+                isLoggedIn: isLoggedIn,
+                currentUserId: currentUserId
+            });
+
+            // ✅ FIX: Check if user is properly logged in
+            if (isLoggedIn !== 'true') {
+                console.log('❌ User not logged in');
+                return null;
+            }
+
+            if (userData) {
+                const user = JSON.parse(userData);
+
+                // ✅ FIX: Handle different user data structures
+                let userId = user.id;
+
+                // If id is missing, try to get from currentUserId
+                if (!userId && currentUserId) {
+                    userId = parseInt(currentUserId);
+                    user.id = userId; // Add id to user object
+                    // Update localStorage with corrected user data
+                    localStorage.setItem('user', JSON.stringify(user));
+                }
+
+                // If still no id, try to extract from URL
+                if (!userId) {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const urlUserId = urlParams.get('userId');
+                    if (urlUserId) {
+                        userId = parseInt(urlUserId);
+                        user.id = userId;
+                        localStorage.setItem('currentUserId', userId.toString());
+                        localStorage.setItem('user', JSON.stringify(user));
+                    }
+                }
+
+                // If still no ID, try to fetch user data from server
+                if (!userId) {
+                    console.log('🔄 No user ID found, trying to fetch from server...');
+                    const userFromServer = await fetchCurrentUserFromServer();
+                    if (userFromServer) {
+                        currentUser = userFromServer;
+                        // Update localStorage with complete user data
+                        localStorage.setItem('user', JSON.stringify(userFromServer));
+                        localStorage.setItem('currentUserId', userFromServer.id.toString());
+
+                        // Update username display
+                        const usernameElement = document.getElementById('username');
+                        if (usernameElement) {
+                            usernameElement.textContent = userFromServer.name || userFromServer.email || userFromServer.username || 'User';
+                        }
+
+                        console.log('✅ User loaded from server:', userFromServer);
+                        return userFromServer;
+                    }
+                }
+
+                // Update username display
+                const usernameElement = document.getElementById('username');
+                if (usernameElement) {
+                    usernameElement.textContent = user.name || user.email || user.username || 'User';
+                }
+
+                console.log('✅ User loaded from localStorage:', user);
+                currentUser = user;
+                return user;
+            }
+
+            console.log('❌ No user data found in localStorage');
+            return null;
+        } catch (error) {
+            console.error('❌ Error getting user:', error);
+            return null;
+        }
+    }
+
+    // ===== FETCH USER FROM SERVER =====
+    async function fetchCurrentUserFromServer() {
+        try {
+            // Try to get user from session
+            const response = await fetch(`${API_BASE_URL}/user/apies/current`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include' // Include cookies/session
+            });
+
+            if (response.ok) {
+                const userData = await response.json();
+                console.log('✅ User data fetched from server:', userData);
+                return userData;
+            } else {
+                console.log('❌ No current user session on server');
+                return null;
+            }
+        } catch (error) {
+            console.error('❌ Error fetching user from server:', error);
+            return null;
+        }
+    }
+
     // ===== LOAD BOOKS FROM API =====
     async function loadBooks() {
-    try {
-        console.log('📚 Loading published books from API...');
+        try {
+            console.log('📚 Loading published books from API...');
 
-        const response = await fetch(`${API_BASE_URL}/book/apies/published`);
+            const response = await fetch(`${API_BASE_URL}/book/apies/published`);
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const booksData = await response.json();
+            console.log('✅ Books loaded successfully:', booksData.length);
+
+            // ✅ FIX: Hibernate proxy objects handle karo
+            allBooks = booksData.map(book => ({
+                id: book.id,
+                title: book.title,
+                author: book.author,
+                description: book.description,
+                language: book.language,
+                coverImagePath: book.coverImagePath,
+                status: book.status,
+                uploadedAt: book.uploadedAt,
+                category: book.category ? {
+                    id: book.category.id,
+                    categoryName: book.category.categoryName
+                } : null
+            }));
+
+            filteredBooks = [...allBooks];
+
+            renderBooks();
+            updatePagination();
+
+        } catch (error) {
+            console.error('❌ Error loading books:', error);
+            showError('Failed to load books from server.');
         }
-
-        const booksData = await response.json();
-        console.log('✅ Books loaded successfully:', booksData.length);
-
-        // ✅ FIX: Hibernate proxy objects handle karo
-        allBooks = booksData.map(book => ({
-            id: book.id,
-            title: book.title,
-            author: book.author,
-            description: book.description,
-            language: book.language,
-            coverImagePath: book.coverImagePath,
-            status: book.status,
-            uploadedAt: book.uploadedAt,
-            category: book.category ? {
-                id: book.category.id,
-                categoryName: book.category.categoryName
-            } : null
-        }));
-
-        filteredBooks = [...allBooks];
-
-        renderBooks();
-        updatePagination();
-
-    } catch (error) {
-        console.error('❌ Error loading books:', error);
-        showError('Failed to load books from server.');
     }
-}
 
     // ===== LOAD CATEGORIES =====
     async function loadCategories() {
-    try {
-        console.log('📂 Loading categories...');
+        try {
+            console.log('📂 Loading categories...');
 
-        const response = await fetch(`${API_BASE_URL}/category/apies/findAll`);
+            const response = await fetch(`${API_BASE_URL}/category/apies/findAll`);
 
-        if (response.ok) {
-            const categoriesData = await response.json();
+            if (response.ok) {
+                const categoriesData = await response.json();
 
-            // ✅ FIX: Hibernate proxy objects ko handle karo
-            categories = categoriesData.map(cat => ({
-                id: cat.id,
-                categoryName: cat.categoryName,
-                description: cat.description
-                // books list ko include mat karo - circular reference avoid karo
-            }));
+                // ✅ FIX: Hibernate proxy objects ko handle karo
+                categories = categoriesData.map(cat => ({
+                    id: cat.id,
+                    categoryName: cat.categoryName,
+                    description: cat.description
+                }));
 
-            console.log('✅ Categories loaded:', categories.length);
-            console.log('📝 Categories data:', categories);
-        } else {
-            console.warn('⚠️ Could not load categories, using defaults');
-            // Use default categories if API fails
+                console.log('✅ Categories loaded:', categories.length);
+            } else {
+                console.warn('⚠️ Could not load categories, using defaults');
+                // Use default categories if API fails
+                categories = [
+                    { id: 1, categoryName: "FICTION" },
+                    { id: 2, categoryName: "NON_FICTION" },
+                    { id: 3, categoryName: "SCIENCE_FICTION" },
+                    { id: 4, categoryName: "MYSTERY" },
+                    { id: 5, categoryName: "BIOGRAPHY" }
+                ];
+            }
+        } catch (error) {
+            console.error('❌ Error loading categories:', error);
+            // Use default categories on error
             categories = [
                 { id: 1, categoryName: "FICTION" },
                 { id: 2, categoryName: "NON_FICTION" },
@@ -1180,106 +1305,95 @@
                 { id: 5, categoryName: "BIOGRAPHY" }
             ];
         }
-    } catch (error) {
-        console.error('❌ Error loading categories:', error);
-        // Use default categories on error
-        categories = [
-            { id: 1, categoryName: "FICTION" },
-            { id: 2, categoryName: "NON_FICTION" },
-            { id: 3, categoryName: "SCIENCE_FICTION" },
-            { id: 4, categoryName: "MYSTERY" },
-            { id: 5, categoryName: "BIOGRAPHY" }
-        ];
     }
-}
 
     // ===== SETUP CATEGORY FILTERS =====
     function setupCategoryFilters() {
-    const tagsContainer = document.getElementById('tags');
+        const tagsContainer = document.getElementById('tags');
 
-    // Clear existing tags except "All Books"
-    const allBooksTag = tagsContainer.querySelector('[data-category="all"]');
-    tagsContainer.innerHTML = '';
-    tagsContainer.appendChild(allBooksTag);
+        // Clear existing tags except "All Books"
+        const allBooksTag = tagsContainer.querySelector('[data-category="all"]');
+        tagsContainer.innerHTML = '';
+        tagsContainer.appendChild(allBooksTag);
 
-    // Add category tags
-    categories.forEach(category => {
-        const tag = document.createElement('div');
-        tag.classList.add('tag');
-        tag.textContent = category.categoryName;
-        tag.dataset.category = category.id;
-        tag.addEventListener('click', () => filterByCategory(category.id));
-        tagsContainer.appendChild(tag);
-    });
+        // Add category tags
+        categories.forEach(category => {
+            const tag = document.createElement('div');
+            tag.classList.add('tag');
+            tag.textContent = category.categoryName;
+            tag.dataset.category = category.id;
+            tag.addEventListener('click', () => filterByCategory(category.id));
+            tagsContainer.appendChild(tag);
+        });
 
-    // ✅ FIX: "All Books" pe click event add karo
-    allBooksTag.addEventListener('click', () => filterByCategory('all'));
-}
+        // ✅ FIX: "All Books" pe click event add karo
+        allBooksTag.addEventListener('click', () => filterByCategory('all'));
+    }
 
     // ===== FILTER BY CATEGORY =====
     async function filterByCategory(categoryId) {
-    currentCategory = categoryId;
-    currentPage = 1;
+        currentCategory = categoryId;
+        currentPage = 1;
 
-    // Update active tag
-    document.querySelectorAll('.tag').forEach(tag => {
-        tag.classList.remove('highlight');
-    });
+        // Update active tag
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.classList.remove('highlight');
+        });
 
-    const activeTag = document.querySelector(`[data-category="${categoryId}"]`);
-    if (activeTag) {
-        activeTag.classList.add('highlight');
-    }
-
-    showLoading(true);
-
-    try {
-        if (categoryId === 'all') {
-            // Load all published books
-            await loadBooks();
-        } else {
-            // Load books by category - PROPER ERROR HANDLING
-            console.log(`📚 Loading books for category: ${categoryId}`);
-
-            const response = await fetch(`${API_BASE_URL}/book/apies/published/category/${categoryId}`);
-
-            if (response.ok) {
-                const categoryBooks = await response.json();
-                console.log(`✅ Category books loaded: ${categoryBooks.length} books`);
-
-                // ✅ FIX: Hibernate proxy objects handle karo
-                filteredBooks = categoryBooks.map(book => ({
-                    id: book.id,
-                    title: book.title,
-                    author: book.author,
-                    description: book.description,
-                    language: book.language,
-                    coverImagePath: book.coverImagePath,
-                    status: book.status,
-                    uploadedAt: book.uploadedAt,
-                    category: book.category ? {
-                        id: book.category.id,
-                        categoryName: book.category.categoryName
-                    } : null
-                }));
-
-                renderBooks();
-                updatePagination();
-            } else {
-                console.error(`❌ Category API failed with status: ${response.status}`);
-                throw new Error('Failed to load category books');
-            }
+        const activeTag = document.querySelector(`[data-category="${categoryId}"]`);
+        if (activeTag) {
+            activeTag.classList.add('highlight');
         }
-    } catch (error) {
-        console.error('Error filtering by category:', error);
-        showError('Failed to load category books. Showing all books instead.');
 
-        // Fallback: show all books
-        await loadBooks();
-    } finally {
-        showLoading(false);
+        showLoading(true);
+
+        try {
+            if (categoryId === 'all') {
+                // Load all published books
+                await loadBooks();
+            } else {
+                // Load books by category - PROPER ERROR HANDLING
+                console.log(`📚 Loading books for category: ${categoryId}`);
+
+                const response = await fetch(`${API_BASE_URL}/book/apies/published/category/${categoryId}`);
+
+                if (response.ok) {
+                    const categoryBooks = await response.json();
+                    console.log(`✅ Category books loaded: ${categoryBooks.length} books`);
+
+                    // ✅ FIX: Hibernate proxy objects handle karo
+                    filteredBooks = categoryBooks.map(book => ({
+                        id: book.id,
+                        title: book.title,
+                        author: book.author,
+                        description: book.description,
+                        language: book.language,
+                        coverImagePath: book.coverImagePath,
+                        status: book.status,
+                        uploadedAt: book.uploadedAt,
+                        category: book.category ? {
+                            id: book.category.id,
+                            categoryName: book.category.categoryName
+                        } : null
+                    }));
+
+                    renderBooks();
+                    updatePagination();
+                } else {
+                    console.error(`❌ Category API failed with status: ${response.status}`);
+                    throw new Error('Failed to load category books');
+                }
+            }
+        } catch (error) {
+            console.error('❌ Error filtering by category:', error);
+            showError('Failed to load category books. Showing all books instead.');
+
+            // Fallback: show all books
+            await loadBooks();
+        } finally {
+            showLoading(false);
+        }
     }
-}
 
     // ===== SEARCH BOOKS =====
     async function searchBooks(query) {
@@ -1306,7 +1420,7 @@
                 throw new Error('Search failed');
             }
         } catch (error) {
-            console.error('Error searching books:', error);
+            console.error('❌ Error searching books:', error);
             // Fallback: client-side search
             filteredBooks = allBooks.filter(book =>
                 book.title.toLowerCase().includes(query.toLowerCase()) ||
@@ -1350,7 +1464,7 @@
                 book.category.categoryName : 'Uncategorized';
 
             html += `
-                <div class="book" onclick="showBookDetails(${book.id})">
+                <div class="book" onclick="openBookDetails(${book.id})">
                     <img src="${coverUrl}" alt="${book.title}"
                          onerror="this.src='${generatePlaceholderSvg(book.title)}'">
                     <div class="book-info">
@@ -1372,72 +1486,41 @@
         main.innerHTML = html;
     }
 
-    // ===== SHOW BOOK DETAILS =====
-    async function showBookDetails(bookId) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/book/apies/findById/${bookId}`);
+    // ===== OPEN BOOK DETAILS PAGE =====
+    function openBookDetails(bookId) {
+        console.log('🔍 Opening book details for ID:', bookId);
 
-            if (response.ok) {
-                const book = await response.json();
-                showBookModal(book);
-            } else {
-                throw new Error('Failed to load book details');
-            }
-        } catch (error) {
-            console.error('Error loading book details:', error);
-            showError('Failed to load book details.');
+        // ✅ FIX: Check authentication but don't redirect immediately
+        const user = currentUser;
+
+        if (!user) {
+            console.log('⚠️ User not logged in, showing login prompt');
+            showNotification('Please login to view book details', 'info');
+
+            // Store the intended book ID and redirect to login
+            localStorage.setItem('redirectAfterLogin', `/book-details?bookId=${bookId}`);
+
+            setTimeout(() => {
+                window.location.href = '/Login';
+            }, 2000);
+            return;
         }
-    }
 
-    // ===== SHOW BOOK MODAL =====
-    async function showBookModal(book) {
-        const modal = document.getElementById('bookModal');
-        const modalBody = document.getElementById('modalBody');
+        console.log('✅ User authenticated, opening book details');
 
-        const coverUrl = book.coverImagePath ?
-            `${API_BASE_URL}/uploads/${book.coverImagePath}` :
-            generatePlaceholderSvg(book.title);
+        // ✅ FIX: Use proper URL format for Spring Boot
+        const bookDetailsUrl = `/book-details?bookId=${bookId}`;
+        console.log('📝 Opening URL:', bookDetailsUrl);
 
-        const categoryName = book.category ?
-            book.category.categoryName : 'Uncategorized';
-
-        // Check if book is already in reading list
-        const isInReadingList = await checkBookInReadingList(book.id);
-
-        modalBody.innerHTML = `
-            <img src="${coverUrl}" alt="${book.title}" class="modal-cover"
-                 onerror="this.src='${generatePlaceholderSvg(book.title)}'">
-            <div class="modal-info">
-                <h2>${book.title}</h2>
-                <h4>by ${book.author}</h4>
-                <p><strong>Category:</strong> ${categoryName}</p>
-                <p><strong>Language:</strong> ${book.language || 'English'}</p>
-                <p><strong>Status:</strong> ${book.status || 'Published'}</p>
-                ${book.description ? `<p><strong>Description:</strong> ${book.description}</p>` : ''}
-                ${book.uploadedAt ? `<p><strong>Added:</strong> ${new Date(book.uploadedAt).toLocaleDateString()}</p>` : ''}
-
-                <div style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button onclick="openBookReader(${book.id})" class="read-more">
-                        📖 Read This Book
-                    </button>
-                    <button onclick="addToReadingList(${book.id})"
-                            class="read-more"
-                            style="background: ${isInReadingList ? '#28a745' : '#6c757d'};"
-                            id="readingListBtn${book.id}">
-                        ${isInReadingList ? '✓ In Reading List' : '+ Add to Reading List'}
-                    </button>
-                </div>
-            </div>
-        `;
-
-        modal.classList.add('active');
+        // Open in new tab
+        window.open(bookDetailsUrl, '_blank');
     }
 
     // ===== READING LIST FUNCTIONS =====
     async function addToReadingList(bookId) {
         try {
-            const user = getCurrentUser();
-            if (!user) {
+            const user = currentUser;
+            if (!user || !user.id) {
                 showNotification('Please login to add books to reading list', 'error');
                 window.location.href = '/Login';
                 return;
@@ -1458,32 +1541,26 @@
 
             if (response.ok) {
                 showNotification('✅ Book added to reading list!', 'success');
-                // Update button text
-                const button = document.getElementById(`readingListBtn${bookId}`);
-                if (button) {
-                    button.textContent = '✓ In Reading List';
-                    button.style.background = '#28a745';
-                }
             } else {
                 showNotification(result.error || 'Failed to add to reading list', 'error');
             }
         } catch (error) {
-            console.error('Error adding to reading list:', error);
+            console.error('❌ Error adding to reading list:', error);
             showNotification('Error adding to reading list', 'error');
         }
     }
 
     async function checkBookInReadingList(bookId) {
         try {
-            const user = getCurrentUser();
-            if (!user) return false;
+            const user = currentUser;
+            if (!user || !user.id) return false;
 
             const response = await fetch(`${API_BASE_URL}/reading/check?userId=${user.id}&bookId=${bookId}`);
             const result = await response.json();
 
             return result.inReadingList || false;
         } catch (error) {
-            console.error('Error checking reading list:', error);
+            console.error('❌ Error checking reading list:', error);
             return false;
         }
     }
@@ -1572,7 +1649,7 @@
                 generatePlaceholderSvg(book.title);
 
             return `
-                <div class="book-card" onclick="showBookDetails(${book.id})">
+                <div class="book-card" onclick="openBookDetails(${book.id})">
                     <img src="${coverUrl}" alt="${book.title}" class="book-cover"
                          onerror="this.src='${generatePlaceholderSvg(book.title)}'">
                     <div class="book-info">
@@ -1656,190 +1733,149 @@
         `;
     }
 
-    // ✅ IMPROVED: Get current user with better error handling
-    function getCurrentUser() {
-    try {
-        const userData = localStorage.getItem('user');
+    // ===== NAVIGATE TO DASHBOARD =====
+    function navigateToDashboard() {
+        console.log('🚀 Navigating to dashboard...');
+
+        const user = currentUser;
         const isLoggedIn = localStorage.getItem('isLoggedIn');
 
-        console.log('🔍 Auth Check:', {
-            userData: !!userData,
+        console.log('Dashboard Navigation Check:', {
+            user: !!user,
             isLoggedIn: isLoggedIn
         });
 
-        if (userData && isLoggedIn === 'true') {
-            currentUser = JSON.parse(userData);
-            document.getElementById('username').textContent = currentUser.name || currentUser.email || 'User';
-            return currentUser;
+        if (user && isLoggedIn === 'true') {
+            console.log('✅ Authentication successful, redirecting to dashboard...');
+            window.location.href = '/User-Dashboard';
+        } else {
+            console.log('❌ User not authenticated, redirecting to login...');
+            showNotification('Please login to access your dashboard', 'error');
+            window.location.href = '/Login';
         }
-        return null;
-    } catch (error) {
-        console.error('Error getting user:', error);
-        return null;
     }
-}
 
-    // ✅ NEW: Navigate to dashboard function
-    function navigateToDashboard() {
-    console.log('🚀 Navigating to dashboard...');
-
-    const user = getCurrentUser();
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-
-    console.log('Dashboard Navigation Check:', {
-        user: !!user,
-        isLoggedIn: isLoggedIn
-    });
-
-    if (user && isLoggedIn === 'true') {
-        console.log('✅ Authentication successful, redirecting to dashboard...');
-
-        // ✅ CORRECT: Templates folder ke liye direct URL
-        // Spring Boot automatically templates folder se serve karta hai
-        window.location.href = '/User-Dashboard';
-
-    } else {
-        console.log('❌ User not authenticated, redirecting to login...');
-        showNotification('Please login to access your dashboard', 'error');
-        window.location.href = '/Login';
-    }
-}
-
-    // ✅ IMPROVED: Event listeners with proper dashboard navigation
+    // ===== IMPROVED EVENT LISTENERS =====
     function setupEventListeners() {
-    console.log('🔧 Setting up event listeners...');
+        console.log('🔧 Setting up event listeners...');
 
-    // Header search form
-    const headerSearchForm = document.getElementById('headerSearchForm');
-    const headerSearchInput = document.getElementById('header-search');
+        // Header search form
+        const headerSearchForm = document.getElementById('headerSearchForm');
+        const headerSearchInput = document.getElementById('header-search');
 
-    headerSearchForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        searchBooks(headerSearchInput.value);
-    });
-
-    // Slider navigation
-    document.getElementById('slideLeft').addEventListener('click', () => {
-        if (currentSlide > 0) {
-            goToSlide(currentSlide - 1);
-        }
-    });
-
-    document.getElementById('slideRight').addEventListener('click', () => {
-        const totalSlides = Math.ceil(allBooks.length / 4);
-        if (currentSlide < totalSlides - 1) {
-            goToSlide(currentSlide + 1);
-        }
-    });
-
-    // Modal close
-    const closeModal = document.getElementById('closeModal');
-    const modal = document.getElementById('bookModal');
-
-    closeModal.addEventListener('click', () => {
-        modal.classList.remove('active');
-    });
-
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.classList.remove('active');
-        }
-    });
-
-    // Keyboard events
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            modal.classList.remove('active');
-        }
-    });
-
-    // ✅ FIXED: User menu with proper dashboard navigation
-    const userMenu = document.getElementById('userMenu');
-    const dropdown = document.getElementById('dropdownMenu');
-
-    userMenu.addEventListener('click', (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        console.log('👤 User menu clicked');
-        dropdown.classList.toggle('active');
-    });
-
-    // ✅ FIXED: Dropdown menu click handling for templates
-    dropdown.addEventListener('click', (e) => {
-        e.stopPropagation();
-
-        const link = e.target.closest('a');
-        if (link) {
-            const href = link.getAttribute('href');
-            console.log('📋 Dropdown link clicked:', href);
-
-            if (href && (href.includes('Dashboard') || href.includes('dashboard'))) {
+        if (headerSearchForm && headerSearchInput) {
+            headerSearchForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                console.log('🎯 Dashboard link intercepted');
-                navigateToDashboard();
-            }
-            // Close dropdown after click
-            dropdown.classList.remove('active');
+                const query = headerSearchInput.value.trim();
+                if (query) {
+                    searchBooks(query);
+                }
+            });
         }
-    });
 
-    // Close dropdown when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!userMenu.contains(e.target)) {
-            dropdown.classList.remove('active');
+        // Slider navigation
+        const slideLeft = document.getElementById('slideLeft');
+        const slideRight = document.getElementById('slideRight');
+
+        if (slideLeft) {
+            slideLeft.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    goToSlide(currentSlide - 1);
+                }
+            });
         }
-    });
 
-    // ✅ FIXED: Direct dashboard link handler
-    document.addEventListener('click', function(e) {
-        const dashboardLink = e.target.closest('a[href*="Dashboard"]');
-        if (dashboardLink) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('🔗 Direct dashboard link clicked');
-            navigateToDashboard();
+        if (slideRight) {
+            slideRight.addEventListener('click', () => {
+                const totalSlides = Math.ceil(allBooks.length / 4);
+                if (currentSlide < totalSlides - 1) {
+                    goToSlide(currentSlide + 1);
+                }
+            });
         }
-    });
 
-    // Logout
-    document.getElementById('logoutBtn').addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('🚪 Logout clicked');
-        logout();
-    });
+        // ✅ FIXED: User menu with better error handling
+        const userMenu = document.getElementById('userMenu');
+        const dropdown = document.getElementById('dropdownMenu');
 
-    console.log('✅ Event listeners setup complete');
-}
+        if (userMenu && dropdown) {
+            userMenu.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdown.classList.toggle('active');
+            });
 
-    // ✅ IMPROVED: Logout function
+            // Close dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!userMenu.contains(e.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+
+            // Dropdown menu items
+            dropdown.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const link = e.target.closest('a');
+
+                if (link) {
+                    const href = link.getAttribute('href');
+                    console.log('📋 Dropdown link clicked:', href);
+
+                    if (link.id === 'logoutBtn') {
+                        e.preventDefault();
+                        logout();
+                    } else if (href && (href.includes('Dashboard') || href.includes('dashboard'))) {
+                        e.preventDefault();
+                        console.log('🎯 Dashboard link intercepted');
+                        navigateToDashboard();
+                    }
+                    // Other links will follow their natural href behavior
+
+                    dropdown.classList.remove('active');
+                }
+            });
+        }
+
+        // Logout button
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                logout();
+            });
+        }
+
+        console.log('✅ Event listeners setup complete');
+    }
+
+    // ===== IMPROVED LOGOUT FUNCTION =====
     function logout() {
-    console.log('🔒 Logging out...');
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('user');
-    localStorage.removeItem('jwtToken');
-    showNotification('Logged out successfully', 'info');
-    setTimeout(() => {
-        window.location.href = '/Login';
-    }, 1000);
-}
+        console.log('🔒 Logging out...');
 
-    // ✅ NEW: Emergency dashboard navigation (manual trigger)
-    function emergencyDashboard() {
-    console.log('🆕 Emergency dashboard navigation');
-    navigateToDashboard();
-}
+        // Clear all storage
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('user');
+        localStorage.removeItem('currentUserId');
+        localStorage.removeItem('jwtToken');
+        localStorage.removeItem('redirectAfterLogin');
+
+        showNotification('Logged out successfully', 'info');
+
+        setTimeout(() => {
+            window.location.href = '/Login';
+        }, 1000);
+    }
 
     // ✅ NEW: Add onclick directly to dashboard link as backup
-   setTimeout(() => {
-    const dashboardLinks = document.querySelectorAll('a[href*="Dashboard"]');
-    dashboardLinks.forEach(link => {
-        // Remove existing href to prevent Spring Boot interference
-        link.removeAttribute('href');
-        link.setAttribute('onclick', 'navigateToDashboard(); return false;');
-        console.log('🔗 Dashboard link onclick attribute added');
-    });
-}, 1000);
+    setTimeout(() => {
+        const dashboardLinks = document.querySelectorAll('a[href*="Dashboard"]');
+        dashboardLinks.forEach(link => {
+            // Remove existing href to prevent Spring Boot interference
+            link.removeAttribute('href');
+            link.setAttribute('onclick', 'navigateToDashboard(); return false;');
+            console.log('🔗 Dashboard link onclick attribute added');
+        });
+    }, 1000);
 </script>
+
 </body>
 </html>

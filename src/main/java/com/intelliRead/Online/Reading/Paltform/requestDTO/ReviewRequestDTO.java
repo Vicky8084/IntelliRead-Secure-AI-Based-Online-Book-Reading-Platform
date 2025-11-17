@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReviewRequestDTO {
     private int rating;
-    private String reviewText;
+    private String reviewText; // ✅ Ye field confirm karo
     private int userId;
     private int bookId;
 }

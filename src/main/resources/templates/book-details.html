@@ -1,0 +1,2100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details | Intelli-Read</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Chakra Petch", sans-serif;
+            text-decoration: none;
+            list-style: none;
+        }
+
+        /* ===== BODY ===== */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+            overflow-y: auto;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* Blurred background image + overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url(https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2053&q=80);
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px) brightness(0.7);
+            z-index: -1;
+            transform: scale(1.05);
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 60px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: linear-gradient(to left, rgba(235,198,129,0.95), rgba(114,114,223,0.95));
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 65px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .header-search {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            padding: 8px 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header-search input {
+            background: transparent;
+            border: none;
+            color: #000;
+            padding: 5px 10px;
+            width: 200px;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .header-search input::placeholder {
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        .header-search button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .header-search button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .header-search button i {
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            width: 100%;
+            padding: 115px 20px 20px;
+        }
+
+        /* ===== BOOK DETAILS CONTAINER ===== */
+        .book-details-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            padding: 40px;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 20px 50px rgba(46, 4, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-details-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* ===== BOOK HEADER SECTION ===== */
+        .book-details-header {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 40px;
+            align-items: flex-start;
+        }
+
+        .book-cover-section {
+            flex: 0 0 320px;
+            position: relative;
+        }
+
+        .book-cover-large {
+            width: 100%;
+            height: 420px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            border: 3px solid white;
+        }
+
+        .book-cover-large:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        }
+
+        .book-cover-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .book-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(255,107,107,0.3);
+        }
+
+        .book-info-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .book-title-section {
+            margin-bottom: 25px;
+        }
+
+        .book-info-main h1 {
+            font-size: 2.8rem;
+            color: #000;
+            margin-bottom: 10px;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #000 0%, #667eea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .book-info-main h2 {
+            font-size: 1.6rem;
+            color: #667eea;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .book-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .book-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+            background: rgba(102, 126, 234, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .meta-label {
+            font-size: 0.9rem;
+            color: #667eea;
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .meta-value {
+            font-size: 1.1rem;
+            color: #000;
+            font-weight: 500;
+        }
+
+        .meta-value.category {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9rem;
+        }
+
+        .book-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 14px 28px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .secondary-btn {
+            background: rgba(255, 255, 255, 0.9);
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .success-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* ===== BOOK DESCRIPTION ===== */
+        .book-description {
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #000;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #667eea;
+        }
+
+        .description-text {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #333;
+            text-align: justify;
+        }
+
+        /* ===== BOOK STATS ===== */
+        .book-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ===== RATINGS & REVIEWS SECTION ===== */
+        .ratings-section {
+            margin-bottom: 40px;
+        }
+
+        .ratings-overview {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 30px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            align-items: center;
+        }
+
+        .average-rating {
+            text-align: center;
+            flex: 0 0 180px;
+        }
+
+        .rating-score {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 10px;
+        }
+
+        .rating-stars {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+            gap: 3px;
+        }
+
+        .star {
+            color: #ffc107;
+            font-size: 1.5rem;
+        }
+
+        .rating-count {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .rating-breakdown {
+            flex: 1;
+        }
+
+        .rating-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .rating-label {
+            width: 100px;
+            font-size: 1rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .rating-progress {
+            flex: 1;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 0 15px;
+        }
+
+        .rating-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #ffc107 0%, #ff8c00 100%);
+            border-radius: 5px;
+        }
+
+        .rating-percent {
+            width: 50px;
+            font-size: 1rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        /* ===== ADD REVIEW SECTION ===== */
+        .add-review-section {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 2px dashed #667eea;
+        }
+
+        .review-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .rating-input {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 8px;
+        }
+
+        .star-input {
+            font-size: 2rem;
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .star-input:hover {
+            transform: scale(1.2);
+        }
+
+        .star-input.active {
+            color: #ffc107;
+            transform: scale(1.3);
+        }
+
+        .review-textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            resize: vertical;
+            outline: none;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .review-textarea:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .submit-review-btn {
+            align-self: flex-start;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-review-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* ===== REVIEWS LIST ===== */
+        .reviews-list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .review-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-left: 5px solid #667eea;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .reviewer-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .reviewer-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .reviewer-details h4 {
+            font-size: 1.2rem;
+            color: #000;
+            margin-bottom: 5px;
+        }
+
+        .review-date {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .review-rating {
+            display: flex;
+            gap: 3px;
+        }
+
+        .review-content {
+            color: #333;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        /* ===== SIMILAR BOOKS SECTION ===== */
+        .similar-books-section {
+            margin-bottom: 40px;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .similar-book-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .similar-book-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .similar-book-cover {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .similar-book-info {
+            padding: 15px;
+        }
+
+        .similar-book-info h4 {
+            font-size: 1.1rem;
+            color: #000;
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+
+        .similar-book-info p {
+            color: #667eea;
+            font-size: 0.9rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .main-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 60px;
+            background: linear-gradient(to right, rgba(235,198,129,0.95), rgba(114,114,223,0.95));
+            color: #000;
+            width: 100%;
+            position: relative;
+            z-index: 5;
+            flex-wrap: wrap;
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #000;
+        }
+
+        .footer-section p {
+            margin: 5px 0;
+            color: #000;
+        }
+
+        .footer-section a {
+            color: #000;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            text-decoration: underline;
+            color: #667eea;
+        }
+
+        .team-highlight {
+            color: #d35400 !important;
+            font-weight: 600;
+        }
+
+        /* ===== LOADING SPINNER ===== */
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+            max-width: 300px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .notification.success {
+            background: #28a745;
+        }
+
+        .notification.error {
+            background: #dc3545;
+        }
+
+        .notification.info {
+            background: #17a2b8;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* User Menu */
+        .user-menu {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .user-menu:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .user-avatar i {
+            font-size: 1.3rem;
+            color: white;
+        }
+
+        .welcome-text {
+            font-size: 0.9rem;
+            color: #000;
+            font-weight: 500;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 10px 0;
+            min-width: 180px;
+            margin-top: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .dropdown.active {
+            display: block;
+        }
+
+        .dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            color: #000;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown a:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+        }
+
+        .dropdown a i {
+            font-size: 1.1rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 768px) {
+            header {
+                padding: 12px 20px;
+            }
+
+            .header-search {
+                display: none;
+            }
+
+            .main-content {
+                padding: 100px 15px 20px;
+            }
+
+            .book-details-container {
+                padding: 25px;
+            }
+
+            .book-details-header {
+                flex-direction: column;
+                gap: 25px;
+            }
+
+            .book-cover-section {
+                flex: 0 0 auto;
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+
+            .book-cover-large {
+                height: 380px;
+            }
+
+            .book-info-main h1 {
+                font-size: 2.2rem;
+            }
+
+            .book-meta-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .ratings-overview {
+                flex-direction: column;
+                gap: 25px;
+            }
+
+            .book-actions {
+                justify-content: center;
+            }
+
+            .action-btn {
+                flex: 1;
+                min-width: 200px;
+                justify-content: center;
+            }
+
+            .main-footer {
+                padding: 20px;
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 70px 10px 20px;
+            }
+
+            .book-details-container {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .book-info-main h1 {
+                font-size: 1.8rem;
+            }
+
+            .book-cover-large {
+                height: 320px;
+            }
+
+            .book-actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .rating-score {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Loading Spinner -->
+<div class="loading-spinner" id="loadingSpinner">
+    <div class="spinner"></div>
+</div>
+
+<!-- ===== HEADER ===== -->
+<header>
+    <div class="logo">
+        <a href="/bookscreen"><img src="../images/logo.png" alt="Logo"></a>
+    </div>
+    <div class="nav-buttons">
+        <form class="header-search" id="headerSearchForm">
+            <input type="text" id="header-search" placeholder="Search books...">
+            <button type="submit"><i class='bx bx-search'></i></button>
+        </form>
+
+        <!-- User Menu -->
+        <div class="user-menu" id="userMenu">
+            <div class="user-avatar">
+                <i class='bx bx-user'></i>
+            </div>
+            <div class="welcome-text">Welcome, <span id="username">Guest</span></div>
+            <div class="dropdown" id="dropdownMenu">
+                <a href="/User-Dashboard"><i class='bx bx-grid-alt'></i> Dashboard</a>
+                <a href="/reading-list"><i class='bx bx-book-bookmark'></i> Reading List</a>
+                <a href="/downloads"><i class='bx bx-download'></i> Downloads</a>
+                <a href="#" id="logoutBtn"><i class='bx bx-log-out'></i> Logout</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="main-content">
+    <div class="book-details-container">
+        <!-- Book Details Header -->
+        <div class="book-details-header">
+            <div class="book-cover-section">
+                <div class="book-cover-large">
+                    <img id="bookCover" src="" alt="Book Cover">
+                </div>
+                <div class="book-badge" id="bookBadge">BESTSELLER</div>
+            </div>
+            <div class="book-info-main">
+                <div class="book-title-section">
+                    <h1 id="bookTitle">Book Title</h1>
+                    <h2 id="bookAuthor">by Author Name</h2>
+                    <p class="book-subtitle" id="bookSubtitle">An inspiring journey through words and imagination</p>
+                </div>
+
+                <div class="book-meta-grid">
+                    <div class="meta-item">
+                        <span class="meta-label">Category</span>
+                        <span class="meta-value category" id="bookCategory">Fiction</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Language</span>
+                        <span class="meta-value" id="bookLanguage">English</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Pages</span>
+                        <span class="meta-value" id="bookPages">320</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Published</span>
+                        <span class="meta-value" id="bookPublished">2023</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Added</span>
+                        <span class="meta-value" id="bookAddedDate">Jan 1, 2023</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Read Time</span>
+                        <span class="meta-value" id="bookReadTime">6-8 hours</span>
+                    </div>
+                </div>
+
+                <div class="book-actions">
+                    <button class="action-btn primary-btn" id="readBookBtn">
+                        <i class='bx bx-book-open'></i> Read This Book
+                    </button>
+                    <button class="action-btn secondary-btn" id="addToReadingListBtn">
+                        <i class='bx bx-book-bookmark'></i> Add to Reading List
+                    </button>
+                    <button class="action-btn success-btn" id="downloadBookBtn">
+                        <i class='bx bx-download'></i> Download
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Book Stats -->
+        <div class="book-stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalReads">1.2K</div>
+                <div class="stat-label">Total Reads</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalReviews">24</div>
+                <div class="stat-label">Reviews</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="completionRate">87%</div>
+                <div class="stat-label">Completion Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="avgRating">4.5</div>
+                <div class="stat-label">Avg Rating</div>
+            </div>
+        </div>
+
+        <!-- Book Description -->
+        <div class="book-description">
+            <h3 class="section-title">
+                <i class='bx bx-book-alt'></i> About This Book
+            </h3>
+            <p class="description-text" id="bookDescription">
+                Book description will be loaded here...
+            </p>
+        </div>
+
+        <!-- Ratings & Reviews Section -->
+        <div class="ratings-section">
+            <h3 class="section-title">
+                <i class='bx bx-star'></i> Ratings & Reviews
+            </h3>
+
+            <!-- Ratings Overview -->
+            <div class="ratings-overview">
+                <div class="average-rating">
+                    <div class="rating-score" id="averageRating">4.5</div>
+                    <div class="rating-stars" id="averageStars">
+                        <!-- Stars will be dynamically generated -->
+                    </div>
+                    <div class="rating-count" id="totalReviewsText">Based on 24 reviews</div>
+                </div>
+
+                <div class="rating-breakdown" id="ratingBreakdown">
+                    <!-- Rating breakdown will be dynamically generated -->
+                </div>
+            </div>
+
+            <!-- Add Review Section -->
+            <div class="add-review-section" id="addReviewSection">
+                <h4>Share Your Thoughts</h4>
+                <form class="review-form" id="reviewForm">
+                    <div class="rating-input">
+                        <span>Your Rating:</span>
+                        <div class="star-rating" id="starRating">
+                            <span class="star-input" data-rating="1">★</span>
+                            <span class="star-input" data-rating="2">★</span>
+                            <span class="star-input" data-rating="3">★</span>
+                            <span class="star-input" data-rating="4">★</span>
+                            <span class="star-input" data-rating="5">★</span>
+                        </div>
+                        <span id="selectedRatingText">0 out of 5</span>
+                    </div>
+                    <input type="hidden" id="userRating" name="rating" value="0">
+                    <textarea class="review-textarea" id="reviewText" placeholder="Share your thoughts about this book... What did you like? What could be better?" required></textarea>
+                    <button type="submit" class="submit-review-btn">Submit Review</button>
+                </form>
+            </div>
+
+            <!-- Reviews List -->
+            <div class="reviews-list" id="reviewsList">
+                <!-- Reviews will be dynamically loaded here -->
+            </div>
+        </div>
+
+        <!-- Similar Books Section -->
+        <div class="similar-books-section">
+            <h3 class="section-title">
+                <i class='bx bx-book-bookmark'></i> You Might Also Like
+            </h3>
+            <div class="books-grid" id="similarBooks">
+                <!-- Similar books will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="main-footer" style="font-family: chakra petch;">
+    <div class="footer-section">
+        <h4>About</h4>
+        <p>Designed and Developed by Team <b class="team-highlight">Rv</b></p>
+    </div>
+    <div class="footer-section">
+        <p>&copy; <span id="year"></span> Intelli-Read. All Rights Reserved.</p>
+        <p><a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a></p>
+    </div>
+    <div class="footer-section">
+        <h4>License</h4>
+        <p>Standard License</p>
+    </div>
+</footer>
+
+<script>
+    // ===== GLOBAL VARIABLES =====
+    const API_BASE_URL = 'http://localhost:8035';
+    let currentBook = null;
+    let currentUser = null;
+    let currentReviews = [];
+    let userRating = 0;
+
+    // ===== AUTHENTICATION CHECK =====
+    function checkAuthentication() {
+        try {
+            console.log('🔐 Checking authentication...');
+
+            // Check if user is logged in
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            console.log('🔐 isLoggedIn:', isLoggedIn);
+
+            if (isLoggedIn !== 'true') {
+                console.error('❌ User not logged in');
+                showNotification('Please login to access book details', 'error');
+                setTimeout(() => {
+                    window.location.href = '/Login';
+                }, 2000);
+                return false;
+            }
+
+            // Check if user data exists
+            const userData = localStorage.getItem('user');
+            console.log('🔐 User data exists:', !!userData);
+
+            if (!userData) {
+                console.error('❌ No user data found');
+                showNotification('Please login again', 'error');
+                setTimeout(() => {
+                    window.location.href = '/Login';
+                }, 2000);
+                return false;
+            }
+
+            // Check if user ID exists
+            const userId = getCurrentUserId();
+            console.log('🔐 User ID:', userId);
+
+            if (!userId) {
+                console.error('❌ No user ID found');
+                showNotification('User session expired. Please login again.', 'error');
+                setTimeout(() => {
+                    window.location.href = '/Login';
+                }, 2000);
+                return false;
+            }
+
+            console.log('✅ Authentication successful');
+            return true;
+        } catch (error) {
+            console.error('❌ Error checking authentication:', error);
+            showNotification('Authentication error. Please login again.', 'error');
+            setTimeout(() => {
+                window.location.href = '/Login';
+            }, 2000);
+            return false;
+        }
+    }
+
+    // ===== USER ID MANAGEMENT =====
+    function getCurrentUserId() {
+        try {
+            console.log('🔍 Getting current user ID...');
+
+            // Pehle localStorage check karo
+            let userId = localStorage.getItem('currentUserId');
+
+            if (userId) {
+                console.log('✅ User ID from localStorage:', userId);
+                return parseInt(userId);
+            }
+
+            // Agar localStorage mein nahi hai toh URL se try karo
+            const urlParams = new URLSearchParams(window.location.search);
+            userId = urlParams.get('userId');
+
+            if (userId) {
+                console.log('✅ User ID from URL:', userId);
+                localStorage.setItem('currentUserId', userId);
+                return parseInt(userId);
+            }
+
+            // Agar URL se bhi nahi mila, toh user data se try karo
+            const userData = localStorage.getItem('user');
+            if (userData) {
+                const user = JSON.parse(userData);
+                if (user && user.id) {
+                    console.log('✅ User ID from user data:', user.id);
+                    localStorage.setItem('currentUserId', user.id.toString());
+                    return user.id;
+                }
+            }
+
+            console.error('❌ No user ID found anywhere!');
+            return null;
+        } catch (error) {
+            console.error('❌ Error getting user ID:', error);
+            return null;
+        }
+    }
+
+    // ===== USER SESSION MANAGEMENT =====
+    function getCurrentUser() {
+        try {
+            console.log('👤 Getting current user...');
+
+            // Pehle authentication check karo
+            if (!checkAuthentication()) {
+                return null;
+            }
+
+            // Get user ID first
+            const userId = getCurrentUserId();
+            if (!userId) {
+                console.error('❌ No user ID available');
+                return null;
+            }
+
+            // Get user data from localStorage
+            const userData = localStorage.getItem('user');
+            if (!userData) {
+                console.error('❌ No user data found in localStorage');
+                return null;
+            }
+
+            const user = JSON.parse(userData);
+            console.log('📋 User data from localStorage:', user);
+
+            // Validate user has proper ID
+            if (!user || !user.id) {
+                console.error('❌ User ID missing in localStorage user data');
+                return null;
+            }
+
+            // Verify that the user ID matches
+            if (user.id !== userId) {
+                console.warn('⚠️ User ID mismatch, updating with current user ID');
+                user.id = userId;
+                localStorage.setItem('user', JSON.stringify(user));
+            }
+
+            console.log('✅ Valid user found with ID:', user.id);
+            document.getElementById('username').textContent = user.name || user.email || 'User';
+            return user;
+
+        } catch (error) {
+            console.error('❌ Error getting user:', error);
+            return null;
+        }
+    }
+
+    // ===== INITIALIZATION =====
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🔧 Script loaded successfully');
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Pehle authentication check karo
+        if (!checkAuthentication()) {
+            return;
+        }
+
+        // Get book ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookId = urlParams.get('bookId');
+
+        if (!bookId) {
+            showError('No book ID provided. Redirecting to book list...');
+            setTimeout(() => {
+                window.location.href = '/bookscreen';
+            }, 2000);
+            return;
+        }
+
+        console.log('📚 Book ID from URL:', bookId);
+        initializePage(bookId);
+        setupEventListeners();
+    });
+
+    // ===== PAGE INITIALIZATION =====
+    async function initializePage(bookId) {
+        showLoading(true);
+        try {
+            console.log('🚀 Starting page initialization...');
+
+            // Double check authentication
+            if (!checkAuthentication()) {
+                return;
+            }
+
+            // Check authentication
+            const user = getCurrentUser();
+            console.log('👤 User for page initialization:', user);
+
+            if (!user) {
+                console.error('❌ User not authenticated, redirecting to login');
+                showNotification('Please login to view book details', 'error');
+                setTimeout(() => {
+                    window.location.href = '/Login';
+                }, 2000);
+                return;
+            }
+
+            // Load page data
+            await loadBookDetails(bookId);
+            await loadReviews(bookId);
+            await loadSimilarBooks(bookId);
+
+            console.log('✅ Page initialization completed');
+
+        } catch (error) {
+            console.error('❌ Error initializing page:', error);
+            showError('Failed to load book details. Please try again later.');
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    // ===== BOOK DETAILS =====
+    async function loadBookDetails(bookId) {
+        try {
+            console.log('📖 Loading book details for ID:', bookId);
+            const response = await fetch(`${API_BASE_URL}/book/apies/findById/${bookId}`);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const bookData = await response.json();
+            console.log('✅ Book details loaded:', bookData);
+            currentBook = bookData;
+            displayBookDetails(bookData);
+
+        } catch (error) {
+            console.error('❌ Error loading book details:', error);
+            showError('Failed to load book details from server.');
+        }
+    }
+
+    function displayBookDetails(book) {
+        // Book Cover
+        const coverUrl = getBookCoverUrl(book);
+        document.getElementById('bookCover').src = coverUrl;
+        document.getElementById('bookCover').onerror = function() {
+            this.src = generatePlaceholderSvg(book.title);
+        };
+
+        // Basic Information
+        document.getElementById('bookTitle').textContent = book.title || 'Unknown Title';
+        document.getElementById('bookAuthor').textContent = `by ${book.author || 'Unknown Author'}`;
+        document.getElementById('bookCategory').textContent = book.category ? book.category.categoryName : 'Uncategorized';
+        document.getElementById('bookLanguage').textContent = book.language || 'English';
+        document.getElementById('bookAddedDate').textContent = book.uploadedAt ?
+            new Date(book.uploadedAt).toLocaleDateString() : 'Unknown';
+        document.getElementById('bookDescription').textContent = book.description || 'No description available.';
+
+        // Auto-calculated data
+        document.getElementById('bookPages').textContent = calculateBookPages(book);
+        document.getElementById('bookPublished').textContent = calculatePublishedYear(book);
+        document.getElementById('bookReadTime').textContent = calculateReadTime(book);
+
+        // Initialize stats (will be updated when reviews load)
+        document.getElementById('totalReads').textContent = '...';
+        document.getElementById('totalReviews').textContent = '...';
+        document.getElementById('completionRate').textContent = '...';
+        document.getElementById('avgRating').textContent = '...';
+
+        // Action buttons
+        document.getElementById('readBookBtn').onclick = () => openBookReader(book.id);
+        document.getElementById('downloadBookBtn').onclick = () => downloadBook(book.id);
+
+        // Check reading list status
+        checkBookInReadingList(book.id).then(isInList => {
+            const btn = document.getElementById('addToReadingListBtn');
+            if (isInList) {
+                btn.innerHTML = '<i class="bx bx-check"></i> In Reading List';
+                btn.style.background = '#28a745';
+                btn.onclick = null;
+            } else {
+                btn.onclick = () => addToReadingList(book.id);
+            }
+        });
+
+        console.log('✅ Book details displayed');
+    }
+
+    function getBookCoverUrl(book) {
+        if (!book.coverImagePath) {
+            return generatePlaceholderSvg(book.title);
+        }
+
+        if (book.coverImagePath.startsWith('http')) {
+            return book.coverImagePath;
+        }
+
+        return `${API_BASE_URL}/uploads/${book.coverImagePath}`;
+    }
+
+    // ===== AUTO CALCULATED DATA =====
+    function calculateBookPages(book) {
+        const descriptionLength = book.description?.length || 0;
+        const basePages = Math.floor(descriptionLength / 50);
+        return Math.max(100, Math.min(800, basePages));
+    }
+
+    function calculatePublishedYear(book) {
+        if (book.uploadedAt) {
+            return new Date(book.uploadedAt).getFullYear();
+        }
+        return new Date().getFullYear();
+    }
+
+    function calculateReadTime(book) {
+        const pages = parseInt(document.getElementById('bookPages').textContent) || 300;
+        const wordsPerPage = 250;
+        const totalWords = pages * wordsPerPage;
+        const readingSpeed = 200;
+        const totalMinutes = Math.ceil(totalWords / readingSpeed);
+
+        if (totalMinutes <= 60) return `${totalMinutes} minutes`;
+        if (totalMinutes <= 120) return '1-2 hours';
+        if (totalMinutes <= 240) return '2-4 hours';
+        if (totalMinutes <= 360) return '4-6 hours';
+        return '6-8 hours';
+    }
+
+    function formatNumber(num) {
+        if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+        if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+        return num.toString();
+    }
+
+    // ===== REVIEWS & RATINGS =====
+    async function loadReviews(bookId) {
+    try {
+        console.log('💬 Loading reviews for book ID:', bookId);
+        const response = await fetch(`${API_BASE_URL}/review/apies/book/${bookId}`);
+
+        console.log('📡 Reviews API response status:', response.status);
+
+        if (response.ok) {
+            const reviewsData = await response.json();
+            console.log('✅ Reviews loaded:', reviewsData);
+
+            // ✅ FIX: Load user details for each review
+            const reviewsWithUserDetails = await Promise.all(
+                reviewsData.map(async (review) => {
+                    try {
+                        if (review.user && review.user.id) {
+                            const userResponse = await fetch(`${API_BASE_URL}/user/apies/findById/${review.user.id}`);
+                            if (userResponse.ok) {
+                                const userData = await userResponse.json();
+                                review.user = userData;
+                            }
+                        }
+                        return review;
+                    } catch (error) {
+                        console.error('❌ Error loading user details:', error);
+                        return review;
+                    }
+                })
+            );
+
+            currentReviews = reviewsWithUserDetails;
+            displayReviews(currentReviews);
+            updateRatingsOverview(currentReviews);
+            updateReviewStats(currentReviews);
+            updateBookReadsStats();
+        } else {
+            console.error('❌ Failed to load reviews, status:', response.status);
+            currentReviews = [];
+            displayReviews([]);
+            updateRatingsOverview([]);
+            updateReviewStats([]);
+            updateBookReadsStats();
+        }
+    } catch (error) {
+        console.error('❌ Error loading reviews:', error);
+        currentReviews = [];
+        displayReviews([]);
+        updateRatingsOverview([]);
+        updateReviewStats([]);
+        updateBookReadsStats();
+    }
+}
+
+    function updateReviewStats(reviews) {
+        document.getElementById('totalReviews').textContent = reviews.length;
+
+        if (reviews.length > 0) {
+            const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+            const averageRating = totalRating / reviews.length;
+            document.getElementById('avgRating').textContent = averageRating.toFixed(1);
+        } else {
+            document.getElementById('avgRating').textContent = '0.0';
+        }
+    }
+
+    function updateBookReadsStats() {
+        const reviewsCount = currentReviews.length;
+        const bookAge = currentBook.uploadedAt ?
+            Math.max(1, Math.floor((new Date() - new Date(currentBook.uploadedAt)) / (1000 * 60 * 60 * 24))) : 30;
+
+        const baseReads = reviewsCount * 10;
+        const timeBasedReads = Math.floor(bookAge * 5);
+        const totalReads = Math.max(reviewsCount, baseReads + timeBasedReads);
+
+        document.getElementById('totalReads').textContent = formatNumber(totalReads);
+
+        const completionRate = reviewsCount > 0 ?
+            Math.min(95, Math.max(60, (reviewsCount / totalReads) * 1000)) : 75;
+        document.getElementById('completionRate').textContent = `${Math.round(completionRate)}%`;
+    }
+
+    function displayReviews(reviews) {
+    const reviewsList = document.getElementById('reviewsList');
+
+    if (!reviews || reviews.length === 0) {
+        reviewsList.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: #666; background: rgba(255,255,255,0.7); border-radius: 15px;">
+                <h4 style="margin-bottom: 10px;">No reviews yet</h4>
+                <p>Be the first to share your thoughts about this book!</p>
+            </div>
+        `;
+        return;
+    }
+
+    let html = '';
+    reviews.forEach((review, index) => {
+        // ✅ FIXED: Better user information extraction
+        let userInitial = 'U';
+        let userName = 'Anonymous User';
+
+        if (review.user) {
+            // Try multiple fields for user name
+            if (review.user.name && review.user.name !== 'null' && review.user.name.trim() !== '') {
+                userInitial = review.user.name.charAt(0).toUpperCase();
+                userName = review.user.name;
+            } else if (review.user.username && review.user.username !== 'null' && review.user.username.trim() !== '') {
+                userInitial = review.user.username.charAt(0).toUpperCase();
+                userName = review.user.username;
+            } else if (review.user.email && review.user.email !== 'null' && review.user.email.trim() !== '') {
+                userInitial = review.user.email.charAt(0).toUpperCase();
+                userName = review.user.email.split('@')[0];
+            } else if (review.user.id) {
+                userName = `User ${review.user.id}`;
+                userInitial = 'U';
+            }
+
+            console.log(`👤 Review ${index + 1} - User: ${userName}, Initial: ${userInitial}`);
+        }
+
+        const reviewContent = review.reviewText || review.comment || 'No review text provided.';
+        const reviewDate = review.createdAt ?
+            new Date(review.createdAt).toLocaleDateString() : 'Unknown date';
+
+        html += `
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="reviewer-info">
+                        <div class="reviewer-avatar">${userInitial}</div>
+                        <div class="reviewer-details">
+                            <h4>${userName}</h4>
+                            <div class="review-date">${reviewDate}</div>
+                        </div>
+                    </div>
+                    <div class="review-rating">
+                        ${generateStarRating(review.rating)}
+                    </div>
+                </div>
+                <div class="review-content">
+                    ${reviewContent}
+                </div>
+            </div>
+        `;
+    });
+
+    reviewsList.innerHTML = html;
+    console.log('✅ Reviews display completed');
+}
+
+    function updateRatingsOverview(reviews) {
+        if (!reviews || reviews.length === 0) {
+            document.getElementById('averageRating').textContent = '0.0';
+            document.getElementById('totalReviewsText').textContent = 'No reviews yet';
+            document.getElementById('averageStars').innerHTML = generateStarRating(0);
+            document.getElementById('ratingBreakdown').innerHTML = '<p style="text-align: center; color: #666;">No rating data available</p>';
+            return;
+        }
+
+        const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+        const averageRating = totalRating / reviews.length;
+
+        document.getElementById('averageRating').textContent = averageRating.toFixed(1);
+        document.getElementById('totalReviewsText').textContent = `Based on ${reviews.length} review${reviews.length !== 1 ? 's' : ''}`;
+        document.getElementById('averageStars').innerHTML = generateStarRating(averageRating);
+
+        const ratingCounts = {5: 0, 4: 0, 3: 0, 2: 0, 1: 0};
+        reviews.forEach(review => {
+            ratingCounts[review.rating]++;
+        });
+
+        let breakdownHtml = '';
+        for (let i = 5; i >= 1; i--) {
+            const count = ratingCounts[i];
+            const percentage = reviews.length > 0 ? (count / reviews.length) * 100 : 0;
+
+            breakdownHtml += `
+                <div class="rating-bar">
+                    <span class="rating-label">
+                        ${i} <i class='bx bx-star' style="color: #ffc107;"></i>
+                    </span>
+                    <div class="rating-progress">
+                        <div class="rating-fill" style="width: ${percentage}%"></div>
+                    </div>
+                    <span class="rating-percent">${count}</span>
+                </div>
+            `;
+        }
+
+        document.getElementById('ratingBreakdown').innerHTML = breakdownHtml;
+    }
+
+    // ===== REVIEW SUBMISSION =====
+    async function submitReview(event) {
+        event.preventDefault();
+        console.log('💬 Starting review submission...');
+
+        // ✅ ACTUAL USER ID USE KARO
+        const user = getCurrentUser();
+        console.log('👤 User for review submission:', user);
+
+        if (!user) {
+            console.error('❌ No valid user found for review submission');
+            showNotification('Please login to submit a review', 'error');
+            return;
+        }
+
+        if (userRating === 0) {
+            console.error('❌ No rating selected');
+            showNotification('Please select a rating', 'error');
+            return;
+        }
+
+        const reviewText = document.getElementById('reviewText').value.trim();
+        if (!reviewText) {
+            console.error('❌ No review text provided');
+            showNotification('Please write a review', 'error');
+            return;
+        }
+
+        // ✅ ACTUAL USER ID BHEJO
+        const reviewData = {
+            userId: parseInt(user.id),
+            bookId: parseInt(currentBook.id),
+            rating: userRating,
+            reviewText: reviewText
+        };
+
+        console.log('📝 Submitting review with ACTUAL user data:', reviewData);
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/review/apies/add`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(reviewData)
+            });
+
+            console.log('📡 Review submission response status:', response.status);
+
+            const responseText = await response.text();
+            console.log('📡 Review submission response text:', responseText);
+
+            let result;
+            try {
+                result = JSON.parse(responseText);
+                console.log('📡 Parsed response:', result);
+            } catch (e) {
+                result = {
+                    success: response.ok,
+                    message: responseText || 'Review submitted successfully'
+                };
+            }
+
+            if (response.ok) {
+                console.log('✅ Review submitted successfully');
+                showNotification('Review submitted successfully!', 'success');
+                document.getElementById('reviewForm').reset();
+                resetStarRating();
+
+                // Reload reviews to show the new one
+                console.log('🔄 Reloading reviews after submission');
+                await loadReviews(currentBook.id);
+            } else {
+                console.error('❌ Review submission failed:', result);
+                showNotification(result.message || result.error || 'Failed to submit review', 'error');
+            }
+        } catch (error) {
+            console.error('❌ Error submitting review:', error);
+            showNotification('Network error. Please try again.', 'error');
+        }
+    }
+
+    // ===== STAR RATING FUNCTIONS =====
+    function setupStarRating() {
+        const starInputs = document.querySelectorAll('.star-input');
+
+        starInputs.forEach((star) => {
+            star.addEventListener('click', function() {
+                const rating = parseInt(this.getAttribute('data-rating'));
+                setStarRating(rating);
+            });
+
+            star.addEventListener('mouseover', function() {
+                const rating = parseInt(this.getAttribute('data-rating'));
+                highlightStars(rating);
+            });
+        });
+
+        document.getElementById('starRating').addEventListener('mouseleave', function() {
+            highlightStars(userRating);
+        });
+    }
+
+    function setStarRating(rating) {
+        userRating = rating;
+        document.getElementById('userRating').value = rating;
+        document.getElementById('selectedRatingText').textContent = `${rating} out of 5`;
+        highlightStars(rating);
+    }
+
+    function highlightStars(rating) {
+        const starInputs = document.querySelectorAll('.star-input');
+        starInputs.forEach(star => {
+            const starRating = parseInt(star.getAttribute('data-rating'));
+            if (starRating <= rating) {
+                star.classList.add('active');
+            } else {
+                star.classList.remove('active');
+            }
+        });
+    }
+
+    function resetStarRating() {
+        userRating = 0;
+        document.getElementById('userRating').value = 0;
+        document.getElementById('selectedRatingText').textContent = '0 out of 5';
+        highlightStars(0);
+    }
+
+    function generateStarRating(rating) {
+        let starsHtml = '';
+        const fullStars = Math.floor(rating);
+        const hasHalfStar = rating % 1 >= 0.5;
+
+        for (let i = 1; i <= 5; i++) {
+            if (i <= fullStars) {
+                starsHtml += '<span class="star">★</span>';
+            } else if (i === fullStars + 1 && hasHalfStar) {
+                starsHtml += '<span class="star">★</span>';
+            } else {
+                starsHtml += '<span class="star" style="color: #e0e0e0;">★</span>';
+            }
+        }
+
+        return starsHtml;
+    }
+
+    // ===== SIMILAR BOOKS =====
+    async function loadSimilarBooks(bookId) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/book/apies/published`);
+
+            if (response.ok) {
+                const allBooks = await response.json();
+                const currentBookCategory = currentBook.category ? currentBook.category.id : null;
+
+                const similarBooks = allBooks
+                    .filter(book => {
+                        const isSameCategory = book.category && book.category.id === currentBookCategory;
+                        const isNotSameBook = book.id !== currentBook.id;
+                        return isNotSameBook && isSameCategory;
+                    })
+                    .slice(0, 4);
+
+                displaySimilarBooks(similarBooks);
+            } else {
+                displaySimilarBooks([]);
+            }
+        } catch (error) {
+            console.error('❌ Error loading similar books:', error);
+            displaySimilarBooks([]);
+        }
+    }
+
+    function displaySimilarBooks(books) {
+        const similarBooksContainer = document.getElementById('similarBooks');
+
+        if (!books || books.length === 0) {
+            similarBooksContainer.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 30px; color: #666;">
+                    <p>No similar books found.</p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        books.forEach(book => {
+            const coverUrl = getBookCoverUrl(book);
+
+            html += `
+                <div class="similar-book-card" onclick="openBookDetails(${book.id})">
+                    <img src="${coverUrl}" alt="${book.title}" class="similar-book-cover"
+                         onerror="this.src='${generatePlaceholderSvg(book.title)}'">
+                    <div class="similar-book-info">
+                        <h4>${book.title}</h4>
+                        <p>by ${book.author}</p>
+                    </div>
+                </div>
+            `;
+        });
+
+        similarBooksContainer.innerHTML = html;
+    }
+
+    // ===== READING LIST FUNCTIONS =====
+    async function addToReadingList(bookId) {
+        try {
+            // ✅ ACTUAL USER ID USE KARO
+            const user = getCurrentUser();
+
+            if (!user) {
+                showNotification('Please login to add books to reading list', 'error');
+                return;
+            }
+
+            const response = await fetch(`${API_BASE_URL}/reading/add`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userId: parseInt(user.id),
+                    bookId: parseInt(bookId)
+                })
+            });
+
+            const responseText = await response.text();
+            let result;
+            try {
+                result = JSON.parse(responseText);
+            } catch (e) {
+                result = {
+                    success: response.ok,
+                    message: responseText || 'Operation completed'
+                };
+            }
+
+            if (response.ok) {
+                showNotification('Book added to reading list!', 'success');
+                const button = document.getElementById('addToReadingListBtn');
+                button.innerHTML = '<i class="bx bx-check"></i> In Reading List';
+                button.style.background = '#28a745';
+                button.style.color = 'white';
+                button.onclick = null;
+            } else {
+                showNotification(result.message || result.error || 'Failed to add to reading list', 'error');
+            }
+        } catch (error) {
+            console.error('❌ Error adding to reading list:', error);
+            showNotification('Error adding to reading list', 'error');
+        }
+    }
+
+    async function checkBookInReadingList(bookId) {
+        try {
+            // ✅ ACTUAL USER ID USE KARO
+            const user = getCurrentUser();
+            if (!user) {
+                return false;
+            }
+
+            const response = await fetch(`${API_BASE_URL}/reading/check?userId=${parseInt(user.id)}&bookId=${parseInt(bookId)}`);
+            const responseText = await response.text();
+            let result;
+            try {
+                result = JSON.parse(responseText);
+            } catch (e) {
+                return false;
+            }
+
+            return result.inReadingList || false;
+        } catch (error) {
+            console.error('❌ Error checking reading list:', error);
+            return false;
+        }
+    }
+
+    // ===== BOOK ACTIONS =====
+    function openBookReader(bookId) {
+        const readerUrl = `/book-reader?bookId=${bookId}`;
+        window.open(readerUrl, '_blank', 'width=1400,height=800,resizable=yes,scrollbars=yes');
+    }
+
+    function downloadBook(bookId) {
+        showNotification('Download feature coming soon!', 'info');
+    }
+
+    function openBookDetails(bookId) {
+        window.open(`/book-details?bookId=${bookId}`, '_blank');
+    }
+
+    // ===== UTILITY FUNCTIONS =====
+    function generatePlaceholderSvg(title) {
+        const initials = title ? title.charAt(0).toUpperCase() : 'B';
+        const svg = `
+            <svg width="280" height="320" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100%" height="100%" fill="#667eea"/>
+                <text x="50%" y="50%" font-family="Arial" font-size="48" fill="white"
+                      text-anchor="middle" dy=".3em">${initials}</text>
+            </svg>
+        `;
+        return 'data:image/svg+xml;base64,' + btoa(svg);
+    }
+
+    function showLoading(show) {
+        const spinner = document.getElementById('loadingSpinner');
+        if (spinner) {
+            spinner.style.display = show ? 'block' : 'none';
+        }
+    }
+
+    function showError(message) {
+        const mainContent = document.querySelector('.main-content');
+        mainContent.innerHTML = `
+            <div class="book-details-container" style="text-align: center; padding: 50px;">
+                <h3>❌ Error</h3>
+                <p>${message}</p>
+                <button onclick="window.location.href='/bookscreen'" class="action-btn primary-btn" style="margin-top: 20px;">
+                    Back to Books
+                </button>
+            </div>
+        `;
+    }
+
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    // ===== EVENT LISTENERS =====
+    function setupEventListeners() {
+        // Header search form
+        const headerSearchForm = document.getElementById('headerSearchForm');
+        const headerSearchInput = document.getElementById('header-search');
+        if (headerSearchForm) {
+            headerSearchForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const query = headerSearchInput.value.trim();
+                if (query) {
+                    window.location.href = `/bookscreen?search=${encodeURIComponent(query)}`;
+                }
+            });
+        }
+
+        // Review form
+        const reviewForm = document.getElementById('reviewForm');
+        if (reviewForm) {
+            reviewForm.addEventListener('submit', submitReview);
+        }
+
+        // Star rating
+        setupStarRating();
+
+        // User menu dropdown
+        const userMenu = document.getElementById('userMenu');
+        const dropdown = document.getElementById('dropdownMenu');
+        if (userMenu && dropdown) {
+            userMenu.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdown.classList.toggle('active');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!userMenu.contains(e.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        }
+
+        // Logout button
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                logout();
+            });
+        }
+    }
+
+    function logout() {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('user');
+        localStorage.removeItem('currentUserId');
+        localStorage.removeItem('jwtToken');
+        showNotification('Logged out successfully', 'info');
+        setTimeout(() => {
+            window.location.href = '/Login';
+        }, 1000);
+    }
+</script>
+
+</body>
+</html>

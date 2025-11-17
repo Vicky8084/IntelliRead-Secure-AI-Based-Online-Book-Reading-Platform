@@ -226,56 +226,6 @@
             font-size: 1.2rem;
         }
 
-        .question-input-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        #questionInput {
-            flex: 1;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 25px;
-            outline: none;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-        }
-
-        #questionInput:focus {
-            border-color: #667eea;
-        }
-
-        .ask-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .ask-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .ai-answer {
-            background: #f8f9ff;
-            padding: 15px;
-            border-radius: 10px;
-            border-left: 4px solid #28a745;
-            margin-top: 15px;
-            display: none;
-        }
-
-        .ai-answer.show {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
         .reading-stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -537,6 +487,120 @@
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
+        .word-explanation-section {
+            margin-top: 15px;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 15px;
+        }
+
+        .word-input-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        #wordInput {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            outline: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        #wordInput:focus {
+            border-color: #667eea;
+        }
+
+        .explain-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .explain-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .word-explanation-result {
+            background: #f8f9ff;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b6b;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .word-explanation-result.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .paragraph-analysis-section {
+            margin-top: 15px;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 15px;
+        }
+
+        .paragraph-input-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        #paragraphInput {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            outline: none;
+            font-size: 0.95rem;
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        #paragraphInput:focus {
+            border-color: #667eea;
+        }
+
+        .analyze-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .analyze-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .paragraph-analysis-result {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #ffc107;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .paragraph-analysis-result.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
         @media (max-width: 1024px) {
             .reader-container {
                 flex-direction: column;
@@ -563,6 +627,10 @@
             .pdf-content h1 {
                 font-size: 1.8rem;
             }
+
+            .book-actions {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -583,9 +651,9 @@
 
     <!-- AI Status Indicator -->
     <div class="ai-status" id="aiStatus">
-            <span class="ai-online">
-                <i class='bx bx-chip'></i> AI Online
-            </span>
+        <span class="ai-offline">
+            <i class='bx bx-error'></i> Local AI Offline
+        </span>
     </div>
 
     <div class="reader-controls">
@@ -642,7 +710,7 @@
             </div>
         </div>
 
-        <!-- AI Text Summary Section - IMPROVED -->
+        <!-- AI Text Summary Section -->
         <div class="ai-section">
             <h3><i class='bx bx-brain'></i> AI Text Summary</h3>
 
@@ -697,25 +765,52 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Key Points Section -->
-        <div class="ai-section">
-            <h3><i class='bx bx-star'></i> Key Points</h3>
-            <ul class="key-points" id="keyPoints">
-                <li>Enter text above to generate key points</li>
-            </ul>
-        </div>
-
-        <!-- Q&A Section -->
-        <div class="ai-section">
-            <h3><i class='bx bx-message-rounded'></i> Ask AI Assistant</h3>
-            <div class="question-input-container">
-                <input type="text" id="questionInput" placeholder="Ask anything about this book..." onkeypress="handleQuestionKeyPress(event)">
-                <button class="ask-btn" onclick="askAIQuestion()">Ask</button>
+            <!-- Key Points Section -->
+            <div style="margin-top: 15px;">
+                <h4 style="margin-bottom: 10px; color: #333; display: flex; align-items: center; gap: 8px;">
+                    <i class='bx bx-star'></i> Key Points
+                </h4>
+                <ul class="key-points" id="keyPoints">
+                    <li>Enter text above to generate key points</li>
+                </ul>
             </div>
-            <div class="ai-answer" id="aiAnswer">
-                <!-- AI answers will appear here -->
+        </div>
+
+        <!-- Word Explanation Section -->
+        <div class="ai-section">
+            <h3><i class='bx bx-font-family'></i> Word Explanation</h3>
+            <div class="word-explanation-section">
+                <div class="word-input-container">
+                    <input type="text" id="wordInput" placeholder="Enter any word to get explanation..." onkeypress="handleWordKeyPress(event)">
+                    <button class="explain-btn" onclick="explainWord()">
+                        <i class='bx bx-search-alt'></i> Explain
+                    </button>
+                </div>
+                <div class="word-explanation-result" id="wordExplanationResult">
+                    <!-- Word explanation will appear here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Paragraph Analysis Section -->
+        <div class="ai-section">
+            <h3><i class='bx bx-text'></i> Paragraph Analysis</h3>
+            <div class="paragraph-analysis-section">
+                <div class="paragraph-input-container">
+                    <textarea
+                            id="paragraphInput"
+                            class="custom-text-input"
+                            placeholder="Paste a paragraph here for detailed analysis..."
+                            style="min-height: 80px;"
+                    ></textarea>
+                </div>
+                <button class="analyze-btn" onclick="analyzeParagraph()" style="width: 100%;">
+                    <i class='bx bx-analyse'></i> Analyze Paragraph
+                </button>
+                <div class="paragraph-analysis-result" id="paragraphAnalysisResult">
+                    <!-- Paragraph analysis will appear here -->
+                </div>
             </div>
         </div>
 
@@ -776,10 +871,7 @@
     // Configuration Constants
     // ============================================================
     const API_BASE_URL = 'http://localhost:8035';
-
-    // ✅ Google Gemini Configuration - CORRECT MODEL
-    const GEMINI_API_KEY = 'Vicky';
-    const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent';
+    const LOCAL_AI_URL = 'http://localhost:11434/api/generate';
 
     // Application State
     let currentBook = null;
@@ -792,6 +884,7 @@
     let sessionWordsRead = 0;
     let readingStreak = 0;
     let bookTextContent = '';
+    let isLocalAIAvailable = false;
 
     // ============================================================
     // Initialization
@@ -809,11 +902,8 @@
             return;
         }
 
-        // Debug file paths
-        await debugFilePaths(bookId);
-
-        // AI Health Check
-        await checkAIHealth();
+        // Check Local AI status
+        await checkLocalAI();
 
         await loadBookData(bookId);
         startReadingTimer();
@@ -822,33 +912,558 @@
     }
 
     // ============================================================
-    // Book Loading Functions
+    // Local AI Functions
     // ============================================================
-    async function debugFilePaths(bookId) {
+    async function checkLocalAI() {
         try {
-            console.log("🔍 Starting file path debug for book ID:", bookId);
-            const response = await fetch(`${API_BASE_URL}/book/apies/findById/${bookId}`);
-            if (response.ok) {
-                const book = await response.json();
-                console.log("🔍 FILE PATH DEBUG:");
-                console.log("📁 File Path:", book.filePath);
-                console.log("📄 File Name:", book.fileName);
-                console.log("🔤 File Type:", book.fileType);
-                console.log("📖 Has Extracted Text:", book.extractedText ? 'Yes' : 'No');
-                console.log("📚 Book Title:", book.title);
-                console.log("👤 Book Author:", book.author);
+            const response = await fetch(LOCAL_AI_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    model: "llama2",
+                    prompt: "test",
+                    stream: false
+                })
+            });
 
-                // Load extracted text if available
-                if (book.extractedText) {
-                    bookTextContent = book.extractedText;
-                    console.log("📝 Extracted text loaded:", bookTextContent.length, "characters");
-                }
+            if (response.ok) {
+                isLocalAIAvailable = true;
+                document.getElementById('aiStatus').innerHTML = `
+                    <span class="ai-online">
+                        <i class='bx bx-check-circle'></i> Local AI Online
+                    </span>
+                `;
+                showNotification('Local AI is ready to use!', 'success');
+                console.log('✅ Local AI: ONLINE');
             }
         } catch (error) {
-            console.error("❌ Debug error:", error);
+            isLocalAIAvailable = false;
+            document.getElementById('aiStatus').innerHTML = `
+                <span class="ai-offline">
+                    <i class='bx bx-error'></i> Local AI Offline
+                </span>
+            `;
+            console.log('❌ Local AI: OFFLINE - Please install Ollama');
         }
     }
 
+    async function generateLocalAISummary(text, language, type = 'summary') {
+        if (!isLocalAIAvailable) {
+            throw new Error('Local AI is not available. Please install Ollama first.');
+        }
+
+        const languageNames = {
+            'en': 'English',
+            'hi': 'Hindi',
+            'sa': 'Sanskrit',
+            'ml': 'Malayalam',
+            'te': 'Telugu',
+            'kn': 'Kannada'
+        };
+
+        let prompt = '';
+
+        if (type === 'summary') {
+            prompt = `
+Please provide a comprehensive summary of the following text in ${languageNames[language]} language.
+
+Text to summarize:
+${text.substring(0, 3000)} ${text.length > 3000 ? '... [text truncated]' : ''}
+
+Please provide:
+1. A detailed summary (3-4 paragraphs)
+2. 5 key main points
+
+Format your response as:
+SUMMARY: [your summary here]
+KEY POINTS:
+1. [first key point]
+2. [second key point]
+3. [third key point]
+4. [fourth key point]
+5. [fifth key point]
+            `.trim();
+        } else if (type === 'word') {
+            prompt = `
+Please explain the word "${text}" in ${languageNames[language]} language.
+
+Provide:
+1. Meaning/Definition
+2. Pronunciation
+3. Usage in sentences (2 examples)
+4. Synonyms (if any)
+5. Word origin (if known)
+
+Format your response as:
+MEANING: [meaning]
+PRONUNCIATION: [pronunciation]
+EXAMPLES:
+1. [first example]
+2. [second example]
+SYNONYMS: [synonyms]
+ORIGIN: [origin]
+            `.trim();
+        } else if (type === 'paragraph') {
+            prompt = `
+Please analyze the following paragraph in ${languageNames[language]} language:
+
+Paragraph:
+${text}
+
+Provide:
+1. Main idea/thesis
+2. Key arguments/points
+3. Writing style analysis
+4. Tone and mood
+5. Suggested improvements (if any)
+
+Format your response as:
+MAIN_IDEA: [main idea]
+KEY_POINTS:
+1. [first point]
+2. [second point]
+3. [third point]
+WRITING_STYLE: [style analysis]
+TONE: [tone analysis]
+SUGGESTIONS: [suggestions]
+            `.trim();
+        }
+
+        try {
+            const response = await fetch(LOCAL_AI_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    model: "llama2",
+                    prompt: prompt,
+                    stream: false
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`Local AI error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            return parseAIResponse(data.response, type);
+
+        } catch (error) {
+            console.error('Local AI error:', error);
+            isLocalAIAvailable = false;
+            throw new Error('Local AI service not available. Please install Ollama.');
+        }
+    }
+
+    function parseAIResponse(content, type) {
+        if (type === 'summary') {
+            const lines = content.split('\n');
+            let summary = '';
+            const keyPoints = [];
+            let inSummary = false;
+            let inKeyPoints = false;
+
+            for (const line of lines) {
+                const trimmedLine = line.trim();
+
+                if (trimmedLine.startsWith('SUMMARY:')) {
+                    inSummary = true;
+                    inKeyPoints = false;
+                    summary += trimmedLine.replace('SUMMARY:', '').trim();
+                } else if (trimmedLine.startsWith('KEY POINTS:')) {
+                    inSummary = false;
+                    inKeyPoints = true;
+                } else if (inSummary && trimmedLine && !trimmedLine.match(/^\d+\./)) {
+                    summary += ' ' + trimmedLine;
+                } else if (inKeyPoints && trimmedLine.match(/^\d+\./)) {
+                    const point = trimmedLine.replace(/^\d+\.\s*/, '').trim();
+                    if (point) keyPoints.push(point);
+                }
+            }
+
+            // Fallback parsing
+            if (!summary) {
+                const sentences = content.split('. ').filter(s => s.length > 10);
+                summary = sentences.slice(0, 3).join('. ') + '.';
+            }
+
+            if (keyPoints.length === 0) {
+                const sentences = content.split('. ').filter(s => s.length > 20);
+                keyPoints.push(...sentences.slice(0, 5).map(s => s.substring(0, 100) + '...'));
+            }
+
+            return {
+                summary: summary || 'Unable to generate summary for this text.',
+                keyPoints: keyPoints.length > 0 ? keyPoints : ['No key points generated']
+            };
+        } else if (type === 'word') {
+            // Parse word explanation
+            const lines = content.split('\n');
+            const result = {
+                meaning: '',
+                pronunciation: '',
+                examples: [],
+                synonyms: '',
+                origin: ''
+            };
+
+            let currentSection = '';
+
+            for (const line of lines) {
+                const trimmedLine = line.trim();
+
+                if (trimmedLine.startsWith('MEANING:')) {
+                    currentSection = 'meaning';
+                    result.meaning = trimmedLine.replace('MEANING:', '').trim();
+                } else if (trimmedLine.startsWith('PRONUNCIATION:')) {
+                    currentSection = 'pronunciation';
+                    result.pronunciation = trimmedLine.replace('PRONUNCIATION:', '').trim();
+                } else if (trimmedLine.startsWith('EXAMPLES:')) {
+                    currentSection = 'examples';
+                } else if (trimmedLine.startsWith('SYNONYMS:')) {
+                    currentSection = 'synonyms';
+                    result.synonyms = trimmedLine.replace('SYNONYMS:', '').trim();
+                } else if (trimmedLine.startsWith('ORIGIN:')) {
+                    currentSection = 'origin';
+                    result.origin = trimmedLine.replace('ORIGIN:', '').trim();
+                } else if (currentSection === 'examples' && trimmedLine.match(/^\d+\./)) {
+                    result.examples.push(trimmedLine.replace(/^\d+\.\s*/, '').trim());
+                } else if (currentSection && trimmedLine && !trimmedLine.includes(':')) {
+                    // Continue adding to current section
+                    if (currentSection === 'meaning') {
+                        result.meaning += ' ' + trimmedLine;
+                    } else if (currentSection === 'pronunciation') {
+                        result.pronunciation += ' ' + trimmedLine;
+                    }
+                }
+            }
+
+            return result;
+        } else if (type === 'paragraph') {
+            // Parse paragraph analysis
+            const lines = content.split('\n');
+            const result = {
+                mainIdea: '',
+                keyPoints: [],
+                writingStyle: '',
+                tone: '',
+                suggestions: ''
+            };
+
+            let currentSection = '';
+
+            for (const line of lines) {
+                const trimmedLine = line.trim();
+
+                if (trimmedLine.startsWith('MAIN_IDEA:')) {
+                    currentSection = 'mainIdea';
+                    result.mainIdea = trimmedLine.replace('MAIN_IDEA:', '').trim();
+                } else if (trimmedLine.startsWith('KEY_POINTS:')) {
+                    currentSection = 'keyPoints';
+                } else if (trimmedLine.startsWith('WRITING_STYLE:')) {
+                    currentSection = 'writingStyle';
+                    result.writingStyle = trimmedLine.replace('WRITING_STYLE:', '').trim();
+                } else if (trimmedLine.startsWith('TONE:')) {
+                    currentSection = 'tone';
+                    result.tone = trimmedLine.replace('TONE:', '').trim();
+                } else if (trimmedLine.startsWith('SUGGESTIONS:')) {
+                    currentSection = 'suggestions';
+                    result.suggestions = trimmedLine.replace('SUGGESTIONS:', '').trim();
+                } else if (currentSection === 'keyPoints' && trimmedLine.match(/^\d+\./)) {
+                    result.keyPoints.push(trimmedLine.replace(/^\d+\.\s*/, '').trim());
+                } else if (currentSection && trimmedLine && !trimmedLine.includes(':')) {
+                    // Continue adding to current section
+                    if (currentSection === 'mainIdea') {
+                        result.mainIdea += ' ' + trimmedLine;
+                    } else if (currentSection === 'writingStyle') {
+                        result.writingStyle += ' ' + trimmedLine;
+                    }
+                }
+            }
+
+            return result;
+        }
+    }
+
+    // ============================================================
+    // Book Text Summary Functions
+    // ============================================================
+    async function summarizeCurrentPage() {
+        if (!bookTextContent) {
+            showNotification('No book text content available. Please load the book first.', 'warning');
+            return;
+        }
+
+        if (!isLocalAIAvailable) {
+            showNotification('Please install Ollama first to use AI features.', 'error');
+            return;
+        }
+
+        await generateBookSummary(bookTextContent, 'current page');
+    }
+
+    async function summarizeEntireBook() {
+        if (!bookTextContent) {
+            showNotification('No book text content available. Please load the book first.', 'warning');
+            return;
+        }
+
+        if (!isLocalAIAvailable) {
+            showNotification('Please install Ollama first to use AI features.', 'error');
+            return;
+        }
+
+        await generateBookSummary(bookTextContent, 'entire book');
+    }
+
+    async function generateBookSummary(text, context) {
+        const languageSelect = document.getElementById('summaryLanguage');
+        const summarizeBtn = document.getElementById('summarizeBtn');
+        const resultDiv = document.getElementById('customSummaryResult');
+        const summaryText = document.getElementById('customSummaryText');
+        const keyPointsList = document.getElementById('keyPoints');
+
+        const language = languageSelect.value;
+
+        // Show loading state
+        summarizeBtn.innerHTML = '<i class="bx bx-loader-circle bx-spin"></i> Generating...';
+        summarizeBtn.disabled = true;
+        resultDiv.style.display = 'none';
+
+        try {
+            const result = await generateLocalAISummary(text, language, 'summary');
+
+            // Display summary
+            summaryText.innerHTML = `<p><strong>Summary of ${context}:</strong></p><p>${result.summary}</p>`;
+            resultDiv.style.display = 'block';
+
+            // Update key points
+            const keyPointsHtml = result.keyPoints.map(point =>
+                `<li>${point}</li>`
+            ).join('');
+            keyPointsList.innerHTML = keyPointsHtml;
+
+            showNotification(`${context} summary generated successfully!`, 'success');
+
+        } catch (error) {
+            console.error('Error generating summary:', error);
+            showNotification('Failed to generate summary. ' + error.message, 'error');
+        } finally {
+            // Reset button
+            summarizeBtn.innerHTML = '<i class="bx bx-brain"></i> Generate Summary';
+            summarizeBtn.disabled = false;
+        }
+    }
+
+    // ============================================================
+    // Custom Text Summary Function
+    // ============================================================
+    async function generateCustomSummary() {
+        const textInput = document.getElementById('customTextInput');
+        const languageSelect = document.getElementById('summaryLanguage');
+        const summarizeBtn = document.getElementById('summarizeBtn');
+        const resultDiv = document.getElementById('customSummaryResult');
+        const summaryText = document.getElementById('customSummaryText');
+        const keyPointsList = document.getElementById('keyPoints');
+
+        const text = textInput.value.trim();
+        const language = languageSelect.value;
+
+        if (!text) {
+            showNotification('Please enter some text to summarize', 'warning');
+            return;
+        }
+
+        if (!isLocalAIAvailable) {
+            showNotification('Please install Ollama first to use AI features.', 'error');
+            return;
+        }
+
+        // Show loading state
+        summarizeBtn.innerHTML = '<i class="bx bx-loader-circle bx-spin"></i> Generating...';
+        summarizeBtn.disabled = true;
+        resultDiv.style.display = 'none';
+
+        try {
+            const result = await generateLocalAISummary(text, language, 'summary');
+
+            // Display summary
+            summaryText.innerHTML = `<p>${result.summary}</p>`;
+            resultDiv.style.display = 'block';
+
+            // Update key points
+            const keyPointsHtml = result.keyPoints.map(point =>
+                `<li>${point}</li>`
+            ).join('');
+            keyPointsList.innerHTML = keyPointsHtml;
+
+            showNotification('Summary generated successfully!', 'success');
+
+        } catch (error) {
+            console.error('Error generating summary:', error);
+            showNotification('Failed to generate summary. ' + error.message, 'error');
+        } finally {
+            // Reset button
+            summarizeBtn.innerHTML = '<i class="bx bx-brain"></i> Generate Summary';
+            summarizeBtn.disabled = false;
+        }
+    }
+
+    // ============================================================
+    // Word Explanation Function
+    // ============================================================
+    async function explainWord() {
+        const wordInput = document.getElementById('wordInput');
+        const languageSelect = document.getElementById('summaryLanguage');
+        const resultDiv = document.getElementById('wordExplanationResult');
+
+        const word = wordInput.value.trim();
+        const language = languageSelect.value;
+
+        if (!word) {
+            showNotification('Please enter a word to explain', 'warning');
+            return;
+        }
+
+        if (!isLocalAIAvailable) {
+            showNotification('Please install Ollama first to use AI features.', 'error');
+            return;
+        }
+
+        // Show loading state
+        resultDiv.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Analyzing word...</div>';
+        resultDiv.classList.add('show');
+
+        try {
+            const result = await generateLocalAISummary(word, language, 'word');
+
+            // Display word explanation
+            resultDiv.innerHTML = `
+                <h4 style="margin-bottom: 10px; color: #333;">Explanation of "${word}"</h4>
+                <p><strong>Meaning:</strong> ${result.meaning || 'Not available'}</p>
+                <p><strong>Pronunciation:</strong> ${result.pronunciation || 'Not available'}</p>
+                ${result.examples.length > 0 ? `
+                    <p><strong>Examples:</strong></p>
+                    <ul style="margin-left: 20px; margin-bottom: 10px;">
+                        ${result.examples.map(example => `<li>${example}</li>`).join('')}
+                    </ul>
+                ` : ''}
+                ${result.synonyms ? `<p><strong>Synonyms:</strong> ${result.synonyms}</p>` : ''}
+                ${result.origin ? `<p><strong>Origin:</strong> ${result.origin}</p>` : ''}
+                <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">
+                    <i class='bx bx-info-circle'></i> Powered by Local AI (Ollama)
+                </p>
+            `;
+
+            showNotification(`Word "${word}" explained successfully!`, 'success');
+
+        } catch (error) {
+            console.error('Error explaining word:', error);
+            resultDiv.innerHTML = `
+                <p style="color: #dc3545;">
+                    <i class='bx bx-error'></i> Failed to explain word: ${error.message}
+                </p>
+                <p style="font-size: 0.8rem; margin-top: 10px;">
+                    Please install Ollama and make sure it's running on your system.
+                </p>
+            `;
+        }
+    }
+
+    // ============================================================
+    // Paragraph Analysis Function
+    // ============================================================
+    async function analyzeParagraph() {
+        const paragraphInput = document.getElementById('paragraphInput');
+        const languageSelect = document.getElementById('summaryLanguage');
+        const resultDiv = document.getElementById('paragraphAnalysisResult');
+
+        const paragraph = paragraphInput.value.trim();
+        const language = languageSelect.value;
+
+        if (!paragraph) {
+            showNotification('Please enter a paragraph to analyze', 'warning');
+            return;
+        }
+
+        if (!isLocalAIAvailable) {
+            showNotification('Please install Ollama first to use AI features.', 'error');
+            return;
+        }
+
+        // Show loading state
+        resultDiv.innerHTML = '<div class="loading"><div class="loading-spinner"></div>Analyzing paragraph...</div>';
+        resultDiv.classList.add('show');
+
+        try {
+            const result = await generateLocalAISummary(paragraph, language, 'paragraph');
+
+            // Display paragraph analysis
+            resultDiv.innerHTML = `
+                <h4 style="margin-bottom: 10px; color: #333;">Paragraph Analysis</h4>
+                <p><strong>Main Idea:</strong> ${result.mainIdea || 'Not available'}</p>
+                ${result.keyPoints.length > 0 ? `
+                    <p><strong>Key Points:</strong></p>
+                    <ul style="margin-left: 20px; margin-bottom: 10px;">
+                        ${result.keyPoints.map(point => `<li>${point}</li>`).join('')}
+                    </ul>
+                ` : ''}
+                ${result.writingStyle ? `<p><strong>Writing Style:</strong> ${result.writingStyle}</p>` : ''}
+                ${result.tone ? `<p><strong>Tone:</strong> ${result.tone}</p>` : ''}
+                ${result.suggestions ? `<p><strong>Suggestions:</strong> ${result.suggestions}</p>` : ''}
+                <p style="margin-top: 10px; font-size: 0.8rem; color: #666;">
+                    <i class='bx bx-info-circle'></i> Powered by Local AI (Ollama)
+                </p>
+            `;
+
+            showNotification('Paragraph analyzed successfully!', 'success');
+
+        } catch (error) {
+            console.error('Error analyzing paragraph:', error);
+            resultDiv.innerHTML = `
+                <p style="color: #dc3545;">
+                    <i class='bx bx-error'></i> Failed to analyze paragraph: ${error.message}
+                </p>
+                <p style="font-size: 0.8rem; margin-top: 10px;">
+                    Please install Ollama and make sure it's running on your system.
+                </p>
+            `;
+        }
+    }
+
+    // ============================================================
+    // Utility Functions
+    // ============================================================
+    function handleWordKeyPress(event) {
+        if (event.key === 'Enter') {
+            explainWord();
+        }
+    }
+
+    function showNotification(message, type = 'info') {
+        const notification = document.getElementById('progressNotification');
+        const messageElement = document.getElementById('notificationMessage');
+        messageElement.textContent = message;
+
+        if (type === 'success') {
+            notification.style.background = '#28a745';
+        } else if (type === 'error') {
+            notification.style.background = '#dc3545';
+        } else if (type === 'warning') {
+            notification.style.background = '#ffc107';
+            notification.style.color = '#856404';
+        } else {
+            notification.style.background = '#667eea';
+        }
+
+        notification.classList.add('show');
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+
+    // ============================================================
+    // Book Loading Functions
+    // ============================================================
     async function loadBookData(bookId) {
         try {
             console.log("📚 Loading book data for ID: " + bookId);
@@ -925,7 +1540,7 @@
             document.getElementById('pdfFrame').src = blobUrl + '#toolbar=0&navpanes=0&scrollbar=0';
             console.log("✅ PDF loaded successfully via blob URL");
 
-            totalPages = 45; // This should come from PDF metadata or book info
+            totalPages = 45;
             updatePageInfo();
 
         } catch (pdfError) {
@@ -982,68 +1597,6 @@
             </div>
         `;
         document.querySelector('.pdf-controls').style.display = 'none';
-    }
-
-    // ============================================================
-    // NEW: Book Text Summary Functions
-    // ============================================================
-    async function summarizeCurrentPage() {
-        if (!bookTextContent) {
-            showNotification('No book text content available. Please load the book first.', 'warning');
-            return;
-        }
-
-        // For now, we'll use the entire text since we don't have page-wise text
-        await generateBookSummary(bookTextContent, 'current page');
-    }
-
-    async function summarizeEntireBook() {
-        if (!bookTextContent) {
-            showNotification('No book text content available. Please load the book first.', 'warning');
-            return;
-        }
-
-        await generateBookSummary(bookTextContent, 'entire book');
-    }
-
-    async function generateBookSummary(text, context) {
-        const languageSelect = document.getElementById('summaryLanguage');
-        const summarizeBtn = document.getElementById('summarizeBtn');
-        const resultDiv = document.getElementById('customSummaryResult');
-        const summaryText = document.getElementById('customSummaryText');
-        const keyPointsList = document.getElementById('keyPoints');
-
-        const language = languageSelect.value;
-
-        // Show loading state
-        summarizeBtn.innerHTML = '<i class="bx bx-loader-circle bx-spin"></i> Generating...';
-        summarizeBtn.disabled = true;
-        resultDiv.style.display = 'none';
-
-        try {
-            // Use Gemini to generate summary
-            const result = await generateGeminiSummaryForText(text, language, context);
-
-            // Display summary
-            summaryText.innerHTML = `<p><strong>Summary of ${context}:</strong></p><p>${result.summary}</p>`;
-            resultDiv.style.display = 'block';
-
-            // Update key points
-            const keyPointsHtml = result.keyPoints.map(point =>
-                `<li>${point}</li>`
-            ).join('');
-            keyPointsList.innerHTML = keyPointsHtml;
-
-            showNotification(`${context} summary generated successfully!`, 'success');
-
-        } catch (error) {
-            console.error('Error generating summary:', error);
-            showNotification('Failed to generate summary. Please try again.', 'error');
-        } finally {
-            // Reset button
-            summarizeBtn.innerHTML = '<i class="bx bx-brain"></i> Generate Summary';
-            summarizeBtn.disabled = false;
-        }
     }
 
     // ============================================================
@@ -1148,9 +1701,7 @@
 
             const response = await fetch(`${API_BASE_URL}/progress/update`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     userId: user.id,
                     bookId: getBookIdFromURL(),
@@ -1190,350 +1741,6 @@
             localStorage.setItem('readingStreak', readingStreak.toString());
             document.getElementById('currentStreak').textContent = `${readingStreak} days`;
         }
-    }
-
-    // ============================================================
-    // AI Functions - GOOGLE GEMINI INTEGRATION
-    // ============================================================
-    async function checkAIHealth() {
-        try {
-            const aiStatusElement = document.getElementById('aiStatus');
-
-            // Fixed API key check
-            if (GEMINI_API_KEY && GEMINI_API_KEY.length > 30) {
-                aiStatusElement.innerHTML = `
-                    <span class="ai-online">
-                        <i class='bx bx-chip'></i> Google Gemini Online
-                    </span>
-                `;
-                console.log('✅ Google Gemini Service: ONLINE');
-            } else {
-                aiStatusElement.innerHTML = `
-                    <span class="ai-offline">
-                        <i class='bx bx-error'></i> AI Offline
-                    </span>
-                `;
-                console.log('❌ AI Service: OFFLINE (Add Gemini API Key)');
-            }
-        } catch (error) {
-            console.warn('AI service health check failed:', error);
-            const aiStatusElement = document.getElementById('aiStatus');
-            aiStatusElement.innerHTML = `
-                <span class="ai-offline">
-                    <i class='bx bx-error'></i> AI Offline
-                </span>
-            `;
-        }
-    }
-
-    // ============================================================
-    // Custom Text Summary Function
-    // ============================================================
-    async function generateCustomSummary() {
-        const textInput = document.getElementById('customTextInput');
-        const languageSelect = document.getElementById('summaryLanguage');
-        const summarizeBtn = document.getElementById('summarizeBtn');
-        const resultDiv = document.getElementById('customSummaryResult');
-        const summaryText = document.getElementById('customSummaryText');
-        const keyPointsList = document.getElementById('keyPoints');
-
-        const text = textInput.value.trim();
-        const language = languageSelect.value;
-
-        if (!text) {
-            showNotification('Please enter some text to summarize', 'warning');
-            return;
-        }
-
-        // Show loading state
-        summarizeBtn.innerHTML = '<i class="bx bx-loader-circle bx-spin"></i> Generating...';
-        summarizeBtn.disabled = true;
-        resultDiv.style.display = 'none';
-
-        try {
-            // Use Gemini to generate summary
-            const result = await generateGeminiSummaryForText(text, language);
-
-            // Display summary
-            summaryText.innerHTML = `<p>${result.summary}</p>`;
-            resultDiv.style.display = 'block';
-
-            // Update key points
-            const keyPointsHtml = result.keyPoints.map(point =>
-                `<li>${point}</li>`
-            ).join('');
-            keyPointsList.innerHTML = keyPointsHtml;
-
-            showNotification('Summary generated successfully!', 'success');
-
-        } catch (error) {
-            console.error('Error generating summary:', error);
-            showNotification('Failed to generate summary. Please try again.', 'error');
-        } finally {
-            // Reset button
-            summarizeBtn.innerHTML = '<i class="bx bx-brain"></i> Generate Summary';
-            summarizeBtn.disabled = false;
-        }
-    }
-
-    // ============================================================
-    // Gemini API Functions - FIXED MODEL
-    // ============================================================
-    async function generateGeminiSummaryForText(text, language, context = 'text') {
-        // If no API key, return error
-        if (!GEMINI_API_KEY || GEMINI_API_KEY.length <= 30) {
-            throw new Error('AI service is currently unavailable. Please check your API key configuration.');
-        }
-
-        try {
-            const languageNames = {
-                'en': 'English',
-                'hi': 'Hindi',
-                'sa': 'Sanskrit',
-                'ml': 'Malayalam',
-                'te': 'Telugu',
-                'kn': 'Kannada'
-            };
-
-            const prompt = `
-Please analyze the following ${context} and provide:
-
-1. A comprehensive summary in ${languageNames[language]} (3-4 paragraphs)
-2. 5 key main points from the ${context}
-
-${context} to analyze:
-${text.substring(0, 3000)} ${text.length > 3000 ? '... [text truncated]' : ''}
-
-Please format your response as:
-SUMMARY: [your summary here]
-KEY POINTS:
-1. [first key point]
-2. [second key point]
-3. [third key point]
-4. [fourth key point]
-5. [fifth key point]
-            `.trim();
-
-            const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [{
-                            text: prompt
-                        }]
-                    }],
-                    generationConfig: {
-                        temperature: 0.7,
-                        maxOutputTokens: 1000,
-                    }
-                })
-            });
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                console.error('Gemini API error details:', errorText);
-                throw new Error(`Gemini API error: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-                throw new Error('Invalid response format from Gemini API');
-            }
-
-            const content = data.candidates[0].content.parts[0].text;
-
-            return parseGeminiResponse(content);
-
-        } catch (error) {
-            console.error('Gemini API error:', error);
-            throw new Error('Failed to generate summary. Please try again later.');
-        }
-    }
-
-    function parseGeminiResponse(content) {
-        // Parse the response to extract summary and key points
-        const lines = content.split('\n');
-        let summary = '';
-        const keyPoints = [];
-        let inSummary = false;
-        let inKeyPoints = false;
-
-        for (const line of lines) {
-            const trimmedLine = line.trim();
-
-            if (trimmedLine.startsWith('SUMMARY:')) {
-                inSummary = true;
-                inKeyPoints = false;
-                summary += trimmedLine.replace('SUMMARY:', '').trim();
-            } else if (trimmedLine.startsWith('KEY POINTS:')) {
-                inSummary = false;
-                inKeyPoints = true;
-            } else if (inSummary && trimmedLine && !trimmedLine.match(/^\d+\./)) {
-                summary += ' ' + trimmedLine;
-            } else if (inKeyPoints && trimmedLine.match(/^\d+\./)) {
-                const point = trimmedLine.replace(/^\d+\.\s*/, '').trim();
-                if (point) keyPoints.push(point);
-            }
-        }
-
-        // Fallback if parsing fails
-        if (!summary) {
-            const sentences = content.split('. ').filter(s => s.length > 10);
-            summary = sentences.slice(0, 3).join('. ') + '.';
-        }
-
-        if (keyPoints.length === 0) {
-            const sentences = content.split('. ').filter(s => s.length > 20);
-            keyPoints.push(...sentences.slice(0, 5).map(s => s.substring(0, 100) + '...'));
-        }
-
-        return {
-            summary: summary || 'Unable to generate summary for this text.',
-            keyPoints: keyPoints.length > 0 ? keyPoints : [
-                'Main ideas and concepts',
-                'Key arguments presented',
-                'Important evidence or examples',
-                'Central themes discussed',
-                'Conclusions or recommendations'
-            ]
-        };
-    }
-
-    // ============================================================
-    // AI Q&A Function - Gemini Version
-    // ============================================================
-    async function askAIQuestion() {
-        const questionInput = document.getElementById('questionInput');
-        const question = questionInput.value.trim();
-        const answerDiv = document.getElementById('aiAnswer');
-
-        if (!question) return;
-
-        // Show loading state
-        answerDiv.innerHTML = '<div class="loading"><div class="loading-spinner"></div>AI is thinking...</div>';
-        answerDiv.classList.add('show');
-
-        try {
-            const book = currentBook;
-            if (!book) {
-                throw new Error('Book not loaded');
-            }
-
-            // Prepare context for the question
-            const context = `
-Book: "${book.title}" by ${book.author}
-Description: ${book.description || 'No description available'}
-Current Page: ${currentPage} of ${totalPages}
-            `.trim();
-
-            // Use Gemini to answer the question
-            const answer = await generateGeminiAnswer(question, context, book);
-
-            answerDiv.innerHTML = `
-                <p><strong>Q:</strong> ${question}</p>
-                <p><strong>A:</strong> ${answer}</p>
-                <p><small>✓ Answered using Google Gemini AI</small></p>
-            `;
-            questionInput.value = '';
-
-        } catch (error) {
-            console.error('Error asking AI:', error);
-            answerDiv.innerHTML = `
-                <p><strong>Q:</strong> ${question}</p>
-                <p><strong>A:</strong> Sorry, I encountered an error while processing your question. Please try again.</p>
-                <p><small>❌ Error: ${error.message}</small></p>
-            `;
-        }
-    }
-
-    async function generateGeminiAnswer(question, context, book) {
-        // If no API key, return error
-        if (!GEMINI_API_KEY || GEMINI_API_KEY.length <= 30) {
-            throw new Error('AI service is currently unavailable. Please check your API key configuration.');
-        }
-
-        try {
-            const prompt = `
-Context about the book:
-${context}
-
-User's Question: ${question}
-
-Please provide a helpful, accurate answer based on the book context. If the question is about specific content that isn't in the context, kindly explain what you can based on the available information.
-
-Answer in a clear, conversational tone.
-            `.trim();
-
-            const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [{
-                            text: prompt
-                        }]
-                    }],
-                    generationConfig: {
-                        temperature: 0.7,
-                        maxOutputTokens: 500,
-                    }
-                })
-            });
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Gemini API error: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-                throw new Error('Invalid response format from Gemini API');
-            }
-
-            return data.candidates[0].content.parts[0].text.trim();
-
-        } catch (error) {
-            console.error('Gemini Q&A error:', error);
-            throw new Error('Failed to generate answer. Please try again later.');
-        }
-    }
-
-    // ============================================================
-    // Utility Functions
-    // ============================================================
-    function handleQuestionKeyPress(event) {
-        if (event.key === 'Enter') {
-            askAIQuestion();
-        }
-    }
-
-    function showNotification(message, type = 'info') {
-        const notification = document.getElementById('progressNotification');
-        const messageElement = document.getElementById('notificationMessage');
-        messageElement.textContent = message;
-
-        if (type === 'success') {
-            notification.style.background = '#28a745';
-        } else if (type === 'error') {
-            notification.style.background = '#dc3545';
-        } else if (type === 'warning') {
-            notification.style.background = '#ffc107';
-            notification.style.color = '#856404';
-        } else {
-            notification.style.background = '#667eea';
-        }
-
-        notification.classList.add('show');
-        setTimeout(() => {
-            notification.classList.remove('show');
-        }, 3000);
     }
 
     function updateSessionStartTime() {

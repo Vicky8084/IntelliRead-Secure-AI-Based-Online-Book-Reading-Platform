@@ -54,7 +54,7 @@ public class Book {
     private User user;
 
     // Book has reviews - TINO ANNOTATIONS USE KARO
-    @OneToMany(mappedBy = "book", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JsonIgnore
     private List<Review> reviewList;

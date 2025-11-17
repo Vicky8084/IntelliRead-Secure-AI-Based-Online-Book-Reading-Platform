@@ -3,24 +3,32 @@ package com.intelliRead.Online.Reading.Paltform.controller;
 import com.intelliRead.Online.Reading.Paltform.enums.Role;
 import com.intelliRead.Online.Reading.Paltform.exception.UserAlreadyExistException;
 import com.intelliRead.Online.Reading.Paltform.model.User;
+import com.intelliRead.Online.Reading.Paltform.repository.UserRepository;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.UserRequestDTO;
 import com.intelliRead.Online.Reading.Paltform.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user/apies")
 public class UserController {
 
     UserService userService;
-
+    UserRepository userRepository;
     @Autowired
-    public UserController(UserService userService){
+    public UserController(UserService userService,
+                          UserRepository userRepository){
         this.userService = userService;
+        this.userRepository=userRepository;
     }
 
     @PostMapping("/save")
@@ -73,6 +81,38 @@ public class UserController {
             return ResponseEntity.ok(result);
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+    @GetMapping("/current")
+    public ResponseEntity<?> getCurrentUser(HttpServletRequest request) {
+        try {
+            HttpSession session = request.getSession(false);
+            if (session == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No active session");
+            }
+
+            String userEmail = (String) session.getAttribute("userEmail");
+            if (userEmail == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No user in session");
+            }
+
+            Optional<User> userOptional = userRepository.findUserByEmail(userEmail);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                // Return safe user data without password
+                Map<String, Object> safeUser = new HashMap<>();
+                safeUser.put("id", user.getId());
+                safeUser.put("name", user.getName());
+                safeUser.put("email", user.getEmail());
+                safeUser.put("role", user.getRole());
+                safeUser.put("status", user.getStatus());
+                safeUser.put("preferredLanguage", user.getPreferredLanguage());
+                return ResponseEntity.ok(safeUser);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching user");
         }
     }
 }

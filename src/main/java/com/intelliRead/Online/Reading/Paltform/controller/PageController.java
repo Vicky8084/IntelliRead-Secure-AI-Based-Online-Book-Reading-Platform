@@ -89,28 +89,27 @@ public class PageController {
         return "Admin"; // This opens Admin.html page
     }
 
-    // ✅ Admin Dashboard - With PROPER Session Check
     // ✅ Admin Dashboard - TEMPORARY FIX: Session check disable karo
     @GetMapping("/admin-dashboard")
     public String adminDashboard(HttpServletRequest request, Model model) {
         System.out.println("🔄 Admin Dashboard accessed - TEMPORARY ACCESS");
 
         // ✅ TEMPORARY: Session check comment out karo
-    /*
-    HttpSession session = request.getSession(false);
-    if (session == null) {
-        System.out.println("❌ NO SESSION: Redirecting to admin login");
-        return "redirect:/admin-login";
-    }
+        /*
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            System.out.println("❌ NO SESSION: Redirecting to admin login");
+            return "redirect:/admin-login";
+        }
 
-    String userEmail = (String) session.getAttribute("userEmail");
-    Boolean isLoggedIn = (Boolean) session.getAttribute("isLoggedIn");
+        String userEmail = (String) session.getAttribute("userEmail");
+        Boolean isLoggedIn = (Boolean) session.getAttribute("isLoggedIn");
 
-    if (isLoggedIn == null || userEmail == null || !ADMIN_EMAILS.contains(userEmail.toLowerCase())) {
-        System.out.println("❌ UNAUTHORIZED ACCESS: Invalid admin session");
-        return "redirect:/admin-login";
-    }
-    */
+        if (isLoggedIn == null || userEmail == null || !ADMIN_EMAILS.contains(userEmail.toLowerCase())) {
+            System.out.println("❌ UNAUTHORIZED ACCESS: Invalid admin session");
+            return "redirect:/admin-login";
+        }
+        */
 
         System.out.println("✅ TEMPORARY ACCESS: Admin dashboard granted");
 
@@ -202,6 +201,74 @@ public class PageController {
         return "bookscreen";
     }
 
+    // ✅ NEW: Book Details Page - Ye add karna important hai
+    @GetMapping("/book-details")
+    public String bookDetailsPage(@RequestParam("bookId") int bookId,
+                                  HttpServletRequest request,
+                                  Model model) {
+        System.out.println("📖 Book Details Page accessed for book ID: " + bookId);
+
+        // Check session
+        Boolean isLoggedIn = (Boolean) request.getSession().getAttribute("isLoggedIn");
+        String userEmail = (String) request.getSession().getAttribute("userEmail");
+
+        System.out.println("📧 Session userEmail: " + userEmail);
+
+        if (isLoggedIn == null || userEmail == null) {
+            System.out.println("⚠️ No session found for book details");
+            model.addAttribute("warning", "Please login first for full functionality");
+        }
+
+        // Get user data
+        if (userEmail != null) {
+            Optional<User> userOptional = userRepository.findUserByEmail(userEmail);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                model.addAttribute("user", user);
+                System.out.println("✅ User data added to model: " + user.getName());
+            }
+        }
+
+        // Add bookId to model
+        model.addAttribute("bookId", bookId);
+        System.out.println("✅ Book ID added to model: " + bookId);
+
+        return "book-details"; // This will return book-details.html from templates folder
+    }
+
+    // ✅ Book Reader Page - Custom PDF Reader with AI
+    @GetMapping("/book-reader")
+    public String bookReaderPage(@RequestParam("bookId") int bookId,
+                                 HttpServletRequest request,
+                                 Model model) {
+        System.out.println("📖 Book Reader accessed for book ID: " + bookId);
+
+        // Check session
+        Boolean isLoggedIn = (Boolean) request.getSession().getAttribute("isLoggedIn");
+        String userEmail = (String) request.getSession().getAttribute("userEmail");
+
+        if (isLoggedIn == null || userEmail == null) {
+            System.out.println("⚠️ No session found for book reader");
+            model.addAttribute("warning", "Please login first for full functionality");
+        }
+
+        // Get user data
+        if (userEmail != null) {
+            Optional<User> userOptional = userRepository.findUserByEmail(userEmail);
+            if (userOptional.isPresent()) {
+                User user = userOptional.get();
+                model.addAttribute("user", user);
+                System.out.println("✅ User data added to model: " + user.getName());
+            }
+        }
+
+        // Add bookId to model
+        model.addAttribute("bookId", bookId);
+        System.out.println("✅ Book ID added to model: " + bookId);
+
+        return "book-reader"; // This will return book-reader.html from templates folder
+    }
+
     // ✅ Admin Logout and Session Management
     @GetMapping("/admin-logout")
     public String adminLogout(HttpServletRequest request) {
@@ -279,38 +346,5 @@ public class PageController {
         }
 
         return ResponseEntity.ok(sessionInfo);
-    }
-
-    // ✅ Book Reader Page - Custom PDF Reader with AI
-    @GetMapping("/book-reader")
-    public String bookReaderPage(@RequestParam("bookId") int bookId,
-                                 HttpServletRequest request,
-                                 Model model) {
-        System.out.println("📖 Book Reader accessed for book ID: " + bookId);
-
-        // Check session
-        Boolean isLoggedIn = (Boolean) request.getSession().getAttribute("isLoggedIn");
-        String userEmail = (String) request.getSession().getAttribute("userEmail");
-
-        if (isLoggedIn == null || userEmail == null) {
-            System.out.println("⚠️ No session found for book reader");
-            model.addAttribute("warning", "Please login first for full functionality");
-        }
-
-        // Get user data
-        if (userEmail != null) {
-            Optional<User> userOptional = userRepository.findUserByEmail(userEmail);
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-                model.addAttribute("user", user);
-                System.out.println("✅ User data added to model: " + user.getName());
-            }
-        }
-
-        // Add bookId to model
-        model.addAttribute("bookId", bookId);
-        System.out.println("✅ Book ID added to model: " + bookId);
-
-        return "book-reader"; // This will return book-reader.html from templates folder
     }
 }

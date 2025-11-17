@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -20,7 +22,7 @@ public class Review {
     private int id;
 
     @Column(nullable = false)
-    private int rating; // 1-5
+    private int rating;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String reviewText;
@@ -29,13 +31,17 @@ public class Review {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    // User relationship
+    // ✅ UPDATED: User relationship with proper cascade configuration
     @JsonBackReference("user-reviews")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User user;
 
-    // Book relationship
+    // ✅ UPDATED: Book relationship with proper cascade configuration
     @JsonBackReference("book-reviews")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Book book;
 }

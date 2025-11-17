@@ -6,12 +6,15 @@ import com.intelliRead.Online.Reading.Paltform.exception.BookAlreadyExistExcepti
 import com.intelliRead.Online.Reading.Paltform.exception.UserNotFoundException;
 import com.intelliRead.Online.Reading.Paltform.model.Book;
 import com.intelliRead.Online.Reading.Paltform.model.Category;
+import com.intelliRead.Online.Reading.Paltform.model.Review;
 import com.intelliRead.Online.Reading.Paltform.model.User;
 import com.intelliRead.Online.Reading.Paltform.repository.BookRepository;
 import com.intelliRead.Online.Reading.Paltform.repository.CategoryRepository;
+import com.intelliRead.Online.Reading.Paltform.repository.ReviewRepository;
 import com.intelliRead.Online.Reading.Paltform.repository.UserRepository;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.BookRequestDTO;
 import com.intelliRead.Online.Reading.Paltform.util.FileStorageUtil;
+import jakarta.transaction.Transactional;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +39,7 @@ public class BookService {
     UserRepository userRepository;
     CategoryRepository categoryRepository;
     EmailService emailService;
+    ReviewRepository reviewRepository;
 
     private final Path uploadsRoot;
 
@@ -44,12 +48,14 @@ public class BookService {
                        UserRepository userRepository,
                        CategoryRepository categoryRepository,
                        EmailService emailService,
+                       ReviewRepository reviewRepository,
                        @Value("${file.upload-dir:uploads}") String uploadDir) throws IOException {
         this.bookRepository = bookRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.emailService = emailService;
         this.uploadsRoot = FileStorageUtil.ensureDirectory(uploadDir);
+        this.reviewRepository=reviewRepository;
     }
 
     /* --- UPDATED: Complete file upload with text extraction --- */
@@ -239,16 +245,46 @@ public class BookService {
         }
     }
 
+    @Transactional
     public String deleteBook(int id) {
         Book book = findBookById(id);
         if (book != null) {
-            deleteBookFiles(book);
-            bookRepository.deleteById(id);
-            return "Book Deleted Successfully";
+            try {
+                // ✅ STEP 1: First delete all reviews associated with this book
+                deleteBookReviews(book.getId());
+
+                // ✅ STEP 2: Delete physical files
+                deleteBookFiles(book);
+
+                // ✅ STEP 3: Finally delete the book (reviews will be cascade deleted)
+                bookRepository.deleteById(id);
+
+                return "Book and all associated reviews deleted successfully";
+
+            } catch (Exception e) {
+                throw new RuntimeException("Error deleting book: " + e.getMessage());
+            }
         } else {
             return "Book Not Found";
         }
     }
+
+    private void deleteBookReviews(int bookId) {
+        try {
+            List<Review> reviews = reviewRepository.findByBookId(bookId);
+            if (!reviews.isEmpty()) {
+                System.out.println("🗑️ Deleting " + reviews.size() + " reviews for book ID: " + bookId);
+                reviewRepository.deleteAll(reviews);
+                System.out.println("✅ Successfully deleted all reviews for book ID: " + bookId);
+            } else {
+                System.out.println("ℹ️ No reviews found for book ID: " + bookId);
+            }
+        } catch (Exception e) {
+            System.err.println("❌ Error deleting reviews for book ID " + bookId + ": " + e.getMessage());
+            throw e; // Re-throw to trigger transaction rollback
+        }
+    }
+
 
     // ✅ FIXED: Physical files delete karne ka method
     private void deleteBookFiles(Book book) {
