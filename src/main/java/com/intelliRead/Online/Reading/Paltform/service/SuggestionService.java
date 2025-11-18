@@ -88,17 +88,21 @@ public class SuggestionService {
             Suggestion suggestion = suggestionRepository.findById(suggestionId)
                     .orElseThrow(() -> new IllegalArgumentException("Suggestion not found"));
 
-            // Check if publisher already expressed interest
+            // Check if already expressed interest
             Optional<PublisherSuggestionAction> existingAction =
                     publisherSuggestionActionRepository.findByPublisherIdAndSuggestionId(publisherId, suggestionId);
 
             if (existingAction.isPresent()) {
+                // Update existing action
                 PublisherSuggestionAction action = existingAction.get();
                 action.setAction(PublisherAction.INTERESTED);
                 action.setPublisherNotes(notes);
                 action.setUpdatedAt(LocalDateTime.now());
                 publisherSuggestionActionRepository.save(action);
+
+                return "Interest updated successfully";
             } else {
+                // Create new action
                 PublisherSuggestionAction action = new PublisherSuggestionAction();
                 action.setPublisher(publisher);
                 action.setSuggestion(suggestion);
@@ -106,14 +110,14 @@ public class SuggestionService {
                 action.setPublisherNotes(notes);
                 action.setCreatedAt(LocalDateTime.now());
                 publisherSuggestionActionRepository.save(action);
+
+                // Notify user
+                notifyUserAboutPublisherInterest(suggestion, publisher);
+
+                return "Interest expressed successfully";
             }
-
-            // Notify the user who suggested
-            notifyUserAboutPublisherInterest(suggestion, publisher);
-
-            return "Interest expressed successfully";
         } catch (Exception e) {
-            return "Error expressing interest: " + e.getMessage();
+            throw new RuntimeException("Error expressing interest: " + e.getMessage());
         }
     }
 
@@ -226,14 +230,16 @@ public class SuggestionService {
     }
 
     private void notifyUserAboutPublisherInterest(Suggestion suggestion, User publisher) {
-        User suggestingUser = suggestion.getUser();
-        System.out.println("🎯 Publisher " + publisher.getName() + " is interested in your suggestion: " + suggestion.getSuggestedTitle());
-
-        // Send email notification to user
         try {
-            emailService.sendPublisherInterestEmail(suggestingUser, suggestion, publisher);
+            User suggestingUser = suggestion.getUser();
+            System.out.println("🎯 Publisher " + publisher.getName() + " is interested in your suggestion: " + suggestion.getSuggestedTitle());
+
+            // Email bhejein (agar email service configure hai)
+            if (emailService != null) {
+                emailService.sendPublisherInterestEmail(suggestingUser, suggestion, publisher);
+            }
         } catch (Exception e) {
-            System.out.println("Failed to send interest email: " + e.getMessage());
+            System.out.println("Failed to send interest notification: " + e.getMessage());
         }
     }
 
@@ -357,4 +363,151 @@ public class SuggestionService {
             return findAllSuggestion();
         }
     }
+    public List<PublisherSuggestionView> getAllSuggestionsForPublishers() {
+        try {
+            // Get all APPROVED suggestions
+            List<Suggestion> suggestions = suggestionRepository.findBySuggestionStatus(SuggestionStatus.APPROVED);
+
+            return suggestions.stream()
+                    .map(suggestion -> {
+                        // Calculate upvotes
+                        int upvoteCount = userSuggestionVoteRepository.countBySuggestionIdAndUpvotedTrue(suggestion.getId());
+
+                        // Calculate publisher interests
+                        int interestCount = publisherSuggestionActionRepository.countBySuggestionIdAndAction(
+                                suggestion.getId(), PublisherAction.INTERESTED);
+
+                        // Create view
+                        PublisherSuggestionView view = new PublisherSuggestionView();
+                        view.setSuggestionId(suggestion.getId());
+                        view.setSuggestedTitle(suggestion.getSuggestedTitle());
+                        view.setAuthor(suggestion.getAuthor());
+                        view.setSuggestionReason(suggestion.getSuggestionReason());
+                        view.setSuggestionStatus(suggestion.getSuggestionStatus());
+                        view.setSuggestionCreatedAt(suggestion.getCreatedAt());
+
+                        // User info
+                        if (suggestion.getUser() != null) {
+                            view.setSuggestedByUserId(suggestion.getUser().getId());
+                            view.setSuggestedByUserName(suggestion.getUser().getName());
+                        }
+
+                        // Stats
+                        view.setTotalUpvotes(upvoteCount);
+                        view.setTotalPublisherInterests(interestCount);
+
+                        return view;
+                    })
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new RuntimeException("Error loading suggestions for publishers: " + e.getMessage());
+        }
+    }
+
+    // ✅ NEW: Get suggestions for specific publisher with their actions
+    public List<PublisherSuggestionView> getSuggestionsForPublisher(int publisherId) {
+        try {
+            List<PublisherSuggestionView> allSuggestions = getAllSuggestionsForPublishers();
+
+            // Add publisher-specific actions
+            for (PublisherSuggestionView suggestion : allSuggestions) {
+                Optional<PublisherSuggestionAction> publisherAction =
+                        publisherSuggestionActionRepository.findByPublisherIdAndSuggestionId(
+                                publisherId, suggestion.getSuggestionId());
+
+                if (publisherAction.isPresent()) {
+                    PublisherSuggestionAction action = publisherAction.get();
+                    suggestion.setPublisherAction(action.getAction());
+                    suggestion.setPublisherActionDate(action.getCreatedAt());
+                    suggestion.setPublisherNotes(action.getPublisherNotes());
+                    suggestion.setUploadedBookId(action.getUploadedBookId());
+                }
+            }
+
+            return allSuggestions;
+        } catch (Exception e) {
+            throw new RuntimeException("Error loading publisher suggestions: " + e.getMessage());
+        }
+    }
+
+    public String markSuggestionAsUploaded(int publisherId, int suggestionId) {
+        try {
+            User publisher = userRepository.findById(publisherId)
+                    .orElseThrow(() -> new UserNotFoundException("Publisher not found"));
+
+            Suggestion suggestion = suggestionRepository.findById(suggestionId)
+                    .orElseThrow(() -> new IllegalArgumentException("Suggestion not found"));
+
+            // Update or create action
+            Optional<PublisherSuggestionAction> existingAction =
+                    publisherSuggestionActionRepository.findByPublisherIdAndSuggestionId(publisherId, suggestionId);
+
+            PublisherSuggestionAction action;
+            if (existingAction.isPresent()) {
+                action = existingAction.get();
+                action.setAction(PublisherAction.UPLOADED);
+            } else {
+                action = new PublisherSuggestionAction();
+                action.setPublisher(publisher);
+                action.setSuggestion(suggestion);
+                action.setAction(PublisherAction.UPLOADED);
+                action.setCreatedAt(LocalDateTime.now());
+            }
+
+            action.setUpdatedAt(LocalDateTime.now());
+            publisherSuggestionActionRepository.save(action);
+
+            // Notify admin and user
+            notifyAboutBookUpload(suggestion, publisher);
+
+            return "Suggestion marked as uploaded successfully";
+        } catch (Exception e) {
+            throw new RuntimeException("Error marking as uploaded: " + e.getMessage());
+        }
+    }
+
+    public PublisherSuggestionView getSuggestionDetails(int suggestionId) {
+        try {
+            Suggestion suggestion = suggestionRepository.findById(suggestionId)
+                    .orElseThrow(() -> new IllegalArgumentException("Suggestion not found"));
+
+            int upvoteCount = userSuggestionVoteRepository.countBySuggestionIdAndUpvotedTrue(suggestionId);
+            int interestCount = publisherSuggestionActionRepository.countBySuggestionIdAndAction(
+                    suggestionId, PublisherAction.INTERESTED);
+
+            PublisherSuggestionView view = new PublisherSuggestionView();
+            view.setSuggestionId(suggestion.getId());
+            view.setSuggestedTitle(suggestion.getSuggestedTitle());
+            view.setAuthor(suggestion.getAuthor());
+            view.setSuggestionReason(suggestion.getSuggestionReason());
+            view.setSuggestionStatus(suggestion.getSuggestionStatus());
+            view.setSuggestionCreatedAt(suggestion.getCreatedAt());
+
+            if (suggestion.getUser() != null) {
+                view.setSuggestedByUserId(suggestion.getUser().getId());
+                view.setSuggestedByUserName(suggestion.getUser().getName());
+            }
+
+            view.setTotalUpvotes(upvoteCount);
+            view.setTotalPublisherInterests(interestCount);
+
+            return view;
+        } catch (Exception e) {
+            throw new RuntimeException("Error loading suggestion details: " + e.getMessage());
+        }
+    }
+
+    private void notifyAboutBookUpload(Suggestion suggestion, User publisher) {
+        try {
+            System.out.println("📚 Publisher " + publisher.getName() + " uploaded book for suggestion: " + suggestion.getSuggestedTitle());
+
+            // Admin ko notify karein
+            // User ko notify karein
+        } catch (Exception e) {
+            System.out.println("Failed to send upload notification: " + e.getMessage());
+        }
+    }
+
+
+
 }

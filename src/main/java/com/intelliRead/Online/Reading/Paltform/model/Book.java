@@ -88,4 +88,7 @@ public class Book {
     // extracted text (optional - can be null)
     @Column(columnDefinition = "LONGTEXT")
     private String extractedText;
+
+    @Column(name = "suggestion_id")
+    private Integer suggestionId;
 }

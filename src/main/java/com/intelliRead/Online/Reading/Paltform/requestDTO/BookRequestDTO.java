@@ -16,4 +16,5 @@ public class BookRequestDTO {
     private int userId;
     private Integer categoryId; // ✅ ADDED: For category assignment
     private BookStatus status = BookStatus.PENDING;
+    private Integer suggestionId;
 }

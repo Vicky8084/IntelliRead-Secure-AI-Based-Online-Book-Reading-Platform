@@ -1827,7 +1827,7 @@
 const API_BASE_URL = 'http://localhost:8035';
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
-// ✅ NEW: Suggestion API Endpoints
+// ✅ CORRECTED API Endpoints
 const SUGGESTION_API = {
     GET_ALL: `${API_BASE_URL}/suggestion/all`,
     GET_BY_PUBLISHER: `${API_BASE_URL}/suggestion/publisher`,
@@ -3868,7 +3868,7 @@ function displayPublisherSuggestions(suggestions) {
             <td>
                 <div class="user-avatar">
                     <i class='bx bx-user'></i>
-                    <span>${suggestion.userName || 'Anonymous User'}</span>
+                    <span>${suggestion.suggestedByUserName || 'Anonymous User'}</span>
                 </div>
             </td>
             <td>
@@ -3877,30 +3877,30 @@ function displayPublisherSuggestions(suggestions) {
                 </div>
             </td>
             <td>
-                <span class="upvote-count">${suggestion.upvoteCount || 0} 👍</span>
+                <span class="upvote-count">${suggestion.totalUpvotes || 0} 👍</span>
             </td>
             <td>
-                <span class="interest-count">${suggestion.publisherInterestCount || 0} 👁️</span>
+                <span class="interest-count">${suggestion.totalPublisherInterests || 0} 👁️</span>
             </td>
             <td>
                 ${getPublisherActionBadge(suggestion)}
             </td>
-            <td>${formatDate(suggestion.createdAt)}</td>
+            <td>${formatDate(suggestion.suggestionCreatedAt)}</td>
             <td>
                 <div class="book-actions">
                     ${!suggestion.publisherAction || suggestion.publisherAction === 'NOT_INTERESTED' ? `
-                        <button class="btn-success btn-sm" onclick="expressInterest(${suggestion.id})" title="Express Interest">
+                        <button class="btn-success btn-sm" onclick="expressInterest(${suggestion.suggestionId})" title="Express Interest">
                             <i class='bx bx-show'></i> Interested
                         </button>
                     ` : ''}
 
                     ${suggestion.publisherAction === 'INTERESTED' ? `
-                        <button class="btn-primary btn-sm" onclick="uploadForSuggestion(${suggestion.id})" title="Upload Book">
+                        <button class="btn-primary btn-sm" onclick="uploadForSuggestion(${suggestion.suggestionId})" title="Upload Book">
                             <i class='bx bx-upload'></i> Upload
                         </button>
                     ` : ''}
 
-                    <button class="btn-info btn-sm" onclick="viewSuggestionDetails(${suggestion.id})" title="View Details">
+                    <button class="btn-info btn-sm" onclick="viewSuggestionDetails(${suggestion.suggestionId})" title="View Details">
                         <i class='bx bx-show'></i> Details
                     </button>
                 </div>
@@ -3950,18 +3950,24 @@ async function expressInterest(suggestionId) {
 
     showLoading(true);
     try {
-        // ✅ LIVE API CALL
-        const response = await authFetch(SUGGESTION_API.EXPRESS_INTEREST, {
+        console.log('🎯 Expressing interest in suggestion:', suggestionId, 'by publisher:', currentUserId);
+
+        // ✅ FIXED: Proper request object banao
+        const requestData = {
+            publisherId: currentUserId,
+            suggestionId: suggestionId,
+            notes: 'Interested in publishing this book'
+        };
+
+        console.log('📤 Sending interest request:', requestData);
+
+        // ✅ LIVE API CALL - FIXED
+        const response = await authFetch(`${SUGGESTION_API.EXPRESS_INTEREST}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                publisherId: currentUserId,
-                suggestionId: suggestionId,
-                notes: 'Interested in publishing this book',
-                actionDate: new Date().toISOString()
-            })
+            body: JSON.stringify(requestData)
         });
 
         if (response.ok) {
@@ -3970,7 +3976,7 @@ async function expressInterest(suggestionId) {
 
             showNotification('Interest expressed successfully! User has been notified.', 'success');
 
-            // ✅ REAL-TIME UPDATE: Reload suggestions to reflect changes
+            // ✅ REAL-TIME UPDATE
             setTimeout(() => {
                 loadPublisherSuggestions();
             }, 1000);
@@ -4050,17 +4056,31 @@ async function prefillBookFormWithSuggestion(suggestionId) {
 /**
  * View suggestion details - LIVE API
  */
+/**
+ * View suggestion details - LIVE API - FIXED
+ */
 async function viewSuggestionDetails(suggestionId) {
     showLoading(true);
     try {
-        // ✅ LIVE API CALL
+        console.log('🔍 Viewing suggestion details:', suggestionId);
+
+        // ✅ FIXED: Ensure suggestionId is valid number
+        if (!suggestionId || isNaN(suggestionId)) {
+            throw new Error('Invalid suggestion ID');
+        }
+
+        // ✅ FIXED: Proper URL with number
         const response = await authFetch(`${SUGGESTION_API.GET_DETAILS}/${suggestionId}`);
 
         if (response.ok) {
-            const suggestion = await response.json();
-            console.log('✅ Suggestion details loaded:', suggestion);
+            const result = await response.json();
+            console.log('✅ Suggestion details loaded:', result);
 
-            showSuggestionDetailsModal(suggestion);
+            if (result.success && result.suggestion) {
+                showSuggestionDetailsModal(result.suggestion);
+            } else {
+                throw new Error(result.message || 'Failed to load suggestion details');
+            }
         } else {
             const errorText = await response.text();
             throw new Error(errorText || 'Failed to load suggestion details');

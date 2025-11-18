@@ -1,6 +1,5 @@
 package com.intelliRead.Online.Reading.Paltform.controller;
 
-import com.intelliRead.Online.Reading.Paltform.responseDTO.BookSuggestionResponse;
 import com.intelliRead.Online.Reading.Paltform.requestDTO.PublisherSuggestionView;
 import com.intelliRead.Online.Reading.Paltform.service.SuggestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +13,35 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/publisher/suggestions")
+@RequestMapping("/suggestion")
 public class PublisherSuggestionController {
 
     @Autowired
     private SuggestionService suggestionService;
 
-    // ✅ Get all suggestions for publishers
+    // ✅ Get all suggestions for ALL publishers (PUBLIC suggestions)
     @GetMapping("/all")
-    public ResponseEntity<Map<String, Object>> getAllSuggestionsForPublisher(@RequestParam int publisherId) {
+    public ResponseEntity<Map<String, Object>> getAllSuggestions() {
         try {
-            List<PublisherSuggestionView> suggestions = suggestionService.getSuggestionsForPublishers(publisherId);
+            List<PublisherSuggestionView> suggestions = suggestionService.getAllSuggestionsForPublishers();
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("suggestions", suggestions);
+            response.put("count", suggestions.size());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("success", false);
+            errorResponse.put("message", "Error loading suggestions: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+        }
+    }
+
+    // ✅ Get suggestions for specific publisher
+    @GetMapping("/publisher/{publisherId}")
+    public ResponseEntity<Map<String, Object>> getSuggestionsForPublisher(@PathVariable int publisherId) {
+        try {
+            List<PublisherSuggestionView> suggestions = suggestionService.getSuggestionsForPublisher(publisherId);
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("suggestions", suggestions);
@@ -40,16 +57,44 @@ public class PublisherSuggestionController {
 
     // ✅ Express interest in a suggestion
     @PostMapping("/interest")
-    public ResponseEntity<Map<String, Object>> expressInterest(@RequestParam int publisherId,
-                                                               @RequestParam int suggestionId,
-                                                               @RequestParam(required = false) String notes) {
+    public ResponseEntity<Map<String, Object>> expressInterest(@RequestBody Map<String, Object> request) {
         try {
+            System.out.println("🎯 Express interest request received: " + request);
+
+            // ✅ FIXED: Proper type conversion with null checks
+            Integer publisherId = null;
+            Integer suggestionId = null;
+
+            if (request.get("publisherId") != null) {
+                publisherId = Integer.valueOf(request.get("publisherId").toString());
+            }
+            if (request.get("suggestionId") != null) {
+                suggestionId = Integer.valueOf(request.get("suggestionId").toString());
+            }
+
+            String notes = request.get("notes") != null ? request.get("notes").toString() : "No notes provided";
+
+            // ✅ Validation
+            if (publisherId == null || suggestionId == null) {
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("success", false);
+                errorResponse.put("message", "Publisher ID and Suggestion ID are required");
+                return ResponseEntity.badRequest().body(errorResponse);
+            }
+
+            System.out.println("🔍 Processing interest - Publisher: " + publisherId + ", Suggestion: " + suggestionId);
+
             String result = suggestionService.expressInterest(publisherId, suggestionId, notes);
+
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message", result);
             return ResponseEntity.ok(response);
+
         } catch (Exception e) {
+            System.out.println("❌ Error expressing interest: " + e.getMessage());
+            e.printStackTrace();
+
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("success", false);
             errorResponse.put("message", "Error expressing interest: " + e.getMessage());
@@ -57,14 +102,16 @@ public class PublisherSuggestionController {
         }
     }
 
-    // ✅ Upload book for a suggestion
-    @PostMapping("/upload-book")
-    public ResponseEntity<Map<String, Object>> uploadBookForSuggestion(@RequestParam int publisherId,
-                                                                       @RequestParam int suggestionId,
-                                                                       @RequestParam int bookId,
-                                                                       @RequestParam(required = false) String notes) {
+    // ✅ Mark suggestion as uploaded
+    @PostMapping("/upload")
+    public ResponseEntity<Map<String, Object>> uploadBookForSuggestion(@RequestBody Map<String, Object> request) {
         try {
-            String result = suggestionService.uploadBookForSuggestion(publisherId, suggestionId, bookId, notes);
+            int publisherId = (int) request.get("publisherId");
+            int suggestionId = (int) request.get("suggestionId");
+            String uploadedAt = (String) request.get("uploadedAt");
+            String status = (String) request.get("status");
+
+            String result = suggestionService.markSuggestionAsUploaded(publisherId, suggestionId);
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message", result);
@@ -72,49 +119,40 @@ public class PublisherSuggestionController {
         } catch (Exception e) {
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("success", false);
-            errorResponse.put("message", "Error uploading book: " + e.getMessage());
+            errorResponse.put("message", "Error marking as uploaded: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
 
-    // ✅ Get publisher's action history
-    @GetMapping("/publisher/{publisherId}/actions")
-    public ResponseEntity<Map<String, Object>> getPublisherActions(@PathVariable int publisherId) {
+    // ✅ Get suggestion details
+    @GetMapping("/{suggestionId}")
+    public ResponseEntity<Map<String, Object>> getSuggestionDetails(@PathVariable("suggestionId") Integer suggestionId) {
         try {
+            System.out.println("🔍 Get suggestion details request: " + suggestionId);
+
+            // ✅ Validation
+            if (suggestionId == null) {
+                Map<String, Object> errorResponse = new HashMap<>();
+                errorResponse.put("success", false);
+                errorResponse.put("message", "Suggestion ID is required");
+                return ResponseEntity.badRequest().body(errorResponse);
+            }
+
+            PublisherSuggestionView suggestion = suggestionService.getSuggestionDetails(suggestionId);
+
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
-            response.put("message", "Publisher actions retrieved");
-            // Implementation would return publisher's action history
+            response.put("suggestion", suggestion);
             return ResponseEntity.ok(response);
+
         } catch (Exception e) {
+            System.out.println("❌ Error loading suggestion details: " + e.getMessage());
+            e.printStackTrace();
+
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("success", false);
-            errorResponse.put("message", "Error retrieving actions: " + e.getMessage());
+            errorResponse.put("message", "Error loading suggestion details: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-        }
-    }
-
-    // ✅ Get suggestions with high engagement
-    @GetMapping("/trending")
-    public ResponseEntity<Map<String, Object>> getTrendingSuggestions(@RequestParam int publisherId) {
-        try {
-            List<PublisherSuggestionView> suggestions = suggestionService.getSuggestionsForPublishers(publisherId);
-
-            // Filter and sort by engagement
-            suggestions.sort((s1, s2) -> Integer.compare(
-                    s2.getTotalUpvotes() + s2.getTotalPublisherInterests(),
-                    s1.getTotalUpvotes() + s1.getTotalPublisherInterests()
-            ));
-
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", true);
-            response.put("suggestions", suggestions.stream().limit(10).collect(Collectors.toList()));
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("success", false);
-            errorResponse.put("message", "Error loading trending suggestions: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 }
