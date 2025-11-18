@@ -75,4 +75,8 @@ public class SuggestionService {
             throw new IllegalArgumentException("Suggestion not found");
         }
     }
+    public List<Suggestion> findSuggestionsByUserId(int userId) {
+        return suggestionRepository.findByUserId(userId);
+    }
+
 }

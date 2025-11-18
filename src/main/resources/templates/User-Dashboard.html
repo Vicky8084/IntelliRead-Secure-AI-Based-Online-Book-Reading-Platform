@@ -736,6 +736,80 @@
             gap: 15px;
         }
 
+        /* Suggestion List Styles */
+        .suggestion-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .suggestion-item {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            padding: 20px;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+        }
+
+        .suggestion-item:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-3px);
+        }
+
+        .suggestion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .suggestion-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #2d3748;
+        }
+
+        .suggestion-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .suggestion-status.pending {
+            background: rgba(255, 204, 0, 0.2);
+            color: #b38f00;
+        }
+
+        .suggestion-status.accepted {
+            background: rgba(75, 181, 67, 0.2);
+            color: var(--success);
+        }
+
+        .suggestion-status.rejected {
+            background: rgba(220, 53, 69, 0.2);
+            color: var(--danger);
+        }
+
+        .suggestion-author {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .suggestion-reason {
+            color: #4a5568;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .suggestion-date {
+            font-size: 12px;
+            color: var(--gray);
+            text-align: right;
+        }
+
         /* FOOTER */
         .main-footer {
             display: flex;
@@ -1355,7 +1429,7 @@
                 </div>
             </div>
 
-            <!-- Suggestions Page -->
+            <!-- Suggestions Page - UPDATED -->
             <div id="suggestions-page" class="page-content">
                 <div class="dashboard-header">
                     <h2>Book Suggestions</h2>
@@ -1400,10 +1474,24 @@
                     </div>
                 </div>
 
+                <!-- NEW SECTION: My Suggestions -->
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>My Suggestions</h3>
+                        <button class="view-all" id="refreshSuggestionsBtn">Refresh</button>
+                    </div>
+                    <div class="suggestion-list" id="userSuggestionsList">
+                        <div class="empty-state">
+                            <i class='bx bx-bulb'></i>
+                            <p>No suggestions submitted yet</p>
+                            <p>Your submitted suggestions will appear here</p>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="content-section">
                     <div class="section-header">
                         <h3>Recommended For You</h3>
-                        <button class="view-all" id="refreshSuggestionsBtn">Refresh Suggestions</button>
                     </div>
                     <div class="books-grid" id="suggestionsGrid">
                         <div class="empty-state">
@@ -1618,17 +1706,31 @@
 
     async function loadUserSuggestions() {
         try {
-            const response = await fetch(`${API_BASE_URL}/suggestion/apis/findAll`);
+            console.log('🔄 Loading suggestions for user:', currentUser.id);
+
+            // USE THE NEW USER-SPECIFIC ENDPOINT
+            const response = await fetch(`${API_BASE_URL}/suggestion/apis/user/${currentUser.id}`);
+
             if (response.ok) {
-                const allSuggestions = await response.json();
-                // Filter suggestions for current user
-                userSuggestions = allSuggestions.filter(suggestion =>
-                    suggestion.user && suggestion.user.id === currentUser.id
-                );
-                console.log('✅ User suggestions loaded:', userSuggestions.length);
+                userSuggestions = await response.json();
+                console.log('✅ User suggestions loaded:', userSuggestions);
+            } else {
+                console.error('❌ User suggestions endpoint failed, status:', response.status);
+                // Fallback to getAll and filter
+                const allResponse = await fetch(`${API_BASE_URL}/suggestion/apis/findAll`);
+                if (allResponse.ok) {
+                    const allSuggestions = await allResponse.json();
+                    userSuggestions = allSuggestions.filter(suggestion =>
+                        suggestion.user && suggestion.user.id === currentUser.id
+                    );
+                    console.log('✅ User suggestions loaded (fallback):', userSuggestions.length);
+                } else {
+                    userSuggestions = [];
+                }
             }
         } catch (error) {
-            console.error('Error loading user suggestions:', error);
+            console.error('❌ Error loading user suggestions:', error);
+            userSuggestions = [];
         }
     }
 
@@ -1813,16 +1915,22 @@
     }
 
     async function loadSuggestionsData() {
+        // Update counts
         document.getElementById('totalSuggestions').textContent = userSuggestions.length;
         document.getElementById('acceptedSuggestions').textContent = userSuggestions.filter(s =>
             s.suggestionStatus === 'ACCEPTED'
         ).length;
         document.getElementById('pendingSuggestions').textContent = userSuggestions.filter(s =>
-            s.suggestionStatus === 'PENDING'
+            s.suggestionStatus === 'PENDING' || !s.suggestionStatus
         ).length;
-        document.getElementById('addedFromSuggestions').textContent = '3'; // This would come from API
+        document.getElementById('addedFromSuggestions').textContent = userSuggestions.filter(s =>
+            s.suggestionStatus === 'ACCEPTED'
+        ).length;
 
-        // Load recommended books (for now, using all published books)
+        // Display user suggestions
+        await displayUserSuggestions();
+
+        // Load recommended books
         try {
             const response = await fetch(`${API_BASE_URL}/book/apies/published`);
             if (response.ok) {
@@ -1849,6 +1957,37 @@
             }
         } catch (error) {
             console.error('Error loading suggestions:', error);
+        }
+    }
+
+    // UPDATED FUNCTION: Display user suggestions
+    async function displayUserSuggestions() {
+        const userSuggestionsList = document.getElementById('userSuggestionsList');
+
+        if (userSuggestions.length > 0) {
+            userSuggestionsList.innerHTML = userSuggestions.map(suggestion => `
+                <div class="suggestion-item">
+                    <div class="suggestion-header">
+                        <div class="suggestion-title">${suggestion.suggestedTitle || 'Untitled'}</div>
+                        <div class="suggestion-status ${(suggestion.suggestionStatus || 'PENDING').toLowerCase()}">
+                            ${suggestion.suggestionStatus || 'PENDING'}
+                        </div>
+                    </div>
+                    <div class="suggestion-author">by ${suggestion.author || 'Unknown Author'}</div>
+                    <div class="suggestion-reason">${suggestion.suggestionReason || 'No reason provided'}</div>
+                    <div class="suggestion-date">
+                        Suggested on: ${new Date(suggestion.createdAt || Date.now()).toLocaleDateString()}
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            userSuggestionsList.innerHTML = `
+                <div class="empty-state">
+                    <i class='bx bx-bulb'></i>
+                    <p>No suggestions submitted yet</p>
+                    <p>Your submitted suggestions will appear here</p>
+                </div>
+            `;
         }
     }
 
@@ -1952,6 +2091,7 @@
 
         // Refresh suggestions
         document.getElementById('refreshSuggestionsBtn').addEventListener('click', () => {
+            loadUserSuggestions();
             loadSuggestionsData();
             showNotification('Suggestions refreshed!', 'success');
         });
@@ -2151,6 +2291,7 @@
         window.location.href = '/Login';
     }
 </script>
+
 
 </body>
 </html>

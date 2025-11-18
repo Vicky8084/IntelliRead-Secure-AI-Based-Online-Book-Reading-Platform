@@ -65275,3 +65275,4569 @@ Caused by: java.net.ConnectException: Connection refused
         category c1_0 
     where
         c1_0.id=?
+2025-11-18 19:54:52 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 19:54:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:54:52 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 19:54:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:54:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:54:52 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 19:54:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:54:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:54:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:54:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:54:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 19:54:57 - 
+    insert 
+    into
+        suggestion
+        (author, created_at, suggested_title, suggestion_status, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-11-18 19:54:57 - 
+    select
+        s1_0.id,
+        s1_0.author,
+        s1_0.created_at,
+        s1_0.suggested_title,
+        s1_0.suggestion_status,
+        s1_0.user_id 
+    from
+        suggestion s1_0
+2025-11-18 19:54:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 19:54:57 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 19:54:57 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:54:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 19:54:57 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:54:57 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:54:57 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 19:54:57 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:54:57 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:54:57 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:54:57 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:05 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 19:55:05 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:05 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 19:55:05 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:05 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:05 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 19:55:05 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:05 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:05 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:05 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:20 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        book b1_0 
+    left join
+        category c1_0 
+            on c1_0.id=b1_0.category_id 
+    left join
+        users u1_0 
+            on u1_0.id=b1_0.user_id 
+    where
+        b1_0.id=?
+2025-11-18 19:55:20 - 
+    select
+        r1_0.id,
+        r1_0.book_id,
+        r1_0.created_at,
+        r1_0.rating,
+        r1_0.review_text,
+        r1_0.user_id 
+    from
+        review r1_0 
+    left join
+        book b1_0 
+            on b1_0.id=r1_0.book_id 
+    where
+        b1_0.id=?
+2025-11-18 19:55:20 - 
+    select
+        rl1_0.id 
+    from
+        reading_list rl1_0 
+    left join
+        users u1_0 
+            on u1_0.id=rl1_0.user_id 
+    left join
+        book b1_0 
+            on b1_0.id=rl1_0.book_id 
+    where
+        u1_0.id=? 
+        and b1_0.id=? 
+    limit
+        ?
+2025-11-18 19:55:20 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 19:55:20 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:20 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 19:55:20 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:20 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:20 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 19:55:20 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:20 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:20 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:20 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:27 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 19:55:27 - 
+    insert 
+    into
+        suggestion
+        (author, created_at, suggested_title, suggestion_status, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-11-18 19:55:27 - 
+    select
+        s1_0.id,
+        s1_0.author,
+        s1_0.created_at,
+        s1_0.suggested_title,
+        s1_0.suggestion_status,
+        s1_0.user_id 
+    from
+        suggestion s1_0
+2025-11-18 19:55:27 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 19:55:27 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 19:55:27 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:27 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 19:55:27 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:27 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:27 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 19:55:27 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:27 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:27 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 19:55:27 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:13:32 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-18 20:13:32 - Graceful shutdown complete
+2025-11-18 20:13:32 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-18 20:13:32 - HikariPool-1 - Shutdown initiated...
+2025-11-18 20:13:32 - HikariPool-1 - Shutdown completed.
+2025-11-18 20:13:34 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 33742 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-18 20:13:34 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-18 20:13:34 - No active profile set, falling back to 1 default profile: "default"
+2025-11-18 20:13:35 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-18 20:13:35 - Finished Spring Data repository scanning in 36 ms. Found 8 JPA repository interfaces.
+2025-11-18 20:13:35 - Tomcat initialized with port 8035 (http)
+2025-11-18 20:13:35 - Starting service [Tomcat]
+2025-11-18 20:13:35 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-18 20:13:35 - Initializing Spring embedded WebApplicationContext
+2025-11-18 20:13:35 - Root WebApplicationContext: initialization completed in 824 ms
+2025-11-18 20:13:35 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-18 20:13:35 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-18 20:13:35 - HHH000026: Second-level cache disabled
+2025-11-18 20:13:35 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-18 20:13:35 - HikariPool-1 - Starting...
+2025-11-18 20:13:35 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@410382cb
+2025-11-18 20:13:35 - HikariPool-1 - Start completed.
+2025-11-18 20:13:35 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-18 20:13:35 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-18 20:13:35 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-18 20:13:36 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-18 20:13:36 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-18 20:13:36 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-18 20:13:36 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-18 20:13:36 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-18 20:13:40 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-18 20:13:40 - Started OnlineReadingPaltformApplication in 5.988 seconds (process running for 6.302)
+2025-11-18 20:13:40 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:13:40 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:13:40 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:13:40 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:13:40 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:13:40 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:13:40 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:13:40 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:13:40 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:13:40 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:13:40 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:13:40 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:13:40 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:13:40 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:13:40 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:13:40 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-18 20:13:50 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-18 20:13:50 - Initializing Servlet 'dispatcherServlet'
+2025-11-18 20:13:50 - Completed initialization in 3 ms
+2025-11-18 20:13:51 - 
+    select
+        r1_0.id,
+        r1_0.book_id,
+        r1_0.created_at,
+        r1_0.rating,
+        r1_0.review_text,
+        r1_0.user_id 
+    from
+        review r1_0 
+    left join
+        users u1_0 
+            on u1_0.id=r1_0.user_id 
+    where
+        u1_0.id=?
+2025-11-18 20:13:51 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0 
+    left join
+        category c1_0 
+            on c1_0.id=b1_0.category_id 
+    where
+        b1_0.user_id=?
+2025-11-18 20:13:51 - 
+    select
+        s1_0.id,
+        s1_0.author,
+        s1_0.created_at,
+        s1_0.suggested_title,
+        s1_0.suggestion_status,
+        s1_0.user_id 
+    from
+        suggestion s1_0
+2025-11-18 20:13:51 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:13:53 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 20:13:53 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:13:53 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:13:53 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:13:53 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:13:53 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:13:53 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:13:53 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:13:53 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:13:53 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:13:56 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 20:13:56 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:13:56 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:13:56 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:13:56 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:13:56 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:13:56 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:13:56 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:13:56 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:13:56 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:01 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 20:14:01 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:01 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:14:01 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:01 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:01 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:14:01 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:01 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:01 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:01 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:03 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 20:14:03 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:03 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:14:03 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:03 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:03 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:14:03 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:03 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:03 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:03 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:10 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 20:14:10 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:10 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:14:10 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:10 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:10 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:14:10 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:10 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:10 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:10 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:16 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 20:14:16 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:16 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:14:16 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:16 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:16 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:14:16 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:16 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:16 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:16 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:25 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:14:25 - 
+    insert 
+    into
+        suggestion
+        (author, created_at, suggested_title, suggestion_status, user_id) 
+    values
+        (?, ?, ?, ?, ?)
+2025-11-18 20:14:25 - 
+    select
+        s1_0.id,
+        s1_0.author,
+        s1_0.created_at,
+        s1_0.suggested_title,
+        s1_0.suggestion_status,
+        s1_0.user_id 
+    from
+        suggestion s1_0
+2025-11-18 20:14:25 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:14:25 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 20:14:25 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:25 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:14:25 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:25 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:25 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:14:25 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:25 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:25 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:25 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:28 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 20:14:28 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:28 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:14:28 - 
+    select
+        s1_0.id,
+        s1_0.author,
+        s1_0.created_at,
+        s1_0.suggested_title,
+        s1_0.suggestion_status,
+        s1_0.user_id 
+    from
+        suggestion s1_0
+2025-11-18 20:14:28 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:28 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:14:28 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:28 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:14:28 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:28 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:28 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:28 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:29 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 20:14:29 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:29 - 
+    select
+        s1_0.id,
+        s1_0.author,
+        s1_0.created_at,
+        s1_0.suggested_title,
+        s1_0.suggestion_status,
+        s1_0.user_id 
+    from
+        suggestion s1_0
+2025-11-18 20:14:29 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:14:29 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:14:29 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:29 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:29 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:14:29 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:29 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:29 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:14:29 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:51:51 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-18 20:51:51 - Graceful shutdown complete
+2025-11-18 20:51:51 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-18 20:51:51 - HikariPool-1 - Shutdown initiated...
+2025-11-18 20:51:51 - HikariPool-1 - Shutdown completed.
+2025-11-18 20:51:53 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 34668 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-18 20:51:53 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-18 20:51:53 - No active profile set, falling back to 1 default profile: "default"
+2025-11-18 20:51:53 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-18 20:51:53 - Finished Spring Data repository scanning in 45 ms. Found 8 JPA repository interfaces.
+2025-11-18 20:51:54 - Tomcat initialized with port 8035 (http)
+2025-11-18 20:51:54 - Starting service [Tomcat]
+2025-11-18 20:51:54 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-18 20:51:54 - Initializing Spring embedded WebApplicationContext
+2025-11-18 20:51:54 - Root WebApplicationContext: initialization completed in 874 ms
+2025-11-18 20:51:54 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-18 20:51:54 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-18 20:51:54 - HHH000026: Second-level cache disabled
+2025-11-18 20:51:54 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-18 20:51:54 - HikariPool-1 - Starting...
+2025-11-18 20:51:54 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@61e14b53
+2025-11-18 20:51:54 - HikariPool-1 - Start completed.
+2025-11-18 20:51:54 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-18 20:51:54 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-18 20:51:54 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-18 20:51:55 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-18 20:51:55 - 
+    create table suggestion (
+        id integer not null auto_increment,
+        author varchar(255),
+        created_at datetime(6) not null,
+        suggested_title varchar(255) not null,
+        suggestion_status enum ('APPROVED','PENDING','REJECTED') not null,
+        user_id integer,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-18 20:51:55 - 
+    alter table suggestion 
+       add constraint FKlwyt2aya9jw90lwo4wt6edstj 
+       foreign key (user_id) 
+       references users (id)
+2025-11-18 20:51:55 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-18 20:51:55 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-18 20:51:55 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-18 20:51:55 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-18 20:51:59 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-18 20:51:59 - Started OnlineReadingPaltformApplication in 6.32 seconds (process running for 6.728)
+2025-11-18 20:51:59 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:51:59 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:51:59 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:51:59 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:51:59 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:51:59 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:51:59 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:51:59 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:51:59 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:51:59 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:51:59 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:51:59 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:51:59 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:51:59 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:51:59 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:51:59 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-18 20:58:34 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-18 20:58:34 - Graceful shutdown complete
+2025-11-18 20:58:34 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-18 20:58:34 - HikariPool-1 - Shutdown initiated...
+2025-11-18 20:58:34 - HikariPool-1 - Shutdown completed.
+2025-11-18 20:58:36 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 34918 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-18 20:58:36 - Running with Spring Boot v3.5.6, Spring v6.2.11
+2025-11-18 20:58:36 - No active profile set, falling back to 1 default profile: "default"
+2025-11-18 20:58:37 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-18 20:58:37 - Finished Spring Data repository scanning in 34 ms. Found 8 JPA repository interfaces.
+2025-11-18 20:58:37 - Tomcat initialized with port 8035 (http)
+2025-11-18 20:58:37 - Starting service [Tomcat]
+2025-11-18 20:58:37 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-18 20:58:37 - Initializing Spring embedded WebApplicationContext
+2025-11-18 20:58:37 - Root WebApplicationContext: initialization completed in 781 ms
+2025-11-18 20:58:37 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-18 20:58:37 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-18 20:58:37 - HHH000026: Second-level cache disabled
+2025-11-18 20:58:38 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-18 20:58:38 - HikariPool-1 - Starting...
+2025-11-18 20:58:38 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@61e14b53
+2025-11-18 20:58:38 - HikariPool-1 - Start completed.
+2025-11-18 20:58:38 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-18 20:58:38 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-18 20:58:38 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-18 20:58:38 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-18 20:58:38 - 
+    create table suggestion (
+        id integer not null auto_increment,
+        author varchar(255),
+        created_at datetime(6) not null,
+        suggested_title varchar(255) not null,
+        suggestion_reason TEXT,
+        suggestion_status enum ('APPROVED','PENDING','REJECTED') not null,
+        user_id integer,
+        primary key (id)
+    ) engine=InnoDB
+2025-11-18 20:58:38 - 
+    alter table suggestion 
+       add constraint FKlwyt2aya9jw90lwo4wt6edstj 
+       foreign key (user_id) 
+       references users (id)
+2025-11-18 20:58:38 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-18 20:58:39 - Filter 'jwtAuthenticationFilter' configured for use
+2025-11-18 20:58:39 - Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2025-11-18 20:58:39 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-18 20:58:43 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-18 20:58:43 - Started OnlineReadingPaltformApplication in 6.483 seconds (process running for 6.721)
+2025-11-18 20:58:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:58:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:58:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:58:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:58:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:58:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:58:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:58:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:58:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:58:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:58:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:58:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:58:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:58:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 20:58:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:58:43 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-18 20:58:47 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-18 20:58:47 - Initializing Servlet 'dispatcherServlet'
+2025-11-18 20:58:47 - Completed initialization in 3 ms
+2025-11-18 20:58:47 - 
+    select
+        r1_0.id,
+        r1_0.book_id,
+        r1_0.created_at,
+        r1_0.rating,
+        r1_0.review_text,
+        r1_0.user_id 
+    from
+        review r1_0 
+    left join
+        users u1_0 
+            on u1_0.id=r1_0.user_id 
+    where
+        u1_0.id=?
+2025-11-18 20:58:47 - 
+    select
+        s1_0.id,
+        s1_0.author,
+        s1_0.created_at,
+        s1_0.suggested_title,
+        s1_0.suggestion_reason,
+        s1_0.suggestion_status,
+        s1_0.user_id 
+    from
+        suggestion s1_0 
+    where
+        s1_0.user_id=?
+2025-11-18 20:58:47 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0 
+    left join
+        category c1_0 
+            on c1_0.id=b1_0.category_id 
+    where
+        b1_0.user_id=?
+2025-11-18 20:59:02 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 20:59:02 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:02 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:59:02 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:02 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:02 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:59:02 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:02 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:02 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:02 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:10 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:59:10 - 
+    insert 
+    into
+        suggestion
+        (author, created_at, suggested_title, suggestion_reason, suggestion_status, user_id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+2025-11-18 20:59:10 - 
+    select
+        s1_0.id,
+        s1_0.author,
+        s1_0.created_at,
+        s1_0.suggested_title,
+        s1_0.suggestion_reason,
+        s1_0.suggestion_status,
+        s1_0.user_id 
+    from
+        suggestion s1_0 
+    where
+        s1_0.user_id=?
+2025-11-18 20:59:10 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:59:10 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 20:59:10 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:10 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:59:10 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:10 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:10 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:59:10 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:10 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:10 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:10 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:44 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 20:59:44 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:44 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:59:44 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:44 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:44 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 20:59:44 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:44 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:44 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 20:59:44 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:00:45 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0
+2025-11-18 21:00:45 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 21:00:45 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:00:45 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:00:45 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:00:45 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:00:45 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:00:45 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:00:45 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:00:45 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:00:45 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:00:48 - 
+    select
+        s1_0.id,
+        s1_0.author,
+        s1_0.created_at,
+        s1_0.suggested_title,
+        s1_0.suggestion_reason,
+        s1_0.suggestion_status,
+        s1_0.user_id 
+    from
+        suggestion s1_0 
+    where
+        s1_0.user_id=?
+2025-11-18 21:00:48 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0 
+    left join
+        category c1_0 
+            on c1_0.id=b1_0.category_id 
+    where
+        b1_0.user_id=?
+2025-11-18 21:00:48 - 
+    select
+        r1_0.id,
+        r1_0.book_id,
+        r1_0.created_at,
+        r1_0.rating,
+        r1_0.review_text,
+        r1_0.user_id 
+    from
+        review r1_0 
+    left join
+        users u1_0 
+            on u1_0.id=r1_0.user_id 
+    where
+        u1_0.id=?
+2025-11-18 21:00:48 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:00:52 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 21:00:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:00:52 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:00:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:00:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:00:52 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:00:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:00:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:00:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:00:52 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:04 - 
+    select
+        s1_0.id,
+        s1_0.author,
+        s1_0.created_at,
+        s1_0.suggested_title,
+        s1_0.suggestion_reason,
+        s1_0.suggestion_status,
+        s1_0.user_id 
+    from
+        suggestion s1_0 
+    where
+        s1_0.user_id=?
+2025-11-18 21:01:04 - 
+    select
+        r1_0.id,
+        r1_0.book_id,
+        r1_0.created_at,
+        r1_0.rating,
+        r1_0.review_text,
+        r1_0.user_id 
+    from
+        review r1_0 
+    left join
+        users u1_0 
+            on u1_0.id=r1_0.user_id 
+    where
+        u1_0.id=?
+2025-11-18 21:01:04 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0 
+    left join
+        category c1_0 
+            on c1_0.id=b1_0.category_id 
+    where
+        b1_0.user_id=?
+2025-11-18 21:01:04 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:01:13 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 21:01:13 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 21:01:13 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-11-18 21:01:15 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-18 21:01:15 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-18 21:01:15 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:15 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-18 21:01:16 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-18 21:01:17 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 21:01:17 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:01:17 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:17 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:17 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:01:17 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:17 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:17 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:17 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:20 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-18 21:01:21 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 21:01:21 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:21 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:01:21 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:21 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:21 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:01:21 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:21 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:21 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:21 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-18 21:01:23 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 21:01:23 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        b1_0.id,
+        b1_0.author,
+        b1_0.category_id,
+        b1_0.cover_image_path,
+        b1_0.description,
+        b1_0.extracted_text,
+        b1_0.file_name,
+        b1_0.file_path,
+        b1_0.file_size,
+        b1_0.file_type,
+        b1_0.language,
+        b1_0.status,
+        b1_0.title,
+        b1_0.uploaded_at,
+        b1_0.user_id 
+    from
+        book b1_0
+2025-11-18 21:01:23 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0 
+    where
+        u1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        c1_0.id,
+        c1_0.category_name,
+        c1_0.description,
+        c1_0.parent_category_id 
+    from
+        category c1_0 
+    where
+        c1_0.id=?
+2025-11-18 21:01:23 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0
+2025-11-18 21:01:23 - 
+    select
+        u1_0.id,
+        u1_0.created_date,
+        u1_0.email,
+        u1_0.name,
+        u1_0.password_hash,
+        u1_0.preferred_language,
+        u1_0.role,
+        u1_0.status 
+    from
+        users u1_0

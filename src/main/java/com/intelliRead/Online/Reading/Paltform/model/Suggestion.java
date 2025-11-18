@@ -25,6 +25,9 @@ public class Suggestion {
 
     private String author;
 
+    @Column(columnDefinition = "TEXT") // ✅ ADD THIS FIELD
+    private String suggestionReason; // ✅ ADD THIS FIELD
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private SuggestionStatus suggestionStatus = SuggestionStatus.PENDING;

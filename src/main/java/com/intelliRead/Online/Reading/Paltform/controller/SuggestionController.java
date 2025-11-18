@@ -54,6 +54,17 @@ public class SuggestionController {
         }
     }
 
+    // ✅ ADD THIS NEW ENDPOINT - User-specific suggestions
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Suggestion>> findSuggestionsByUserId(@PathVariable int userId){
+        try {
+            List<Suggestion> suggestions = suggestionService.findSuggestionsByUserId(userId);
+            return ResponseEntity.ok(suggestions);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateSuggestion(@PathVariable int id, @RequestBody SuggestionRequestDTO suggestionRequestDTO){
         try {
