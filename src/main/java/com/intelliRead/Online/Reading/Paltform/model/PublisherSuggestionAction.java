@@ -1,7 +1,7 @@
 package com.intelliRead.Online.Reading.Paltform.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.intelliRead.Online.Reading.Paltform.enums.SuggestionStatus;
+import com.intelliRead.Online.Reading.Paltform.enums.PublisherAction;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,40 +12,40 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "suggestion")
+@Table(name = "publisher_suggestion_actions")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Suggestion {
+public class PublisherSuggestionAction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
-    private String suggestedTitle;
-
-    private String author;
-
-    @Column(columnDefinition = "TEXT")
-    private String suggestionReason;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private SuggestionStatus suggestionStatus = SuggestionStatus.PENDING;
+    private PublisherAction action;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "TEXT")
+    private String publisherNotes;
+
     @CreationTimestamp
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    // Admin notes for approval/rejection
-    @Column(columnDefinition = "TEXT")
-    private String adminNotes;
-
-    // User relationship
-    @JsonBackReference("user-suggestions")
+    // Relationships
+    @JsonBackReference("publisher-actions")
     @ManyToOne
-    private User user;
+    @JoinColumn(name = "publisher_id", nullable = false)
+    private User publisher;
+
+    @JsonBackReference("suggestion-actions")
+    @ManyToOne
+    @JoinColumn(name = "suggestion_id", nullable = false)
+    private Suggestion suggestion;
+
+    // Reference to the book that was uploaded (if any)
+    private Integer uploadedBookId;
 }

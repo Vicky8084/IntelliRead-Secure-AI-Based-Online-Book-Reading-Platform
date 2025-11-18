@@ -1417,7 +1417,7 @@
                 <div class="content-section">
                     <div class="section-header">
                         <h3>My Reviews</h3>
-                        <button class="view-all" id="writeReviewBtn">Write New Review</button>
+<!--                        <button class="view-all" id="writeReviewBtn">Write N</button>-->
                     </div>
                     <div id="reviewsList">
                         <div class="empty-state">
@@ -1474,7 +1474,7 @@
                     </div>
                 </div>
 
-                <!-- NEW SECTION: My Suggestions -->
+                <!-- My Suggestions Section -->
                 <div class="content-section">
                     <div class="section-header">
                         <h3>My Suggestions</h3>
@@ -1485,6 +1485,21 @@
                             <i class='bx bx-bulb'></i>
                             <p>No suggestions submitted yet</p>
                             <p>Your submitted suggestions will appear here</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NEW: Community Suggestions Section -->
+                <div class="content-section">
+                    <div class="section-header">
+                        <h3>Community Suggestions</h3>
+                        <span class="view-all">Vote on suggestions from other users</span>
+                    </div>
+                    <div class="suggestion-list" id="allSuggestionsList">
+                        <div class="empty-state">
+                            <i class='bx bx-message-square-dots'></i>
+                            <p>Loading community suggestions...</p>
+                            <p>Vote on books suggested by other readers</p>
                         </div>
                     </div>
                 </div>
@@ -1615,18 +1630,22 @@
     let userBooks = [];
     let userReviews = [];
     let userSuggestions = [];
+    let allSuggestions = [];
 
     document.addEventListener('DOMContentLoaded', function() {
+        console.log('🏁 DOM fully loaded and parsed');
         document.getElementById('year').textContent = new Date().getFullYear();
         initializePage();
-        setupEventListeners();
-        console.log('🔄 Dashboard initialized');
     });
 
     async function initializePage() {
+        console.log('🔄 Initializing dashboard...');
         showLoading(true);
 
         try {
+            // Wait a bit for DOM to be fully ready
+            await new Promise(resolve => setTimeout(resolve, 100));
+
             const user = await getCurrentUser();
             if (!user) {
                 console.log('❌ No user found, redirecting to login');
@@ -1634,13 +1653,20 @@
                 return;
             }
 
-            console.log('✅ User authenticated:', user.name);
+            console.log('✅ User authenticated:', user.name, 'ID:', user.id);
             updateDashboard(user);
+
+            // Setup event listeners first
+            setupEventListeners();
+
+            // Then load user data
             await loadUserData();
             await loadPageData(currentPage);
 
+            console.log('✅ Dashboard initialization completed');
+
         } catch (error) {
-            console.error('Error initializing dashboard:', error);
+            console.error('❌ Error initializing dashboard:', error);
             showError('Failed to load dashboard. Please try again.');
         } finally {
             showLoading(false);
@@ -1652,90 +1678,203 @@
             const userData = localStorage.getItem('user');
             const isLoggedIn = localStorage.getItem('isLoggedIn');
 
+            console.log('🔍 Checking user session:', { userData: !!userData, isLoggedIn });
+
             if (userData && isLoggedIn === 'true') {
-                currentUser = JSON.parse(userData);
-                return currentUser;
+                const user = JSON.parse(userData);
+                console.log('👤 User found:', { id: user.id, name: user.name, email: user.email });
+                currentUser = user;
+                return user;
             }
+
+            console.log('❌ No valid user session found');
             return null;
         } catch (error) {
-            console.error('Error getting user:', error);
+            console.error('❌ Error getting user:', error);
             return null;
         }
     }
 
     async function loadUserData() {
         try {
-            // Load user's books, reviews, and suggestions
-            await Promise.all([
-                loadUserBooks(),
-                loadUserReviews(),
-                loadUserSuggestions()
-            ]);
+            console.log('📥 Loading user data...');
+
+            if (!currentUser || !currentUser.id) {
+                console.error('❌ No user ID available');
+                return;
+            }
+
+            // Load data in sequence to avoid overload
+            await loadUserBooks();
+            await loadUserReviews();
+            await loadUserSuggestions();
+            await loadAllSuggestions();
+
+            console.log('✅ All user data loaded successfully');
+
         } catch (error) {
-            console.error('Error loading user data:', error);
+            console.error('❌ Error loading user data:', error);
         }
     }
 
     async function loadUserBooks() {
         try {
-            if (!currentUser || !currentUser.id) return;
+            if (!currentUser || !currentUser.id) {
+                console.error('❌ Cannot load books: No user ID');
+                return;
+            }
 
+            console.log('📚 Loading books for user ID:', currentUser.id);
             const response = await fetch(`${API_BASE_URL}/book/apies/user/${currentUser.id}`);
+
             if (response.ok) {
                 userBooks = await response.json();
                 console.log('✅ User books loaded:', userBooks.length);
+            } else {
+                console.error('❌ Failed to load books, status:', response.status);
+                userBooks = [];
             }
         } catch (error) {
-            console.error('Error loading user books:', error);
+            console.error('❌ Error loading user books:', error);
+            userBooks = [];
         }
     }
 
     async function loadUserReviews() {
         try {
-            if (!currentUser || !currentUser.id) return;
+            if (!currentUser || !currentUser.id) {
+                console.error('❌ Cannot load reviews: No user ID');
+                return;
+            }
 
+            console.log('📝 Loading reviews for user ID:', currentUser.id);
             const response = await fetch(`${API_BASE_URL}/review/apies/user/${currentUser.id}`);
+
             if (response.ok) {
                 userReviews = await response.json();
                 console.log('✅ User reviews loaded:', userReviews.length);
+            } else {
+                console.error('❌ Failed to load reviews, status:', response.status);
+                userReviews = [];
             }
         } catch (error) {
-            console.error('Error loading user reviews:', error);
+            console.error('❌ Error loading user reviews:', error);
+            userReviews = [];
         }
     }
 
     async function loadUserSuggestions() {
         try {
-            console.log('🔄 Loading suggestions for user:', currentUser.id);
+            if (!currentUser || !currentUser.id) {
+                console.error('❌ Cannot load suggestions: No user ID');
+                userSuggestions = [];
+                return;
+            }
 
-            // USE THE NEW USER-SPECIFIC ENDPOINT
+            console.log('💡 Loading suggestions for user ID:', currentUser.id);
+
+            // Try the user-specific endpoint first
             const response = await fetch(`${API_BASE_URL}/suggestion/apis/user/${currentUser.id}`);
 
             if (response.ok) {
                 userSuggestions = await response.json();
-                console.log('✅ User suggestions loaded:', userSuggestions);
+                console.log('✅ User suggestions loaded via API:', userSuggestions.length);
             } else {
-                console.error('❌ User suggestions endpoint failed, status:', response.status);
-                // Fallback to getAll and filter
-                const allResponse = await fetch(`${API_BASE_URL}/suggestion/apis/findAll`);
-                if (allResponse.ok) {
-                    const allSuggestions = await allResponse.json();
-                    userSuggestions = allSuggestions.filter(suggestion =>
-                        suggestion.user && suggestion.user.id === currentUser.id
-                    );
-                    console.log('✅ User suggestions loaded (fallback):', userSuggestions.length);
-                } else {
-                    userSuggestions = [];
-                }
+                console.warn('⚠️ User suggestions endpoint failed, status:', response.status);
+                // Fallback: Load all and filter
+                await loadAllSuggestionsAndFilter();
             }
         } catch (error) {
             console.error('❌ Error loading user suggestions:', error);
+            // Fallback on error too
+            await loadAllSuggestionsAndFilter();
+        }
+    }
+
+    async function loadAllSuggestionsAndFilter() {
+        try {
+            console.log('🔄 Loading all suggestions for filtering...');
+            const response = await fetch(`${API_BASE_URL}/suggestion/apis/findAll`);
+
+            if (response.ok) {
+                const allSuggestions = await response.json();
+                // Filter suggestions for current user
+                userSuggestions = allSuggestions.filter(suggestion =>
+                    suggestion.user && suggestion.user.id === currentUser.id
+                );
+                console.log('✅ User suggestions loaded via fallback:', userSuggestions.length);
+            } else {
+                console.error('❌ Fallback also failed, status:', response.status);
+                userSuggestions = [];
+            }
+        } catch (error) {
+            console.error('❌ Error in fallback loading:', error);
             userSuggestions = [];
+        }
+    }
+
+    async function loadAllSuggestions() {
+        try {
+            if (!currentUser || !currentUser.id) {
+                console.error('❌ Cannot load all suggestions: No user ID');
+                allSuggestions = [];
+                return;
+            }
+
+            console.log('🗳️ Loading all suggestions for voting...');
+
+            const response = await fetch(`${API_BASE_URL}/user/suggestions/all?userId=${currentUser.id}`);
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success) {
+                    allSuggestions = data.suggestions || [];
+                    console.log('✅ All suggestions loaded for voting:', allSuggestions.length);
+                } else {
+                    console.error('❌ API returned error:', data.message);
+                    allSuggestions = [];
+                }
+            } else {
+                console.warn('⚠️ Suggestions API failed with status:', response.status);
+                // Fallback: Use basic suggestions endpoint
+                await loadBasicSuggestions();
+            }
+        } catch (error) {
+            console.error('❌ Error loading all suggestions:', error);
+            allSuggestions = [];
+        }
+    }
+
+    async function loadBasicSuggestions() {
+        try {
+            console.log('🔄 Trying basic suggestions endpoint...');
+            const response = await fetch(`${API_BASE_URL}/suggestion/apis/findAll`);
+
+            if (response.ok) {
+                allSuggestions = await response.json();
+                console.log('✅ Basic suggestions loaded:', allSuggestions.length);
+
+                // Enhance suggestions with basic structure for UI
+                allSuggestions = allSuggestions.map(suggestion => ({
+                    ...suggestion,
+                    upvoteCount: suggestion.upvoteCount || 0,
+                    publisherInterestCount: suggestion.publisherInterestCount || 0,
+                    userHasUpvoted: suggestion.userHasUpvoted || false
+                }));
+            } else {
+                console.error('❌ Basic suggestions also failed');
+                allSuggestions = [];
+            }
+        } catch (error) {
+            console.error('❌ Error loading basic suggestions:', error);
+            allSuggestions = [];
         }
     }
 
     async function loadPageData(page) {
         try {
+            console.log(`📄 Loading page data: ${page}`);
+
             switch(page) {
                 case 'dashboard':
                     await loadDashboardData();
@@ -1755,24 +1894,46 @@
                 case 'settings':
                     await loadSettingsData();
                     break;
+                default:
+                    console.warn(`⚠️ Unknown page: ${page}`);
             }
+
+            console.log(`✅ ${page} data loaded successfully`);
         } catch (error) {
-            console.error(`Error loading ${page} data:`, error);
+            console.error(`❌ Error loading ${page} data:`, error);
         }
     }
 
     async function loadDashboardData() {
-        // Update stats with real data
-        document.getElementById('booksReadCount').textContent = userBooks.filter(book =>
-            book.status === 'COMPLETED' || book.status === 'READ'
-        ).length;
+        try {
+            // Update stats with real data
+            const booksRead = userBooks.filter(book =>
+                book.status === 'COMPLETED' || book.status === 'READ'
+            ).length;
 
-        document.getElementById('readingTime').textContent = '12h'; // This would come from reading history
-        document.getElementById('reviewsCount').textContent = userReviews.length;
-        document.getElementById('achievementsCount').textContent = '5';
+            document.getElementById('booksReadCount').textContent = booksRead;
+            document.getElementById('readingTime').textContent = '12h';
+            document.getElementById('reviewsCount').textContent = userReviews.length;
+            document.getElementById('achievementsCount').textContent = '5';
 
-        // Update currently reading
+            // Update currently reading
+            await updateCurrentlyReading();
+
+            // Update recently added
+            await updateRecentlyAdded();
+
+            // Update recent activity
+            await updateRecentActivity();
+
+        } catch (error) {
+            console.error('❌ Error loading dashboard data:', error);
+        }
+    }
+
+    async function updateCurrentlyReading() {
         const currentlyReadingGrid = document.getElementById('currentlyReadingGrid');
+        if (!currentlyReadingGrid) return;
+
         const currentlyReadingBooks = userBooks.filter(book =>
             book.status === 'READING' || book.status === 'IN_PROGRESS'
         );
@@ -1795,12 +1956,23 @@
                     </div>
                 </div>
             `).join('');
+        } else {
+            currentlyReadingGrid.innerHTML = `
+                <div class="empty-state">
+                    <i class='bx bx-book-open'></i>
+                    <p>No books currently being read</p>
+                    <p>Start reading to see your progress here</p>
+                </div>
+            `;
         }
+    }
 
-        // Update recently added
+    async function updateRecentlyAdded() {
         const recentlyAddedGrid = document.getElementById('recentlyAddedGrid');
+        if (!recentlyAddedGrid) return;
+
         const recentBooks = [...userBooks].sort((a, b) =>
-            new Date(b.uploadedAt) - new Date(a.uploadedAt)
+            new Date(b.uploadedAt || b.createdAt) - new Date(a.uploadedAt || a.createdAt)
         ).slice(0, 6);
 
         if (recentBooks.length > 0) {
@@ -1818,10 +1990,21 @@
                     </div>
                 </div>
             `).join('');
+        } else {
+            recentlyAddedGrid.innerHTML = `
+                <div class="empty-state">
+                    <i class='bx bx-book-add'></i>
+                    <p>No books added recently</p>
+                    <p>Add books to your library to see them here</p>
+                </div>
+            `;
         }
+    }
 
-        // Update recent activity
+    async function updateRecentActivity() {
         const recentActivityList = document.getElementById('recentActivityList');
+        if (!recentActivityList) return;
+
         const activities = [
             { type: 'reading', title: 'Started reading "The Great Gatsby"', time: '2 hours ago' },
             { type: 'review', title: 'Reviewed "To Kill a Mockingbird"', time: '1 day ago' },
@@ -1840,102 +2023,253 @@
                     </div>
                 </li>
             `).join('');
+        } else {
+            recentActivityList.innerHTML = `
+                <div class="empty-state">
+                    <i class='bx bx-time'></i>
+                    <p>No recent activity</p>
+                    <p>Your reading activity will appear here</p>
+                </div>
+            `;
         }
     }
 
     async function loadLibraryData() {
-        document.getElementById('totalBooks').textContent = userBooks.length;
-        document.getElementById('readingBooks').textContent = userBooks.filter(book =>
-            book.status === 'READING' || book.status === 'IN_PROGRESS'
-        ).length;
-        document.getElementById('completedBooks').textContent = userBooks.filter(book =>
-            book.status === 'COMPLETED' || book.status === 'READ'
-        ).length;
-        document.getElementById('favoriteBooks').textContent = userBooks.filter(book =>
-            book.isFavorite
-        ).length;
+        try {
+            document.getElementById('totalBooks').textContent = userBooks.length;
+            document.getElementById('readingBooks').textContent = userBooks.filter(book =>
+                book.status === 'READING' || book.status === 'IN_PROGRESS'
+            ).length;
+            document.getElementById('completedBooks').textContent = userBooks.filter(book =>
+                book.status === 'COMPLETED' || book.status === 'READ'
+            ).length;
+            document.getElementById('favoriteBooks').textContent = userBooks.filter(book =>
+                book.isFavorite
+            ).length;
 
-        // Render library books
-        const libraryBooksGrid = document.getElementById('libraryBooksGrid');
-        if (userBooks.length > 0) {
-            libraryBooksGrid.innerHTML = userBooks.map(book => `
-                <div class="book-card" onclick="openBookDetails(${book.id})">
-                    <div class="book-cover">
-                        ${book.coverImagePath ?
-                            `<img src="${API_BASE_URL}/uploads/${book.coverImagePath}" alt="${book.title}">` :
-                            `<i class='bx bx-book'></i>`
-                        }
-                    </div>
-                    <div class="book-info">
-                        <div class="book-title">${book.title}</div>
-                        <div class="book-author">${book.author}</div>
-                        <div class="book-status">${book.status || 'Not Started'}</div>
-                    </div>
-                </div>
-            `).join('');
+            // Render library books
+            const libraryBooksGrid = document.getElementById('libraryBooksGrid');
+            if (libraryBooksGrid) {
+                if (userBooks.length > 0) {
+                    libraryBooksGrid.innerHTML = userBooks.map(book => `
+                        <div class="book-card" onclick="openBookDetails(${book.id})">
+                            <div class="book-cover">
+                                ${book.coverImagePath ?
+                                    `<img src="${API_BASE_URL}/uploads/${book.coverImagePath}" alt="${book.title}">` :
+                                    `<i class='bx bx-book'></i>`
+                                }
+                            </div>
+                            <div class="book-info">
+                                <div class="book-title">${book.title}</div>
+                                <div class="book-author">${book.author}</div>
+                                <div class="book-status">${book.status || 'Not Started'}</div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    libraryBooksGrid.innerHTML = `
+                        <div class="empty-state">
+                            <i class='bx bx-book'></i>
+                            <p>No books in your library</p>
+                            <p>Add books to start building your collection</p>
+                        </div>
+                    `;
+                }
+            }
+        } catch (error) {
+            console.error('❌ Error loading library data:', error);
         }
     }
 
     async function loadHistoryData() {
-        // These would come from a reading history API
-        document.getElementById('readingDays').textContent = '24';
-        document.getElementById('pagesRead').textContent = '1,245';
-        document.getElementById('avgReadingTime').textContent = '45m';
-        document.getElementById('completionRate').textContent = '68%';
+        try {
+            // These would come from a reading history API
+            document.getElementById('readingDays').textContent = '24';
+            document.getElementById('pagesRead').textContent = '1,245';
+            document.getElementById('avgReadingTime').textContent = '45m';
+            document.getElementById('completionRate').textContent = '68%';
+        } catch (error) {
+            console.error('❌ Error loading history data:', error);
+        }
     }
 
     async function loadReviewsData() {
-        document.getElementById('totalReviews').textContent = userReviews.length;
-        document.getElementById('helpfulReviews').textContent = userReviews.filter(review =>
-            review.helpfulCount > 0
-        ).length;
-        document.getElementById('reviewComments').textContent = userReviews.reduce((sum, review) =>
-            sum + (review.commentCount || 0), 0
-        );
+        try {
+            document.getElementById('totalReviews').textContent = userReviews.length;
+            document.getElementById('helpfulReviews').textContent = userReviews.filter(review =>
+                review.helpfulCount > 0
+            ).length;
+            document.getElementById('reviewComments').textContent = userReviews.reduce((sum, review) =>
+                sum + (review.commentCount || 0), 0
+            );
 
-        const avgRating = userReviews.length > 0 ?
-            (userReviews.reduce((sum, review) => sum + review.rating, 0) / userReviews.length).toFixed(1) : '0.0';
-        document.getElementById('avgRating').textContent = avgRating;
+            const avgRating = userReviews.length > 0 ?
+                (userReviews.reduce((sum, review) => sum + review.rating, 0) / userReviews.length).toFixed(1) : '0.0';
+            document.getElementById('avgRating').textContent = avgRating;
 
-        // Render reviews
-        const reviewsList = document.getElementById('reviewsList');
-        if (userReviews.length > 0) {
-            reviewsList.innerHTML = userReviews.map(review => `
-                <div class="review-card">
-                    <div class="review-header">
-                        <div class="review-book">${review.book ? review.book.title : 'Unknown Book'}</div>
-                        <div class="review-rating">
-                            ${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}
+            // Render reviews
+            const reviewsList = document.getElementById('reviewsList');
+            if (reviewsList) {
+                if (userReviews.length > 0) {
+                    reviewsList.innerHTML = userReviews.map(review => `
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="review-book">${review.book ? review.book.title : 'Unknown Book'}</div>
+                                <div class="review-rating">
+                                    ${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}
+                                </div>
+                            </div>
+                            <div class="review-text">${review.reviewText}</div>
                         </div>
-                    </div>
-                    <div class="review-text">${review.reviewText}</div>
-                </div>
-            `).join('');
+                    `).join('');
+                } else {
+                    reviewsList.innerHTML = `
+                        <div class="empty-state">
+                            <i class='bx bx-comment-detail'></i>
+                            <p>No reviews written yet</p>
+                            <p>Share your thoughts on the books you've read</p>
+                        </div>
+                    `;
+                }
+            }
+        } catch (error) {
+            console.error('❌ Error loading reviews data:', error);
         }
     }
 
     async function loadSuggestionsData() {
-        // Update counts
-        document.getElementById('totalSuggestions').textContent = userSuggestions.length;
-        document.getElementById('acceptedSuggestions').textContent = userSuggestions.filter(s =>
-            s.suggestionStatus === 'ACCEPTED'
-        ).length;
-        document.getElementById('pendingSuggestions').textContent = userSuggestions.filter(s =>
-            s.suggestionStatus === 'PENDING' || !s.suggestionStatus
-        ).length;
-        document.getElementById('addedFromSuggestions').textContent = userSuggestions.filter(s =>
-            s.suggestionStatus === 'ACCEPTED'
-        ).length;
-
-        // Display user suggestions
-        await displayUserSuggestions();
-
-        // Load recommended books
         try {
+            console.log('💡 Loading suggestions page data...');
+
+            // Update counts
+            document.getElementById('totalSuggestions').textContent = userSuggestions.length;
+            document.getElementById('acceptedSuggestions').textContent = userSuggestions.filter(s =>
+                s.suggestionStatus === 'ACCEPTED' || s.suggestionStatus === 'APPROVED'
+            ).length;
+            document.getElementById('pendingSuggestions').textContent = userSuggestions.filter(s =>
+                s.suggestionStatus === 'PENDING' || !s.suggestionStatus
+            ).length;
+            document.getElementById('addedFromSuggestions').textContent = userSuggestions.filter(s =>
+                s.suggestionStatus === 'ACCEPTED' || s.suggestionStatus === 'APPROVED'
+            ).length;
+
+            // Display user suggestions
+            await displayUserSuggestions();
+
+            // Display all suggestions for voting
+            await displayAllSuggestions();
+
+            // Load recommended books
+            await loadRecommendedBooks();
+
+            console.log('✅ Suggestions page data loaded');
+
+        } catch (error) {
+            console.error('❌ Error loading suggestions data:', error);
+        }
+    }
+
+    async function displayUserSuggestions() {
+        const userSuggestionsList = document.getElementById('userSuggestionsList');
+        if (!userSuggestionsList) {
+            console.warn('⚠️ userSuggestionsList element not found');
+            return;
+        }
+
+        if (userSuggestions.length > 0) {
+            userSuggestionsList.innerHTML = userSuggestions.map(suggestion => `
+                <div class="suggestion-item">
+                    <div class="suggestion-header">
+                        <div class="suggestion-title">${suggestion.suggestedTitle || 'Untitled'}</div>
+                        <div class="suggestion-status ${(suggestion.suggestionStatus || 'PENDING').toLowerCase()}">
+                            ${suggestion.suggestionStatus || 'PENDING'}
+                        </div>
+                    </div>
+                    <div class="suggestion-author">by ${suggestion.author || 'Unknown Author'}</div>
+                    <div class="suggestion-reason">${suggestion.suggestionReason || 'No reason provided'}</div>
+                    <div class="suggestion-stats">
+                        <span class="upvote-count">${suggestion.upvoteCount || 0} 👍</span>
+                        <span class="interest-count">${suggestion.publisherInterestCount || 0} 👁️</span>
+                    </div>
+                    <div class="suggestion-date">
+                        Suggested on: ${new Date(suggestion.createdAt || Date.now()).toLocaleDateString()}
+                    </div>
+                    ${suggestion.adminNotes ? `
+                        <div class="admin-notes">
+                            <strong>Admin Notes:</strong> ${suggestion.adminNotes}
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        } else {
+            userSuggestionsList.innerHTML = `
+                <div class="empty-state">
+                    <i class='bx bx-bulb'></i>
+                    <p>No suggestions submitted yet</p>
+                    <p>Your submitted suggestions will appear here</p>
+                </div>
+            `;
+        }
+    }
+
+    async function displayAllSuggestions() {
+        const allSuggestionsContainer = document.getElementById('allSuggestionsList');
+        if (!allSuggestionsContainer) {
+            console.warn('⚠️ allSuggestionsList element not found');
+            return;
+        }
+
+        if (allSuggestions.length > 0) {
+            allSuggestionsContainer.innerHTML = allSuggestions.map(suggestion => `
+                <div class="suggestion-item">
+                    <div class="suggestion-header">
+                        <div class="suggestion-title">${suggestion.suggestedTitle || 'Untitled'}</div>
+                        <div class="suggestion-status ${(suggestion.suggestionStatus || 'PENDING').toLowerCase()}">
+                            ${suggestion.suggestionStatus || 'PENDING'}
+                        </div>
+                    </div>
+                    <div class="suggestion-author">by ${suggestion.author || 'Unknown Author'}</div>
+                    <div class="suggestion-reason">${suggestion.suggestionReason || 'No reason provided'}</div>
+                    <div class="suggestion-stats">
+                        <span class="upvote-count">${suggestion.upvoteCount || 0} 👍</span>
+                        <span class="interest-count">${suggestion.publisherInterestCount || 0} 👁️</span>
+                        <span class="user-count">Suggested by: ${suggestion.userName || 'Anonymous'}</span>
+                    </div>
+                    <div class="suggestion-actions">
+                        <button class="upvote-btn ${suggestion.userHasUpvoted ? 'active' : ''}"
+                                onclick="upvoteSuggestion(${suggestion.id})">
+                            <i class='bx bx-up-arrow'></i>
+                            ${suggestion.userHasUpvoted ? 'Upvoted' : 'Upvote'}
+                        </button>
+                        <button class="view-stats-btn" onclick="viewSuggestionStats(${suggestion.id})">
+                            <i class='bx bx-stats'></i>
+                            View Stats
+                        </button>
+                    </div>
+                    <div class="suggestion-date">
+                        Suggested on: ${new Date(suggestion.createdAt || Date.now()).toLocaleDateString()}
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            allSuggestionsContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class='bx bx-message-square-x'></i>
+                    <p>No suggestions available</p>
+                    <p>Be the first to suggest a book!</p>
+                </div>
+            `;
+        }
+    }
+
+    async function loadRecommendedBooks() {
+        try {
+            const suggestionsGrid = document.getElementById('suggestionsGrid');
+            if (!suggestionsGrid) return;
+
             const response = await fetch(`${API_BASE_URL}/book/apies/published`);
             if (response.ok) {
                 const publishedBooks = await response.json();
-                const suggestionsGrid = document.getElementById('suggestionsGrid');
 
                 if (publishedBooks.length > 0) {
                     const recommendedBooks = publishedBooks.slice(0, 6);
@@ -1953,105 +2287,124 @@
                             </div>
                         </div>
                     `).join('');
+                } else {
+                    suggestionsGrid.innerHTML = `
+                        <div class="empty-state">
+                            <i class='bx bx-bulb'></i>
+                            <p>No books available yet</p>
+                            <p>Check back later for new books</p>
+                        </div>
+                    `;
                 }
+            } else {
+                console.error('❌ Failed to load recommended books');
+                suggestionsGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class='bx bx-error'></i>
+                        <p>Failed to load books</p>
+                        <p>Please try again later</p>
+                    </div>
+                `;
             }
         } catch (error) {
-            console.error('Error loading suggestions:', error);
-        }
-    }
-
-    // UPDATED FUNCTION: Display user suggestions
-    async function displayUserSuggestions() {
-        const userSuggestionsList = document.getElementById('userSuggestionsList');
-
-        if (userSuggestions.length > 0) {
-            userSuggestionsList.innerHTML = userSuggestions.map(suggestion => `
-                <div class="suggestion-item">
-                    <div class="suggestion-header">
-                        <div class="suggestion-title">${suggestion.suggestedTitle || 'Untitled'}</div>
-                        <div class="suggestion-status ${(suggestion.suggestionStatus || 'PENDING').toLowerCase()}">
-                            ${suggestion.suggestionStatus || 'PENDING'}
-                        </div>
-                    </div>
-                    <div class="suggestion-author">by ${suggestion.author || 'Unknown Author'}</div>
-                    <div class="suggestion-reason">${suggestion.suggestionReason || 'No reason provided'}</div>
-                    <div class="suggestion-date">
-                        Suggested on: ${new Date(suggestion.createdAt || Date.now()).toLocaleDateString()}
-                    </div>
-                </div>
-            `).join('');
-        } else {
-            userSuggestionsList.innerHTML = `
-                <div class="empty-state">
-                    <i class='bx bx-bulb'></i>
-                    <p>No suggestions submitted yet</p>
-                    <p>Your submitted suggestions will appear here</p>
-                </div>
-            `;
+            console.error('❌ Error loading recommended books:', error);
         }
     }
 
     async function loadSettingsData() {
-        // Load user settings
-        if (currentUser) {
-            document.getElementById('userFullName').value = currentUser.name || '';
-            document.getElementById('userEmail').value = currentUser.email || '';
-            document.getElementById('userLanguage').value = currentUser.preferredLanguage || 'en';
+        try {
+            // Load user settings
+            if (currentUser) {
+                const userFullName = document.getElementById('userFullName');
+                const userEmail = document.getElementById('userEmail');
+                const userLanguage = document.getElementById('userLanguage');
+
+                if (userFullName) userFullName.value = currentUser.name || '';
+                if (userEmail) userEmail.value = currentUser.email || '';
+                if (userLanguage) userLanguage.value = currentUser.preferredLanguage || 'en';
+            }
+        } catch (error) {
+            console.error('❌ Error loading settings data:', error);
         }
     }
 
     function updateDashboard(user) {
-        document.getElementById('username').textContent = user.name || user.email || 'User';
-        document.getElementById('dashboardUsername').textContent = user.name || user.email || 'User';
+        const usernameElement = document.getElementById('username');
+        const dashboardUsernameElement = document.getElementById('dashboardUsername');
+
+        if (usernameElement) usernameElement.textContent = user.name || user.email || 'User';
+        if (dashboardUsernameElement) dashboardUsernameElement.textContent = user.name || user.email || 'User';
     }
 
     function setupEventListeners() {
+        console.log('🔄 Setting up event listeners...');
+
+        // Safe event listener setup with null checks
+        setupUserMenu();
+        setupNavigation();
+        setupLibraryFilters();
+        setupSuggestionActions();
+        setupSettingsActions();
+
+        console.log('✅ Event listeners setup completed');
+    }
+
+    function setupUserMenu() {
         const userMenu = document.getElementById('userMenu');
         const dropdown = document.getElementById('dropdownMenu');
         const hamburgerMenu = document.getElementById('hamburgerMenu');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
 
-        // User menu dropdown
-        userMenu.addEventListener('click', (e) => {
-            e.stopPropagation();
-            dropdown.classList.toggle('active');
-        });
+        if (userMenu && dropdown) {
+            userMenu.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdown.classList.toggle('active');
+            });
 
-        document.addEventListener('click', (e) => {
-            if (!userMenu.contains(e.target)) {
-                dropdown.classList.remove('active');
-            }
-        });
+            document.addEventListener('click', (e) => {
+                if (!userMenu.contains(e.target)) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        }
 
-        // Hamburger menu for mobile
-        hamburgerMenu.addEventListener('click', (e) => {
-            e.stopPropagation();
-            hamburgerMenu.classList.toggle('active');
-            sidebar.classList.toggle('active');
-            overlay.classList.toggle('active');
-        });
+        if (hamburgerMenu && sidebar && overlay) {
+            hamburgerMenu.addEventListener('click', (e) => {
+                e.stopPropagation();
+                hamburgerMenu.classList.toggle('active');
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+            });
 
-        // Close sidebar when clicking on overlay
-        overlay.addEventListener('click', () => {
-            hamburgerMenu.classList.remove('active');
-            sidebar.classList.remove('active');
-            overlay.classList.remove('active');
-        });
+            overlay.addEventListener('click', () => {
+                hamburgerMenu.classList.remove('active');
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+            });
+        }
+    }
 
+    function setupNavigation() {
         // Close sidebar when clicking on a nav link (mobile)
-        document.querySelectorAll('.nav-links a').forEach(link => {
+        const navLinks = document.querySelectorAll('.nav-links a');
+        navLinks.forEach(link => {
             link.addEventListener('click', () => {
                 if (window.innerWidth <= 992) {
-                    hamburgerMenu.classList.remove('active');
-                    sidebar.classList.remove('active');
-                    overlay.classList.remove('active');
+                    const hamburgerMenu = document.getElementById('hamburgerMenu');
+                    const sidebar = document.getElementById('sidebar');
+                    const overlay = document.getElementById('overlay');
+
+                    if (hamburgerMenu) hamburgerMenu.classList.remove('active');
+                    if (sidebar) sidebar.classList.remove('active');
+                    if (overlay) overlay.classList.remove('active');
                 }
             });
         });
 
         // Navigation
-        document.querySelectorAll('.nav-links li').forEach(item => {
+        const navItems = document.querySelectorAll('.nav-links li');
+        navItems.forEach(item => {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
 
@@ -2067,39 +2420,64 @@
         });
 
         // Logout
-        document.getElementById('logoutBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            logout();
-        });
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                logout();
+            });
+        }
+    }
 
-        // Library search and filter
-        document.getElementById('librarySearch').addEventListener('input', (e) => {
-            filterLibraryBooks(e.target.value, document.getElementById('libraryFilter').value);
-        });
+    function setupLibraryFilters() {
+        const librarySearch = document.getElementById('librarySearch');
+        const libraryFilter = document.getElementById('libraryFilter');
 
-        document.getElementById('libraryFilter').addEventListener('change', (e) => {
-            filterLibraryBooks(document.getElementById('librarySearch').value, e.target.value);
-        });
+        if (librarySearch) {
+            librarySearch.addEventListener('input', (e) => {
+                filterLibraryBooks(e.target.value, libraryFilter ? libraryFilter.value : 'all');
+            });
+        }
 
-        // Submit suggestion
-        document.getElementById('submitSuggestionBtn').addEventListener('click', submitSuggestion);
+        if (libraryFilter) {
+            libraryFilter.addEventListener('change', (e) => {
+                filterLibraryBooks(librarySearch ? librarySearch.value : '', e.target.value);
+            });
+        }
+    }
 
-        // Save settings
-        document.getElementById('saveProfileBtn').addEventListener('click', saveProfile);
-        document.getElementById('savePreferencesBtn').addEventListener('click', savePreferences);
-        document.getElementById('saveNotificationsBtn').addEventListener('click', saveNotifications);
+    function setupSuggestionActions() {
+        const submitSuggestionBtn = document.getElementById('submitSuggestionBtn');
+        if (submitSuggestionBtn) {
+            submitSuggestionBtn.addEventListener('click', submitSuggestion);
+        }
 
-        // Refresh suggestions
-        document.getElementById('refreshSuggestionsBtn').addEventListener('click', () => {
-            loadUserSuggestions();
-            loadSuggestionsData();
-            showNotification('Suggestions refreshed!', 'success');
-        });
+        const refreshSuggestionsBtn = document.getElementById('refreshSuggestionsBtn');
+        if (refreshSuggestionsBtn) {
+            refreshSuggestionsBtn.addEventListener('click', () => {
+                loadUserSuggestions();
+                loadAllSuggestions();
+                loadSuggestionsData();
+                showNotification('Suggestions refreshed!', 'success');
+            });
+        }
+    }
 
-        // Write review
-        document.getElementById('writeReviewBtn').addEventListener('click', () => {
-            showNotification('Navigate to a book page to write a review', 'info');
-        });
+    function setupSettingsActions() {
+        const saveProfileBtn = document.getElementById('saveProfileBtn');
+        const savePreferencesBtn = document.getElementById('savePreferencesBtn');
+        const saveNotificationsBtn = document.getElementById('saveNotificationsBtn');
+        const writeReviewBtn = document.getElementById('writeReviewBtn');
+
+        if (saveProfileBtn) saveProfileBtn.addEventListener('click', saveProfile);
+        if (savePreferencesBtn) savePreferencesBtn.addEventListener('click', savePreferences);
+        if (saveNotificationsBtn) saveNotificationsBtn.addEventListener('click', saveNotifications);
+
+        if (writeReviewBtn) {
+            writeReviewBtn.addEventListener('click', () => {
+                showNotification('Navigate to a book page to write a review', 'info');
+            });
+        }
     }
 
     function filterLibraryBooks(searchTerm, filter) {
@@ -2108,8 +2486,8 @@
         // Apply search filter
         if (searchTerm) {
             filtered = filtered.filter(book =>
-                book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                book.author.toLowerCase().includes(searchTerm.toLowerCase())
+                book.title && book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                book.author && book.author.toLowerCase().includes(searchTerm.toLowerCase())
             );
         }
 
@@ -2131,42 +2509,60 @@
 
         // Update UI
         const libraryBooksGrid = document.getElementById('libraryBooksGrid');
-        if (filtered.length > 0) {
-            libraryBooksGrid.innerHTML = filtered.map(book => `
-                <div class="book-card" onclick="openBookDetails(${book.id})">
-                    <div class="book-cover">
-                        ${book.coverImagePath ?
-                            `<img src="${API_BASE_URL}/uploads/${book.coverImagePath}" alt="${book.title}">` :
-                            `<i class='bx bx-book'></i>`
-                        }
+        if (libraryBooksGrid) {
+            if (filtered.length > 0) {
+                libraryBooksGrid.innerHTML = filtered.map(book => `
+                    <div class="book-card" onclick="openBookDetails(${book.id})">
+                        <div class="book-cover">
+                            ${book.coverImagePath ?
+                                `<img src="${API_BASE_URL}/uploads/${book.coverImagePath}" alt="${book.title}">` :
+                                `<i class='bx bx-book'></i>`
+                            }
+                        </div>
+                        <div class="book-info">
+                            <div class="book-title">${book.title}</div>
+                            <div class="book-author">${book.author}</div>
+                            <div class="book-status">${book.status || 'Not Started'}</div>
+                        </div>
                     </div>
-                    <div class="book-info">
-                        <div class="book-title">${book.title}</div>
-                        <div class="book-author">${book.author}</div>
-                        <div class="book-status">${book.status || 'Not Started'}</div>
+                `).join('');
+            } else {
+                libraryBooksGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class='bx bx-search'></i>
+                        <p>No books match your search</p>
+                        <p>Try adjusting your search criteria</p>
                     </div>
-                </div>
-            `).join('');
-        } else {
-            libraryBooksGrid.innerHTML = `
-                <div class="empty-state">
-                    <i class='bx bx-search'></i>
-                    <p>No books match your search</p>
-                    <p>Try adjusting your search criteria</p>
-                </div>
-            `;
+                `;
+            }
         }
     }
 
     async function submitSuggestion() {
-        const title = document.getElementById('suggestionTitle').value;
-        const author = document.getElementById('suggestionAuthor').value;
-        const reason = document.getElementById('suggestionReason').value;
+        const title = document.getElementById('suggestionTitle');
+        const author = document.getElementById('suggestionAuthor');
+        const reason = document.getElementById('suggestionReason');
 
         if (!title || !author) {
+            showNotification('Form elements not found', 'error');
+            return;
+        }
+
+        const titleValue = title.value.trim();
+        const authorValue = author.value.trim();
+        const reasonValue = reason ? reason.value.trim() : '';
+
+        if (!titleValue || !authorValue) {
             showNotification('Please fill in at least the title and author', 'error');
             return;
         }
+
+        if (!currentUser || !currentUser.id) {
+            showNotification('Please login to submit suggestions', 'error');
+            return;
+        }
+
+        showLoading(true);
 
         try {
             const response = await fetch(`${API_BASE_URL}/suggestion/apis/save`, {
@@ -2175,60 +2571,192 @@
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    suggestedTitle: title,
-                    author: author,
-                    suggestionReason: reason,
+                    suggestedTitle: titleValue,
+                    author: authorValue,
+                    suggestionReason: reasonValue,
                     userId: currentUser.id
                 })
             });
 
             if (response.ok) {
+                const result = await response.text();
                 showNotification('Suggestion submitted successfully!', 'success');
-                document.getElementById('suggestionTitle').value = '';
-                document.getElementById('suggestionAuthor').value = '';
-                document.getElementById('suggestionReason').value = '';
+
+                // Clear form
+                title.value = '';
+                author.value = '';
+                if (reason) reason.value = '';
 
                 // Reload suggestions data
                 await loadUserSuggestions();
+                await loadAllSuggestions();
                 await loadSuggestionsData();
+
             } else {
-                showNotification('Failed to submit suggestion', 'error');
+                const errorText = await response.text();
+                showNotification('Failed to submit suggestion: ' + errorText, 'error');
             }
         } catch (error) {
-            console.error('Error submitting suggestion:', error);
-            showNotification('Error submitting suggestion', 'error');
+            console.error('❌ Error submitting suggestion:', error);
+            showNotification('Error submitting suggestion: ' + error.message, 'error');
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    async function upvoteSuggestion(suggestionId) {
+        if (!currentUser || !currentUser.id) {
+            showNotification('Please login to upvote suggestions', 'error');
+            return;
+        }
+
+        showLoading(true);
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/user/suggestions/upvote?userId=${currentUser.id}&suggestionId=${suggestionId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                showNotification(result.message || 'Upvoted successfully!', 'success');
+
+                // Reload suggestions to update counts
+                await loadAllSuggestions();
+                await loadSuggestionsData();
+
+            } else {
+                const errorText = await response.text();
+                showNotification('Failed to upvote: ' + errorText, 'error');
+            }
+        } catch (error) {
+            console.error('❌ Error upvoting suggestion:', error);
+            showNotification('Error upvoting suggestion', 'error');
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    async function viewSuggestionStats(suggestionId) {
+        showLoading(true);
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/user/suggestions/${suggestionId}/stats`);
+
+            if (response.ok) {
+                const stats = await response.json();
+
+                let statsHtml = `
+                    <div class="stats-popup">
+                        <h3>Suggestion Statistics</h3>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <i class='bx bx-up-arrow'></i>
+                                <span class="stat-value">${stats.upvoteCount || 0}</span>
+                                <span class="stat-label">Upvotes</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class='bx bx-user-voice'></i>
+                                <span class="stat-value">${stats.publisherInterestCount || 0}</span>
+                                <span class="stat-label">Publisher Interests</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class='bx bx-book'></i>
+                                <span class="stat-value">${stats.booksUploadedCount || 0}</span>
+                                <span class="stat-label">Books Uploaded</span>
+                            </div>
+                            <div class="stat-item">
+                                <i class='bx bx-trending-up'></i>
+                                <span class="stat-value">${stats.totalEngagement || 0}</span>
+                                <span class="stat-label">Total Engagement</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Create and show popup
+                const popup = document.createElement('div');
+                popup.className = 'custom-popup';
+                popup.innerHTML = statsHtml;
+
+                // Add close button
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'popup-close';
+                closeBtn.innerHTML = '<i class="bx bx-x"></i>';
+                closeBtn.onclick = () => document.body.removeChild(popup);
+
+                popup.appendChild(closeBtn);
+                document.body.appendChild(popup);
+
+                // Close on background click
+                popup.onclick = (e) => {
+                    if (e.target === popup) {
+                        document.body.removeChild(popup);
+                    }
+                };
+
+            } else {
+                showNotification('Failed to load suggestion statistics', 'error');
+            }
+        } catch (error) {
+            console.error('❌ Error loading suggestion stats:', error);
+            showNotification('Error loading statistics', 'error');
+        } finally {
+            showLoading(false);
         }
     }
 
     async function saveProfile() {
-        const name = document.getElementById('userFullName').value;
-        const email = document.getElementById('userEmail').value;
-        const language = document.getElementById('userLanguage').value;
-
         try {
-            // This would call your user update API
-            showNotification('Profile updated successfully!', 'success');
+            const userFullName = document.getElementById('userFullName');
+            const userEmail = document.getElementById('userEmail');
+            const userLanguage = document.getElementById('userLanguage');
+
+            if (userFullName && userEmail && userLanguage) {
+                const name = userFullName.value;
+                const email = userEmail.value;
+                const language = userLanguage.value;
+
+                // This would call your user update API
+                showNotification('Profile updated successfully!', 'success');
+            }
         } catch (error) {
-            console.error('Error updating profile:', error);
+            console.error('❌ Error updating profile:', error);
             showNotification('Error updating profile', 'error');
         }
     }
 
     async function savePreferences() {
-        // This would save reading preferences to the backend
-        showNotification('Preferences saved successfully!', 'success');
+        try {
+            // This would save reading preferences to the backend
+            showNotification('Preferences saved successfully!', 'success');
+        } catch (error) {
+            console.error('❌ Error saving preferences:', error);
+            showNotification('Error saving preferences', 'error');
+        }
     }
 
     async function saveNotifications() {
-        // This would save notification settings to the backend
-        showNotification('Notification settings saved!', 'success');
+        try {
+            // This would save notification settings to the backend
+            showNotification('Notification settings saved!', 'success');
+        } catch (error) {
+            console.error('❌ Error saving notifications:', error);
+            showNotification('Error saving notification settings', 'error');
+        }
     }
 
     async function switchPage(page) {
         if (page === currentPage) return;
 
-        document.getElementById(`${currentPage}-page`).classList.remove('active');
-        document.getElementById(`${page}-page`).classList.add('active');
+        const currentPageElement = document.getElementById(`${currentPage}-page`);
+        const newPageElement = document.getElementById(`${page}-page`);
+
+        if (currentPageElement) currentPageElement.classList.remove('active');
+        if (newPageElement) newPageElement.classList.add('active');
 
         currentPage = page;
 
@@ -2236,7 +2764,7 @@
         try {
             await loadPageData(page);
         } catch (error) {
-            console.error(`Error loading ${page}:`, error);
+            console.error(`❌ Error loading ${page}:`, error);
         } finally {
             showLoading(false);
         }
@@ -2257,7 +2785,10 @@
     }
 
     function showLoading(show) {
-        document.getElementById('loadingSpinner').style.display = show ? 'flex' : 'none';
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        if (loadingSpinner) {
+            loadingSpinner.style.display = show ? 'flex' : 'none';
+        }
     }
 
     function showError(message) {
@@ -2265,6 +2796,14 @@
     }
 
     function showNotification(message, type = 'info') {
+        // Remove existing notifications
+        const existingNotifications = document.querySelectorAll('.notification');
+        existingNotifications.forEach(notification => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        });
+
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         notification.textContent = message;
@@ -2290,7 +2829,148 @@
         localStorage.removeItem('jwtToken');
         window.location.href = '/Login';
     }
+
+    // Add CSS for new elements
+    const style = document.createElement('style');
+    style.textContent = `
+        .suggestion-stats {
+            display: flex;
+            gap: 15px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+
+        .upvote-count, .interest-count, .user-count {
+            background: rgba(67, 97, 238, 0.1);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .suggestion-actions {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .upvote-btn, .view-stats-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .upvote-btn {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .upvote-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .upvote-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .view-stats-btn {
+            background: var(--accent);
+            color: white;
+        }
+
+        .view-stats-btn:hover {
+            background: #3a9df4;
+            transform: translateY(-2px);
+        }
+
+        .admin-notes {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border-left: 3px solid #ffc107;
+            font-size: 0.9rem;
+        }
+
+        .custom-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .stats-popup {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .stat-item i {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .popup-close:hover {
+            color: var(--dark);
+        }
+    `;
+    document.head.appendChild(style);
 </script>
+
 
 
 </body>

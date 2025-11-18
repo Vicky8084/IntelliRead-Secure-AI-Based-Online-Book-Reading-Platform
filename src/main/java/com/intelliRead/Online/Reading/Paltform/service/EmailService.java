@@ -1,6 +1,7 @@
 package com.intelliRead.Online.Reading.Paltform.service;
 
 import com.intelliRead.Online.Reading.Paltform.model.Book;
+import com.intelliRead.Online.Reading.Paltform.model.Suggestion;
 import com.intelliRead.Online.Reading.Paltform.model.User;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -674,4 +675,222 @@ public class EmailService {
             throw new RuntimeException("Failed to send book rejection email", e);
         }
     }
+    // Suggestion Approval Email with admin notes
+    public void sendSuggestionApprovalEmail(User user, Suggestion suggestion) {
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+
+            helper.setFrom(FROM_EMAIL);
+            helper.setTo(user.getEmail());
+            helper.setSubject("Suggestion Approved - IntelliRead");
+
+            String content = "<html>" +
+                    "<body style='font-family: Arial, sans-serif; color: #333; line-height: 1.6;'>" +
+                    "<div style='max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;'>" +
+                    "<div style='text-align: center; margin-bottom: 30px;'>" +
+                    "<h1 style='color: #28a745; margin-bottom: 10px;'>Suggestion Approved!</h1>" +
+                    "<p style='color: #666; font-size: 16px;'>Your book suggestion has been approved</p>" +
+                    "</div>" +
+
+                    "<div style='background: #d4edda; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #28a745;'>" +
+                    "<h2 style='color: #155724; margin-bottom: 15px;'>Great News " + user.getName() + "!</h2>" +
+                    "<p style='color: #155724; margin-bottom: 15px;'>Your book suggestion <strong>\"" + suggestion.getSuggestedTitle() + "\"</strong> has been <strong>approved</strong> by our admin team.</p>" +
+                    "</div>" +
+
+                    "<div style='background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;'>" +
+                    "<h3 style='color: #2c5aa0; margin-bottom: 15px;'>Suggestion Details:</h3>" +
+                    "<p style='color: #495057; margin-bottom: 8px;'><strong>Title:</strong> " + suggestion.getSuggestedTitle() + "</p>" +
+                    "<p style='color: #495057; margin-bottom: 8px;'><strong>Author:</strong> " + (suggestion.getAuthor() != null ? suggestion.getAuthor() : "Not specified") + "</p>" +
+                    "<p style='color: #495057; margin-bottom: 8px;'><strong>Status:</strong> <span style='color: #28a745; font-weight: bold;'>APPROVED</span></p>" +
+                    "</div>" +
+
+                    (suggestion.getAdminNotes() != null && !suggestion.getAdminNotes().isEmpty() ?
+                            "<div style='background: #e7f3ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #2c5aa0;'>" +
+                                    "<h3 style='color: #2c5aa0; margin-bottom: 15px;'>Admin Notes:</h3>" +
+                                    "<p style='color: #2c5aa0; margin-bottom: 15px; font-style: italic;'>\"" + suggestion.getAdminNotes() + "\"</p>" +
+                                    "</div>" : "") +
+
+                    "<div style='text-align: center; margin: 30px 0;'>" +
+                    "<a href='http://localhost:8035/books' " +
+                    "style='display: inline-block; padding: 12px 30px; background: #28a745; color: white; " +
+                    "text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px;'>" +
+                    "Browse Books" +
+                    "</a>" +
+                    "</div>" +
+
+                    "<div style='border-top: 1px solid #e0e0e0; padding-top: 20px; margin-top: 20px; text-align: center;'>" +
+                    "<p style='color: #666; margin-bottom: 10px;'>Thank you for your valuable suggestion!</p>" +
+                    "<p style='color: #999; font-size: 12px; margin-top: 20px;'>Happy reading!</p>" +
+                    "</div>" +
+                    "</div>" +
+                    "</body></html>";
+
+            helper.setText(content, true);
+
+            try {
+                helper.addInline("logoImage", new ClassPathResource("static/images/logo.png"));
+            } catch (Exception e) {
+                System.out.println("Logo image not found, sending email without logo");
+            }
+
+            mailSender.send(mimeMessage);
+            System.out.println("Suggestion approval email sent to: " + user.getEmail());
+
+        } catch (MessagingException e) {
+            System.err.println("Failed to send suggestion approval email to: " + user.getEmail());
+            e.printStackTrace();
+        }
+    }
+
+    // Suggestion Rejection Email with admin notes
+    public void sendSuggestionRejectionEmail(User user, Suggestion suggestion) {
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+
+            helper.setFrom(FROM_EMAIL);
+            helper.setTo(user.getEmail());
+            helper.setSubject("Suggestion Not Approved - IntelliRead");
+
+            String content = "<html>" +
+                    "<body style='font-family: Arial, sans-serif; color: #333; line-height: 1.6;'>" +
+                    "<div style='max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;'>" +
+                    "<div style='text-align: center; margin-bottom: 30px;'>" +
+                    "<h1 style='color: #dc3545; margin-bottom: 10px;'>Suggestion Update</h1>" +
+                    "<p style='color: #666; font-size: 16px;'>Regarding your book suggestion</p>" +
+                    "</div>" +
+
+                    "<div style='background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;'>" +
+                    "<h2 style='color: #dc3545; margin-bottom: 15px;'>Hello " + user.getName() + ",</h2>" +
+                    "<p style='margin-bottom: 15px;'>Thank you for your book suggestion. After careful review, we regret to inform you that your suggestion <strong>\"" + suggestion.getSuggestedTitle() + "\"</strong> could not be approved at this time.</p>" +
+                    "</div>" +
+
+                    "<div style='background: #fff3cd; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ffc107;'>" +
+                    "<h3 style='color: #856404; margin-bottom: 15px;'>Admin Notes:</h3>" +
+                    "<p style='color: #856404; margin-bottom: 15px; font-style: italic;'>" +
+                    (suggestion.getAdminNotes() != null && !suggestion.getAdminNotes().isEmpty() ?
+                            "\"" + suggestion.getAdminNotes() + "\"" : "No specific reason provided") +
+                    "</p>" +
+                    "</div>" +
+
+                    "<div style='background: #d1ecf1; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #17a2b8;'>" +
+                    "<h3 style='color: #0c5460; margin-bottom: 15px;'>Keep Suggesting!</h3>" +
+                    "<p style='color: #0c5460; margin-bottom: 10px;'>" +
+                    "• We appreciate all suggestions from our community<br>" +
+                    "• You can submit new suggestions anytime<br>" +
+                    "• Your feedback helps us improve our library<br>" +
+                    "</p>" +
+                    "</div>" +
+
+                    "<div style='text-align: center; margin: 30px 0;'>" +
+                    "<a href='http://localhost:8035/books' " +
+                    "style='display: inline-block; padding: 12px 30px; background: #17a2b8; color: white; " +
+                    "text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px;'>" +
+                    "Browse Available Books" +
+                    "</a>" +
+                    "</div>" +
+
+                    "<div style='border-top: 1px solid #e0e0e0; padding-top: 20px; margin-top: 20px; text-align: center;'>" +
+                    "<p style='color: #666; margin-bottom: 10px;'>Thank you for being part of IntelliRead community!</p>" +
+                    "<p style='color: #999; font-size: 12px; margin-top: 20px;'>We value your input!</p>" +
+                    "</div>" +
+                    "</div>" +
+                    "</body></html>";
+
+            helper.setText(content, true);
+
+            try {
+                helper.addInline("logoImage", new ClassPathResource("static/images/logo.png"));
+            } catch (Exception e) {
+                System.out.println("Logo image not found, sending email without logo");
+            }
+
+            mailSender.send(mimeMessage);
+            System.out.println("Suggestion rejection email sent to: " + user.getEmail());
+
+        } catch (MessagingException e) {
+            System.err.println("Failed to send suggestion rejection email to: " + user.getEmail());
+            e.printStackTrace();
+        }
+    }
+    // ✅ ADD THIS METHOD to EmailService.java
+    public void sendPublisherInterestEmail(User user, Suggestion suggestion, User publisher) {
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+
+            helper.setFrom(FROM_EMAIL);
+            helper.setTo(user.getEmail());
+            helper.setSubject("🎯 Publisher Interested in Your Suggestion - IntelliRead");
+
+            String content = "<html>" +
+                    "<body style='font-family: Arial, sans-serif; color: #333; line-height: 1.6;'>" +
+                    "<div style='max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px;'>" +
+                    "<div style='text-align: center; margin-bottom: 30px;'>" +
+                    "<h1 style='color: #4a90e2; margin-bottom: 10px;'>Great News! 🎉</h1>" +
+                    "<p style='color: #666; font-size: 16px;'>A publisher is interested in your book suggestion</p>" +
+                    "</div>" +
+
+                    "<div style='background: #e6f0ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #4a90e2;'>" +
+                    "<h2 style='color: #2c5aa0; margin-bottom: 15px;'>Hello " + user.getName() + "!</h2>" +
+                    "<p style='color: #2c5aa0; margin-bottom: 15px;'>We have exciting news! A publisher has shown interest in your book suggestion.</p>" +
+                    "</div>" +
+
+                    "<div style='background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;'>" +
+                    "<h3 style='color: #2c5aa0; margin-bottom: 15px;'>📖 Suggestion Details:</h3>" +
+                    "<p style='color: #495057; margin-bottom: 8px;'><strong>Title:</strong> " + suggestion.getSuggestedTitle() + "</p>" +
+                    "<p style='color: #495057; margin-bottom: 8px;'><strong>Author:</strong> " + (suggestion.getAuthor() != null ? suggestion.getAuthor() : "Not specified") + "</p>" +
+                    "<p style='color: #495057; margin-bottom: 8px;'><strong>Your Reason:</strong> " + (suggestion.getSuggestionReason() != null ? suggestion.getSuggestionReason() : "No reason provided") + "</p>" +
+                    "</div>" +
+
+                    "<div style='background: #d4edda; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #28a745;'>" +
+                    "<h3 style='color: #155724; margin-bottom: 15px;'>👨‍💼 Publisher Information:</h3>" +
+                    "<p style='color: #155724; margin-bottom: 8px;'><strong>Publisher:</strong> " + publisher.getName() + "</p>" +
+                    "<p style='color: #155724; margin-bottom: 8px;'><strong>Email:</strong> " + publisher.getEmail() + "</p>" +
+                    "</div>" +
+
+                    "<div style='background: #e7f3ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #2c5aa0;'>" +
+                    "<h3 style='color: #2c5aa0; margin-bottom: 15px;'>🚀 What Happens Next?</h3>" +
+                    "<ul style='color: #495057; margin-bottom: 15px; padding-left: 20px;'>" +
+                    "<li>The publisher may upload this book to our platform</li>" +
+                    "<li>Once uploaded, our admin team will review the book</li>" +
+                    "<li>If approved, the book will be available for all readers</li>" +
+                    "<li>You'll be notified when the book is published</li>" +
+                    "</ul>" +
+                    "</div>" +
+
+                    "<div style='text-align: center; margin: 30px 0;'>" +
+                    "<a href='http://localhost:8035/books' " +
+                    "style='display: inline-block; padding: 12px 30px; background: #4a90e2; color: white; " +
+                    "text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 16px;'>" +
+                    "Browse Books" +
+                    "</a>" +
+                    "</div>" +
+
+                    "<div style='border-top: 1px solid #e0e0e0; padding-top: 20px; margin-top: 20px; text-align: center;'>" +
+                    "<p style='color: #666; margin-bottom: 10px;'>Thank you for your valuable suggestion!</p>" +
+                    "<p style='color: #999; font-size: 12px; margin-top: 20px;'>Your input helps us grow our library! 📚</p>" +
+                    "</div>" +
+                    "</div>" +
+                    "</body></html>";
+
+            helper.setText(content, true);
+
+            try {
+                helper.addInline("logoImage", new ClassPathResource("static/images/logo.png"));
+            } catch (Exception e) {
+                System.out.println("Logo image not found, sending email without logo");
+            }
+
+            mailSender.send(mimeMessage);
+            System.out.println("✅ Publisher interest email sent to: " + user.getEmail());
+
+        } catch (MessagingException e) {
+            System.err.println("❌ Failed to send publisher interest email to: " + user.getEmail());
+            e.printStackTrace();
+        }
+    }
+
+
 }

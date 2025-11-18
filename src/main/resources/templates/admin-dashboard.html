@@ -1003,6 +1003,25 @@
           transform: translateY(-2px);
         }
 
+        /* Suggestion specific styles */
+        .suggestion-reason {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 3px solid var(--primary);
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+
+        .admin-notes {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 3px solid #ffc107;
+            margin: 10px 0;
+            font-size: 0.9rem;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
           .sidebar {
@@ -1100,6 +1119,11 @@
                 <i class='bx bx-book'></i>
                 <span>Manage Books</span>
             </li>
+            <!-- ✅ NEW: Manage Suggestions Menu Item -->
+            <li class="menu-item" onclick="showSection('suggestions')">
+                <i class='bx bx-message-square-dots'></i>
+                <span>Manage Suggestions</span>
+            </li>
             <li class="menu-item" onclick="showSection('analytics')">
                 <i class='bx bx-bar-chart'></i>
                 <span>Analytics</span>
@@ -1163,7 +1187,7 @@
                 </div>
             </div>
 
-            <!-- Additional Stats for Publishers -->
+            <!-- Additional Stats for Publishers and Suggestions -->
             <div class="stats-grid" style="margin-top: 20px;">
                 <div class="stat-card secondary">
                     <div class="stat-icon">
@@ -1182,6 +1206,27 @@
                     <div class="stat-info">
                         <h3 id="pendingPublishers">0</h3>
                         <p>Pending Publishers</p>
+                    </div>
+                </div>
+
+                <!-- ✅ NEW: Suggestions Stats -->
+                <div class="stat-card primary">
+                    <div class="stat-icon">
+                        <i class='bx bx-message-square-dots'></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalSuggestions">0</h3>
+                        <p>Total Suggestions</p>
+                    </div>
+                </div>
+
+                <div class="stat-card warning">
+                    <div class="stat-icon">
+                        <i class='bx bx-time-five'></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="pendingSuggestions">0</h3>
+                        <p>Pending Suggestions</p>
                     </div>
                 </div>
             </div>
@@ -1278,6 +1323,52 @@
             </div>
         </section>
 
+        <!-- ✅ NEW: Manage Suggestions Section -->
+        <section id="suggestions" class="section">
+            <div class="section-header">
+                <h1>Manage Suggestions</h1>
+                <p>Review and manage book suggestions from users</p>
+                <div class="header-actions">
+                    <div class="search-box">
+                        <i class='bx bx-search'></i>
+                        <input type="text" id="suggestionSearch" placeholder="Search suggestions..." onkeyup="searchSuggestions()">
+                    </div>
+                    <select id="suggestionStatusFilter" onchange="filterSuggestions()">
+                        <option value="">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                    <button class="btn-primary" onclick="exportSuggestions()">
+                        <i class='bx bx-export'></i> Export
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table id="suggestionTable">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>User</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Submitted</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="suggestionTableBody">
+                    <!-- Suggestions will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination" id="suggestionPagination">
+                <!-- Pagination will be loaded here -->
+            </div>
+        </section>
+
         <!-- Analytics Section -->
         <section id="analytics" class="section">
             <div class="section-header">
@@ -1363,7 +1454,18 @@
     </div>
 </div>
 
-<!-- Rejection Reason Modal -->
+<!-- ✅ NEW: Modal for suggestion details -->
+<div id="suggestionModal" class="modal">
+    <div class="modal-content large">
+        <span class="close">&times;</span>
+        <h2>Suggestion Details</h2>
+        <div id="suggestionDetails">
+            <!-- Suggestion details will be loaded here -->
+        </div>
+    </div>
+</div>
+
+<!-- Rejection Reason Modal for Books -->
 <div id="rejectionModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
@@ -1376,6 +1478,42 @@
             <div class="modal-actions">
                 <button type="button" class="btn-secondary" onclick="closeRejectionModal()">Cancel</button>
                 <button type="submit" class="btn-danger">Reject Book</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ✅ NEW: Suggestion Approval Modal -->
+<div id="suggestionApprovalModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Approve Suggestion</h2>
+        <form id="suggestionApprovalForm">
+            <div class="form-group">
+                <label for="approvalNotes">Admin Notes (Optional)</label>
+                <textarea id="approvalNotes" placeholder="Add any notes or comments for the user..." style="width: 100%; height: 120px; padding: 10px; border: 1px solid var(--border); border-radius: 5px;"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" onclick="closeSuggestionApprovalModal()">Cancel</button>
+                <button type="submit" class="btn-success">Approve Suggestion</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ✅ NEW: Suggestion Rejection Modal -->
+<div id="suggestionRejectionModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Reject Suggestion</h2>
+        <form id="suggestionRejectionForm">
+            <div class="form-group">
+                <label for="rejectionNotes">Reason for Rejection *</label>
+                <textarea id="rejectionNotes" required placeholder="Please provide a reason for rejecting this suggestion..." style="width: 100%; height: 120px; padding: 10px; border: 1px solid var(--border); border-radius: 5px;"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" onclick="closeSuggestionRejectionModal()">Cancel</button>
+                <button type="submit" class="btn-danger">Reject Suggestion</button>
             </div>
         </form>
     </div>
@@ -1397,103 +1535,89 @@
 
 <script>
     // ===== GLOBAL VARIABLES =====
-    // Store current page states for users and books
     let currentUserPage = 1;
     let currentBookPage = 1;
+    let currentSuggestionPage = 1;
 
-    // Define how many items to show per page
     const usersPerPage = 6;
     const booksPerPage = 6;
+    const suggestionsPerPage = 6;
 
-    // Arrays to store all loaded users and books data
     let allUsers = [];
     let allBooks = [];
+    let allSuggestions = [];
 
-    // Track which book is currently being rejected
     let currentRejectBookId = null;
+    let currentApproveSuggestionId = null;
+    let currentRejectSuggestionId = null;
 
     // ===== DASHBOARD INITIALIZATION =====
-    // This runs when the page finishes loading
     document.addEventListener('DOMContentLoaded', function() {
-        // Log initialization message
         console.log('🏁 Admin Dashboard Initialized');
-
-        // Check if user is properly logged in as admin
         checkAdminAuth();
 
-        // Wait 1 second then load all dashboard data
         setTimeout(() => {
             console.log('🔄 Loading dashboard data...');
 
-            // Load dashboard summary statistics
             loadDashboardSummary().catch(err => {
                 console.log('📊 Dashboard summary failed, using demo data');
                 setDemoDashboardData();
             });
 
-            // Load users list
             loadUsers().catch(err => {
                 console.log('👥 Users loading failed, using demo data');
                 showDemoUsers();
             });
 
-            // Load books list
             loadBooks().catch(err => {
                 console.log('📚 Books loading failed, using demo data');
                 showDemoBooks();
             });
 
-        }, 1000); // Wait 1 second before loading
+            // ✅ NEW: Load suggestions
+            loadSuggestions().catch(err => {
+                console.log('💡 Suggestions loading failed, using demo data');
+                showDemoSuggestions();
+            });
 
-        // Set up all click handlers and event listeners
+        }, 1000);
+
         setupEventListeners();
     });
 
     // ===== AUTHENTICATION FUNCTIONS =====
-    // Verify admin is logged in before allowing access
     function checkAdminAuth() {
-        // Get admin session data from browser storage
         const admin = sessionStorage.getItem('admin');
-
-        // If no admin session found, redirect to login page
         if (!admin) {
             console.log('❌ No admin session found, redirecting to login...');
             window.location.href = '/admin';
             return;
         }
-
-        // Log successful authentication
         console.log('✅ Admin authenticated');
     }
 
     // ===== NAVIGATION FUNCTIONS =====
-    // Switch between different sections of the dashboard
     function showSection(sectionId) {
-        // Hide all sections first
         const sections = document.querySelectorAll('.section');
         sections.forEach(section => {
             section.classList.remove('active');
         });
 
-        // Remove active highlight from all menu items
         const menuItems = document.querySelectorAll('.menu-item');
         menuItems.forEach(item => {
             item.classList.remove('active');
         });
 
-        // Show the selected section
         const targetSection = document.getElementById(sectionId);
         if (targetSection) {
             targetSection.classList.add('active');
         }
 
-        // Highlight the clicked menu item
         const targetMenuItem = document.querySelector(`.menu-item[onclick="showSection('${sectionId}')"]`);
         if (targetMenuItem) {
             targetMenuItem.classList.add('active');
         }
 
-        // Load data specific to the selected section
         switch(sectionId) {
             case 'dashboard':
                 loadDashboardSummary();
@@ -1504,6 +1628,9 @@
             case 'books':
                 loadBooks();
                 break;
+            case 'suggestions':
+                loadSuggestions();
+                break;
             case 'analytics':
                 loadAnalytics();
                 break;
@@ -1511,22 +1638,18 @@
     }
 
     // ===== DASHBOARD DATA FUNCTIONS =====
-    // Load summary statistics for the dashboard
     async function loadDashboardSummary() {
         try {
             console.log('📊 Loading dashboard summary...');
 
-            // Fetch data from server API
             const response = await fetch('/api/admin/summary');
 
-            // Check if server returned an error
             if (!response.ok) {
                 console.warn('⚠️ Dashboard API returned error:', response.status);
                 setDemoDashboardData();
                 return;
             }
 
-            // Verify response is JSON format
             const contentType = response.headers.get('content-type');
             if (!contentType || !contentType.includes('application/json')) {
                 console.warn('⚠️ Dashboard API returned non-JSON response');
@@ -1534,18 +1657,14 @@
                 return;
             }
 
-            // Parse the JSON response
             const data = await response.json();
 
-            // Update dashboard with real data if successful
             if (data.success) {
-                // Update stats cards with actual numbers
                 document.getElementById('totalUsers').textContent = data.totalUsers || 0;
                 document.getElementById('totalBooks').textContent = data.totalBooks || 0;
                 document.getElementById('pendingBooks').textContent = data.pendingBooks || 0;
                 document.getElementById('activeUsers').textContent = data.activeUsers || 0;
 
-                // Update additional stats if elements exist
                 const pendingPublishersElement = document.getElementById('pendingPublishers');
                 const totalPublishersElement = document.getElementById('totalPublishers');
 
@@ -1556,7 +1675,9 @@
                     totalPublishersElement.textContent = data.totalPublishers || 0;
                 }
 
-                // Load recent activity feed
+                // ✅ NEW: Load suggestion stats
+                await loadSuggestionStats();
+
                 loadRecentActivity(data.recentActivity);
             } else {
                 console.error('Error loading dashboard summary:', data.message);
@@ -1568,7 +1689,26 @@
         }
     }
 
-    // Set demo data when real data fails to load
+    // ✅ NEW: Load suggestion statistics
+    async function loadSuggestionStats() {
+        try {
+            const response = await fetch('/suggestion/apis/admin/stats');
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('totalSuggestions').textContent = data.total || 0;
+                document.getElementById('pendingSuggestions').textContent = data.pending || 0;
+            } else {
+                // Fallback to demo data
+                document.getElementById('totalSuggestions').textContent = '24';
+                document.getElementById('pendingSuggestions').textContent = '8';
+            }
+        } catch (error) {
+            console.error('Error loading suggestion stats:', error);
+            document.getElementById('totalSuggestions').textContent = '24';
+            document.getElementById('pendingSuggestions').textContent = '8';
+        }
+    }
+
     function setDemoDashboardData() {
         document.getElementById('totalUsers').textContent = '1,254';
         document.getElementById('totalBooks').textContent = '567';
@@ -1576,15 +1716,15 @@
         document.getElementById('activeUsers').textContent = '189';
         document.getElementById('pendingPublishers').textContent = '5';
         document.getElementById('totalPublishers').textContent = '47';
+        document.getElementById('totalSuggestions').textContent = '24';
+        document.getElementById('pendingSuggestions').textContent = '8';
     }
 
-    // Load recent activity feed
     async function loadRecentActivity(activities = null) {
         try {
             const activityList = document.getElementById('recentActivity');
             if (!activityList) return;
 
-            // If no activities provided, fetch from server
             if (!activities) {
                 const response = await fetch('/api/admin/activities');
                 if (response.ok) {
@@ -1595,7 +1735,6 @@
                 }
             }
 
-            // Use demo data if no activities from API
             if (!activities || activities.length === 0) {
                 activities = [
                     {
@@ -1619,10 +1758,8 @@
                 ];
             }
 
-            // Clear existing activities
             activityList.innerHTML = '';
 
-            // Create HTML for each activity item
             activities.forEach(activity => {
                 const activityItem = document.createElement('div');
                 activityItem.className = 'activity-item';
@@ -1645,13 +1782,10 @@
     }
 
     // ===== USER MANAGEMENT FUNCTIONS =====
-    // Load users with pagination
     async function loadUsers(page = 1) {
         try {
-            // Update current page
             currentUserPage = page;
 
-            // Show loading state in table
             const userTableBody = document.getElementById('userTableBody');
             userTableBody.innerHTML = `
                 <tr>
@@ -1664,33 +1798,22 @@
 
             console.log('👥 Loading users...');
 
-            // Fetch users from server API
-            //const response = await fetch(`/api/admin/users?page=${page}&limit=${usersPerPage}`);
             const response = await fetch(`/api/admin/users?page=${page}&limit=${usersPerPage}`);
 
-            // Check for HTTP errors
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            // Verify response is JSON format
             const contentType = response.headers.get('content-type');
             if (!contentType || !contentType.includes('application/json')) {
                 throw new Error('API returned non-JSON response');
             }
 
-            // Parse JSON response
             const data = await response.json();
 
-            // Process successful response
             if (data.success) {
-                // Store users globally
                 allUsers = data.users;
-
-                // ✅ YAHAN PE displayUsers FUNCTION CALL KARO
                 displayUsers(allUsers);
-
-                // Update pagination controls
                 updateUserPagination(data.totalPages, page);
             } else {
                 console.error('Error loading users:', data.message);
@@ -1702,8 +1825,6 @@
         }
     }
 
-
-    // ✅ NEW: Display Users in Table (Extracted from loadUsers)
     function displayUsers(users) {
         const userTableBody = document.getElementById('userTableBody');
         if (!userTableBody) {
@@ -1711,10 +1832,8 @@
             return;
         }
 
-        // Clear table body
         userTableBody.innerHTML = '';
 
-        // Show message if no users found
         if (!users || users.length === 0) {
             userTableBody.innerHTML = `
                 <tr>
@@ -1727,18 +1846,15 @@
             return;
         }
 
-        // Create table row for each user
         users.forEach(user => {
             try {
                 const row = document.createElement('tr');
 
-                // ✅ IMPROVED: Safe data access with fallbacks
                 const userName = user.fullName || user.name || 'Unknown User';
                 const userEmail = user.email || 'No email';
                 const userRole = user.role || 'user';
                 const userCreatedAt = user.createdAt || new Date().toISOString();
 
-                // Determine user status and badge styling
                 let statusText, statusClass;
                 if (userRole === 'publisher' || userRole === 'PUBLISHER') {
                     if (user.isApproved) {
@@ -1753,7 +1869,6 @@
                     statusClass = user.isActive !== false ? 'status-active' : 'status-inactive';
                 }
 
-                // ✅ IMPROVED: Create HTML for user row with better error handling
                 row.innerHTML = `
                     <td>
                         <div class="user-avatar">
@@ -1789,7 +1904,6 @@
                     </td>
                 `;
 
-                // Add row to table
                 userTableBody.appendChild(row);
             } catch (error) {
                 console.error('Error rendering user row:', error, user);
@@ -1797,19 +1911,16 @@
         });
     }
 
-    // Update pagination controls for users table
     function updateUserPagination(totalPages, currentPage) {
         const pagination = document.getElementById('userPagination');
         if (!pagination) return;
 
         let paginationHTML = '';
 
-        // Previous button
         if (currentPage > 1) {
             paginationHTML += `<button class="page-btn" onclick="loadUsers(${currentPage - 1})">Previous</button>`;
         }
 
-        // Page number buttons
         for (let i = 1; i <= totalPages; i++) {
             if (i === currentPage) {
                 paginationHTML += `<button class="page-btn active">${i}</button>`;
@@ -1818,25 +1929,18 @@
             }
         }
 
-        // Next button
         if (currentPage < totalPages) {
             paginationHTML += `<button class="page-btn" onclick="loadUsers(${currentPage + 1})">Next</button>`;
         }
 
-        // Update pagination HTML
         pagination.innerHTML = paginationHTML;
     }
 
-    // ===== PUBLISHER APPROVAL FUNCTIONS =====
-    // Approve a publisher account
     async function approvePublisher(userId) {
-        // Confirm action with user
         if (confirm('Are you sure you want to approve this publisher?')) {
             try {
-                // Show loading notification
                 showNotification('Approving publisher...', 'info');
 
-                // Send approval request to server
                 const response = await fetch(`/api/admin/publishers/${userId}/approve`, {
                     method: 'PUT',
                     headers: {
@@ -1844,13 +1948,10 @@
                     }
                 });
 
-                // Parse response
                 const data = await response.json();
 
-                // Handle response
                 if (data.success) {
                     showNotification('Publisher approved successfully!', 'success');
-                    // Refresh data
                     loadUsers(currentUserPage);
                     loadDashboardSummary();
                 } else {
@@ -1863,14 +1964,11 @@
         }
     }
 
-    // Reject a publisher account
     async function rejectPublisher(userId) {
-        // Show strong warning confirmation
         if (confirm('⚠️ ARE YOU SURE YOU WANT TO REJECT THIS PUBLISHER?\n\nThis will:\n• Permanently delete the publisher account\n• Delete ALL books uploaded by this publisher\n• This action cannot be undone!')) {
             try {
                 showNotification('Rejecting publisher and deleting all data...', 'warning');
 
-                // Send rejection request to server
                 const response = await fetch(`/api/admin/publishers/${userId}/reject`, {
                     method: 'PUT',
                     headers: {
@@ -1878,13 +1976,10 @@
                     }
                 });
 
-                // Parse response
                 const data = await response.json();
 
-                // Handle response
                 if (data.success) {
                     showNotification('✅ Publisher rejected and all data permanently deleted!', 'success');
-                    // Refresh data
                     loadUsers(currentUserPage);
                     loadDashboardSummary();
                 } else {
@@ -1897,12 +1992,10 @@
         }
     }
 
-    // ===== USER ACTIONS =====
     async function viewUser(userId) {
         try {
             console.log('👤 Viewing user:', userId);
 
-            // ✅ Ensure userId is properly passed
             const response = await fetch(`/api/admin/users/${userId}`);
 
             if (!response.ok) {
@@ -1920,7 +2013,6 @@
         } catch (error) {
             console.error('Error viewing user:', error);
 
-            // ✅ Fallback: Try to find user in already loaded data
             const user = allUsers.find(u => u._id == userId);
             if (user) {
                 showUserModal(user);
@@ -1930,7 +2022,6 @@
         }
     }
 
-    // Display user details in modal
     function showUserModal(user) {
         const modal = document.getElementById('userModal');
         const userDetails = document.getElementById('userDetails');
@@ -1942,12 +2033,10 @@
         }
 
         try {
-            // Format dates properly
             const joinDate = user.createdAt ? formatDateTime(user.createdAt) : 'Unknown';
             const lastLogin = user.lastLogin ? formatDateTime(user.lastLogin) : 'Never';
             const publisherSince = user.publisherSince ? formatDateTime(user.publisherSince) : 'Not applicable';
 
-            // Determine status and badge class
             let statusText, statusClass;
             if (user.role === 'publisher' || user.role === 'PUBLISHER') {
                 if (user.isApproved) {
@@ -2044,30 +2133,10 @@
         }
     }
 
-
-    // Helper function to get CSS class for user status
-    function getUserStatusClass(user) {
-        if (user.role === 'publisher') {
-            return user.isApproved ? 'status-approved' : 'status-pending';
-        }
-        return user.isActive !== false ? 'status-active' : 'status-inactive';
-    }
-
-    // Helper function to get display text for user status
-    function getUserStatusText(user) {
-        if (user.role === 'publisher') {
-            return user.isApproved ? 'Approved Publisher' : 'Pending Publisher';
-        }
-        return user.isActive !== false ? 'Active User' : 'Inactive User';
-    }
-
-    // Edit user (placeholder function)
     async function editUser(userId) {
         showNotification('Edit user functionality coming soon!', 'info');
     }
 
-    // Delete user permanently
-    // ===== DELETE USER =====
     async function deleteUser(userId) {
         try {
             const user = allUsers.find(u => u._id == userId);
@@ -2083,7 +2152,6 @@
                     method: 'DELETE'
                 });
 
-                // ✅ Better response handling
                 if (!response.ok) {
                     const errorData = await response.json();
                     throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
@@ -2096,7 +2164,6 @@
                     loadUsers(currentUserPage);
                     loadDashboardSummary();
 
-                    // Close modal if open
                     const modal = document.getElementById('userModal');
                     if (modal) modal.style.display = 'none';
                 } else {
@@ -2109,14 +2176,34 @@
         }
     }
 
+    function searchUsers() {
+        const searchTerm = document.getElementById('userSearch').value.toLowerCase();
+        const rows = document.querySelectorAll('#userTableBody tr');
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+    }
+
+    function showDemoUsers() {
+        const userTableBody = document.getElementById('userTableBody');
+        if (!userTableBody) return;
+
+        userTableBody.innerHTML = `
+            <tr>
+                <td colspan="6" class="no-data">
+                    <i class='bx bx-user-x'></i>
+                    <p>No users found</p>
+                </td>
+            </tr>
+        `;
+    }
+
     // ===== BOOK MANAGEMENT FUNCTIONS =====
-    // Load books with pagination
     async function loadBooks(page = 1) {
         try {
-            // Update current page
             currentBookPage = page;
 
-            // Show loading state in table
             const bookTableBody = document.getElementById('bookTableBody');
             bookTableBody.innerHTML = `
                 <tr>
@@ -2129,123 +2216,22 @@
 
             console.log('📚 Loading books...');
 
-            // Fetch books from server API
-            //const response = await fetch(`/api/admin/books?page=${page}&limit=${booksPerPage}&status=all`);
-            //const response = await fetch(`/api/admin/books?page=${page}&limit=${booksPerPage}&status=all`);
             const response = await fetch(`/api/admin/books?page=${page}&limit=${booksPerPage}&status=all`);
 
-            // Check for HTTP errors
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            // Verify response is JSON format
             const contentType = response.headers.get('content-type');
             if (!contentType || !contentType.includes('application/json')) {
                 throw new Error('API returned non-JSON response');
             }
 
-            // Parse JSON response
             const data = await response.json();
 
-            // Process successful response
             if (data.success) {
-                // Store books globally
                 allBooks = data.books;
-
-                // Clear table body
-                bookTableBody.innerHTML = '';
-
-                // Show message if no books found
-                if (data.books.length === 0) {
-                    bookTableBody.innerHTML = `
-                        <tr>
-                            <td colspan="7" class="no-data">
-                                <i class='bx bx-book-open'></i>
-                                <p>No books found</p>
-                            </td>
-                        </tr>
-                    `;
-                    return;
-                }
-
-                // Create table row for each book
-                data.books.forEach(book => {
-                    const row = document.createElement('tr');
-
-                    // Determine book status and badge styling
-                    let statusClass = '';
-                    let statusText = book.status ? book.status.charAt(0).toUpperCase() + book.status.slice(1) : 'Unknown';
-                    switch(book.status) {
-                        case 'approved':
-                            statusClass = 'status-approved';
-                            break;
-                        case 'pending':
-                            statusClass = 'status-pending';
-                            break;
-                        case 'rejected':
-                            statusClass = 'status-rejected';
-                            break;
-                        default:
-                            statusClass = 'status-pending';
-                    }
-
-                    // Create HTML for book row
-                    row.innerHTML = `
-                        <td>
-                            ${book.coverImage ?
-                                `<img src="${book.coverImage}" alt="${book.title}" class="book-cover">` :
-                                '<div class="book-cover-placeholder"><i class="bx bx-book"></i></div>'
-                            }
-                        </td>
-                        <td>
-                            <div class="book-title">
-                                <strong>${book.title || 'Untitled'}</strong>
-                                <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px;">
-                                    by ${book.author || 'Unknown Author'}
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="category-tag">${book.category || 'Uncategorized'}</span>
-                        </td>
-                        <td>
-                            <div style="font-size: 0.9rem;">
-                                ${book.publisherName || 'Unknown Publisher'}
-                            </div>
-                        </td>
-                        <td>
-                            <span class="status-badge ${statusClass}">${statusText}</span>
-                        </td>
-                        <td>${book.createdAt ? formatDate(book.createdAt) : 'Unknown'}</td>
-                        <td>
-                            <div class="action-buttons">
-                                <button class="btn-info" onclick="viewBook('${book._id}')" title="View Details">
-                                    <i class='bx bx-show'></i> View
-                                </button>
-                                ${book.status === 'pending' ?
-                                    `<button class="btn-success" onclick="approveBook('${book._id}')" title="Approve Book">
-                                        <i class='bx bx-check'></i> Approve
-                                    </button>
-                                     <button class="btn-danger" onclick="showRejectionModal('${book._id}')" title="Reject Book">
-                                        <i class='bx bx-x'></i> Reject
-                                     </button>` :
-                                    `<button class="btn-warning" onclick="editBook('${book._id}')" title="Edit Book">
-                                        <i class='bx bx-edit'></i> Edit
-                                    </button>`
-                                }
-                                <button class="btn-danger" onclick="deleteBook('${book._id}')" title="Delete Book">
-                                    <i class='bx bx-trash'></i> Delete
-                                </button>
-                            </div>
-                        </td>
-                    `;
-
-                    // Add row to table
-                    bookTableBody.appendChild(row);
-                });
-
-                // Update pagination controls
+                displayBooks(allBooks);
                 updateBookPagination(data.totalPages, page);
             } else {
                 console.error('Error loading books:', data.message);
@@ -2257,19 +2243,110 @@
         }
     }
 
-    // Update pagination controls for books table
+    function displayBooks(books) {
+        const bookTableBody = document.getElementById('bookTableBody');
+        if (!bookTableBody) {
+            console.error('Book table body not found');
+            return;
+        }
+
+        bookTableBody.innerHTML = '';
+
+        if (!books || books.length === 0) {
+            bookTableBody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="no-data">
+                        <i class='bx bx-book-open'></i>
+                        <p>No books found</p>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        books.forEach(book => {
+            const row = document.createElement('tr');
+
+            let statusClass = '';
+            let statusText = book.status ? book.status.charAt(0).toUpperCase() + book.status.slice(1) : 'Unknown';
+            switch(book.status) {
+                case 'approved':
+                    statusClass = 'status-approved';
+                    break;
+                case 'pending':
+                    statusClass = 'status-pending';
+                    break;
+                case 'rejected':
+                    statusClass = 'status-rejected';
+                    break;
+                default:
+                    statusClass = 'status-pending';
+            }
+
+            row.innerHTML = `
+                <td>
+                    ${book.coverImage ?
+                        `<img src="${book.coverImage}" alt="${book.title}" class="book-cover">` :
+                        '<div class="book-cover-placeholder"><i class="bx bx-book"></i></div>'
+                    }
+                </td>
+                <td>
+                    <div class="book-title">
+                        <strong>${book.title || 'Untitled'}</strong>
+                        <div style="font-size: 0.8rem; color: var(--gray); margin-top: 4px;">
+                            by ${book.author || 'Unknown Author'}
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <span class="category-tag">${book.category || 'Uncategorized'}</span>
+                </td>
+                <td>
+                    <div style="font-size: 0.9rem;">
+                        ${book.publisherName || 'Unknown Publisher'}
+                    </div>
+                </td>
+                <td>
+                    <span class="status-badge ${statusClass}">${statusText}</span>
+                </td>
+                <td>${book.createdAt ? formatDate(book.createdAt) : 'Unknown'}</td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn-info" onclick="viewBook('${book._id}')" title="View Details">
+                            <i class='bx bx-show'></i> View
+                        </button>
+                        ${book.status === 'pending' ?
+                            `<button class="btn-success" onclick="approveBook('${book._id}')" title="Approve Book">
+                                <i class='bx bx-check'></i> Approve
+                            </button>
+                             <button class="btn-danger" onclick="showRejectionModal('${book._id}')" title="Reject Book">
+                                <i class='bx bx-x'></i> Reject
+                             </button>` :
+                            `<button class="btn-warning" onclick="editBook('${book._id}')" title="Edit Book">
+                                <i class='bx bx-edit'></i> Edit
+                            </button>`
+                        }
+                        <button class="btn-danger" onclick="deleteBook('${book._id}')" title="Delete Book">
+                            <i class='bx bx-trash'></i> Delete
+                        </button>
+                    </div>
+                </td>
+            `;
+
+            bookTableBody.appendChild(row);
+        });
+    }
+
     function updateBookPagination(totalPages, currentPage) {
         const pagination = document.getElementById('bookPagination');
         if (!pagination) return;
 
         let paginationHTML = '';
 
-        // Previous button
         if (currentPage > 1) {
             paginationHTML += `<button class="page-btn" onclick="loadBooks(${currentPage - 1})">Previous</button>`;
         }
 
-        // Page number buttons
         for (let i = 1; i <= totalPages; i++) {
             if (i === currentPage) {
                 paginationHTML += `<button class="page-btn active">${i}</button>`;
@@ -2278,24 +2355,18 @@
             }
         }
 
-        // Next button
         if (currentPage < totalPages) {
             paginationHTML += `<button class="page-btn" onclick="loadBooks(${currentPage + 1})">Next</button>`;
         }
 
-        // Update pagination HTML
         pagination.innerHTML = paginationHTML;
     }
 
-    // ===== BOOK ACTIONS =====
-    // Approve a book for publishing
     async function approveBook(bookId) {
-        // Confirm action with user
         if (confirm('Are you sure you want to approve this book?')) {
             try {
                 showNotification('Approving book...', 'info');
 
-                // Send approval request to server
                 const response = await fetch(`/api/admin/books/${bookId}/approve`, {
                     method: 'PUT',
                     headers: {
@@ -2303,16 +2374,12 @@
                     }
                 });
 
-                // Parse response
                 const data = await response.json();
 
-                // Handle response
                 if (data.success) {
                     showNotification('Book approved successfully!', 'success');
-                    // Refresh data
                     loadBooks(currentBookPage);
                     loadDashboardSummary();
-                    // Close modal if open
                     document.getElementById('bookModal').style.display = 'none';
                 } else {
                     showNotification('Error: ' + data.message, 'error');
@@ -2324,59 +2391,45 @@
         }
     }
 
-    // Show rejection reason modal
     function showRejectionModal(bookId) {
-        // Store book ID for later use
         currentRejectBookId = bookId;
         const modal = document.getElementById('rejectionModal');
         if (modal) {
-            // Show modal and clear previous reason
             modal.style.display = 'block';
             document.getElementById('rejectionReason').value = '';
         }
     }
 
-    // Close rejection modal
     function closeRejectionModal() {
         const modal = document.getElementById('rejectionModal');
         if (modal) {
-            // Hide modal and clear stored book ID
             modal.style.display = 'none';
             currentRejectBookId = null;
         }
     }
 
-    // Handle rejection form submission
     document.getElementById('rejectionForm').addEventListener('submit', async function(e) {
-        // Prevent default form submission
         e.preventDefault();
 
-        // Check if we have a book to reject
         if (!currentRejectBookId) return;
 
-        // Get rejection reason
         const reason = document.getElementById('rejectionReason').value;
 
-        // Validate reason is provided
         if (!reason.trim()) {
             showNotification('Please provide a reason for rejection', 'error');
             return;
         }
 
-        // Final confirmation before permanent deletion
         if (confirm(`⚠️ FINAL CONFIRMATION:\n\nAre you absolutely sure you want to REJECT and PERMANENTLY DELETE this book?\n\nReason: ${reason}\n\nThis action cannot be undone!`)) {
             await rejectBook(currentRejectBookId, reason);
         }
     });
 
-    // Reject and delete a book
     async function rejectBook(bookId, reason) {
-        // Confirm action with user
         if (confirm('Are you sure you want to REJECT and PERMANENTLY DELETE this book from database? This action cannot be undone!')) {
             try {
                 showNotification('Rejecting and deleting book...', 'warning');
 
-                // Send rejection request to server
                 const response = await fetch(`/api/admin/books/${bookId}/reject`, {
                     method: 'PUT',
                     headers: {
@@ -2385,16 +2438,12 @@
                     body: JSON.stringify({ reason: reason })
                 });
 
-                // Parse response
                 const data = await response.json();
 
-                // Handle response
                 if (data.success) {
                     showNotification('✅ Book rejected and permanently deleted from database!', 'success');
-                    // Refresh data
                     loadBooks(currentBookPage);
                     loadDashboardSummary();
-                    // Close rejection modal
                     closeRejectionModal();
                 } else {
                     showNotification('❌ Error: ' + data.message, 'error');
@@ -2406,21 +2455,16 @@
         }
     }
 
-    // View detailed book information
     async function viewBook(bookId) {
         try {
-            // Fetch book details from server
             const response = await fetch(`/api/admin/books/${bookId}`);
 
-            // Check for HTTP errors
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            // Parse response
             const data = await response.json();
 
-            // Show book modal if successful
             if (data.success) {
                 showBookModal(data.book);
             } else {
@@ -2430,7 +2474,6 @@
         } catch (error) {
             console.error('Error viewing book:', error);
 
-            // Fallback: try to find book in loaded data
             const book = allBooks.find(b => b._id === bookId);
             if (book) {
                 showBookModal(book);
@@ -2440,17 +2483,14 @@
         }
     }
 
-    // Display book details in modal
     function showBookModal(book) {
         const modal = document.getElementById('bookModal');
         const bookDetails = document.getElementById('bookDetails');
 
         if (modal && bookDetails) {
-            // Format status for display
             const statusText = book.status ? book.status.charAt(0).toUpperCase() + book.status.slice(1) : 'Unknown';
             const statusClass = book.status ? `status-${book.status}` : 'status-pending';
 
-            // Create book details HTML
             bookDetails.innerHTML = `
                 <div class="book-detail-grid">
                     <div class="book-cover-large">
@@ -2533,52 +2573,40 @@
                 </div>
             `;
 
-            // Show the modal
             modal.style.display = 'block';
         }
     }
 
-    // Edit book (placeholder function)
     async function editBook(bookId) {
         showNotification('Edit book functionality coming soon!', 'info');
     }
 
-    // Feature book (placeholder function)
     async function featureBook(bookId) {
         showNotification('Feature book functionality coming soon!', 'info');
     }
 
-    // Unfeature book (placeholder function)
     async function unfeatureBook(bookId) {
         showNotification('Unfeature book functionality coming soon!', 'info');
     }
 
-    // Delete book permanently
     async function deleteBook(bookId) {
-        // Find book in loaded data
         const book = allBooks.find(b => b._id == bookId);
         if (!book) return;
 
-        // Show strong warning confirmation
         if (confirm(`⚠️ ARE YOU SURE YOU WANT TO PERMANENTLY DELETE BOOK "${book.title}"?\n\nThis will:\n• Delete book permanently from database\n• Remove all book data\n• This action cannot be undone!`)) {
             try {
                 showNotification('Deleting book...', 'warning');
 
-                // Send delete request to server
                 const response = await fetch(`/api/admin/books/${bookId}`, {
                     method: 'DELETE'
                 });
 
-                // Parse response
                 const data = await response.json();
 
-                // Handle response
                 if (data.success) {
                     showNotification('✅ Book permanently deleted from database!', 'success');
-                    // Refresh data
                     loadBooks(currentBookPage);
                     loadDashboardSummary();
-                    // Close modal if open
                     const modal = document.getElementById('bookModal');
                     if (modal) modal.style.display = 'none';
                 } else {
@@ -2591,57 +2619,26 @@
         }
     }
 
-    // ===== SEARCH AND FILTER FUNCTIONS =====
-    // Search through users table
-    function searchUsers() {
-        // Get search term and convert to lowercase
-        const searchTerm = document.getElementById('userSearch').value.toLowerCase();
-
-        // Get all user table rows
-        const rows = document.querySelectorAll('#userTableBody tr');
-
-        // Show/hide rows based on search match
-        rows.forEach(row => {
-            const text = row.textContent.toLowerCase();
-            row.style.display = text.includes(searchTerm) ? '' : 'none';
-        });
-    }
-
-    // Search through books table
     function searchBooks() {
-        // Get search term and convert to lowercase
         const searchTerm = document.getElementById('bookSearch').value.toLowerCase();
-
-        // Get all book table rows
         const rows = document.querySelectorAll('#bookTableBody tr');
-
-        // Show/hide rows based on search match
         rows.forEach(row => {
             const text = row.textContent.toLowerCase();
             row.style.display = text.includes(searchTerm) ? '' : 'none';
         });
     }
 
-    // Filter books by status
     function filterBooks() {
-        // Get selected status filter
         const statusFilter = document.getElementById('statusFilter').value;
-
-        // Get all book table rows
         const rows = document.querySelectorAll('#bookTableBody tr');
 
-        // Show/hide rows based on status filter
         rows.forEach(row => {
-            // Show all if no filter selected
             if (!statusFilter) {
                 row.style.display = '';
                 return;
             }
 
-            // Find status badge in row
             const statusBadge = row.querySelector('.status-badge');
-
-            // Show row if status matches filter
             if (statusBadge && statusBadge.textContent.toLowerCase() === statusFilter.toLowerCase()) {
                 row.style.display = '';
             } else {
@@ -2650,18 +2647,548 @@
         });
     }
 
+    function showDemoBooks() {
+        const bookTableBody = document.getElementById('bookTableBody');
+        if (!bookTableBody) return;
+
+        bookTableBody.innerHTML = `
+            <tr>
+                <td colspan="7" class="no-data">
+                    <i class='bx bx-book-open'></i>
+                    <p>No books found</p>
+                </td>
+            </tr>
+        `;
+    }
+
+    // ===== SUGGESTION MANAGEMENT FUNCTIONS =====
+    async function loadSuggestions(page = 1) {
+        try {
+            currentSuggestionPage = page;
+
+            const suggestionTableBody = document.getElementById('suggestionTableBody');
+            suggestionTableBody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="loading-cell">
+                        <div class="loading-spinner"></div>
+                        Loading suggestions...
+                    </td>
+                </tr>
+            `;
+
+            console.log('💡 Loading suggestions...');
+
+            const response = await fetch(`/suggestion/apis/admin/all`);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (Array.isArray(data)) {
+                allSuggestions = data;
+                displaySuggestions(allSuggestions);
+
+                updateSuggestionPagination(Math.ceil(data.length / suggestionsPerPage), page);
+            } else {
+                console.error('Error loading suggestions: Invalid response format');
+                showNotification('Error loading suggestions', 'error');
+            }
+        } catch (error) {
+            console.error('Error loading suggestions:', error);
+            showNotification('Network error loading suggestions: ' + error.message, 'error');
+        }
+    }
+
+    function displaySuggestions(suggestions) {
+        const suggestionTableBody = document.getElementById('suggestionTableBody');
+        if (!suggestionTableBody) {
+            console.error('Suggestion table body not found');
+            return;
+        }
+
+        suggestionTableBody.innerHTML = '';
+
+        if (!suggestions || suggestions.length === 0) {
+            suggestionTableBody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="no-data">
+                        <i class='bx bx-message-square-x'></i>
+                        <p>No suggestions found</p>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        const startIndex = (currentSuggestionPage - 1) * suggestionsPerPage;
+        const endIndex = startIndex + suggestionsPerPage;
+        const paginatedSuggestions = suggestions.slice(startIndex, endIndex);
+
+        paginatedSuggestions.forEach(suggestion => {
+            try {
+                const row = document.createElement('tr');
+
+                let statusClass = '';
+                let statusText = suggestion.suggestionStatus || 'PENDING';
+
+                switch(statusText.toLowerCase()) {
+                    case 'approved':
+                        statusClass = 'status-approved';
+                        break;
+                    case 'pending':
+                        statusClass = 'status-pending';
+                        break;
+                    case 'rejected':
+                        statusClass = 'status-rejected';
+                        break;
+                    default:
+                        statusClass = 'status-pending';
+                }
+
+                // ✅ FIXED: User ka naam properly show karo
+                const userName = suggestion.user ? (suggestion.user.name || suggestion.user.fullName || 'Unknown User') : 'Unknown User';
+                const userEmail = suggestion.user ? suggestion.user.email : 'N/A';
+
+                row.innerHTML = `
+                    <td>
+                        <strong>${suggestion.suggestedTitle || 'Untitled'}</strong>
+                    </td>
+                    <td>${suggestion.author || 'Not specified'}</td>
+                    <td>
+                        <div class="user-avatar">
+                            <i class='bx bx-user'></i>
+                            <div>
+                                <div>${userName}</div>
+                                <small style="color: var(--gray);">${userEmail}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        ${suggestion.suggestionReason ?
+                            `<div class="suggestion-reason">${suggestion.suggestionReason}</div>` :
+                            '<span style="color: var(--gray); font-style: italic;">No reason provided</span>'
+                        }
+                    </td>
+                    <td>
+                        <span class="status-badge ${statusClass}">${statusText.toUpperCase()}</span>
+                    </td>
+                    <td>${formatDate(suggestion.createdAt)}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-info" onclick="viewSuggestion(${suggestion.id})" title="View Details">
+                                <i class='bx bx-show'></i> View
+                            </button>
+                            ${suggestion.suggestionStatus === 'PENDING' ? `
+                                <button class="btn-success" onclick="showSuggestionApprovalModal(${suggestion.id})" title="Approve Suggestion">
+                                    <i class='bx bx-check'></i> Approve
+                                </button>
+                                <button class="btn-danger" onclick="showSuggestionRejectionModal(${suggestion.id})" title="Reject Suggestion">
+                                    <i class='bx bx-x'></i> Reject
+                                </button>
+                            ` : ''}
+                            <button class="btn-warning" onclick="editSuggestion(${suggestion.id})" title="Edit Suggestion">
+                                <i class='bx bx-edit'></i> Edit
+                            </button>
+                            <button class="btn-danger" onclick="deleteSuggestion(${suggestion.id})" title="Delete Suggestion">
+                                <i class='bx bx-trash'></i> Delete
+                            </button>
+                        </div>
+                    </td>
+                `;
+
+                suggestionTableBody.appendChild(row);
+            } catch (error) {
+                console.error('Error rendering suggestion row:', error, suggestion);
+            }
+        });
+    }
+
+    function updateSuggestionPagination(totalPages, currentPage) {
+        const pagination = document.getElementById('suggestionPagination');
+        if (!pagination) return;
+
+        let paginationHTML = '';
+
+        if (currentPage > 1) {
+            paginationHTML += `<button class="page-btn" onclick="loadSuggestions(${currentPage - 1})">Previous</button>`;
+        }
+
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === currentPage) {
+                paginationHTML += `<button class="page-btn active">${i}</button>`;
+            } else {
+                paginationHTML += `<button class="page-btn" onclick="loadSuggestions(${i})">${i}</button>`;
+            }
+        }
+
+        if (currentPage < totalPages) {
+            paginationHTML += `<button class="page-btn" onclick="loadSuggestions(${currentPage + 1})">Next</button>`;
+        }
+
+        pagination.innerHTML = paginationHTML;
+    }
+
+    async function viewSuggestion(suggestionId) {
+        try {
+            const response = await fetch(`/suggestion/apis/findById/${suggestionId}`);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (data) {
+                showSuggestionModal(data);
+            } else {
+                showNotification('Error loading suggestion details', 'error');
+            }
+        } catch (error) {
+            console.error('Error viewing suggestion:', error);
+            showNotification('Error loading suggestion details', 'error');
+        }
+    }
+
+    function showSuggestionModal(suggestion) {
+        const modal = document.getElementById('suggestionModal');
+        const suggestionDetails = document.getElementById('suggestionDetails');
+
+        if (modal && suggestionDetails) {
+            const statusText = suggestion.suggestionStatus || 'PENDING';
+            const statusClass = `status-${statusText.toLowerCase()}`;
+
+            // ✅ FIXED: User ka naam properly show karo
+            const userName = suggestion.user ? (suggestion.user.name || suggestion.user.fullName || 'Unknown User') : 'Unknown User';
+            const userEmail = suggestion.user ? suggestion.user.email : 'N/A';
+
+            suggestionDetails.innerHTML = `
+                <div class="book-detail-grid">
+                    <div class="book-info">
+                        <h3>${suggestion.suggestedTitle || 'Untitled'}</h3>
+                        <p class="book-author">by ${suggestion.author || 'Not specified'}</p>
+
+                        <div class="book-meta">
+                            <span class="status-badge ${statusClass}">${statusText.toUpperCase()}</span>
+                        </div>
+
+                        <div style="margin: 1rem 0; padding: 1rem; background: #f8f9fa; border-radius: 6px;">
+                            <strong>Suggested by:</strong> ${userName} (${userEmail})
+                        </div>
+
+                        ${suggestion.suggestionReason ? `
+                        <div class="book-description">
+                            <h4>Suggestion Reason</h4>
+                            <div class="suggestion-reason">${suggestion.suggestionReason}</div>
+                        </div>
+                        ` : ''}
+
+                        ${suggestion.adminNotes ? `
+                        <div class="book-description">
+                            <h4>Admin Notes</h4>
+                            <div class="admin-notes">${suggestion.adminNotes}</div>
+                        </div>
+                        ` : ''}
+
+                        <div class="book-stats">
+                            <div class="stat">
+                                <label>Submitted:</label>
+                                <span>${suggestion.createdAt ? formatDateTime(suggestion.createdAt) : 'Unknown'}</span>
+                            </div>
+                            ${suggestion.updatedAt ? `
+                            <div class="stat">
+                                <label>Last Updated:</label>
+                                <span>${formatDateTime(suggestion.updatedAt)}</span>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    ${suggestion.suggestionStatus === 'PENDING' ? `
+                        <button class="btn-success" onclick="showSuggestionApprovalModal(${suggestion.id})">
+                            <i class='bx bx-check'></i> Approve
+                        </button>
+                        <button class="btn-danger" onclick="showSuggestionRejectionModal(${suggestion.id})">
+                            <i class='bx bx-x'></i> Reject
+                        </button>
+                    ` : ''}
+                    <button class="btn-primary" onclick="editSuggestion(${suggestion.id})">
+                        <i class='bx bx-edit'></i> Edit
+                    </button>
+                    <button class="btn-danger" onclick="deleteSuggestion(${suggestion.id})">
+                        <i class='bx bx-trash'></i> Delete
+                    </button>
+                </div>
+            `;
+
+            modal.style.display = 'block';
+        }
+    }
+
+    function showSuggestionApprovalModal(suggestionId) {
+        currentApproveSuggestionId = suggestionId;
+        const modal = document.getElementById('suggestionApprovalModal');
+        if (modal) {
+            modal.style.display = 'block';
+            document.getElementById('approvalNotes').value = '';
+        }
+    }
+
+    function closeSuggestionApprovalModal() {
+        const modal = document.getElementById('suggestionApprovalModal');
+        if (modal) {
+            modal.style.display = 'none';
+            currentApproveSuggestionId = null;
+        }
+    }
+
+    function showSuggestionRejectionModal(suggestionId) {
+        currentRejectSuggestionId = suggestionId;
+        const modal = document.getElementById('suggestionRejectionModal');
+        if (modal) {
+            modal.style.display = 'block';
+            document.getElementById('rejectionNotes').value = '';
+        }
+    }
+
+    function closeSuggestionRejectionModal() {
+        const modal = document.getElementById('suggestionRejectionModal');
+        if (modal) {
+            modal.style.display = 'none';
+            currentRejectSuggestionId = null;
+        }
+    }
+
+    document.getElementById('suggestionApprovalForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        if (!currentApproveSuggestionId) return;
+
+        const adminNotes = document.getElementById('approvalNotes').value;
+
+        if (confirm('Are you sure you want to approve this suggestion?')) {
+            await approveSuggestion(currentApproveSuggestionId, adminNotes);
+        }
+    });
+
+    document.getElementById('suggestionRejectionForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        if (!currentRejectSuggestionId) return;
+
+        const rejectionNotes = document.getElementById('rejectionNotes').value;
+
+        if (!rejectionNotes.trim()) {
+            showNotification('Please provide a reason for rejection', 'error');
+            return;
+        }
+
+        if (confirm('Are you sure you want to reject this suggestion?')) {
+            await rejectSuggestion(currentRejectSuggestionId, rejectionNotes);
+        }
+    });
+
+    async function approveSuggestion(suggestionId, adminNotes) {
+        try {
+            showNotification('Approving suggestion...', 'info');
+
+            const response = await fetch(`/suggestion/apis/admin/approve/${suggestionId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ adminNotes: adminNotes })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                showNotification('✅ Suggestion approved successfully!', 'success');
+                loadSuggestions(currentSuggestionPage);
+                loadDashboardSummary();
+                closeSuggestionApprovalModal();
+
+                const modal = document.getElementById('suggestionModal');
+                if (modal) modal.style.display = 'none';
+            } else {
+                showNotification('❌ Error: ' + data, 'error');
+            }
+        } catch (error) {
+            console.error('Error approving suggestion:', error);
+            showNotification('❌ Error approving suggestion', 'error');
+        }
+    }
+
+    async function rejectSuggestion(suggestionId, adminNotes) {
+        try {
+            showNotification('Rejecting suggestion...', 'info');
+
+            const response = await fetch(`/suggestion/apis/admin/reject/${suggestionId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ adminNotes: adminNotes })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                showNotification('✅ Suggestion rejected successfully!', 'success');
+                loadSuggestions(currentSuggestionPage);
+                loadDashboardSummary();
+                closeSuggestionRejectionModal();
+
+                const modal = document.getElementById('suggestionModal');
+                if (modal) modal.style.display = 'none';
+            } else {
+                showNotification('❌ Error: ' + data, 'error');
+            }
+        } catch (error) {
+            console.error('Error rejecting suggestion:', error);
+            showNotification('❌ Error rejecting suggestion', 'error');
+        }
+    }
+
+    async function editSuggestion(suggestionId) {
+        showNotification('Edit suggestion functionality coming soon!', 'info');
+    }
+
+    async function deleteSuggestion(suggestionId) {
+        const suggestion = allSuggestions.find(s => s.id == suggestionId);
+        if (!suggestion) return;
+
+        if (confirm(`⚠️ ARE YOU SURE YOU WANT TO DELETE SUGGESTION "${suggestion.suggestedTitle}"?\n\nThis action cannot be undone!`)) {
+            try {
+                showNotification('Deleting suggestion...', 'warning');
+
+                const response = await fetch(`/suggestion/apis/delete/${suggestionId}`, {
+                    method: 'DELETE'
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showNotification('✅ Suggestion deleted successfully!', 'success');
+                    loadSuggestions(currentSuggestionPage);
+                    loadDashboardSummary();
+
+                    const modal = document.getElementById('suggestionModal');
+                    if (modal) modal.style.display = 'none';
+                } else {
+                    showNotification('❌ Error: ' + data, 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting suggestion:', error);
+                showNotification('❌ Error deleting suggestion', 'error');
+            }
+        }
+    }
+
+    function searchSuggestions() {
+        const searchTerm = document.getElementById('suggestionSearch').value.toLowerCase();
+        const rows = document.querySelectorAll('#suggestionTableBody tr');
+
+        rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
+    }
+
+    function filterSuggestions() {
+        const statusFilter = document.getElementById('suggestionStatusFilter').value;
+        const rows = document.querySelectorAll('#suggestionTableBody tr');
+
+        rows.forEach(row => {
+            if (!statusFilter) {
+                row.style.display = '';
+                return;
+            }
+
+            const statusBadge = row.querySelector('.status-badge');
+            if (statusBadge && statusBadge.textContent.toLowerCase().includes(statusFilter.toLowerCase())) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    async function exportSuggestions() {
+        try {
+            showNotification('Preparing suggestion export...', 'info');
+
+            const response = await fetch('/suggestion/apis/admin/all');
+            const data = await response.json();
+
+            if (Array.isArray(data)) {
+                const csv = convertSuggestionsToCSV(data);
+                downloadCSV(csv, 'intelliread-suggestions.csv');
+                showNotification('Suggestions exported successfully!', 'success');
+            } else {
+                showNotification('Error exporting suggestions', 'error');
+            }
+        } catch (error) {
+            console.error('Error exporting suggestions:', error);
+            showNotification('Error exporting suggestions', 'error');
+        }
+    }
+
+    function convertSuggestionsToCSV(suggestions) {
+        const headers = ['Title', 'Author', 'User', 'Reason', 'Status', 'Submitted Date', 'Admin Notes'];
+
+        const rows = suggestions.map(suggestion => [
+            suggestion.suggestedTitle,
+            suggestion.author || 'Not specified',
+            suggestion.user ? (suggestion.user.name || suggestion.user.fullName || 'Unknown') : 'Unknown',
+            suggestion.suggestionReason || 'No reason provided',
+            suggestion.suggestionStatus || 'PENDING',
+            new Date(suggestion.createdAt).toLocaleDateString(),
+            suggestion.adminNotes || 'No notes'
+        ]);
+
+        return [headers, ...rows].map(row => row.map(field => `"${field}"`).join(',')).join('\n');
+    }
+
+    function showDemoSuggestions() {
+        const suggestionTableBody = document.getElementById('suggestionTableBody');
+        if (!suggestionTableBody) return;
+
+        const demoSuggestions = [
+            {
+                id: 1,
+                suggestedTitle: 'The Great Gatsby',
+                author: 'F. Scott Fitzgerald',
+                suggestionReason: 'Classic literature that should be available',
+                suggestionStatus: 'PENDING',
+                createdAt: new Date().toISOString(),
+                user: { name: 'John Doe', email: 'john@example.com' }
+            },
+            {
+                id: 2,
+                suggestedTitle: 'To Kill a Mockingbird',
+                author: 'Harper Lee',
+                suggestionReason: 'Important for educational purposes',
+                suggestionStatus: 'APPROVED',
+                createdAt: new Date(Date.now() - 86400000).toISOString(),
+                user: { name: 'Jane Smith', email: 'jane@example.com' }
+            }
+        ];
+
+        allSuggestions = demoSuggestions;
+        displaySuggestions(demoSuggestions);
+    }
+
     // ===== ANALYTICS FUNCTIONS =====
-    // Load analytics data
     async function loadAnalytics() {
         try {
-            // Fetch analytics data from server
             const response = await fetch('/api/admin/analytics');
 
-            // Process successful response
             if (response.ok) {
                 const data = await response.json();
                 if (data.success) {
-                    // Update analytics charts here
                     console.log('Analytics data loaded:', data);
                 }
             }
@@ -2671,23 +3198,16 @@
     }
 
     // ===== EXPORT FUNCTIONALITY =====
-    // Export users to CSV file
     async function exportUsers() {
         try {
             showNotification('Preparing user export...', 'info');
 
-            // Fetch all users for export
             const response = await fetch('/api/admin/users?limit=1000');
             const data = await response.json();
 
-            // Process successful response
             if (data.success) {
-                // Convert user data to CSV format
                 const csv = convertToCSV(data.users);
-
-                // Download the CSV file
                 downloadCSV(csv, 'intelliread-users.csv');
-
                 showNotification('Users exported successfully!', 'success');
             } else {
                 showNotification('Error exporting users: ' + data.message, 'error');
@@ -2698,12 +3218,8 @@
         }
     }
 
-    // Convert user data to CSV format
     function convertToCSV(users) {
-        // Define CSV column headers
         const headers = ['Name', 'Email', 'Role', 'Status', 'Joined Date'];
-
-        // Convert each user to a CSV row
         const rows = users.map(user => [
             user.fullName,
             user.email,
@@ -2712,38 +3228,25 @@
             new Date(user.createdAt).toLocaleDateString()
         ]);
 
-        // Combine headers and rows into CSV string
         return [headers, ...rows].map(row => row.map(field => `"${field}"`).join(',')).join('\n');
     }
 
-    // Download CSV file
     function downloadCSV(csv, filename) {
-        // Create file blob
         const blob = new Blob([csv], { type: 'text/csv' });
-
-        // Create download URL
         const url = window.URL.createObjectURL(blob);
-
-        // Create invisible download link
         const a = document.createElement('a');
         a.href = url;
         a.download = filename;
-
-        // Trigger download
         a.click();
-
-        // Clean up URL
         window.URL.revokeObjectURL(url);
     }
 
     // ===== SETTINGS FUNCTIONS =====
-    // Save settings (placeholder function)
     function saveSettings() {
         showNotification('Settings saved successfully!', 'success');
     }
 
     // ===== LOGOUT FUNCTIONALITY =====
-    // Show logout confirmation modal
     function showLogoutConfirmation() {
         const modal = document.getElementById('logoutModal');
         if (modal) {
@@ -2751,7 +3254,6 @@
         }
     }
 
-    // Close logout modal
     function closeLogoutModal() {
         const modal = document.getElementById('logoutModal');
         if (modal) {
@@ -2759,22 +3261,14 @@
         }
     }
 
-    // Confirm and process logout
     async function confirmLogout() {
         try {
-            // Show loading overlay
             showLoading(true);
-
-            // Close logout modal
             closeLogoutModal();
-
-            // Show processing notification
             showNotification('Processing logout...', 'info');
 
-            // Simulate logout process (replace with actual API call)
             setTimeout(async () => {
                 try {
-                    // Send logout request to server
                     const response = await fetch('/admin/logout', {
                         method: 'POST',
                         headers: {
@@ -2782,40 +3276,27 @@
                         }
                     });
 
-                    // Clear session storage regardless of response
                     sessionStorage.removeItem('admin');
                     sessionStorage.removeItem('isAdmin');
 
-                    // Hide loading overlay
                     showLoading(false);
-
-                    // Show success message
                     showNotification('Logout successful! Redirecting to login page...', 'success');
 
-                    // Redirect to admin login page after delay
                     setTimeout(() => {
                         window.location.href = '/admin-login';
                     }, 2000);
 
                 } catch (error) {
                     console.error('Logout error:', error);
-
-                    // Hide loading overlay
                     showLoading(false);
-
-                    // Clear storage even if error occurs
                     sessionStorage.removeItem('admin');
                     sessionStorage.removeItem('isAdmin');
-
-                    // Show success message anyway
                     showNotification('Logout successful! Redirecting to login page...', 'success');
-
-                    // Redirect to admin login page
                     setTimeout(() => {
                         window.location.href = '/admin-login';
                     }, 2000);
                 }
-            }, 1500); // Simulate processing time
+            }, 1500);
 
         } catch (error) {
             console.error('Error during logout:', error);
@@ -2825,9 +3306,7 @@
     }
 
     // ===== NOTIFICATION SYSTEM =====
-    // Show notification message to user
     function showNotification(message, type = 'info') {
-        // Remove any existing notifications first
         const existingNotifications = document.querySelectorAll('.notification');
         existingNotifications.forEach(notification => {
             if (notification.parentNode) {
@@ -2835,7 +3314,6 @@
             }
         });
 
-        // Create new notification element
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         notification.innerHTML = `
@@ -2845,15 +3323,12 @@
             </div>
         `;
 
-        // Add notification to page
         document.body.appendChild(notification);
 
-        // Animate notification in
         setTimeout(() => {
             notification.classList.add('show');
         }, 100);
 
-        // Auto-remove notification after 5 seconds
         setTimeout(() => {
             notification.classList.remove('show');
             setTimeout(() => {
@@ -2864,21 +3339,16 @@
         }, 5000);
     }
 
-    // Get appropriate icon for notification type
     function getNotificationIcon(type) {
-        // Define icons for each notification type
         const icons = {
             'success': 'bx-check-circle',
             'error': 'bx-error-circle',
             'warning': 'bx-error',
             'info': 'bx-info-circle'
         };
-
-        // Return icon or default info icon
         return icons[type] || 'bx-info-circle';
     }
 
-    // Show/hide global loading overlay
     function showLoading(show) {
         const loadingOverlay = document.getElementById('globalLoading');
         if (loadingOverlay) {
@@ -2891,9 +3361,7 @@
     }
 
     // ===== EVENT LISTENERS SETUP =====
-    // Set up all event listeners for the application
     function setupEventListeners() {
-        // Close modals when clicking X button
         const closeButtons = document.querySelectorAll('.close');
         closeButtons.forEach(button => {
             button.addEventListener('click', function() {
@@ -2904,7 +3372,6 @@
             });
         });
 
-        // Close modals when clicking outside modal content
         window.addEventListener('click', function(event) {
             const modals = document.querySelectorAll('.modal');
             modals.forEach(modal => {
@@ -2914,12 +3381,11 @@
             });
         });
 
-        // Search debouncing for better performance
         let searchTimeout;
         const userSearch = document.getElementById('userSearch');
         const bookSearch = document.getElementById('bookSearch');
+        const suggestionSearch = document.getElementById('suggestionSearch');
 
-        // Add debounced search for users
         if (userSearch) {
             userSearch.addEventListener('input', function() {
                 clearTimeout(searchTimeout);
@@ -2927,22 +3393,24 @@
             });
         }
 
-        // Add debounced search for books
         if (bookSearch) {
             bookSearch.addEventListener('input', function() {
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(searchBooks, 300);
             });
         }
+
+        if (suggestionSearch) {
+            suggestionSearch.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(searchSuggestions, 300);
+            });
+        }
     }
 
     // ===== UTILITY FUNCTIONS =====
-    // Format date to readable string (e.g., "Jan 1, 2023")
     function formatDate(dateString) {
-        // Return 'Unknown' if no date provided
         if (!dateString) return 'Unknown';
-
-        // Format date using browser locale
         return new Date(dateString).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'short',
@@ -2950,10 +3418,8 @@
         });
     }
 
-    // Format date and time to readable string (e.g., "Jan 1, 2023, 2:30 PM")
     function formatDateTime(dateString) {
         if (!dateString) return 'Unknown';
-
         try {
             const date = new Date(dateString);
             if (isNaN(date.getTime())) {
@@ -2973,13 +3439,15 @@
     }
 
     // ===== GLOBAL FUNCTION EXPORTS =====
-    // Make functions available globally for HTML onclick attributes
     window.showSection = showSection;
     window.loadUsers = loadUsers;
     window.loadBooks = loadBooks;
+    window.loadSuggestions = loadSuggestions;
     window.searchUsers = searchUsers;
     window.searchBooks = searchBooks;
+    window.searchSuggestions = searchSuggestions;
     window.filterBooks = filterBooks;
+    window.filterSuggestions = filterSuggestions;
     window.approvePublisher = approvePublisher;
     window.rejectPublisher = rejectPublisher;
     window.viewUser = viewUser;
@@ -2994,7 +3462,15 @@
     window.featureBook = featureBook;
     window.unfeatureBook = unfeatureBook;
     window.deleteBook = deleteBook;
+    window.viewSuggestion = viewSuggestion;
+    window.showSuggestionApprovalModal = showSuggestionApprovalModal;
+    window.closeSuggestionApprovalModal = closeSuggestionApprovalModal;
+    window.showSuggestionRejectionModal = showSuggestionRejectionModal;
+    window.closeSuggestionRejectionModal = closeSuggestionRejectionModal;
+    window.editSuggestion = editSuggestion;
+    window.deleteSuggestion = deleteSuggestion;
     window.exportUsers = exportUsers;
+    window.exportSuggestions = exportSuggestions;
     window.saveSettings = saveSettings;
     window.showLogoutConfirmation = showLogoutConfirmation;
     window.closeLogoutModal = closeLogoutModal;
