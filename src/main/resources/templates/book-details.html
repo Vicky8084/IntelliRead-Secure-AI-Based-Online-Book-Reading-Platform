@@ -1839,6 +1839,94 @@
         return starsHtml;
     }
 
+    // ===== DOWNLOAD FUNCTIONALITY =====
+    async function downloadBook(bookId) {
+        try {
+            console.log('📥 Starting download process for book ID:', bookId);
+
+            // ✅ ACTUAL USER ID USE KARO
+            const user = getCurrentUser();
+            if (!user) {
+                showNotification('Please login to download books', 'error');
+                return;
+            }
+
+            // Show loading
+            showNotification('Preparing download...', 'info');
+
+            // Prepare download request
+            const downloadRequest = {
+                bookId: parseInt(bookId),
+                userId: parseInt(user.id),
+                downloadType: "FULL"
+            };
+
+            console.log('📝 Download request:', downloadRequest);
+
+            // Step 1: Prepare download
+            const prepareResponse = await fetch(`${API_BASE_URL}/download/prepare`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(downloadRequest)
+            });
+
+            console.log('📡 Download prepare response status:', prepareResponse.status);
+
+            const prepareResult = await prepareResponse.json();
+            console.log('📡 Download prepare result:', prepareResult);
+
+            if (!prepareResult.success) {
+                showNotification(prepareResult.message || 'Download preparation failed', 'error');
+                return;
+            }
+
+            // Step 2: Start actual file download
+            showNotification('Download starting...', 'success');
+
+            // Create hidden download link
+            const downloadUrl = `${API_BASE_URL}/download/file/${bookId}`;
+            console.log('🔗 Download URL:', downloadUrl);
+
+            // Method 1: Direct window.open (works for most browsers)
+            const downloadWindow = window.open(downloadUrl, '_blank');
+
+            if (!downloadWindow) {
+                // Method 2: If popup blocked, create hidden link
+                const link = document.createElement('a');
+                link.href = downloadUrl;
+                link.target = '_blank';
+                link.download = prepareResult.fileName || 'book-download';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            // Update download stats after successful download
+            setTimeout(() => {
+                updateDownloadStats(bookId);
+            }, 2000);
+
+        } catch (error) {
+            console.error('❌ Error downloading book:', error);
+            showNotification('Download failed: ' + error.message, 'error');
+        }
+    }
+
+    async function updateDownloadStats(bookId) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/download/book/${bookId}/count`);
+            if (response.ok) {
+                const downloadCount = await response.json();
+                console.log('📊 Updated download count:', downloadCount);
+                // You can update UI with download count if needed
+            }
+        } catch (error) {
+            console.error('❌ Error updating download stats:', error);
+        }
+    }
+
     // ===== SIMILAR BOOKS =====
     async function loadSimilarBooks(bookId) {
         try {
@@ -1976,10 +2064,6 @@
         window.open(readerUrl, '_blank', 'width=1400,height=800,resizable=yes,scrollbars=yes');
     }
 
-    function downloadBook(bookId) {
-        showNotification('Download feature coming soon!', 'info');
-    }
-
     function openBookDetails(bookId) {
         window.open(`/book-details?bookId=${bookId}`, '_blank');
     }
@@ -2095,6 +2179,7 @@
         }, 1000);
     }
 </script>
+
 
 </body>
 </html>
