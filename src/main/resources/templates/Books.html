@@ -16,7 +16,6 @@
             list-style: none;
         }
 
-        /* ===== BODY ===== */
         body {
             display: flex;
             flex-direction: column;
@@ -25,7 +24,6 @@
             overflow-y: auto;
         }
 
-        /* Blurred background image + overlay */
         body::before {
             content: "";
             position: fixed;
@@ -51,7 +49,6 @@
             z-index: -1;
         }
 
-        /* Header */
         header {
             display: flex;
             justify-content: space-between;
@@ -128,7 +125,6 @@
             font-size: 1.1rem;
         }
 
-        /* ===== BUTTONS ===== */
         .btn {
             padding: 8px 16px;
             border: none;
@@ -155,7 +151,6 @@
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
 
-        /* ===== MAIN CONTENT ===== */
         .main-content {
             display: flex;
             flex-direction: column;
@@ -164,7 +159,6 @@
             padding: 115px 20px 20px;
         }
 
-        /* ===== CATEGORY TAGS ===== */
         .tags-section {
             margin-bottom: 30px;
             text-align: center;
@@ -207,7 +201,6 @@
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
 
-        /* ===== BOOKS GRID ===== */
         .books-container {
             width: 100%;
             max-width: 1400px;
@@ -281,7 +274,7 @@
 
         .main {
             display: grid;
-            grid-template-columns: repeat(5, 1fr); /* ✅ CHANGE: 5 columns */
+            grid-template-columns: repeat(5, 1fr);
             gap: 25px;
         }
 
@@ -331,7 +324,6 @@
             font-size: 0.9rem;
         }
 
-        /* ===== TOOLTIP ===== */
         .book-tooltip {
             position: absolute;
             bottom: 0;
@@ -364,7 +356,6 @@
             opacity: 0.9;
         }
 
-        /* ===== PAGINATION ===== */
         .pagination {
             display: flex;
             justify-content: center;
@@ -400,7 +391,6 @@
             color: #000;
         }
 
-        /* ===== MODAL ===== */
         .modal {
             position: fixed;
             top: 0;
@@ -511,7 +501,6 @@
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
-        /* ===== FOOTER ===== */
         .main-footer {
             display: flex;
             justify-content: space-between;
@@ -555,7 +544,6 @@
             font-weight: 600;
         }
 
-        /* ===== NO RESULTS ===== */
         .no-results {
             text-align: center;
             grid-column: 1 / -1;
@@ -565,7 +553,6 @@
             opacity: 0.7;
         }
 
-        /* ===== LOADING SPINNER ===== */
         .loading-spinner {
             display: none;
             text-align: center;
@@ -587,10 +574,9 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* ===== RESPONSIVE DESIGN ===== */
         @media (max-width: 1024px) {
             .main {
-                grid-template-columns: repeat(4, 1fr); /* ✅ CHANGE: 4 columns for tablet */
+                grid-template-columns: repeat(4, 1fr);
                 gap: 20px;
             }
         }
@@ -628,7 +614,7 @@
             }
 
             .main {
-                grid-template-columns: repeat(3, 1fr); /* ✅ CHANGE: 3 columns for mobile */
+                grid-template-columns: repeat(3, 1fr);
                 gap: 15px;
             }
 
@@ -654,7 +640,7 @@
             }
 
             .main {
-                grid-template-columns: repeat(2, 1fr); /* ✅ CHANGE: 2 columns for small mobile */
+                grid-template-columns: repeat(2, 1fr);
                 gap: 10px;
             }
 
@@ -677,7 +663,6 @@
     </style>
 </head>
 <body>
-<!-- ===== HEADER ===== -->
 <header>
     <div class="logo">
         <a th:href="@{/Home}"><img th:src="@{/images/logo.png}" alt="Logo"></a>
@@ -693,42 +678,32 @@
     </div>
 </header>
 
-<!-- ===== MAIN CONTENT ===== -->
 <div class="main-content">
-    <!-- ====== CATEGORY TAGS ====== -->
     <div class="tags-section">
         <h2>Browse by Category</h2>
         <div id="tags" class="tags">
             <div class="tag highlight" data-category="all">All Books</div>
-            <!-- Categories will be loaded dynamically -->
         </div>
     </div>
 
-    <!-- ====== BOOKS LIST ====== -->
     <div class="books-container">
         <div class="books-header">
             <h1>Discover Amazing Books</h1>
         </div>
 
-        <!-- Loading Spinner -->
         <div class="loading-spinner" id="loadingSpinner">
             <div class="spinner"></div>
             <p>Loading books...</p>
         </div>
 
         <main id="main" class="main">
-            <!-- Books will be loaded dynamically from API -->
         </main>
 
-        <!-- ===== PAGINATION ===== -->
         <div class="pagination" id="pagination">
-            <!-- Pagination will be loaded dynamically -->
         </div>
     </div>
 </div>
 
-
-<!-- ===== FOOTER ===== -->
 <footer class="main-footer" style="font-family: chakra petch;">
     <div class="footer-section">
         <h4>About</h4>
@@ -745,29 +720,21 @@
 </footer>
 
 <script>
-    // ===== GLOBAL VARIABLES =====
     const API_BASE_URL = 'http://localhost:8035';
     let allBooks = [];
     let filteredBooks = [];
     let categories = [];
     let currentPage = 1;
-    const booksPerPage = 15; // ✅ CHANGE: 8 se 15
+    const booksPerPage = 15;
     let currentCategory = 'all';
     let currentSearchQuery = '';
 
-    // ===== INITIALIZATION =====
     document.addEventListener('DOMContentLoaded', function() {
-        // Set current year in footer
         document.getElementById('year').textContent = new Date().getFullYear();
-
-        // Initialize the page
         initializePage();
         setupEventListeners();
     });
 
-
-
-    // ===== PAGE INITIALIZATION =====
     async function initializePage() {
         showLoading(true);
         try {
@@ -782,70 +749,57 @@
         }
     }
 
-    // ===== LOAD BOOKS FROM API =====
     async function loadBooks() {
-    try {
-        console.log('📚 Loading published books from API...');
-
-        const response = await fetch(`${API_BASE_URL}/book/apies/published`);
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const booksData = await response.json();
-        console.log('✅ Books loaded successfully:', booksData.length);
-
-        // ✅ FIX: Hibernate proxy objects handle karo
-        allBooks = booksData.map(book => ({
-            id: book.id,
-            title: book.title,
-            author: book.author,
-            description: book.description,
-            language: book.language,
-            coverImagePath: book.coverImagePath,
-            status: book.status,
-            uploadedAt: book.uploadedAt,
-            category: book.category ? {
-                id: book.category.id,
-                categoryName: book.category.categoryName
-            } : null
-        }));
-
-        filteredBooks = [...allBooks];
-
-        renderBooks();
-        updatePagination();
-
-    } catch (error) {
-        console.error('❌ Error loading books:', error);
-        showError('Failed to load books from server.');
-    }
-}
-
-    // ===== LOAD CATEGORIES =====
-    async function loadCategories() {
-    try {
-        console.log('📂 Loading categories...');
-
-        const response = await fetch(`${API_BASE_URL}/category/apies/findAll`);
-
-        if (response.ok) {
-            const categoriesData = await response.json();
-
-            // ✅ FIX: Hibernate proxy objects ko handle karo
-            categories = categoriesData.map(cat => ({
-                id: cat.id,
-                categoryName: cat.categoryName,
-                description: cat.description
-                // books list ko include mat karo - circular reference avoid karo
+        try {
+            const response = await fetch(`${API_BASE_URL}/book/apies/published`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const booksData = await response.json();
+            allBooks = booksData.map(book => ({
+                id: book.id,
+                title: book.title,
+                author: book.author,
+                description: book.description,
+                language: book.language,
+                coverImagePath: book.coverImagePath,
+                status: book.status,
+                uploadedAt: book.uploadedAt,
+                category: book.category ? {
+                    id: book.category.id,
+                    categoryName: book.category.categoryName
+                } : null
             }));
+            filteredBooks = [...allBooks];
+            renderBooks();
+            updatePagination();
+        } catch (error) {
+            console.error('Error loading books:', error);
+            showError('Failed to load books from server.');
+        }
+    }
 
-            console.log('✅ Categories loaded:', categories.length);
-            console.log('📝 Categories data:', categories);
-        } else {
-            console.warn('⚠️ Could not load categories, using defaults');
-            // Use default categories if API fails
+    async function loadCategories() {
+        try {
+            const response = await fetch(`${API_BASE_URL}/category/apies/findAll`);
+            if (response.ok) {
+                const categoriesData = await response.json();
+                categories = categoriesData.map(cat => ({
+                    id: cat.id,
+                    categoryName: cat.categoryName,
+                    description: cat.description
+                }));
+            } else {
+                categories = [
+                    { id: 1, categoryName: "FICTION" },
+                    { id: 2, categoryName: "NON_FICTION" },
+                    { id: 3, categoryName: "SCIENCE_FICTION" },
+                    { id: 4, categoryName: "MYSTERY" },
+                    { id: 5, categoryName: "BIOGRAPHY" }
+                ];
+            }
+        } catch (error) {
+            console.error('Error loading categories:', error);
             categories = [
                 { id: 1, categoryName: "FICTION" },
                 { id: 2, categoryName: "NON_FICTION" },
@@ -854,124 +808,81 @@
                 { id: 5, categoryName: "BIOGRAPHY" }
             ];
         }
-    } catch (error) {
-        console.error('❌ Error loading categories:', error);
-        // Use default categories on error
-        categories = [
-            { id: 1, categoryName: "FICTION" },
-            { id: 2, categoryName: "NON_FICTION" },
-            { id: 3, categoryName: "SCIENCE_FICTION" },
-            { id: 4, categoryName: "MYSTERY" },
-            { id: 5, categoryName: "BIOGRAPHY" }
-        ];
     }
-}
 
-    // ===== SETUP CATEGORY FILTERS =====
     function setupCategoryFilters() {
-    const tagsContainer = document.getElementById('tags');
+        const tagsContainer = document.getElementById('tags');
+        const allBooksTag = tagsContainer.querySelector('[data-category="all"]');
+        tagsContainer.innerHTML = '';
+        tagsContainer.appendChild(allBooksTag);
+        categories.forEach(category => {
+            const tag = document.createElement('div');
+            tag.classList.add('tag');
+            tag.textContent = category.categoryName;
+            tag.dataset.category = category.id;
+            tag.addEventListener('click', () => filterByCategory(category.id));
+            tagsContainer.appendChild(tag);
+        });
+        allBooksTag.addEventListener('click', () => filterByCategory('all'));
+    }
 
-    // Clear existing tags except "All Books"
-    const allBooksTag = tagsContainer.querySelector('[data-category="all"]');
-    tagsContainer.innerHTML = '';
-    tagsContainer.appendChild(allBooksTag);
-
-    // Add category tags
-    categories.forEach(category => {
-        const tag = document.createElement('div');
-        tag.classList.add('tag');
-        tag.textContent = category.categoryName;
-        tag.dataset.category = category.id;
-        tag.addEventListener('click', () => filterByCategory(category.id));
-        tagsContainer.appendChild(tag);
-    });
-
-    // ✅ FIX: "All Books" pe click event add karo
-    allBooksTag.addEventListener('click', () => filterByCategory('all'));
-}
-
-
-    // ===== FILTER BY CATEGORY =====
     async function filterByCategory(categoryId) {
-    currentCategory = categoryId;
-    currentPage = 1;
-
-    // Update active tag
-    document.querySelectorAll('.tag').forEach(tag => {
-        tag.classList.remove('highlight');
-    });
-
-    const activeTag = document.querySelector(`[data-category="${categoryId}"]`);
-    if (activeTag) {
-        activeTag.classList.add('highlight');
-    }
-
-    showLoading(true);
-
-    try {
-        if (categoryId === 'all') {
-            // Load all published books
-            await loadBooks();
-        } else {
-            // Load books by category - PROPER ERROR HANDLING
-            console.log(`📚 Loading books for category: ${categoryId}`);
-
-            const response = await fetch(`${API_BASE_URL}/book/apies/published/category/${categoryId}`);
-
-            if (response.ok) {
-                const categoryBooks = await response.json();
-                console.log(`✅ Category books loaded: ${categoryBooks.length} books`);
-
-                // ✅ FIX: Hibernate proxy objects handle karo
-                filteredBooks = categoryBooks.map(book => ({
-                    id: book.id,
-                    title: book.title,
-                    author: book.author,
-                    description: book.description,
-                    language: book.language,
-                    coverImagePath: book.coverImagePath,
-                    status: book.status,
-                    uploadedAt: book.uploadedAt,
-                    category: book.category ? {
-                        id: book.category.id,
-                        categoryName: book.category.categoryName
-                    } : null
-                }));
-
-                renderBooks();
-                updatePagination();
-            } else {
-                console.error(`❌ Category API failed with status: ${response.status}`);
-                throw new Error('Failed to load category books');
-            }
+        currentCategory = categoryId;
+        currentPage = 1;
+        document.querySelectorAll('.tag').forEach(tag => {
+            tag.classList.remove('highlight');
+        });
+        const activeTag = document.querySelector(`[data-category="${categoryId}"]`);
+        if (activeTag) {
+            activeTag.classList.add('highlight');
         }
-    } catch (error) {
-        console.error('Error filtering by category:', error);
-        showError('Failed to load category books. Showing all books instead.');
-
-        // Fallback: show all books
-        await loadBooks();
-    } finally {
-        showLoading(false);
+        showLoading(true);
+        try {
+            if (categoryId === 'all') {
+                await loadBooks();
+            } else {
+                const response = await fetch(`${API_BASE_URL}/book/apies/published/category/${categoryId}`);
+                if (response.ok) {
+                    const categoryBooks = await response.json();
+                    filteredBooks = categoryBooks.map(book => ({
+                        id: book.id,
+                        title: book.title,
+                        author: book.author,
+                        description: book.description,
+                        language: book.language,
+                        coverImagePath: book.coverImagePath,
+                        status: book.status,
+                        uploadedAt: book.uploadedAt,
+                        category: book.category ? {
+                            id: book.category.id,
+                            categoryName: book.category.categoryName
+                        } : null
+                    }));
+                    renderBooks();
+                    updatePagination();
+                } else {
+                    throw new Error('Failed to load category books');
+                }
+            }
+        } catch (error) {
+            console.error('Error filtering by category:', error);
+            showError('Failed to load category books. Showing all books instead.');
+            await loadBooks();
+        } finally {
+            showLoading(false);
+        }
     }
-}
 
-    // ===== SEARCH BOOKS =====
     async function searchBooks(query) {
         currentSearchQuery = query;
         currentPage = 1;
-
         if (!query.trim()) {
-            // If search is empty, reload all books
             await loadBooks();
             return;
         }
-
         showLoading(true);
-
         try {
             const response = await fetch(`${API_BASE_URL}/book/apies/published/search?query=${encodeURIComponent(query)}`);
-
             if (response.ok) {
                 const searchResults = await response.json();
                 filteredBooks = searchResults;
@@ -982,7 +893,6 @@
             }
         } catch (error) {
             console.error('Error searching books:', error);
-            // Fallback: client-side search
             filteredBooks = allBooks.filter(book =>
                 book.title.toLowerCase().includes(query.toLowerCase()) ||
                 book.author.toLowerCase().includes(query.toLowerCase()) ||
@@ -995,10 +905,8 @@
         }
     }
 
-    // ===== RENDER BOOKS =====
     function renderBooks() {
         const main = document.getElementById('main');
-
         if (!filteredBooks || filteredBooks.length === 0) {
             main.innerHTML = `
                 <div class="no-results">
@@ -1008,22 +916,16 @@
             `;
             return;
         }
-
-        // Calculate pagination
         const startIndex = (currentPage - 1) * booksPerPage;
         const endIndex = startIndex + booksPerPage;
         const booksToShow = filteredBooks.slice(startIndex, endIndex);
-
         let html = '';
-
         booksToShow.forEach(book => {
             const coverUrl = book.coverImagePath ?
                 `${API_BASE_URL}/uploads/${book.coverImagePath}` :
                 generatePlaceholderSvg(book.title);
-
             const categoryName = book.category ?
                 book.category.categoryName : 'Uncategorized';
-
             html += `
                 <div class="book" onclick="redirectToBookDetails(${book.id})">
                     <img src="${coverUrl}" alt="${book.title}"
@@ -1043,55 +945,27 @@
                 </div>
             `;
         });
-
         main.innerHTML = html;
     }
 
-   // ===== REDIRECT TO BOOK DETAILS PAGE =====
-function redirectToBookDetails(bookId) {
-    console.log('📖 Redirecting to book details page for book ID:', bookId);
-
-    // Build URL with bookId parameter
-    let url = `/book-details?bookId=${bookId}`;
-
-    console.log('🔗 Redirect URL:', url);
-
-    // Open in same window/tab
-    window.location.href = url;
-}
-
-    // Modal close
-const closeModal = document.getElementById('closeModal');
-const modal = document.getElementById('bookModal');
-
-closeModal.addEventListener('click', () => {
-    modal.classList.remove('active');
-});
-
-modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-        modal.classList.remove('active');
+    function redirectToBookDetails(bookId) {
+        let url = `/book-details?bookId=${bookId}`;
+        window.location.href = url;
     }
-});
 
-    // ===== PAGINATION =====
     function updatePagination() {
         const pagination = document.getElementById('pagination');
         const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
-
         if (totalPages <= 1) {
             pagination.innerHTML = '';
             return;
         }
-
         let html = `
             <button id="prev" ${currentPage === 1 ? 'disabled' : ''}>⬅ Prev</button>
             <span>Page ${currentPage} of ${totalPages}</span>
             <button id="next" ${currentPage === totalPages ? 'disabled' : ''}>Next ➡</button>
         `;
-
         pagination.innerHTML = html;
-
         document.getElementById('prev').addEventListener('click', () => {
             if (currentPage > 1) {
                 currentPage--;
@@ -1099,7 +973,6 @@ modal.addEventListener('click', (e) => {
                 updatePagination();
             }
         });
-
         document.getElementById('next').addEventListener('click', () => {
             if (currentPage < totalPages) {
                 currentPage++;
@@ -1109,7 +982,6 @@ modal.addEventListener('click', (e) => {
         });
     }
 
-    // ===== UTILITY FUNCTIONS =====
     function generatePlaceholderSvg(title) {
         const initials = title ? title.charAt(0).toUpperCase() : 'B';
         const svg = `
@@ -1125,7 +997,6 @@ modal.addEventListener('click', (e) => {
     function showLoading(show) {
         const spinner = document.getElementById('loadingSpinner');
         const main = document.getElementById('main');
-
         if (spinner) {
             spinner.style.display = show ? 'block' : 'none';
         }
@@ -1148,139 +1019,13 @@ modal.addEventListener('click', (e) => {
     }
 
     function setupEventListeners() {
-    // Header search form - SIRF YEH WALA USE KARO
-    const headerSearchForm = document.getElementById('headerSearchForm');
-    const headerSearchInput = document.getElementById('header-search');
-
-    headerSearchForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        searchBooks(headerSearchInput.value);
-    });
-
-    // Modal close
-    const closeModal = document.getElementById('closeModal');
-    const modal = document.getElementById('bookModal');
-
-    closeModal.addEventListener('click', () => {
-        modal.classList.remove('active');
-    });
-
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.classList.remove('active');
-        }
-    });
-
-    // Keyboard events
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            modal.classList.remove('active');
-        }
-    });
-}
-
-    // ===== READING LIST FUNCTIONALITY =====
-    function addToReadingList(bookId) {
-        const book = allBooks.find(b => b.id === bookId);
-        if (!book) return;
-
-        let readingList = JSON.parse(localStorage.getItem('readingList')) || [];
-
-        // Check if book already in reading list
-        if (readingList.some(item => item.id === bookId)) {
-            showAlert('Book is already in your reading list!', 'info');
-            return;
-        }
-
-        // Add to reading list
-        readingList.push({
-            id: book.id,
-            title: book.title,
-            author: book.author,
-            coverImagePath: book.coverImagePath,
-            category: book.category
+        const headerSearchForm = document.getElementById('headerSearchForm');
+        const headerSearchInput = document.getElementById('header-search');
+        headerSearchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            searchBooks(headerSearchInput.value);
         });
-
-        localStorage.setItem('readingList', JSON.stringify(readingList));
-        showAlert('Book added to reading list!', 'success');
     }
-
-    function showAlert(message, type = 'info') {
-        // Create alert container if it doesn't exist
-        let alertContainer = document.getElementById('alertContainer');
-        if (!alertContainer) {
-            alertContainer = document.createElement('div');
-            alertContainer.id = 'alertContainer';
-            alertContainer.style.cssText = `
-                position: fixed;
-                top: 100px;
-                right: 20px;
-                z-index: 10000;
-                max-width: 300px;
-            `;
-            document.body.appendChild(alertContainer);
-        }
-
-        const alertDiv = document.createElement('div');
-        alertDiv.className = `alert alert-${type}`;
-        alertDiv.style.cssText = `
-            background: ${type === 'success' ? '#d4edda' : type === 'error' ? '#f8d7da' : '#d1ecf1'};
-            color: ${type === 'success' ? '#155724' : type === 'error' ? '#721c24' : '#0c5460'};
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border: 1px solid ${type === 'success' ? '#c3e6cb' : type === 'error' ? '#f5c6cb' : '#bee5eb'};
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            animation: slideInRight 0.3s ease-out;
-        `;
-
-        const icon = type === 'success' ? 'bx-check-circle' : type === 'error' ? 'bx-error-circle' : 'bx-info-circle';
-        alertDiv.innerHTML = `
-            <i class="bx ${icon}" style="font-size: 20px;"></i>
-            <span>${message}</span>
-        `;
-
-        alertContainer.appendChild(alertDiv);
-
-        // Auto remove after 3 seconds
-        setTimeout(() => {
-            if (alertDiv.parentNode) {
-                alertDiv.style.animation = 'slideOutRight 0.3s ease-in';
-                setTimeout(() => alertDiv.remove(), 300);
-            }
-        }, 3000);
-    }
-
-    // Add CSS for animations
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes slideInRight {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideOutRight {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-        }
-    `;
-    document.head.appendChild(style);
 </script>
 </body>
 </html>
