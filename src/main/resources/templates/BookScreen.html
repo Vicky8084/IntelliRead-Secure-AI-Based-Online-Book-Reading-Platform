@@ -1057,7 +1057,6 @@
 </footer>
 
 <script>
-    // ===== GLOBAL VARIABLES =====
     const API_BASE_URL = 'http://localhost:8035';
     let allBooks = [];
     let filteredBooks = [];
@@ -1068,34 +1067,20 @@
     let currentSearchQuery = '';
     let currentUser = null;
     let currentSlide = 0;
+    let isLoading = false;
 
-    // ===== INITIALIZATION =====
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('🚀 BookScreen page loaded');
-
-        // Set current year in footer
         document.getElementById('year').textContent = new Date().getFullYear();
-
-        // Initialize the page
         initializePage();
         setupEventListeners();
     });
 
-    // ===== PAGE INITIALIZATION =====
     async function initializePage() {
         showLoading(true);
         try {
-            console.log('🔄 Initializing page...');
-
-            // ✅ FIX: Get user with proper ID handling
             const user = await getCurrentUser();
-
             if (!user) {
-                console.log('⚠️ User not authenticated, allowing limited access');
                 showNotification('Please login for full functionality', 'info');
-                // Continue loading books even if not logged in
-            } else {
-                console.log('✅ User authenticated:', user);
             }
 
             await loadCategories();
@@ -1103,50 +1088,33 @@
             setupCategoryFilters();
             initializeSlider();
 
-            console.log('✅ Page initialization completed');
-
         } catch (error) {
-            console.error('❌ Error initializing page:', error);
             showError('Failed to load books. Please try again later.');
         } finally {
             showLoading(false);
         }
     }
 
-    // ===== GET CURRENT USER =====
     async function getCurrentUser() {
         try {
             const userData = localStorage.getItem('user');
             const isLoggedIn = localStorage.getItem('isLoggedIn');
             const currentUserId = localStorage.getItem('currentUserId');
 
-            console.log('🔍 User Check:', {
-                userData: !!userData,
-                isLoggedIn: isLoggedIn,
-                currentUserId: currentUserId
-            });
-
-            // ✅ FIX: Check if user is properly logged in
             if (isLoggedIn !== 'true') {
-                console.log('❌ User not logged in');
                 return null;
             }
 
             if (userData) {
                 const user = JSON.parse(userData);
-
-                // ✅ FIX: Handle different user data structures
                 let userId = user.id;
 
-                // If id is missing, try to get from currentUserId
                 if (!userId && currentUserId) {
                     userId = parseInt(currentUserId);
-                    user.id = userId; // Add id to user object
-                    // Update localStorage with corrected user data
+                    user.id = userId;
                     localStorage.setItem('user', JSON.stringify(user));
                 }
 
-                // If still no id, try to extract from URL
                 if (!userId) {
                     const urlParams = new URLSearchParams(window.location.search);
                     const urlUserId = urlParams.get('userId');
@@ -1158,77 +1126,62 @@
                     }
                 }
 
-                // If still no ID, try to fetch user data from server
                 if (!userId) {
-                    console.log('🔄 No user ID found, trying to fetch from server...');
                     const userFromServer = await fetchCurrentUserFromServer();
                     if (userFromServer) {
                         currentUser = userFromServer;
-                        // Update localStorage with complete user data
                         localStorage.setItem('user', JSON.stringify(userFromServer));
                         localStorage.setItem('currentUserId', userFromServer.id.toString());
 
-                        // Update username display
                         const usernameElement = document.getElementById('username');
                         if (usernameElement) {
                             usernameElement.textContent = userFromServer.name || userFromServer.email || userFromServer.username || 'User';
                         }
-
-                        console.log('✅ User loaded from server:', userFromServer);
                         return userFromServer;
                     }
                 }
 
-                // Update username display
                 const usernameElement = document.getElementById('username');
                 if (usernameElement) {
                     usernameElement.textContent = user.name || user.email || user.username || 'User';
                 }
 
-                console.log('✅ User loaded from localStorage:', user);
                 currentUser = user;
                 return user;
             }
 
-            console.log('❌ No user data found in localStorage');
             return null;
         } catch (error) {
-            console.error('❌ Error getting user:', error);
             return null;
         }
     }
 
-    // ===== FETCH USER FROM SERVER =====
     async function fetchCurrentUserFromServer() {
         try {
-            // Try to get user from session
             const response = await fetch(`${API_BASE_URL}/user/apies/current`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                credentials: 'include' // Include cookies/session
+                credentials: 'include'
             });
 
             if (response.ok) {
                 const userData = await response.json();
-                console.log('✅ User data fetched from server:', userData);
                 return userData;
             } else {
-                console.log('❌ No current user session on server');
                 return null;
             }
         } catch (error) {
-            console.error('❌ Error fetching user from server:', error);
             return null;
         }
     }
 
-    // ===== LOAD BOOKS FROM API =====
     async function loadBooks() {
-        try {
-            console.log('📚 Loading published books from API...');
+        if (isLoading) return;
+        isLoading = true;
 
+        try {
             const response = await fetch(`${API_BASE_URL}/book/apies/published`);
 
             if (!response.ok) {
@@ -1236,9 +1189,7 @@
             }
 
             const booksData = await response.json();
-            console.log('✅ Books loaded successfully:', booksData.length);
 
-            // ✅ FIX: Hibernate proxy objects handle karo
             allBooks = booksData.map(book => ({
                 id: book.id,
                 title: book.title,
@@ -1255,37 +1206,28 @@
             }));
 
             filteredBooks = [...allBooks];
-
             renderBooks();
             updatePagination();
 
         } catch (error) {
-            console.error('❌ Error loading books:', error);
             showError('Failed to load books from server.');
+        } finally {
+            isLoading = false;
         }
     }
 
-    // ===== LOAD CATEGORIES =====
     async function loadCategories() {
         try {
-            console.log('📂 Loading categories...');
-
             const response = await fetch(`${API_BASE_URL}/category/apies/findAll`);
 
             if (response.ok) {
                 const categoriesData = await response.json();
-
-                // ✅ FIX: Hibernate proxy objects ko handle karo
                 categories = categoriesData.map(cat => ({
                     id: cat.id,
                     categoryName: cat.categoryName,
                     description: cat.description
                 }));
-
-                console.log('✅ Categories loaded:', categories.length);
             } else {
-                console.warn('⚠️ Could not load categories, using defaults');
-                // Use default categories if API fails
                 categories = [
                     { id: 1, categoryName: "FICTION" },
                     { id: 2, categoryName: "NON_FICTION" },
@@ -1295,8 +1237,6 @@
                 ];
             }
         } catch (error) {
-            console.error('❌ Error loading categories:', error);
-            // Use default categories on error
             categories = [
                 { id: 1, categoryName: "FICTION" },
                 { id: 2, categoryName: "NON_FICTION" },
@@ -1307,16 +1247,12 @@
         }
     }
 
-    // ===== SETUP CATEGORY FILTERS =====
     function setupCategoryFilters() {
         const tagsContainer = document.getElementById('tags');
-
-        // Clear existing tags except "All Books"
         const allBooksTag = tagsContainer.querySelector('[data-category="all"]');
         tagsContainer.innerHTML = '';
         tagsContainer.appendChild(allBooksTag);
 
-        // Add category tags
         categories.forEach(category => {
             const tag = document.createElement('div');
             tag.classList.add('tag');
@@ -1326,16 +1262,15 @@
             tagsContainer.appendChild(tag);
         });
 
-        // ✅ FIX: "All Books" pe click event add karo
         allBooksTag.addEventListener('click', () => filterByCategory('all'));
     }
 
-    // ===== FILTER BY CATEGORY =====
     async function filterByCategory(categoryId) {
+        if (isLoading) return;
+
         currentCategory = categoryId;
         currentPage = 1;
 
-        // Update active tag
         document.querySelectorAll('.tag').forEach(tag => {
             tag.classList.remove('highlight');
         });
@@ -1346,22 +1281,16 @@
         }
 
         showLoading(true);
+        isLoading = true;
 
         try {
             if (categoryId === 'all') {
-                // Load all published books
                 await loadBooks();
             } else {
-                // Load books by category - PROPER ERROR HANDLING
-                console.log(`📚 Loading books for category: ${categoryId}`);
-
                 const response = await fetch(`${API_BASE_URL}/book/apies/published/category/${categoryId}`);
 
                 if (response.ok) {
                     const categoryBooks = await response.json();
-                    console.log(`✅ Category books loaded: ${categoryBooks.length} books`);
-
-                    // ✅ FIX: Hibernate proxy objects handle karo
                     filteredBooks = categoryBooks.map(book => ({
                         id: book.id,
                         title: book.title,
@@ -1380,33 +1309,31 @@
                     renderBooks();
                     updatePagination();
                 } else {
-                    console.error(`❌ Category API failed with status: ${response.status}`);
                     throw new Error('Failed to load category books');
                 }
             }
         } catch (error) {
-            console.error('❌ Error filtering by category:', error);
             showError('Failed to load category books. Showing all books instead.');
-
-            // Fallback: show all books
             await loadBooks();
         } finally {
             showLoading(false);
+            isLoading = false;
         }
     }
 
-    // ===== SEARCH BOOKS =====
     async function searchBooks(query) {
+        if (isLoading) return;
+
         currentSearchQuery = query;
         currentPage = 1;
 
         if (!query.trim()) {
-            // If search is empty, reload all books
             await loadBooks();
             return;
         }
 
         showLoading(true);
+        isLoading = true;
 
         try {
             const response = await fetch(`${API_BASE_URL}/book/apies/published/search?query=${encodeURIComponent(query)}`);
@@ -1420,8 +1347,6 @@
                 throw new Error('Search failed');
             }
         } catch (error) {
-            console.error('❌ Error searching books:', error);
-            // Fallback: client-side search
             filteredBooks = allBooks.filter(book =>
                 book.title.toLowerCase().includes(query.toLowerCase()) ||
                 book.author.toLowerCase().includes(query.toLowerCase()) ||
@@ -1431,10 +1356,10 @@
             updatePagination();
         } finally {
             showLoading(false);
+            isLoading = false;
         }
     }
 
-    // ===== RENDER BOOKS =====
     function renderBooks() {
         const main = document.getElementById('main');
 
@@ -1448,7 +1373,6 @@
             return;
         }
 
-        // Calculate pagination
         const startIndex = (currentPage - 1) * booksPerPage;
         const endIndex = startIndex + booksPerPage;
         const booksToShow = filteredBooks.slice(startIndex, endIndex);
@@ -1486,43 +1410,31 @@
         main.innerHTML = html;
     }
 
-    // ===== OPEN BOOK DETAILS PAGE =====
     function openBookDetails(bookId) {
-        console.log('🔍 Opening book details for ID:', bookId);
-
-        // ✅ FIX: Check authentication but don't redirect immediately
         const user = currentUser;
 
         if (!user) {
-            console.log('⚠️ User not logged in, showing login prompt');
             showNotification('Please login to view book details', 'info');
-
-            // Store the intended book ID and redirect to login
             localStorage.setItem('redirectAfterLogin', `/book-details?bookId=${bookId}`);
-
             setTimeout(() => {
                 window.location.href = '/Login';
             }, 2000);
             return;
         }
 
-        console.log('✅ User authenticated, opening book details');
-
-        // ✅ FIX: Use proper URL format for Spring Boot
-        const bookDetailsUrl = `/book-details?bookId=${bookId}`;
-        console.log('📝 Opening URL:', bookDetailsUrl);
-
-        // Open in new tab
-        window.open(bookDetailsUrl, '_blank');
+        window.location.href = `/book-details?bookId=${bookId}`;
     }
 
-    // ===== READING LIST FUNCTIONS =====
     async function addToReadingList(bookId) {
+        if (isLoading) return;
+        isLoading = true;
+
         try {
             const user = currentUser;
             if (!user || !user.id) {
                 showNotification('Please login to add books to reading list', 'error');
                 window.location.href = '/Login';
+                isLoading = false;
                 return;
             }
 
@@ -1540,46 +1452,28 @@
             const result = await response.json();
 
             if (response.ok) {
-                showNotification('✅ Book added to reading list!', 'success');
+                showNotification('Book added to reading list!', 'success');
             } else {
                 showNotification(result.error || 'Failed to add to reading list', 'error');
             }
         } catch (error) {
-            console.error('❌ Error adding to reading list:', error);
             showNotification('Error adding to reading list', 'error');
+        } finally {
+            isLoading = false;
         }
     }
 
-    async function checkBookInReadingList(bookId) {
-        try {
-            const user = currentUser;
-            if (!user || !user.id) return false;
-
-            const response = await fetch(`${API_BASE_URL}/reading/check?userId=${user.id}&bookId=${bookId}`);
-            const result = await response.json();
-
-            return result.inReadingList || false;
-        } catch (error) {
-            console.error('❌ Error checking reading list:', error);
-            return false;
-        }
-    }
-
-    // ===== BOOK READING FUNCTIONS =====
     function openBookReader(bookId) {
         const readerUrl = `/book-reader?bookId=${bookId}`;
         window.open(readerUrl, '_blank', 'width=1400,height=800,resizable=yes,scrollbars=yes');
     }
 
-    // ===== NOTIFICATION FUNCTION =====
     function showNotification(message, type = 'info') {
-        // Create notification element
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         notification.textContent = message;
         document.body.appendChild(notification);
 
-        // Remove after 3 seconds
         setTimeout(() => {
             notification.style.animation = 'slideOut 0.3s ease';
             setTimeout(() => {
@@ -1590,7 +1484,6 @@
         }, 3000);
     }
 
-    // ===== PAGINATION =====
     function updatePagination() {
         const pagination = document.getElementById('pagination');
         const totalPages = Math.ceil(filteredBooks.length / booksPerPage);
@@ -1609,7 +1502,7 @@
         pagination.innerHTML = html;
 
         document.getElementById('prev').addEventListener('click', () => {
-            if (currentPage > 1) {
+            if (currentPage > 1 && !isLoading) {
                 currentPage--;
                 renderBooks();
                 updatePagination();
@@ -1617,7 +1510,7 @@
         });
 
         document.getElementById('next').addEventListener('click', () => {
-            if (currentPage < totalPages) {
+            if (currentPage < totalPages && !isLoading) {
                 currentPage++;
                 renderBooks();
                 updatePagination();
@@ -1625,8 +1518,6 @@
         });
     }
 
-    // ===== RECOMMENDED SLIDER FUNCTIONS =====
-    // Initialize slider with REAL books
     function initializeSlider() {
         const slider = document.getElementById('recommendedSlider');
 
@@ -1642,7 +1533,6 @@
             return;
         }
 
-        // Create book cards with REAL data
         slider.innerHTML = allBooks.map(book => {
             const coverUrl = book.coverImagePath ?
                 `${API_BASE_URL}/uploads/${book.coverImagePath}` :
@@ -1661,11 +1551,9 @@
             `;
         }).join('');
 
-        // Initialize dots
         updateDots();
     }
 
-    // Update dot indicators
     function updateDots() {
         const dotsContainer = document.getElementById('dotsContainer');
         const booksPerSlide = 4;
@@ -1677,21 +1565,21 @@
         `).join('');
     }
 
-    // Slide navigation
     function goToSlide(slideIndex) {
+        if (isLoading) return;
+
         const slider = document.getElementById('recommendedSlider');
-        const slideWidth = 225; // card width + gap
+        const slideWidth = 225;
         currentSlide = slideIndex;
 
         slider.scrollTo({
-            left: slideIndex * slideWidth * 4, // 4 books per slide
+            left: slideIndex * slideWidth * 4,
             behavior: 'smooth'
         });
 
         updateDots();
     }
 
-    // ===== UTILITY FUNCTIONS =====
     function generatePlaceholderSvg(title) {
         const initials = title ? title.charAt(0).toUpperCase() : 'B';
         const svg = `
@@ -1724,42 +1612,28 @@
         const main = document.getElementById('main');
         main.innerHTML = `
             <div class="no-results">
-                <h3>❌ Error</h3>
+                <h3>Error</h3>
                 <p>${message}</p>
-                <button onclick="initializePage()" class="read-more" style="margin-top: 15px;">
+                <button onclick="initializePage()" class="action-btn" style="margin-top: 15px;">
                     Try Again
                 </button>
             </div>
         `;
     }
 
-    // ===== NAVIGATE TO DASHBOARD =====
     function navigateToDashboard() {
-        console.log('🚀 Navigating to dashboard...');
-
         const user = currentUser;
         const isLoggedIn = localStorage.getItem('isLoggedIn');
 
-        console.log('Dashboard Navigation Check:', {
-            user: !!user,
-            isLoggedIn: isLoggedIn
-        });
-
         if (user && isLoggedIn === 'true') {
-            console.log('✅ Authentication successful, redirecting to dashboard...');
             window.location.href = '/User-Dashboard';
         } else {
-            console.log('❌ User not authenticated, redirecting to login...');
             showNotification('Please login to access your dashboard', 'error');
             window.location.href = '/Login';
         }
     }
 
-    // ===== IMPROVED EVENT LISTENERS =====
     function setupEventListeners() {
-        console.log('🔧 Setting up event listeners...');
-
-        // Header search form
         const headerSearchForm = document.getElementById('headerSearchForm');
         const headerSearchInput = document.getElementById('header-search');
 
@@ -1767,19 +1641,18 @@
             headerSearchForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const query = headerSearchInput.value.trim();
-                if (query) {
+                if (query && !isLoading) {
                     searchBooks(query);
                 }
             });
         }
 
-        // Slider navigation
         const slideLeft = document.getElementById('slideLeft');
         const slideRight = document.getElementById('slideRight');
 
         if (slideLeft) {
             slideLeft.addEventListener('click', () => {
-                if (currentSlide > 0) {
+                if (currentSlide > 0 && !isLoading) {
                     goToSlide(currentSlide - 1);
                 }
             });
@@ -1788,13 +1661,12 @@
         if (slideRight) {
             slideRight.addEventListener('click', () => {
                 const totalSlides = Math.ceil(allBooks.length / 4);
-                if (currentSlide < totalSlides - 1) {
+                if (currentSlide < totalSlides - 1 && !isLoading) {
                     goToSlide(currentSlide + 1);
                 }
             });
         }
 
-        // ✅ FIXED: User menu with better error handling
         const userMenu = document.getElementById('userMenu');
         const dropdown = document.getElementById('dropdownMenu');
 
@@ -1804,38 +1676,32 @@
                 dropdown.classList.toggle('active');
             });
 
-            // Close dropdown when clicking outside
             document.addEventListener('click', (e) => {
                 if (!userMenu.contains(e.target)) {
                     dropdown.classList.remove('active');
                 }
             });
 
-            // Dropdown menu items
             dropdown.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const link = e.target.closest('a');
 
                 if (link) {
                     const href = link.getAttribute('href');
-                    console.log('📋 Dropdown link clicked:', href);
 
                     if (link.id === 'logoutBtn') {
                         e.preventDefault();
                         logout();
                     } else if (href && (href.includes('Dashboard') || href.includes('dashboard'))) {
                         e.preventDefault();
-                        console.log('🎯 Dashboard link intercepted');
                         navigateToDashboard();
                     }
-                    // Other links will follow their natural href behavior
 
                     dropdown.classList.remove('active');
                 }
             });
         }
 
-        // Logout button
         const logoutBtn = document.getElementById('logoutBtn');
         if (logoutBtn) {
             logoutBtn.addEventListener('click', (e) => {
@@ -1843,15 +1709,9 @@
                 logout();
             });
         }
-
-        console.log('✅ Event listeners setup complete');
     }
 
-    // ===== IMPROVED LOGOUT FUNCTION =====
     function logout() {
-        console.log('🔒 Logging out...');
-
-        // Clear all storage
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('user');
         localStorage.removeItem('currentUserId');
@@ -1865,14 +1725,11 @@
         }, 1000);
     }
 
-    // ✅ NEW: Add onclick directly to dashboard link as backup
     setTimeout(() => {
         const dashboardLinks = document.querySelectorAll('a[href*="Dashboard"]');
         dashboardLinks.forEach(link => {
-            // Remove existing href to prevent Spring Boot interference
             link.removeAttribute('href');
             link.setAttribute('onclick', 'navigateToDashboard(); return false;');
-            console.log('🔗 Dashboard link onclick attribute added');
         });
     }, 1000);
 </script>
