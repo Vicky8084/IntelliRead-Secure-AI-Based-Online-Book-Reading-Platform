@@ -727,15 +727,6 @@
     </div>
 </div>
 
-<!-- ===== MODAL POPUP ===== -->
-<div class="modal" id="bookModal">
-    <div class="modal-content">
-        <span class="close-btn" id="closeModal">&times;</span>
-        <div class="modal-body" id="modalBody">
-            <!-- Book details will be loaded here -->
-        </div>
-    </div>
-</div>
 
 <!-- ===== FOOTER ===== -->
 <footer class="main-footer" style="font-family: chakra petch;">
@@ -773,6 +764,8 @@
         initializePage();
         setupEventListeners();
     });
+
+
 
     // ===== PAGE INITIALIZATION =====
     async function initializePage() {
@@ -1032,7 +1025,7 @@
                 book.category.categoryName : 'Uncategorized';
 
             html += `
-                <div class="book" onclick="showBookDetails(${book.id})">
+                <div class="book" onclick="redirectToBookDetails(${book.id})">
                     <img src="${coverUrl}" alt="${book.title}"
                          onerror="this.src='${generatePlaceholderSvg(book.title)}'">
                     <div class="book-info">
@@ -1054,61 +1047,32 @@
         main.innerHTML = html;
     }
 
-    // ===== SHOW BOOK DETAILS =====
-    async function showBookDetails(bookId) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/book/apies/findById/${bookId}`);
+   // ===== REDIRECT TO BOOK DETAILS PAGE =====
+function redirectToBookDetails(bookId) {
+    console.log('📖 Redirecting to book details page for book ID:', bookId);
 
-            if (response.ok) {
-                const book = await response.json();
-                showBookModal(book);
-            } else {
-                throw new Error('Failed to load book details');
-            }
-        } catch (error) {
-            console.error('Error loading book details:', error);
-            showError('Failed to load book details.');
-        }
+    // Build URL with bookId parameter
+    let url = `/book-details?bookId=${bookId}`;
+
+    console.log('🔗 Redirect URL:', url);
+
+    // Open in same window/tab
+    window.location.href = url;
+}
+
+    // Modal close
+const closeModal = document.getElementById('closeModal');
+const modal = document.getElementById('bookModal');
+
+closeModal.addEventListener('click', () => {
+    modal.classList.remove('active');
+});
+
+modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        modal.classList.remove('active');
     }
-
-    // ===== SHOW BOOK MODAL =====
-    function showBookModal(book) {
-        const modal = document.getElementById('bookModal');
-        const modalBody = document.getElementById('modalBody');
-
-        const coverUrl = book.coverImagePath ?
-            `${API_BASE_URL}/uploads/${book.coverImagePath}` :
-            generatePlaceholderSvg(book.title);
-
-        const categoryName = book.category ?
-            book.category.categoryName : 'Uncategorized';
-
-        modalBody.innerHTML = `
-            <img src="${coverUrl}" alt="${book.title}" class="modal-cover"
-                 onerror="this.src='${generatePlaceholderSvg(book.title)}'">
-            <div class="modal-info">
-                <h2>${book.title}</h2>
-                <h4>by ${book.author}</h4>
-                <p><strong>Category:</strong> ${categoryName}</p>
-                <p><strong>Language:</strong> ${book.language || 'English'}</p>
-                <p><strong>Status:</strong> ${book.status || 'Published'}</p>
-                ${book.description ? `<p><strong>Description:</strong> ${book.description}</p>` : ''}
-                ${book.uploadedAt ? `<p><strong>Added:</strong> ${new Date(book.uploadedAt).toLocaleDateString()}</p>` : ''}
-
-<div style="margin-top: 20px;">
-    <a href="/login" class="read-more">
-        📖 Read This Book
-    </a>
-    <a href="/login" class="read-more" style="margin-left: 10px;">
-        ➕ Add to Reading List
-    </a>
-</div>
-
-            </div>
-        `;
-
-        modal.classList.add('active');
-    }
+});
 
     // ===== PAGINATION =====
     function updatePagination() {

@@ -976,7 +976,7 @@
 <!-- ===== HEADER ===== -->
 <header>
     <div class="logo">
-        <a href="/bookscreen"><img src="../images/logo.png" alt="Logo"></a>
+        <a href="bookscreen"><img src="../images/logo.png" alt="Logo"></a>
     </div>
     <div class="nav-buttons">
         <form class="header-search" id="headerSearchForm">
@@ -1183,11 +1183,7 @@
             console.log('🔐 isLoggedIn:', isLoggedIn);
 
             if (isLoggedIn !== 'true') {
-                console.error('❌ User not logged in');
-                showNotification('Please login to access book details', 'error');
-                setTimeout(() => {
-                    window.location.href = '/Login';
-                }, 2000);
+                console.log('⚠️ User not logged in - Limited access mode');
                 return false;
             }
 
@@ -1196,11 +1192,7 @@
             console.log('🔐 User data exists:', !!userData);
 
             if (!userData) {
-                console.error('❌ No user data found');
-                showNotification('Please login again', 'error');
-                setTimeout(() => {
-                    window.location.href = '/Login';
-                }, 2000);
+                console.log('❌ No user data found');
                 return false;
             }
 
@@ -1209,11 +1201,7 @@
             console.log('🔐 User ID:', userId);
 
             if (!userId) {
-                console.error('❌ No user ID found');
-                showNotification('User session expired. Please login again.', 'error');
-                setTimeout(() => {
-                    window.location.href = '/Login';
-                }, 2000);
+                console.log('❌ No user ID found');
                 return false;
             }
 
@@ -1221,10 +1209,6 @@
             return true;
         } catch (error) {
             console.error('❌ Error checking authentication:', error);
-            showNotification('Authentication error. Please login again.', 'error');
-            setTimeout(() => {
-                window.location.href = '/Login';
-            }, 2000);
             return false;
         }
     }
@@ -1263,12 +1247,35 @@
                 }
             }
 
-            console.error('❌ No user ID found anywhere!');
+            console.log('❌ No user ID found anywhere!');
             return null;
         } catch (error) {
             console.error('❌ Error getting user ID:', error);
             return null;
         }
+    }
+
+    // ===== REDIRECT TO LOGIN =====
+    function redirectToLogin() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookId = urlParams.get('bookId');
+
+        // Store current book for redirect after login
+        localStorage.setItem('redirectAfterLogin', `/book-details?bookId=${bookId}`);
+
+        window.location.href = '/Login';
+    }
+
+    // ===== CHECK ACTION AUTHENTICATION =====
+    function checkActionAuth() {
+        if (!checkAuthentication()) {
+            showNotification('Please login to access this feature', 'info');
+            setTimeout(() => {
+                redirectToLogin();
+            }, 1500);
+            return false;
+        }
+        return true;
     }
 
     // ===== USER SESSION MANAGEMENT =====
@@ -1326,11 +1333,6 @@
         console.log('🔧 Script loaded successfully');
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        // Pehle authentication check karo
-        if (!checkAuthentication()) {
-            return;
-        }
-
         // Get book ID from URL
         const urlParams = new URLSearchParams(window.location.search);
         const bookId = urlParams.get('bookId');
@@ -1354,28 +1356,26 @@
         try {
             console.log('🚀 Starting page initialization...');
 
-            // Double check authentication
-            if (!checkAuthentication()) {
-                return;
-            }
-
-            // Check authentication
-            const user = getCurrentUser();
-            console.log('👤 User for page initialization:', user);
-
-            if (!user) {
-                console.error('❌ User not authenticated, redirecting to login');
-                showNotification('Please login to view book details', 'error');
-                setTimeout(() => {
-                    window.location.href = '/Login';
-                }, 2000);
-                return;
-            }
-
-            // Load page data
+            // ✅ FIX: Pehle BOOK DETAILS load karo (guest aur logged-in dono ke liye)
             await loadBookDetails(bookId);
-            await loadReviews(bookId);
             await loadSimilarBooks(bookId);
+            await loadReviews(bookId);
+
+            // ✅ Phir authentication check karo
+            const isAuthenticated = checkAuthentication();
+            console.log('🔐 Authentication status:', isAuthenticated);
+
+            if (isAuthenticated) {
+                // ✅ Logged-in user - full features
+                console.log('✅ Loading full features for authenticated user');
+                currentUser = getCurrentUser();
+                await loadReviews(bookId);
+                setupAuthenticatedFeatures();
+            } else {
+                // ✅ Guest user - limited features
+                console.log('👤 Guest user access - book details loaded');
+                setupGuestFeatures();
+            }
 
             console.log('✅ Page initialization completed');
 
@@ -1385,6 +1385,101 @@
         } finally {
             showLoading(false);
         }
+    }
+
+    // ===== SETUP AUTHENTICATED FEATURES =====
+    function setupAuthenticatedFeatures() {
+        console.log('✅ Setting up authenticated features');
+
+        // All buttons show karo with proper click handlers
+        const readBookBtn = document.getElementById('readBookBtn');
+        const downloadBookBtn = document.getElementById('downloadBookBtn');
+        const addToReadingListBtn = document.getElementById('addToReadingListBtn');
+
+        if (readBookBtn) {
+            readBookBtn.style.display = 'flex';
+            readBookBtn.onclick = () => {
+                if (checkActionAuth()) {
+                    openBookReader(currentBook.id);
+                }
+            };
+        }
+
+        if (downloadBookBtn) {
+            downloadBookBtn.style.display = 'flex';
+            downloadBookBtn.onclick = () => {
+                if (checkActionAuth()) {
+                    downloadBook(currentBook.id);
+                }
+            };
+        }
+
+        if (addToReadingListBtn) {
+            addToReadingListBtn.style.display = 'flex';
+            addToReadingListBtn.onclick = () => {
+                if (checkActionAuth()) {
+                    addToReadingList(currentBook.id);
+                }
+            };
+        }
+
+        // Review section show karo
+        const addReviewSection = document.getElementById('addReviewSection');
+        if (addReviewSection) addReviewSection.style.display = 'block';
+    }
+
+    // ===== SETUP GUEST FEATURES =====
+    function setupGuestFeatures() {
+        console.log('👤 Setting up guest features');
+
+        // All action buttons show karo but login redirect karo
+        const readBookBtn = document.getElementById('readBookBtn');
+        const downloadBookBtn = document.getElementById('downloadBookBtn');
+        const addToReadingListBtn = document.getElementById('addToReadingListBtn');
+
+        if (readBookBtn) {
+            readBookBtn.style.display = 'flex';
+            readBookBtn.onclick = () => {
+                showNotification('Please login to read this book', 'info');
+                setTimeout(() => redirectToLogin(), 1500);
+            };
+        }
+
+        if (downloadBookBtn) {
+            downloadBookBtn.style.display = 'flex';
+            downloadBookBtn.onclick = () => {
+                showNotification('Please login to download this book', 'info');
+                setTimeout(() => redirectToLogin(), 1500);
+            };
+        }
+
+        if (addToReadingListBtn) {
+            addToReadingListBtn.style.display = 'flex';
+            addToReadingListBtn.onclick = () => {
+                showNotification('Please login to add to reading list', 'info');
+                setTimeout(() => redirectToLogin(), 1500);
+            };
+        }
+
+        // Review section hide karo
+        const addReviewSection = document.getElementById('addReviewSection');
+
+        // ✅ GUEST USERS KE LIYE USER MENU HIDE KARO
+        const userMenu = document.getElementById('userMenu');
+        if (userMenu) {
+            userMenu.style.display = 'none';
+        }
+
+        // ✅ GUEST USERS KE LIYE LOGO CLICK DISABLE KARO
+        const logoLink = document.querySelector('.logo a');
+        if (logoLink) {
+            logoLink.onclick = (e) => {
+                e.preventDefault();
+                showNotification('Please login to access the books screen', 'info');
+                setTimeout(() => redirectToLogin(), 1500);
+            };
+        }
+
     }
 
     // ===== BOOK DETAILS =====
@@ -1435,22 +1530,6 @@
         document.getElementById('totalReviews').textContent = '...';
         document.getElementById('completionRate').textContent = '...';
         document.getElementById('avgRating').textContent = '...';
-
-        // Action buttons
-        document.getElementById('readBookBtn').onclick = () => openBookReader(book.id);
-        document.getElementById('downloadBookBtn').onclick = () => downloadBook(book.id);
-
-        // Check reading list status
-        checkBookInReadingList(book.id).then(isInList => {
-            const btn = document.getElementById('addToReadingListBtn');
-            if (isInList) {
-                btn.innerHTML = '<i class="bx bx-check"></i> In Reading List';
-                btn.style.background = '#28a745';
-                btn.onclick = null;
-            } else {
-                btn.onclick = () => addToReadingList(book.id);
-            }
-        });
 
         console.log('✅ Book details displayed');
     }
@@ -1503,57 +1582,57 @@
 
     // ===== REVIEWS & RATINGS =====
     async function loadReviews(bookId) {
-    try {
-        console.log('💬 Loading reviews for book ID:', bookId);
-        const response = await fetch(`${API_BASE_URL}/review/apies/book/${bookId}`);
+        try {
+            console.log('💬 Loading reviews for book ID:', bookId);
+            const response = await fetch(`${API_BASE_URL}/review/apies/book/${bookId}`);
 
-        console.log('📡 Reviews API response status:', response.status);
+            console.log('📡 Reviews API response status:', response.status);
 
-        if (response.ok) {
-            const reviewsData = await response.json();
-            console.log('✅ Reviews loaded:', reviewsData);
+            if (response.ok) {
+                const reviewsData = await response.json();
+                console.log('✅ Reviews loaded:', reviewsData);
 
-            // ✅ FIX: Load user details for each review
-            const reviewsWithUserDetails = await Promise.all(
-                reviewsData.map(async (review) => {
-                    try {
-                        if (review.user && review.user.id) {
-                            const userResponse = await fetch(`${API_BASE_URL}/user/apies/findById/${review.user.id}`);
-                            if (userResponse.ok) {
-                                const userData = await userResponse.json();
-                                review.user = userData;
+                // ✅ FIX: Load user details for each review
+                const reviewsWithUserDetails = await Promise.all(
+                    reviewsData.map(async (review) => {
+                        try {
+                            if (review.user && review.user.id) {
+                                const userResponse = await fetch(`${API_BASE_URL}/user/apies/findById/${review.user.id}`);
+                                if (userResponse.ok) {
+                                    const userData = await userResponse.json();
+                                    review.user = userData;
+                                }
                             }
+                            return review;
+                        } catch (error) {
+                            console.error('❌ Error loading user details:', error);
+                            return review;
                         }
-                        return review;
-                    } catch (error) {
-                        console.error('❌ Error loading user details:', error);
-                        return review;
-                    }
-                })
-            );
+                    })
+                );
 
-            currentReviews = reviewsWithUserDetails;
-            displayReviews(currentReviews);
-            updateRatingsOverview(currentReviews);
-            updateReviewStats(currentReviews);
-            updateBookReadsStats();
-        } else {
-            console.error('❌ Failed to load reviews, status:', response.status);
+                currentReviews = reviewsWithUserDetails;
+                displayReviews(currentReviews);
+                updateRatingsOverview(currentReviews);
+                updateReviewStats(currentReviews);
+                updateBookReadsStats();
+            } else {
+                console.error('❌ Failed to load reviews, status:', response.status);
+                currentReviews = [];
+                displayReviews([]);
+                updateRatingsOverview([]);
+                updateReviewStats([]);
+                updateBookReadsStats();
+            }
+        } catch (error) {
+            console.error('❌ Error loading reviews:', error);
             currentReviews = [];
             displayReviews([]);
             updateRatingsOverview([]);
             updateReviewStats([]);
             updateBookReadsStats();
         }
-    } catch (error) {
-        console.error('❌ Error loading reviews:', error);
-        currentReviews = [];
-        displayReviews([]);
-        updateRatingsOverview([]);
-        updateReviewStats([]);
-        updateBookReadsStats();
     }
-}
 
     function updateReviewStats(reviews) {
         document.getElementById('totalReviews').textContent = reviews.length;
@@ -1584,71 +1663,71 @@
     }
 
     function displayReviews(reviews) {
-    const reviewsList = document.getElementById('reviewsList');
+        const reviewsList = document.getElementById('reviewsList');
 
-    if (!reviews || reviews.length === 0) {
-        reviewsList.innerHTML = `
-            <div style="text-align: center; padding: 40px; color: #666; background: rgba(255,255,255,0.7); border-radius: 15px;">
-                <h4 style="margin-bottom: 10px;">No reviews yet</h4>
-                <p>Be the first to share your thoughts about this book!</p>
-            </div>
-        `;
-        return;
-    }
-
-    let html = '';
-    reviews.forEach((review, index) => {
-        // ✅ FIXED: Better user information extraction
-        let userInitial = 'U';
-        let userName = 'Anonymous User';
-
-        if (review.user) {
-            // Try multiple fields for user name
-            if (review.user.name && review.user.name !== 'null' && review.user.name.trim() !== '') {
-                userInitial = review.user.name.charAt(0).toUpperCase();
-                userName = review.user.name;
-            } else if (review.user.username && review.user.username !== 'null' && review.user.username.trim() !== '') {
-                userInitial = review.user.username.charAt(0).toUpperCase();
-                userName = review.user.username;
-            } else if (review.user.email && review.user.email !== 'null' && review.user.email.trim() !== '') {
-                userInitial = review.user.email.charAt(0).toUpperCase();
-                userName = review.user.email.split('@')[0];
-            } else if (review.user.id) {
-                userName = `User ${review.user.id}`;
-                userInitial = 'U';
-            }
-
-            console.log(`👤 Review ${index + 1} - User: ${userName}, Initial: ${userInitial}`);
+        if (!reviews || reviews.length === 0) {
+            reviewsList.innerHTML = `
+                <div style="text-align: center; padding: 40px; color: #666; background: rgba(255,255,255,0.7); border-radius: 15px;">
+                    <h4 style="margin-bottom: 10px;">No reviews yet</h4>
+                    <p>Be the first to share your thoughts about this book!</p>
+                </div>
+            `;
+            return;
         }
 
-        const reviewContent = review.reviewText || review.comment || 'No review text provided.';
-        const reviewDate = review.createdAt ?
-            new Date(review.createdAt).toLocaleDateString() : 'Unknown date';
+        let html = '';
+        reviews.forEach((review, index) => {
+            // ✅ FIXED: Better user information extraction
+            let userInitial = 'U';
+            let userName = 'Anonymous User';
 
-        html += `
-            <div class="review-card">
-                <div class="review-header">
-                    <div class="reviewer-info">
-                        <div class="reviewer-avatar">${userInitial}</div>
-                        <div class="reviewer-details">
-                            <h4>${userName}</h4>
-                            <div class="review-date">${reviewDate}</div>
+            if (review.user) {
+                // Try multiple fields for user name
+                if (review.user.name && review.user.name !== 'null' && review.user.name.trim() !== '') {
+                    userInitial = review.user.name.charAt(0).toUpperCase();
+                    userName = review.user.name;
+                } else if (review.user.username && review.user.username !== 'null' && review.user.username.trim() !== '') {
+                    userInitial = review.user.username.charAt(0).toUpperCase();
+                    userName = review.user.username;
+                } else if (review.user.email && review.user.email !== 'null' && review.user.email.trim() !== '') {
+                    userInitial = review.user.email.charAt(0).toUpperCase();
+                    userName = review.user.email.split('@')[0];
+                } else if (review.user.id) {
+                    userName = `User ${review.user.id}`;
+                    userInitial = 'U';
+                }
+
+                console.log(`👤 Review ${index + 1} - User: ${userName}, Initial: ${userInitial}`);
+            }
+
+            const reviewContent = review.reviewText || review.comment || 'No review text provided.';
+            const reviewDate = review.createdAt ?
+                new Date(review.createdAt).toLocaleDateString() : 'Unknown date';
+
+            html += `
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-info">
+                            <div class="reviewer-avatar">${userInitial}</div>
+                            <div class="reviewer-details">
+                                <h4>${userName}</h4>
+                                <div class="review-date">${reviewDate}</div>
+                            </div>
+                        </div>
+                        <div class="review-rating">
+                            ${generateStarRating(review.rating)}
                         </div>
                     </div>
-                    <div class="review-rating">
-                        ${generateStarRating(review.rating)}
+                    <div class="review-content">
+                        ${reviewContent}
                     </div>
                 </div>
-                <div class="review-content">
-                    ${reviewContent}
-                </div>
-            </div>
-        `;
-    });
+            `;
+        });
 
-    reviewsList.innerHTML = html;
-    console.log('✅ Reviews display completed');
-}
+        reviewsList.innerHTML = html;
+        console.log('✅ Reviews display completed');
+    }
 
     function updateRatingsOverview(reviews) {
         if (!reviews || reviews.length === 0) {
@@ -1697,13 +1776,8 @@
         event.preventDefault();
         console.log('💬 Starting review submission...');
 
-        // ✅ ACTUAL USER ID USE KARO
-        const user = getCurrentUser();
-        console.log('👤 User for review submission:', user);
-
-        if (!user) {
-            console.error('❌ No valid user found for review submission');
-            showNotification('Please login to submit a review', 'error');
+        // ✅ Check authentication first
+        if (!checkActionAuth()) {
             return;
         }
 
@@ -1720,7 +1794,16 @@
             return;
         }
 
-        // ✅ ACTUAL USER ID BHEJO
+        // ✅ ACTUAL USER ID USE KARO
+        const user = getCurrentUser();
+        console.log('👤 User for review submission:', user);
+
+        if (!user) {
+            console.error('❌ No valid user found for review submission');
+            showNotification('Please login to submit a review', 'error');
+            return;
+        }
+
         const reviewData = {
             userId: parseInt(user.id),
             bookId: parseInt(currentBook.id),
@@ -1780,6 +1863,10 @@
 
         starInputs.forEach((star) => {
             star.addEventListener('click', function() {
+                // ✅ Check authentication first
+                if (!checkActionAuth()) {
+                    return;
+                }
                 const rating = parseInt(this.getAttribute('data-rating'));
                 setStarRating(rating);
             });
@@ -2179,7 +2266,6 @@
         }, 1000);
     }
 </script>
-
 
 </body>
 </html>
