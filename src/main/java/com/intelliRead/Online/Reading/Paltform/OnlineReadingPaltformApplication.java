@@ -28,7 +28,6 @@ public class OnlineReadingPaltformApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("🚀 Starting IntelliRead Application...");
 
         // 1️⃣ Create default admin accounts
         createDefaultAdmins();
@@ -39,15 +38,12 @@ public class OnlineReadingPaltformApplication implements CommandLineRunner {
             if (password != null && !password.startsWith("$2a$")) {
                 user.setPasswordHash(passwordEncoder.encode(password));
                 userRepository.save(user);
-                System.out.println("🔒 Password encoded for user: " + user.getEmail());
             }
         });
 
-        System.out.println("✅ Application startup completed.");
     }
 
     private void createDefaultAdmins() {
-        System.out.println("🛠️ Creating default admin accounts...");
 
         List<User> defaultAdmins = Arrays.asList(
                 createAdminUser("noreply.intelliread@gmail.com", "Original Admin", "Password098@"),
@@ -64,37 +60,17 @@ public class OnlineReadingPaltformApplication implements CommandLineRunner {
             if (userRepository.findUserByEmail(admin.getEmail()).isEmpty()) {
                 userRepository.save(admin);
                 createdCount++;
-                System.out.println("✅ Default admin CREATED: " + admin.getEmail());
-                System.out.println("   👤 Name: " + admin.getName());
-                System.out.println("   🔑 Role: " + admin.getRole());
-                System.out.println("   📊 Status: " + admin.getStatus());
-                System.out.println("   🔐 Password: " + getRawPasswordForEmail(admin.getEmail()));
             } else {
                 existingCount++;
-                System.out.println("ℹ️ Default admin ALREADY EXISTS: " + admin.getEmail());
 
                 // Update existing admin to ensure correct role and status
                 User existingAdmin = userRepository.findUserByEmail(admin.getEmail()).get();
                 existingAdmin.setRole(Role.ADMIN);
                 existingAdmin.setStatus(Status.ACTIVE);
                 userRepository.save(existingAdmin);
-                System.out.println("   🔄 Updated existing admin role to ROLE and status to ACTIVE");
             }
         }
 
-        System.out.println("📊 Admin Creation Summary:");
-        System.out.println("   ✅ Created: " + createdCount);
-        System.out.println("   ℹ️ Existing: " + existingCount);
-        System.out.println("   📝 Total: " + defaultAdmins.size());
-
-        // Print login instructions
-        System.out.println("\n🔐 ADMIN LOGIN CREDENTIALS:");
-        System.out.println("   📧 noreply.intelliread@gmail.com | 🔑 Password098@");
-        System.out.println("   📧 mrvg4545@gmail.com  | 🔑 Password098@");
-        System.out.println("   📧 aaarti.rcc090@gmail.com  | 🔑 Password098@");
-        System.out.println("   📧 jarpit0103@gmail.com  | 🔑 Password098@");
-        System.out.println("   📧 rwi.sharma001@gmail.com  | 🔑 Password098@");
-        System.out.println("\n💡 Login as PUBLISHER role with these credentials");
     }
 
     private User createAdminUser(String email, String name, String password) {

@@ -8,27 +8,30 @@
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/Login.css}">
     <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
+
+    <!-- Preload critical resources -->
+    <link rel="preload" th:href="@{/Home}" as="document">
+    <link rel="preload" th:href="@{/signup}" as="document">
 </head>
 <body>
 
-<!-- ===== HEADER ===== -->
 <header>
-    <a th:href="@{/Home}"><img th:src="@{/images/logo.png}" alt="IntelliRead Logo" style="height:80px; width:auto;"></a>
+    <a th:href="@{/Home}" onclick="handleHomeRedirect(event)">
+        <img th:src="@{/images/logo.png}" alt="IntelliRead Logo" style="height:80px; width:auto;">
+    </a>
     <div class="nav-buttons">
-        <button class="btn btn-loginoutline" onclick="window.location.href='/login'">
+        <button class="btn btn-loginoutline">
             <img th:src="@{/images/login.png}" alt="login-icon" style="height: 50px; width: auto;">
         </button>
     </div>
 </header>
 
-<!-- main -->
 <div class="login-container">
     <div class="login-card">
         <h2>Welcome Back</h2>
         <p class="subtitle">Sign in to your account</p>
         <form class="login-form" id="loginForm">
 
-            <!-- Role Selection -->
             <div class="role-selection">
                 <label>Select Login Type</label>
                 <div class="role-options">
@@ -45,13 +48,11 @@
                 </div>
             </div>
 
-            <!-- Email input -->
             <div class="input-group">
                 <i class="bx bx-envelope"></i>
                 <input type="email" id="email" name="email" placeholder="Email Address" required>
             </div>
 
-            <!-- Password input -->
             <div class="input-group">
                 <i class="bx bx-lock-alt"></i>
                 <input type="password" id="password" name="password" placeholder="Password" required>
@@ -66,20 +67,19 @@
             </div>
 
             <button type="submit" class="login-btn">Sign In</button>
-            <p class="signup-link">Don't have an account? - <a th:href="@{/signup}">Sign up here</a></p>
-            <p class="signup-link">SignIn as Admin - <a href="/admin-login">Login Here</a></p>
+            <p class="signup-link">Don't have an account? - <a th:href="@{/signup}" onclick="handleSignupRedirect(event)">Sign up here</a></p>
+            <p class="signup-link">SignIn as Admin - <a href="/admin-login" onclick="handleAdminRedirect(event)">Login Here</a></p>
         </form>
     </div>
 </div>
 
-<!-- ===== FOOTER ===== -->
 <footer class="main-footer" style="font-family: chakra petch;">
     <div class="footer-section">
         <h4>About</h4>
         <p>Designed and Developed by Team <b style="color: rgb(206, 232, 10); font-size: large;">Rv</b></p>
     </div>
     <div class="footer-section">
-        <p>&copy; <span>2025</span> Intelli-Read. All Rights Reserved.</p>
+        <p>&copy; <span id="currentYear">2025</span> Intelli-Read. All Rights Reserved.</p>
         <p><a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a></p>
     </div>
     <div class="footer-section">
@@ -88,169 +88,192 @@
     </div>
 </footer>
 
-<!-- ===== JS ===== -->
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-      console.log('🔐 Login Page Loaded');
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-      // ===== Role Selection =====
-      const roleOptions = document.querySelectorAll('.role-option');
-
-      roleOptions.forEach(option => {
-        option.addEventListener('click', () => {
-          roleOptions.forEach(opt => opt.classList.remove('selected'));
-          option.classList.add('selected');
-          const radioInput = option.querySelector('input[type="radio"]');
-          radioInput.checked = true;
+        const roleOptions = document.querySelectorAll('.role-option');
+        roleOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                roleOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+                const radioInput = option.querySelector('input[type="radio"]');
+                radioInput.checked = true;
+            });
         });
-      });
 
-      document.querySelector('.role-option[data-role="user"]').classList.add('selected');
+        document.querySelector('.role-option[data-role="user"]').classList.add('selected');
 
-      // ===== Password Toggle Visibility =====
-      const togglePassword = document.getElementById('togglePassword');
-      const passwordInput = document.getElementById('password');
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        togglePassword.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePassword.classList.toggle('bx-hide');
+            togglePassword.classList.toggle('bx-show');
+        });
 
-      togglePassword.addEventListener('click', () => {
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        togglePassword.classList.toggle('bx-hide');
-        togglePassword.classList.toggle('bx-show');
-      });
+        const loginForm = document.getElementById('loginForm');
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-      // ===== Login Form Submission =====
-      const loginForm = document.getElementById('loginForm');
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const selectedRole = document.querySelector('input[name="role"]:checked').value;
 
-      loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
-        const selectedRole = document.querySelector('input[name="role"]:checked').value;
-
-        if (!email || !password) {
-          alert('Please fill in all fields');
-          return;
-        }
-
-        // ✅ STRICT FRONTEND VALIDATION - ADD THIS SECTION
-        const adminEmails = [
-            'noreply.intelliread@gmail.com',
-            'mrvg4545@gmail.com',
-            'aaarti.rcc090@gmail.com',
-            'jarpit0103@gmail.com',
-            'rwi.sharma001@gmail.com'
-        ];
-
-        // Admin must use admin login page
-        if (adminEmails.includes(email.toLowerCase()) && selectedRole !== 'ADMIN') {
-            alert('❌ Admin accounts must use the Admin Login page.');
-            return;
-        }
-
-        const loginBtn = loginForm.querySelector('.login-btn');
-        const originalText = loginBtn.textContent;
-        loginBtn.textContent = 'Signing In...';
-        loginBtn.disabled = true;
-
-        try {
-          console.log('📤 Sending login request to backend...');
-          const response = await fetch('http://localhost:8035/auth/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password })
-          });
-
-          console.log('✅ Response status:', response.status);
-          const data = await response.json();
-          console.log('📥 Login response data:', data);
-
-          if (data.success) {
-            // ✅ STRICT ROLE CHECKING
-            if (selectedRole === 'USER' && data.role !== 'USER') {
-                alert('❌ Access denied. Please login as User using User credentials.');
-                loginBtn.textContent = originalText;
-                loginBtn.disabled = false;
+            if (!email || !password) {
+                showQuickMessage('Please fill in all fields', 'error');
                 return;
             }
 
-            if (selectedRole === 'PUBLISHER' && data.role !== 'PUBLISHER') {
-                alert('❌ Access denied. Please login as Publisher using Publisher credentials.');
-                loginBtn.textContent = originalText;
-                loginBtn.disabled = false;
+            const adminEmails = [
+                'noreply.intelliread@gmail.com',
+                'mrvg4545@gmail.com',
+                'aaarti.rcc090@gmail.com',
+                'jarpit0103@gmail.com',
+                'rwi.sharma001@gmail.com'
+            ];
+
+            if (adminEmails.includes(email.toLowerCase()) && selectedRole !== 'ADMIN') {
+                showQuickMessage('Admin accounts must use Admin Login', 'error');
                 return;
             }
 
-            // ✅ Store user data in localStorage
-            const userData = {
-              email: data.email,
-              name: data.name,
-              role: data.role,
-              userId: data.userId
-            };
+            const loginBtn = loginForm.querySelector('.login-btn');
+            const originalText = loginBtn.textContent;
+            loginBtn.textContent = 'Signing In...';
+            loginBtn.disabled = true;
 
-            localStorage.setItem('user', JSON.stringify(userData));
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('jwtToken', data.token);
-            localStorage.setItem('loginTime', new Date().toISOString());
+            try {
+                const response = await fetch('http://localhost:8035/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password })
+                });
 
-            // ✅ CRITICAL: USER ID LOCALSTORAGE MEIN SAVE KARO
-            localStorage.setItem('currentUserId', data.userId.toString());
-            console.log('💾 User ID stored:', data.userId);
+                const data = await response.json();
 
-            // ✅✅✅ CRITICAL: ADMIN KE LIYE SESSION STORAGE SET KARO
-            if (data.role === 'ADMIN') {
-                sessionStorage.setItem('admin', 'true');
-                sessionStorage.setItem('isAdmin', 'true');
-                console.log('✅ Admin session set in sessionStorage');
+                if (data.success) {
+                    if (selectedRole === 'USER' && data.role !== 'USER') {
+                        showQuickMessage('Access denied. Please login as User', 'error');
+                        loginBtn.textContent = originalText;
+                        loginBtn.disabled = false;
+                        return;
+                    }
+
+                    if (selectedRole === 'PUBLISHER' && data.role !== 'PUBLISHER') {
+                        showQuickMessage('Access denied. Please login as Publisher', 'error');
+                        loginBtn.textContent = originalText;
+                        loginBtn.disabled = false;
+                        return;
+                    }
+
+                    const userData = {
+                        email: data.email,
+                        name: data.name,
+                        role: data.role,
+                        userId: data.userId
+                    };
+
+                    localStorage.setItem('user', JSON.stringify(userData));
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('jwtToken', data.token);
+                    localStorage.setItem('loginTime', new Date().toISOString());
+                    localStorage.setItem('currentUserId', data.userId.toString());
+
+                    if (data.role === 'ADMIN') {
+                        sessionStorage.setItem('admin', 'true');
+                        sessionStorage.setItem('isAdmin', 'true');
+                    }
+
+                    showQuickMessage('Login successful!', 'success');
+
+                    setTimeout(() => {
+                        let redirectUrl = data.redirectUrl;
+                        if (redirectUrl && data.userId) {
+                            const separator = redirectUrl.includes('?') ? '&' : '?';
+                            redirectUrl += `${separator}userId=${data.userId}`;
+                        }
+                        window.location.href = redirectUrl;
+                    }, 100);
+
+                } else {
+                    showQuickMessage(data.message || 'Login failed', 'error');
+                }
+            } catch (error) {
+                showQuickMessage('Network error. Please try again.', 'error');
+            } finally {
+                loginBtn.textContent = originalText;
+                loginBtn.disabled = false;
             }
-
-            console.log('💾 User data stored in localStorage:', userData);
-            console.log('🔑 Token stored:', !!data.token);
-
-            // Use backend redirect URL
-            let redirectUrl = data.redirectUrl;
-            let successMessage = 'Login successful!';
-
-            if (redirectUrl) {
-                console.log('🔄 Using backend redirect URL:', redirectUrl);
-                successMessage = 'Login successful! Redirecting...';
-            }
-
-            console.log('🔄 Final redirect URL:', redirectUrl);
-
-            // Show success message and redirect
-            alert(successMessage);
-
-            // ✅ CRITICAL: REDIRECT WITH USER ID ADD KARO
-            setTimeout(() => {
-              let redirectUrl = data.redirectUrl;
-
-              // ✅ USER ID URL MEIN ADD KARO
-              if (redirectUrl && data.userId) {
-                // Check if URL already has query parameters
-                const separator = redirectUrl.includes('?') ? '&' : '?';
-                redirectUrl += `${separator}userId=${data.userId}`;
-              }
-
-              console.log('🔄 Final redirect URL with User ID:', redirectUrl);
-              window.location.href = redirectUrl;
-            }, 100);
-
-          } else {
-            alert(data.message || 'Login failed. Please try again.');
-          }
-        } catch (error) {
-          console.error('❌ Login error:', error);
-          alert('Network error. Please try again.');
-        } finally {
-          loginBtn.textContent = originalText;
-          loginBtn.disabled = false;
-        }
-      });
+        });
     });
+
+    function showQuickMessage(message, type) {
+        const messageDiv = document.createElement('div');
+        messageDiv.textContent = message;
+        messageDiv.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 10000;
+            max-width: 300px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            animation: slideIn 0.3s ease;
+            background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
+        `;
+
+        document.body.appendChild(messageDiv);
+
+        setTimeout(() => {
+            messageDiv.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => {
+                if (document.body.contains(messageDiv)) {
+                    document.body.removeChild(messageDiv);
+                }
+            }, 300);
+        }, 3000);
+    }
+
+    function handleHomeRedirect(event) {
+        event.preventDefault();
+        const logo = event.target.closest('a');
+        if (logo) logo.style.opacity = '0.7';
+        setTimeout(() => window.location.href = '/Home', 50);
+    }
+
+    function handleSignupRedirect(event) {
+        event.preventDefault();
+        const link = event.target;
+        link.style.opacity = '0.7';
+        setTimeout(() => window.location.href = '/signup', 50);
+    }
+
+    function handleAdminRedirect(event) {
+        event.preventDefault();
+        const link = event.target;
+        link.style.opacity = '0.7';
+        setTimeout(() => window.location.href = '/admin-login', 50);
+    }
+
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
 </script>
 </body>
 </html>
