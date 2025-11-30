@@ -25,16 +25,18 @@ public interface PublisherSuggestionActionRepository extends JpaRepository<Publi
     boolean existsByPublisherIdAndSuggestionIdAndAction(int publisherId, int suggestionId, PublisherAction action);
 
     @Query("SELECT p FROM PublisherSuggestionAction p WHERE p.action = :action AND p.suggestion.id = :suggestionId")
-    List<PublisherSuggestionAction> findByActionAndSuggestionId(@Param("action") PublisherAction action,
-                                                                @Param("suggestionId") int suggestionId);
+    List<PublisherSuggestionAction> findByActionAndSuggestionId(@Param("action") PublisherAction action, @Param("suggestionId") int suggestionId);
 
     @Query("SELECT COUNT(p) FROM PublisherSuggestionAction p WHERE p.suggestion.id = :suggestionId AND p.action IN :actions")
-    int countBySuggestionIdAndActionIn(@Param("suggestionId") int suggestionId,
-                                       @Param("actions") List<PublisherAction> actions);
-
-    void deleteBySuggestionId(int suggestionId);
+    int countBySuggestionIdAndActionIn(@Param("suggestionId") int suggestionId, @Param("actions") List<PublisherAction> actions);
 
     @Modifying
     @Query("DELETE FROM PublisherSuggestionAction p WHERE p.suggestion.id = :suggestionId")
     void deleteAllBySuggestionId(@Param("suggestionId") int suggestionId);
+
+    @Query("SELECT p.suggestion.id, COUNT(p) FROM PublisherSuggestionAction p WHERE p.suggestion.id IN :suggestionIds AND p.action = 'INTERESTED' GROUP BY p.suggestion.id")
+    List<Object[]> countInterestsBySuggestionIds(@Param("suggestionIds") List<Integer> suggestionIds);
+
+    @Query("SELECT p FROM PublisherSuggestionAction p WHERE p.publisher.id = :publisherId AND p.suggestion.id IN :suggestionIds")
+    List<PublisherSuggestionAction> findByPublisherIdAndSuggestionIdIn(@Param("publisherId") int publisherId, @Param("suggestionIds") List<Integer> suggestionIds);
 }

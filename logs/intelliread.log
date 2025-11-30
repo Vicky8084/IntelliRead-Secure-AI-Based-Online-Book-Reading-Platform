@@ -42340,3 +42340,220 @@ Identify and stop the process that's listening on port 8035 or configure this ap
 2025-11-30 07:25:02 - Hibernate is in classpath; If applicable, HQL parser will be used.
 2025-11-30 07:25:06 - Tomcat started on port 8035 (http) with context path '/'
 2025-11-30 07:25:06 - Started OnlineReadingPaltformApplication in 6.274 seconds (process running for 6.63)
+2025-11-30 10:10:01 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 46556 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-30 10:10:01 - No active profile set, falling back to 1 default profile: "default"
+2025-11-30 10:10:02 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-30 10:10:02 - Finished Spring Data repository scanning in 37 ms. Found 11 JPA repository interfaces.
+2025-11-30 10:10:02 - Tomcat initialized with port 8035 (http)
+2025-11-30 10:10:02 - Starting service [Tomcat]
+2025-11-30 10:10:02 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-30 10:10:02 - Initializing Spring embedded WebApplicationContext
+2025-11-30 10:10:02 - Root WebApplicationContext: initialization completed in 759 ms
+2025-11-30 10:10:02 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-30 10:10:02 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-30 10:10:02 - HHH000026: Second-level cache disabled
+2025-11-30 10:10:02 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-30 10:10:02 - HikariPool-1 - Starting...
+2025-11-30 10:10:02 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@36cfe107
+2025-11-30 10:10:02 - HikariPool-1 - Start completed.
+2025-11-30 10:10:02 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-30 10:10:02 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-30 10:10:02 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-30 10:10:03 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-30 10:10:03 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-30 10:10:03 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-30 10:10:07 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-30 10:10:07 - Started OnlineReadingPaltformApplication in 6.303 seconds (process running for 6.536)
+2025-11-30 10:10:17 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-30 10:19:56 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-30 10:19:56 - Graceful shutdown complete
+2025-11-30 10:19:56 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-30 10:19:56 - HikariPool-1 - Shutdown initiated...
+2025-11-30 10:19:56 - HikariPool-1 - Shutdown completed.
+2025-11-30 10:19:58 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 46764 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-30 10:19:58 - No active profile set, falling back to 1 default profile: "default"
+2025-11-30 10:19:58 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-30 10:19:58 - Finished Spring Data repository scanning in 43 ms. Found 11 JPA repository interfaces.
+2025-11-30 10:19:59 - Tomcat initialized with port 8035 (http)
+2025-11-30 10:19:59 - Starting service [Tomcat]
+2025-11-30 10:19:59 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-30 10:19:59 - Initializing Spring embedded WebApplicationContext
+2025-11-30 10:19:59 - Root WebApplicationContext: initialization completed in 864 ms
+2025-11-30 10:19:59 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-30 10:19:59 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-30 10:19:59 - HHH000026: Second-level cache disabled
+2025-11-30 10:19:59 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-30 10:19:59 - HikariPool-1 - Starting...
+2025-11-30 10:19:59 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@18dac12f
+2025-11-30 10:19:59 - HikariPool-1 - Start completed.
+2025-11-30 10:19:59 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-30 10:19:59 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-30 10:19:59 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-30 10:20:00 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-30 10:20:00 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-30 10:20:00 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-30 10:20:04 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-30 10:20:04 - Started OnlineReadingPaltformApplication in 7.032 seconds (process running for 7.39)
+2025-11-30 10:20:06 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-30 10:24:06 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-30 10:24:06 - Graceful shutdown complete
+2025-11-30 10:24:06 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-30 10:24:06 - HikariPool-1 - Shutdown initiated...
+2025-11-30 10:24:06 - HikariPool-1 - Shutdown completed.
+2025-11-30 10:24:08 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 46994 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-30 10:24:08 - No active profile set, falling back to 1 default profile: "default"
+2025-11-30 10:24:08 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-30 10:24:08 - Finished Spring Data repository scanning in 41 ms. Found 11 JPA repository interfaces.
+2025-11-30 10:24:08 - Tomcat initialized with port 8035 (http)
+2025-11-30 10:24:08 - Starting service [Tomcat]
+2025-11-30 10:24:08 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-30 10:24:09 - Initializing Spring embedded WebApplicationContext
+2025-11-30 10:24:09 - Root WebApplicationContext: initialization completed in 801 ms
+2025-11-30 10:24:09 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-30 10:24:09 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-30 10:24:09 - HHH000026: Second-level cache disabled
+2025-11-30 10:24:09 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-30 10:24:09 - HikariPool-1 - Starting...
+2025-11-30 10:24:09 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@26101efc
+2025-11-30 10:24:09 - HikariPool-1 - Start completed.
+2025-11-30 10:24:09 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-30 10:24:09 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-30 10:24:09 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-30 10:24:10 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-30 10:24:10 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-30 10:24:10 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-30 10:24:14 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-30 10:24:15 - Started OnlineReadingPaltformApplication in 7.236 seconds (process running for 7.628)
+2025-11-30 10:24:18 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-30 10:25:49 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-30 10:25:49 - Graceful shutdown complete
+2025-11-30 10:25:49 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-30 10:25:49 - HikariPool-1 - Shutdown initiated...
+2025-11-30 10:25:49 - HikariPool-1 - Shutdown completed.
+2025-11-30 10:25:50 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 47041 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-30 10:25:50 - No active profile set, falling back to 1 default profile: "default"
+2025-11-30 10:25:51 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-30 10:25:51 - Finished Spring Data repository scanning in 36 ms. Found 11 JPA repository interfaces.
+2025-11-30 10:25:51 - Tomcat initialized with port 8035 (http)
+2025-11-30 10:25:51 - Starting service [Tomcat]
+2025-11-30 10:25:51 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-30 10:25:51 - Initializing Spring embedded WebApplicationContext
+2025-11-30 10:25:51 - Root WebApplicationContext: initialization completed in 740 ms
+2025-11-30 10:25:51 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-30 10:25:51 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-30 10:25:51 - HHH000026: Second-level cache disabled
+2025-11-30 10:25:51 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-30 10:25:51 - HikariPool-1 - Starting...
+2025-11-30 10:25:51 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@44976b08
+2025-11-30 10:25:51 - HikariPool-1 - Start completed.
+2025-11-30 10:25:51 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-30 10:25:51 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-30 10:25:51 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-30 10:25:52 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-30 10:25:52 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-30 10:25:52 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-30 10:25:56 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-30 10:25:56 - Started OnlineReadingPaltformApplication in 6.554 seconds (process running for 6.985)
+2025-11-30 10:26:01 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-30 10:26:48 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-30 10:26:48 - Graceful shutdown complete
+2025-11-30 10:26:48 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-30 10:26:48 - HikariPool-1 - Shutdown initiated...
+2025-11-30 10:26:48 - HikariPool-1 - Shutdown completed.
+2025-11-30 10:26:49 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 47058 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-30 10:26:49 - No active profile set, falling back to 1 default profile: "default"
+2025-11-30 10:26:50 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-30 10:26:50 - Finished Spring Data repository scanning in 37 ms. Found 11 JPA repository interfaces.
+2025-11-30 10:26:50 - Tomcat initialized with port 8035 (http)
+2025-11-30 10:26:50 - Starting service [Tomcat]
+2025-11-30 10:26:50 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-30 10:26:50 - Initializing Spring embedded WebApplicationContext
+2025-11-30 10:26:50 - Root WebApplicationContext: initialization completed in 735 ms
+2025-11-30 10:26:50 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-30 10:26:50 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-30 10:26:50 - HHH000026: Second-level cache disabled
+2025-11-30 10:26:50 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-30 10:26:50 - HikariPool-1 - Starting...
+2025-11-30 10:26:51 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@29b8df5
+2025-11-30 10:26:51 - HikariPool-1 - Start completed.
+2025-11-30 10:26:51 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-30 10:26:51 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-30 10:26:51 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-30 10:26:51 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-30 10:26:51 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-30 10:26:51 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-30 10:26:55 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-30 10:26:55 - Started OnlineReadingPaltformApplication in 6.274 seconds (process running for 6.552)
+2025-11-30 10:26:57 - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-30 10:27:16 - Commencing graceful shutdown. Waiting for active requests to complete
+2025-11-30 10:27:16 - Graceful shutdown complete
+2025-11-30 10:27:16 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-11-30 10:27:16 - HikariPool-1 - Shutdown initiated...
+2025-11-30 10:27:16 - HikariPool-1 - Shutdown completed.
+2025-11-30 10:27:17 - Starting OnlineReadingPaltformApplication using Java 21.0.8 with PID 47087 (/Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master/target/classes started by vickygupta in /Users/vickygupta/Desktop/Project/IntelliRead-Secure-AI-Based-Online-Book-Reading-Platform-master)
+2025-11-30 10:27:17 - No active profile set, falling back to 1 default profile: "default"
+2025-11-30 10:27:18 - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-30 10:27:18 - Finished Spring Data repository scanning in 36 ms. Found 11 JPA repository interfaces.
+2025-11-30 10:27:18 - Tomcat initialized with port 8035 (http)
+2025-11-30 10:27:18 - Starting service [Tomcat]
+2025-11-30 10:27:18 - Starting Servlet engine: [Apache Tomcat/10.1.46]
+2025-11-30 10:27:18 - Initializing Spring embedded WebApplicationContext
+2025-11-30 10:27:18 - Root WebApplicationContext: initialization completed in 741 ms
+2025-11-30 10:27:18 - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-30 10:27:18 - HHH000412: Hibernate ORM core version 6.6.29.Final
+2025-11-30 10:27:18 - HHH000026: Second-level cache disabled
+2025-11-30 10:27:18 - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-30 10:27:18 - HikariPool-1 - Starting...
+2025-11-30 10:27:18 - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@53b7bf01
+2025-11-30 10:27:18 - HikariPool-1 - Start completed.
+2025-11-30 10:27:18 - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-30 10:27:18 - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-11-30 10:27:18 - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-11-30 10:27:19 - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-30 10:27:19 - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-30 10:27:19 - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-30 10:27:23 - Tomcat started on port 8035 (http) with context path '/'
+2025-11-30 10:27:23 - Started OnlineReadingPaltformApplication in 6.426 seconds (process running for 6.744)
+2025-11-30 10:27:24 - Initializing Spring DispatcherServlet 'dispatcherServlet'

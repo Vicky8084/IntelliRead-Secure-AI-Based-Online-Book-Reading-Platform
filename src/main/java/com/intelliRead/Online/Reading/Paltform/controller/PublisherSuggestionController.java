@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/suggestion")
@@ -19,7 +18,6 @@ public class PublisherSuggestionController {
     @Autowired
     private SuggestionService suggestionService;
 
-    // ✅ Get all suggestions for ALL publishers (PUBLIC suggestions)
     @GetMapping("/all")
     public ResponseEntity<Map<String, Object>> getAllSuggestions() {
         try {
@@ -37,7 +35,6 @@ public class PublisherSuggestionController {
         }
     }
 
-    // ✅ Get suggestions for specific publisher
     @GetMapping("/publisher/{publisherId}")
     public ResponseEntity<Map<String, Object>> getSuggestionsForPublisher(@PathVariable int publisherId) {
         try {
@@ -55,46 +52,34 @@ public class PublisherSuggestionController {
         }
     }
 
-    // ✅ Express interest in a suggestion
     @PostMapping("/interest")
     public ResponseEntity<Map<String, Object>> expressInterest(@RequestBody Map<String, Object> request) {
         try {
             System.out.println("🎯 Express interest request received: " + request);
-
-            // ✅ FIXED: Proper type conversion with null checks
             Integer publisherId = null;
             Integer suggestionId = null;
-
             if (request.get("publisherId") != null) {
                 publisherId = Integer.valueOf(request.get("publisherId").toString());
             }
             if (request.get("suggestionId") != null) {
                 suggestionId = Integer.valueOf(request.get("suggestionId").toString());
             }
-
             String notes = request.get("notes") != null ? request.get("notes").toString() : "No notes provided";
-
-            // ✅ Validation
             if (publisherId == null || suggestionId == null) {
                 Map<String, Object> errorResponse = new HashMap<>();
                 errorResponse.put("success", false);
                 errorResponse.put("message", "Publisher ID and Suggestion ID are required");
                 return ResponseEntity.badRequest().body(errorResponse);
             }
-
             System.out.println("🔍 Processing interest - Publisher: " + publisherId + ", Suggestion: " + suggestionId);
-
             String result = suggestionService.expressInterest(publisherId, suggestionId, notes);
-
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message", result);
             return ResponseEntity.ok(response);
-
         } catch (Exception e) {
             System.out.println("❌ Error expressing interest: " + e.getMessage());
             e.printStackTrace();
-
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("success", false);
             errorResponse.put("message", "Error expressing interest: " + e.getMessage());
@@ -102,15 +87,11 @@ public class PublisherSuggestionController {
         }
     }
 
-    // ✅ Mark suggestion as uploaded
     @PostMapping("/upload")
     public ResponseEntity<Map<String, Object>> uploadBookForSuggestion(@RequestBody Map<String, Object> request) {
         try {
             int publisherId = (int) request.get("publisherId");
             int suggestionId = (int) request.get("suggestionId");
-            String uploadedAt = (String) request.get("uploadedAt");
-            String status = (String) request.get("status");
-
             String result = suggestionService.markSuggestionAsUploaded(publisherId, suggestionId);
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
@@ -124,31 +105,24 @@ public class PublisherSuggestionController {
         }
     }
 
-    // ✅ Get suggestion details
     @GetMapping("/{suggestionId}")
     public ResponseEntity<Map<String, Object>> getSuggestionDetails(@PathVariable("suggestionId") Integer suggestionId) {
         try {
             System.out.println("🔍 Get suggestion details request: " + suggestionId);
-
-            // ✅ Validation
             if (suggestionId == null) {
                 Map<String, Object> errorResponse = new HashMap<>();
                 errorResponse.put("success", false);
                 errorResponse.put("message", "Suggestion ID is required");
                 return ResponseEntity.badRequest().body(errorResponse);
             }
-
             PublisherSuggestionView suggestion = suggestionService.getSuggestionDetails(suggestionId);
-
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("suggestion", suggestion);
             return ResponseEntity.ok(response);
-
         } catch (Exception e) {
             System.out.println("❌ Error loading suggestion details: " + e.getMessage());
             e.printStackTrace();
-
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("success", false);
             errorResponse.put("message", "Error loading suggestion details: " + e.getMessage());

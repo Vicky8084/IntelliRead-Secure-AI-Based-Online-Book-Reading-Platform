@@ -20,7 +20,7 @@ public class SuggestionController {
     private SuggestionService suggestionService;
 
     @PostMapping("/save")
-    public ResponseEntity<String> saveSuggestion(@RequestBody SuggestionRequestDTO suggestionRequestDTO){
+    public ResponseEntity<String> saveSuggestion(@RequestBody SuggestionRequestDTO suggestionRequestDTO) {
         try {
             String response = suggestionService.saveSuggestion(suggestionRequestDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -44,7 +44,7 @@ public class SuggestionController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<List<Suggestion>> findAllSuggestion(){
+    public ResponseEntity<List<Suggestion>> findAllSuggestion() {
         try {
             List<Suggestion> suggestions = suggestionService.findAllSuggestion();
             return ResponseEntity.ok(suggestions);
@@ -54,7 +54,7 @@ public class SuggestionController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Suggestion>> findSuggestionsByUserId(@PathVariable int userId){
+    public ResponseEntity<List<Suggestion>> findSuggestionsByUserId(@PathVariable int userId) {
         try {
             List<Suggestion> suggestions = suggestionService.findSuggestionsByUserId(userId);
             return ResponseEntity.ok(suggestions);
@@ -64,7 +64,7 @@ public class SuggestionController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateSuggestion(@PathVariable int id, @RequestBody SuggestionRequestDTO suggestionRequestDTO){
+    public ResponseEntity<String> updateSuggestion(@PathVariable int id, @RequestBody SuggestionRequestDTO suggestionRequestDTO) {
         try {
             String response = suggestionService.updateSuggestion(id, suggestionRequestDTO);
             return ResponseEntity.ok(response);
@@ -74,7 +74,7 @@ public class SuggestionController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> deleteSuggestion(@PathVariable int id){
+    public ResponseEntity<String> deleteSuggestion(@PathVariable int id) {
         try {
             String response = suggestionService.deleteSuggestion(id);
             return ResponseEntity.ok(response);
@@ -83,7 +83,6 @@ public class SuggestionController {
         }
     }
 
-    // Admin endpoints for suggestion management
     @GetMapping("/admin/all")
     public ResponseEntity<List<Suggestion>> getAllSuggestionsForAdmin() {
         try {
@@ -104,49 +103,40 @@ public class SuggestionController {
         }
     }
 
-    // Proper JSON response for approval
     @PutMapping("/admin/approve/{id}")
     public ResponseEntity<Map<String, Object>> approveSuggestion(@PathVariable int id, @RequestBody Map<String, String> request) {
         try {
             String adminNotes = request.get("adminNotes");
             String response = suggestionService.approveSuggestion(id, adminNotes);
-
             Map<String, Object> responseMap = new HashMap<>();
             responseMap.put("success", true);
             responseMap.put("message", response);
-
             return ResponseEntity.ok(responseMap);
         } catch (Exception e) {
             Map<String, Object> errorMap = new HashMap<>();
             errorMap.put("success", false);
             errorMap.put("message", "Error: " + e.getMessage());
-
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
         }
     }
 
-    // Proper JSON response for rejection
     @PutMapping("/admin/reject/{id}")
     public ResponseEntity<Map<String, Object>> rejectSuggestion(@PathVariable int id, @RequestBody Map<String, String> request) {
         try {
             String adminNotes = request.get("adminNotes");
             String response = suggestionService.rejectSuggestion(id, adminNotes);
-
             Map<String, Object> responseMap = new HashMap<>();
             responseMap.put("success", true);
             responseMap.put("message", response);
-
             return ResponseEntity.ok(responseMap);
         } catch (Exception e) {
             Map<String, Object> errorMap = new HashMap<>();
             errorMap.put("success", false);
             errorMap.put("message", "Error: " + e.getMessage());
-
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMap);
         }
     }
 
-    // Get suggestion statistics for admin dashboard
     @GetMapping("/admin/stats")
     public ResponseEntity<Map<String, Long>> getSuggestionStats() {
         try {
@@ -154,13 +144,11 @@ public class SuggestionController {
             long pending = suggestionService.findPendingSuggestions().size();
             long approved = suggestionService.findApprovedSuggestions().size();
             long rejected = suggestionService.findRejectedSuggestions().size();
-
             Map<String, Long> stats = new HashMap<>();
             stats.put("total", total);
             stats.put("pending", pending);
             stats.put("approved", approved);
             stats.put("rejected", rejected);
-
             return ResponseEntity.ok(stats);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

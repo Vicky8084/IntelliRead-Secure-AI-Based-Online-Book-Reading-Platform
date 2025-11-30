@@ -19,22 +19,15 @@ public class AdminSuggestionController {
     @Autowired
     private SuggestionService suggestionService;
 
-    // ✅ Get all suggestions with detailed analytics
     @GetMapping("/analytics")
     public ResponseEntity<Map<String, Object>> getSuggestionAnalytics() {
         try {
             Map<String, Object> analytics = new HashMap<>();
-
-            // Total suggestions
             List<Suggestion> allSuggestions = suggestionService.findAllSuggestion();
             analytics.put("totalSuggestions", allSuggestions.size());
-
-            // Status distribution
             analytics.put("pendingSuggestions", suggestionService.findPendingSuggestions().size());
             analytics.put("approvedSuggestions", suggestionService.findApprovedSuggestions().size());
             analytics.put("rejectedSuggestions", suggestionService.findRejectedSuggestions().size());
-
-            // Engagement stats
             int totalUpvotes = 0;
             int totalPublisherInterests = 0;
             for (Suggestion suggestion : allSuggestions) {
@@ -42,12 +35,9 @@ public class AdminSuggestionController {
                 totalUpvotes += (int) stats.get("upvoteCount");
                 totalPublisherInterests += (int) stats.get("publisherInterestCount");
             }
-
             analytics.put("totalUpvotes", totalUpvotes);
             analytics.put("totalPublisherInterests", totalPublisherInterests);
-            analytics.put("averageEngagement", allSuggestions.isEmpty() ? 0 :
-                    (totalUpvotes + totalPublisherInterests) / allSuggestions.size());
-
+            analytics.put("averageEngagement", allSuggestions.isEmpty() ? 0 : (totalUpvotes + totalPublisherInterests) / allSuggestions.size());
             analytics.put("success", true);
             return ResponseEntity.ok(analytics);
         } catch (Exception e) {
@@ -58,14 +48,12 @@ public class AdminSuggestionController {
         }
     }
 
-    // ✅ Get suggestions that led to book uploads
     @GetMapping("/success-stories")
     public ResponseEntity<Map<String, Object>> getSuccessStories() {
         try {
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message", "Success stories retrieved");
-            // Implementation would return suggestions that resulted in book uploads
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, Object> errorResponse = new HashMap<>();
@@ -75,14 +63,12 @@ public class AdminSuggestionController {
         }
     }
 
-    // ✅ Bulk actions on suggestions
     @PostMapping("/bulk-actions")
     public ResponseEntity<Map<String, Object>> bulkActions(@RequestBody Map<String, Object> request) {
         try {
             List<Integer> suggestionIds = (List<Integer>) request.get("suggestionIds");
             String action = (String) request.get("action");
             String notes = (String) request.get("notes");
-
             int successCount = 0;
             for (int suggestionId : suggestionIds) {
                 try {
@@ -93,10 +79,8 @@ public class AdminSuggestionController {
                     }
                     successCount++;
                 } catch (Exception e) {
-                    // Continue with next suggestion
                 }
             }
-
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message", "Processed " + successCount + " out of " + suggestionIds.size() + " suggestions");

@@ -19,21 +19,18 @@ public class UserSuggestionController {
     @Autowired
     private SuggestionService suggestionService;
 
-    // ✅ Get all suggestions for user with stats
     @GetMapping("/all")
     public ResponseEntity<BookSuggestionResponse> getAllSuggestionsForUser(@RequestParam int userId) {
         try {
-            List<BookSuggestionDTO> suggestions = suggestionService.getPopularSuggestions(50); // Get all
+            List<BookSuggestionDTO> suggestions = suggestionService.getPopularSuggestions(50);
             BookSuggestionResponse response = new BookSuggestionResponse(true, "Suggestions loaded successfully");
             response.setSuggestions(suggestions);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new BookSuggestionResponse(false, "Error loading suggestions: " + e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BookSuggestionResponse(false, "Error loading suggestions: " + e.getMessage()));
         }
     }
 
-    // ✅ Get popular suggestions
     @GetMapping("/popular")
     public ResponseEntity<BookSuggestionResponse> getPopularSuggestions(@RequestParam(defaultValue = "10") int limit) {
         try {
@@ -42,15 +39,12 @@ public class UserSuggestionController {
             response.setSuggestions(suggestions);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new BookSuggestionResponse(false, "Error loading popular suggestions: " + e.getMessage()));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new BookSuggestionResponse(false, "Error loading popular suggestions: " + e.getMessage()));
         }
     }
 
-    // ✅ Upvote a suggestion
     @PostMapping("/upvote")
-    public ResponseEntity<Map<String, Object>> upvoteSuggestion(@RequestParam int userId,
-                                                                @RequestParam int suggestionId) {
+    public ResponseEntity<Map<String, Object>> upvoteSuggestion(@RequestParam int userId, @RequestParam int suggestionId) {
         try {
             String result = suggestionService.upvoteSuggestion(userId, suggestionId);
             Map<String, Object> response = new HashMap<>();
@@ -65,7 +59,6 @@ public class UserSuggestionController {
         }
     }
 
-    // ✅ Get suggestion statistics
     @GetMapping("/{suggestionId}/stats")
     public ResponseEntity<Map<String, Object>> getSuggestionStats(@PathVariable int suggestionId) {
         try {
@@ -80,15 +73,12 @@ public class UserSuggestionController {
         }
     }
 
-    // ✅ Get user's voting history
     @GetMapping("/user/{userId}/votes")
     public ResponseEntity<Map<String, Object>> getUserVotes(@PathVariable int userId) {
         try {
-            // This would return the user's voting history
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("message", "User votes retrieved");
-            // Implementation would go here
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             Map<String, Object> errorResponse = new HashMap<>();
