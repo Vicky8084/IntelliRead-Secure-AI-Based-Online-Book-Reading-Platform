@@ -1224,10 +1224,10 @@
     // ===== CHECK ACTION AUTHENTICATION =====
     function checkActionAuth() {
         if (!checkAuthentication()) {
-            showNotification('Please login to access this feature', 'info');
+<!--            showNotification('Please login to access this feature', 'info');-->
             setTimeout(() => {
                 redirectToLogin();
-            }, 1500);
+            }, 30);
             return false;
         }
         return true;
@@ -1358,24 +1358,24 @@
         if (readBookBtn) {
             readBookBtn.style.display = 'flex';
             readBookBtn.onclick = () => {
-                showNotification('Please login to read this book', 'info');
-                setTimeout(() => redirectToLogin(), 1500);
+<!--                showNotification('Please login to read this book', 'info');-->
+                setTimeout(() => redirectToLogin(), 30);
             };
         }
 
         if (downloadBookBtn) {
             downloadBookBtn.style.display = 'flex';
             downloadBookBtn.onclick = () => {
-                showNotification('Please login to download this book', 'info');
-                setTimeout(() => redirectToLogin(), 1500);
+<!--                showNotification('Please login to download this book', 'info');-->
+                setTimeout(() => redirectToLogin(), 30);
             };
         }
 
         if (addToReadingListBtn) {
             addToReadingListBtn.style.display = 'flex';
             addToReadingListBtn.onclick = () => {
-                showNotification('Please login to add to reading list', 'info');
-                setTimeout(() => redirectToLogin(), 1500);
+<!--                showNotification('Please login to add to reading list', 'info');-->
+                setTimeout(() => redirectToLogin(), 30);
             };
         }
 
@@ -1391,8 +1391,8 @@
         if (logoLink) {
             logoLink.onclick = (e) => {
                 e.preventDefault();
-                showNotification('Please login to access the books screen', 'info');
-                setTimeout(() => redirectToLogin(), 1500);
+<!--                showNotification('Please login to access the books screen', 'info');-->
+                setTimeout(() => redirectToLogin(), 30);
             };
         }
     }
@@ -1463,7 +1463,7 @@
     }
 
     function calculateReadTime(book) {
-        const pages = parseInt(document.getElementById('bookPages').textContent) || 300;
+        const pages = parseInt(document.getElementById('bookPages').textContent) || 30;
         const wordsPerPage = 250;
         const totalWords = pages * wordsPerPage;
         const readingSpeed = 200;
@@ -1678,7 +1678,7 @@
 
         const user = getCurrentUser();
         if (!user) {
-            showNotification('Please login to submit a review', 'error');
+<!--            showNotification('Please login to submit a review', 'error');-->
             return;
         }
 
@@ -1795,7 +1795,7 @@
         try {
             const user = getCurrentUser();
             if (!user) {
-                showNotification('Please login to download books', 'error');
+<!--                showNotification('Please login to download books', 'error');-->
                 return;
             }
 
@@ -1918,7 +1918,7 @@
         try {
             const user = getCurrentUser();
             if (!user) {
-                showNotification('Please login to add books to reading list', 'error');
+<!--                showNotification('Please login to add books to reading list', 'error');-->
                 return;
             }
 
@@ -2038,7 +2038,7 @@
                 if (document.body.contains(notification)) {
                     document.body.removeChild(notification);
                 }
-            }, 300);
+            }, 30);
         }, 3000);
     }
 
@@ -2096,7 +2096,7 @@
         showNotification('Logged out successfully', 'info');
         setTimeout(() => {
             window.location.href = '/Login';
-        }, 1000);
+        }, 10);
     }
 </script>
 
