@@ -1224,7 +1224,6 @@
     // ===== CHECK ACTION AUTHENTICATION =====
     function checkActionAuth() {
         if (!checkAuthentication()) {
-<!--            showNotification('Please login to access this feature', 'info');-->
             setTimeout(() => {
                 redirectToLogin();
             }, 30);
@@ -1271,10 +1270,12 @@
 
     // ===== INITIALIZATION =====
     document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOM Content Loaded - Starting initialization');
         document.getElementById('year').textContent = new Date().getFullYear();
 
         const urlParams = new URLSearchParams(window.location.search);
         const bookId = urlParams.get('bookId');
+        console.log('Book ID from URL:', bookId);
 
         if (!bookId) {
             showError('No book ID provided. Redirecting to book list...');
@@ -1290,18 +1291,26 @@
 
     // ===== PAGE INITIALIZATION =====
     async function initializePage(bookId) {
+        console.log('Initializing page for book ID:', bookId);
         showLoading(true);
         try {
             await loadBookDetails(bookId);
+            console.log('Book details loaded:', currentBook);
+
             await loadSimilarBooks(bookId);
+            console.log('Similar books loaded');
+
             await loadReviews(bookId);
+            console.log('Reviews loaded');
 
             const isAuthenticated = checkAuthentication();
             if (isAuthenticated) {
                 currentUser = getCurrentUser();
                 setupAuthenticatedFeatures();
+                console.log('User authenticated:', currentUser);
             } else {
                 setupGuestFeatures();
+                console.log('User not authenticated - guest mode');
             }
 
         } catch (error) {
@@ -1309,11 +1318,13 @@
             showError('Failed to load book details. Please try again later.');
         } finally {
             showLoading(false);
+            console.log('Page initialization complete');
         }
     }
 
     // ===== SETUP AUTHENTICATED FEATURES =====
     function setupAuthenticatedFeatures() {
+        console.log('Setting up authenticated features');
         const readBookBtn = document.getElementById('readBookBtn');
         const downloadBookBtn = document.getElementById('downloadBookBtn');
         const addToReadingListBtn = document.getElementById('addToReadingListBtn');
@@ -1351,6 +1362,7 @@
 
     // ===== SETUP GUEST FEATURES =====
     function setupGuestFeatures() {
+        console.log('Setting up guest features');
         const readBookBtn = document.getElementById('readBookBtn');
         const downloadBookBtn = document.getElementById('downloadBookBtn');
         const addToReadingListBtn = document.getElementById('addToReadingListBtn');
@@ -1358,7 +1370,6 @@
         if (readBookBtn) {
             readBookBtn.style.display = 'flex';
             readBookBtn.onclick = () => {
-<!--                showNotification('Please login to read this book', 'info');-->
                 setTimeout(() => redirectToLogin(), 30);
             };
         }
@@ -1366,7 +1377,6 @@
         if (downloadBookBtn) {
             downloadBookBtn.style.display = 'flex';
             downloadBookBtn.onclick = () => {
-<!--                showNotification('Please login to download this book', 'info');-->
                 setTimeout(() => redirectToLogin(), 30);
             };
         }
@@ -1374,7 +1384,6 @@
         if (addToReadingListBtn) {
             addToReadingListBtn.style.display = 'flex';
             addToReadingListBtn.onclick = () => {
-<!--                showNotification('Please login to add to reading list', 'info');-->
                 setTimeout(() => redirectToLogin(), 30);
             };
         }
@@ -1391,7 +1400,6 @@
         if (logoLink) {
             logoLink.onclick = (e) => {
                 e.preventDefault();
-<!--                showNotification('Please login to access the books screen', 'info');-->
                 setTimeout(() => redirectToLogin(), 30);
             };
         }
@@ -1399,12 +1407,16 @@
 
     // ===== BOOK DETAILS =====
     async function loadBookDetails(bookId) {
+        console.log('Loading book details for ID:', bookId);
         try {
             const response = await fetch(`${API_BASE_URL}/book/apies/findById/${bookId}`);
+            console.log('Book API response status:', response.status);
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const bookData = await response.json();
+            console.log('Book data received:', bookData);
             currentBook = bookData;
             displayBookDetails(bookData);
         } catch (error) {
@@ -1414,9 +1426,11 @@
     }
 
     function displayBookDetails(book) {
+        console.log('Displaying book details:', book);
         const coverUrl = getBookCoverUrl(book);
         document.getElementById('bookCover').src = coverUrl;
         document.getElementById('bookCover').onerror = function() {
+            console.log('Cover image error, using placeholder');
             this.src = generatePlaceholderSvg(book.title);
         };
 
@@ -1436,6 +1450,9 @@
         document.getElementById('totalReviews').textContent = '...';
         document.getElementById('completionRate').textContent = '...';
         document.getElementById('avgRating').textContent = '...';
+
+        console.log('Book category:', book.category);
+        console.log('Book category ID:', book.category ? book.category.id : 'No category');
     }
 
     function getBookCoverUrl(book) {
@@ -1484,10 +1501,15 @@
 
     // ===== REVIEWS & RATINGS =====
     async function loadReviews(bookId) {
+        console.log('Loading reviews for book ID:', bookId);
         try {
             const response = await fetch(`${API_BASE_URL}/review/apies/book/${bookId}`);
+            console.log('Reviews API response status:', response.status);
+
             if (response.ok) {
                 const reviewsData = await response.json();
+                console.log('Reviews data received:', reviewsData);
+
                 const reviewsWithUserDetails = await Promise.all(
                     reviewsData.map(async (review) => {
                         try {
@@ -1511,6 +1533,7 @@
                 updateReviewStats(currentReviews);
                 updateBookReadsStats();
             } else {
+                console.log('No reviews found');
                 currentReviews = [];
                 displayReviews([]);
                 updateRatingsOverview([]);
@@ -1528,6 +1551,7 @@
     }
 
     function updateReviewStats(reviews) {
+        console.log('Updating review stats:', reviews.length);
         document.getElementById('totalReviews').textContent = reviews.length;
         if (reviews.length > 0) {
             const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
@@ -1555,6 +1579,7 @@
     }
 
     function displayReviews(reviews) {
+        console.log('Displaying reviews:', reviews);
         const reviewsList = document.getElementById('reviewsList');
         if (!reviews || reviews.length === 0) {
             reviewsList.innerHTML = `
@@ -1657,9 +1682,196 @@
         document.getElementById('ratingBreakdown').innerHTML = breakdownHtml;
     }
 
+    // ===== CORRECTED SIMILAR BOOKS FUNCTION WITH MANUAL HIERARCHY =====
+async function loadSimilarBooks(bookId) {
+    console.log('====== START: loadSimilarBooks ======');
+
+    try {
+        // 1. Load all books
+        console.log('📚 Loading all books...');
+        const booksResponse = await fetch(`${API_BASE_URL}/book/apies/published`);
+
+        if (!booksResponse.ok) {
+            console.log('❌ Books API failed');
+            displaySimilarBooks([]);
+            return;
+        }
+
+        const allBooks = await booksResponse.json();
+        console.log('Total books loaded:', allBooks.length);
+
+        // 2. Get current book's category
+        const currentCategoryId = currentBook.category ? currentBook.category.id : null;
+        const currentCategoryName = currentBook.category ? currentBook.category.categoryName : null;
+
+        console.log('🔍 Current Book:', currentBook.title);
+        console.log('🔍 Current Category:', currentCategoryName, '(ID:', currentCategoryId, ')');
+
+        if (!currentCategoryId) {
+            console.log('❌ No category found');
+            displaySimilarBooks([]);
+            return;
+        }
+
+        // 3. Load categories from API
+        console.log('📡 Loading categories from /category/apies/findAll ...');
+        const categoriesResponse = await fetch(`${API_BASE_URL}/category/apies/findAll`);
+
+        if (!categoriesResponse.ok) {
+            console.log('❌ Categories API failed');
+            displaySimilarBooks([]);
+            return;
+        }
+
+        let allCategories = await categoriesResponse.json();
+        console.log('✅ Categories loaded:', allCategories.length);
+
+        // 4. MANUAL HIERARCHY FIX (Database में parent IDs null हैं)
+        const manualParentMap = {
+            // Fiction (ID: 1) children
+            2: 1,   // Fantasy → Fiction
+            3: 1,   // Science Fiction → Fiction
+            4: 1,   // Mystery → Fiction
+            9: 1,   // Romance → Fiction
+            10: 1,  // Thriller → Fiction
+            11: 1,  // Horror → Fiction
+            12: 1,  // Comedy → Fiction
+            13: 1,  // Drama → Fiction
+
+            // Drama (ID: 13) children
+            14: 13, // Romantic Drama → Drama
+            15: 13, // Family Drama → Drama
+            16: 13, // Crime Drama → Drama
+            17: 13, // Social Drama → Drama
+
+            // Horror (ID: 11) children
+            18: 11, // Supernatural Horror → Horror
+            19: 11, // Psychological Horror → Horror
+            20: 11, // Slasher → Horror
+            21: 11, // Gothic Horror → Horror
+
+            // Comedy (ID: 12) children
+            22: 12, // Romantic Comedy → Comedy
+            23: 12, // Dark Comedy → Comedy
+            24: 12, // Satire → Comedy
+            25: 12, // Slapstick → Comedy
+
+            // Non-Fiction (ID: 5) children
+            6: 5,   // Biography → Non-Fiction
+            7: 5,   // Self-Help → Non-Fiction
+            8: 5    // History → Non-Fiction
+        };
+
+        // Fix parent IDs in categories
+        allCategories = allCategories.map(cat => {
+            if (manualParentMap[cat.id]) {
+                return {
+                    ...cat,
+                    parentCategoryId: manualParentMap[cat.id]
+                };
+            }
+            return cat;
+        });
+
+        // 5. Function to get ALL descendant category IDs
+        function getAllDescendantIds(startCategoryId) {
+            const descendantIds = new Set([startCategoryId]);
+
+            function findChildren(parentId) {
+                const children = allCategories.filter(cat => {
+                    return cat.parentCategoryId === parentId;
+                });
+
+                children.forEach(child => {
+                    descendantIds.add(child.id);
+                    findChildren(child.id);
+                });
+            }
+
+            findChildren(startCategoryId);
+            return Array.from(descendantIds);
+        }
+
+        // 6. Get ALL related category IDs
+        const relatedCategoryIds = getAllDescendantIds(currentCategoryId);
+        console.log('📋 Related Category IDs:', relatedCategoryIds.length, 'IDs:', relatedCategoryIds);
+
+        // 7. Find books in ALL related categories
+        console.log('🔍 Searching books in related categories...');
+        const relatedBooks = allBooks.filter(book => {
+            // Skip current book
+            if (book.id === currentBook.id) return false;
+
+            // Get book's category ID
+            const bookCategoryId = book.category ? book.category.id : null;
+            if (!bookCategoryId) return false;
+
+            // Check if book's category is in related categories
+            const isRelated = relatedCategoryIds.includes(bookCategoryId);
+
+            if (isRelated) {
+                const bookCategoryName = book.category ? book.category.categoryName : 'Unknown';
+                console.log(`  ✅ Found: "${book.title}" (${bookCategoryName})`);
+            }
+
+            return isRelated;
+        });
+
+        console.log(`📊 Found ${relatedBooks.length} related books`);
+
+        // 8. Display the books
+        displaySimilarBooks(relatedBooks);
+
+    } catch (error) {
+        console.error('❌ Error loading similar books:', error);
+        displaySimilarBooks([]);
+    } finally {
+        console.log('====== END ======');
+    }
+}
+    function displaySimilarBooks(books) {
+        console.log('Displaying similar books:', books);
+        const similarBooksContainer = document.getElementById('similarBooks');
+
+        if (!books || books.length === 0) {
+            similarBooksContainer.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 30px; color: #666; background: rgba(255,255,255,0.7); border-radius: 15px;">
+                    <h4 style="margin-bottom: 10px;">No similar books found</h4>
+                    <p>Try browsing other categories</p>
+                </div>
+            `;
+            return;
+        }
+
+        console.log(`Displaying ${books.length} books`);
+        let html = '';
+        books.forEach(book => {
+            const coverUrl = getBookCoverUrl(book);
+            const categoryName = book.category ? book.category.categoryName : 'Uncategorized';
+
+            html += `
+                <div class="similar-book-card" onclick="openBookDetails(${book.id})" title="${book.title}">
+                    <img src="${coverUrl}" alt="${book.title}" class="similar-book-cover"
+                         onerror="this.src='${generatePlaceholderSvg(book.title)}'">
+                    <div class="similar-book-info">
+                        <h4>${book.title.length > 40 ? book.title.substring(0, 40) + '...' : book.title}</h4>
+                        <p>by ${book.author || 'Unknown Author'}</p>
+                        <small style="color: #666; font-size: 0.8rem; display: block; margin-top: 5px;">
+                            📚 ${categoryName}
+                        </small>
+                    </div>
+                </div>
+            `;
+        });
+
+        similarBooksContainer.innerHTML = html;
+        console.log('Books displayed successfully');
+    }
+
     // ===== REVIEW SUBMISSION =====
     async function submitReview(event) {
         event.preventDefault();
+        console.log('Submitting review...');
 
         if (!checkActionAuth()) {
             return;
@@ -1678,7 +1890,6 @@
 
         const user = getCurrentUser();
         if (!user) {
-<!--            showNotification('Please login to submit a review', 'error');-->
             return;
         }
 
@@ -1688,6 +1899,8 @@
             rating: userRating,
             reviewText: reviewText
         };
+
+        console.log('Review data:', reviewData);
 
         try {
             const response = await fetch(`${API_BASE_URL}/review/apies/add`, {
@@ -1699,6 +1912,8 @@
             });
 
             const responseText = await response.text();
+            console.log('Review submission response:', responseText);
+
             let result;
             try {
                 result = JSON.parse(responseText);
@@ -1725,6 +1940,7 @@
 
     // ===== STAR RATING FUNCTIONS =====
     function setupStarRating() {
+        console.log('Setting up star rating');
         const starInputs = document.querySelectorAll('.star-input');
         starInputs.forEach((star) => {
             star.addEventListener('click', function() {
@@ -1732,6 +1948,7 @@
                     return;
                 }
                 const rating = parseInt(this.getAttribute('data-rating'));
+                console.log('Star clicked, rating:', rating);
                 setStarRating(rating);
             });
 
@@ -1750,6 +1967,7 @@
         userRating = rating;
         document.getElementById('userRating').value = rating;
         document.getElementById('selectedRatingText').textContent = `${rating} out of 5`;
+        console.log('User rating set to:', rating);
         highlightStars(rating);
     }
 
@@ -1770,6 +1988,7 @@
         document.getElementById('userRating').value = 0;
         document.getElementById('selectedRatingText').textContent = '0 out of 5';
         highlightStars(0);
+        console.log('Star rating reset');
     }
 
     function generateStarRating(rating) {
@@ -1792,10 +2011,10 @@
 
     // ===== DOWNLOAD FUNCTIONALITY =====
     async function downloadBook(bookId) {
+        console.log('Downloading book:', bookId);
         try {
             const user = getCurrentUser();
             if (!user) {
-<!--                showNotification('Please login to download books', 'error');-->
                 return;
             }
 
@@ -1807,6 +2026,8 @@
                 downloadType: "FULL"
             };
 
+            console.log('Download request:', downloadRequest);
+
             const prepareResponse = await fetch(`${API_BASE_URL}/download/prepare`, {
                 method: 'POST',
                 headers: {
@@ -1816,6 +2037,8 @@
             });
 
             const prepareResult = await prepareResponse.json();
+            console.log('Download preparation result:', prepareResult);
+
             if (!prepareResult.success) {
                 showNotification(prepareResult.message || 'Download preparation failed', 'error');
                 return;
@@ -1824,6 +2047,8 @@
             showNotification('Download starting...', 'success');
 
             const downloadUrl = `${API_BASE_URL}/download/file/${bookId}`;
+            console.log('Download URL:', downloadUrl);
+
             const downloadWindow = window.open(downloadUrl, '_blank');
 
             if (!downloadWindow) {
@@ -1858,82 +2083,33 @@
         }
     }
 
-    // ===== SIMILAR BOOKS =====
-    async function loadSimilarBooks(bookId) {
-        try {
-            const response = await fetch(`${API_BASE_URL}/book/apies/published`);
-            if (response.ok) {
-                const allBooks = await response.json();
-                const currentBookCategory = currentBook.category ? currentBook.category.id : null;
-
-                const similarBooks = allBooks
-                    .filter(book => {
-                        const isSameCategory = book.category && book.category.id === currentBookCategory;
-                        const isNotSameBook = book.id !== currentBook.id;
-                        return isNotSameBook && isSameCategory;
-                    })
-                    .slice(0, 4);
-
-                displaySimilarBooks(similarBooks);
-            } else {
-                displaySimilarBooks([]);
-            }
-        } catch (error) {
-            console.error('Error loading similar books:', error);
-            displaySimilarBooks([]);
-        }
-    }
-
-    function displaySimilarBooks(books) {
-        const similarBooksContainer = document.getElementById('similarBooks');
-        if (!books || books.length === 0) {
-            similarBooksContainer.innerHTML = `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 30px; color: #666;">
-                    <p>No similar books found.</p>
-                </div>
-            `;
-            return;
-        }
-
-        let html = '';
-        books.forEach(book => {
-            const coverUrl = getBookCoverUrl(book);
-            html += `
-                <div class="similar-book-card" onclick="openBookDetails(${book.id})">
-                    <img src="${coverUrl}" alt="${book.title}" class="similar-book-cover"
-                         onerror="this.src='${generatePlaceholderSvg(book.title)}'">
-                    <div class="similar-book-info">
-                        <h4>${book.title}</h4>
-                        <p>by ${book.author}</p>
-                    </div>
-                </div>
-            `;
-        });
-
-        similarBooksContainer.innerHTML = html;
-    }
-
     // ===== READING LIST FUNCTIONS =====
     async function addToReadingList(bookId) {
+        console.log('Adding to reading list:', bookId);
         try {
             const user = getCurrentUser();
             if (!user) {
-<!--                showNotification('Please login to add books to reading list', 'error');-->
                 return;
             }
+
+            const requestData = {
+                userId: parseInt(user.id),
+                bookId: parseInt(bookId)
+            };
+
+            console.log('Reading list request:', requestData);
 
             const response = await fetch(`${API_BASE_URL}/reading/add`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    userId: parseInt(user.id),
-                    bookId: parseInt(bookId)
-                })
+                body: JSON.stringify(requestData)
             });
 
             const responseText = await response.text();
+            console.log('Reading list response:', responseText);
+
             let result;
             try {
                 result = JSON.parse(responseText);
@@ -1960,36 +2136,15 @@
         }
     }
 
-    async function checkBookInReadingList(bookId) {
-        try {
-            const user = getCurrentUser();
-            if (!user) {
-                return false;
-            }
-
-            const response = await fetch(`${API_BASE_URL}/reading/check?userId=${parseInt(user.id)}&bookId=${parseInt(bookId)}`);
-            const responseText = await response.text();
-            let result;
-            try {
-                result = JSON.parse(responseText);
-            } catch (e) {
-                return false;
-            }
-
-            return result.inReadingList || false;
-        } catch (error) {
-            console.error('Error checking reading list:', error);
-            return false;
-        }
-    }
-
     // ===== BOOK ACTIONS =====
     function openBookReader(bookId) {
+        console.log('Opening book reader for:', bookId);
         const readerUrl = `/book-reader?bookId=${bookId}`;
         window.open(readerUrl, '_blank', 'width=1400,height=800,resizable=yes,scrollbars=yes');
     }
 
     function openBookDetails(bookId) {
+        console.log('Opening book details for:', bookId);
         window.open(`/book-details?bookId=${bookId}`, '_blank');
     }
 
@@ -2007,6 +2162,7 @@
     }
 
     function showLoading(show) {
+        console.log('Show loading:', show);
         const spinner = document.getElementById('loadingSpinner');
         if (spinner) {
             spinner.style.display = show ? 'block' : 'none';
@@ -2014,6 +2170,7 @@
     }
 
     function showError(message) {
+        console.log('Showing error:', message);
         const mainContent = document.querySelector('.main-content');
         mainContent.innerHTML = `
             <div class="book-details-container" style="text-align: center; padding: 50px;">
@@ -2027,6 +2184,7 @@
     }
 
     function showNotification(message, type = 'info') {
+        console.log('Notification:', type, message);
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         notification.textContent = message;
@@ -2044,12 +2202,15 @@
 
     // ===== EVENT LISTENERS =====
     function setupEventListeners() {
+        console.log('Setting up event listeners');
+
         const headerSearchForm = document.getElementById('headerSearchForm');
         const headerSearchInput = document.getElementById('header-search');
         if (headerSearchForm) {
             headerSearchForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const query = headerSearchInput.value.trim();
+                console.log('Search query:', query);
                 if (query) {
                     window.location.href = `/bookscreen?search=${encodeURIComponent(query)}`;
                 }
@@ -2069,6 +2230,7 @@
             userMenu.addEventListener('click', (e) => {
                 e.stopPropagation();
                 dropdown.classList.toggle('active');
+                console.log('User menu clicked');
             });
 
             document.addEventListener('click', (e) => {
@@ -2083,12 +2245,14 @@
             logoutBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                console.log('Logout clicked');
                 logout();
             });
         }
     }
 
     function logout() {
+        console.log('Logging out...');
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('user');
         localStorage.removeItem('currentUserId');
